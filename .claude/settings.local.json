@@ -12,7 +12,11 @@
       "Bash(curl -s https://www.w3.org/TR/WCAG22/ -o wcag22-full.html)",
       "WebFetch(domain:github.com)",
       "WebFetch(domain:raw.githubusercontent.com)",
-      "WebSearch"
+      "WebSearch",
+      "Bash(python -m pytest tests/test_telnet_protocol.py -v)",
+      "Bash(python -m venv venv)",
+      "Bash(call venv\\\\Scripts\\\\activate.bat)",
+      "Bash(pip install *)"
     ]
   }
 }

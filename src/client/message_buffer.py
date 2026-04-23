@@ -124,11 +124,12 @@ class MessageBuffer:
 
             pos = self.positions[channel]
 
-            # Convert -1 (end) to actual index
+            # Convert -1 (end) to actual index, then apply delta
             if pos == -1:
                 pos = len(messages) - 1
-            else:
-                pos += delta
+
+            # Apply delta to move forward/backward
+            pos += delta
 
             # Clamp to bounds
             pos = max(0, min(pos, len(messages) - 1))

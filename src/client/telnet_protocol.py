@@ -117,7 +117,7 @@ class TelnetProcessor:
             self.state = TelnetState.DO_DONT_WILL_WONT
             self.iac_buffer = ['DONT']
         elif byte == SB:
-            # Subnegotiation begin
+            # Subnegotiation begin - next byte is the option code (e.g., GMCP=201)
             self.state = TelnetState.SB_GMCP
             self.sb_data = bytearray()
             self.sb_option = None
@@ -172,25 +172,33 @@ class TelnetProcessor:
         pass
 
     def _handle_sb_gmcp_state(self, byte: int, gmcp_output: list):
-        """Handle byte during GMCP subnegotiation."""
-        if byte == IAC:
-            # Potential end of subnegotiation (IAC SE) or escaped IAC
-            # Peek at what comes next by collecting in sb_data
+        """Handle byte during GMCP subnegotiation.
+
+        Format: IAC SB GMCP "Module" data IAC SE
+        First byte after SB is the option code (GMCP=201), then module name and data.
+        """
+        if self.sb_option is None and byte != IAC:
+            # First byte is the option code (should be GMCP=201)
+            self.sb_option = byte
+        elif byte == IAC:
+            # Potential end of subnegotiation (IAC SE)
+            # Mark this with a sentinel, will check next byte
             self.sb_data.append(byte)
         elif byte == SE and len(self.sb_data) > 0 and self.sb_data[-1] == IAC:
             # End of subnegotiation: IAC SE
             # Remove the trailing IAC from sb_data
             self.sb_data = self.sb_data[:-1]
 
-            # Parse GMCP data
-            self._parse_gmcp(gmcp_output)
+            # Parse GMCP data if option is GMCP
+            if self.sb_option == GMCP:
+                self._parse_gmcp(gmcp_output)
 
             self.state = TelnetState.TEXT
             self.sb_data = bytearray()
             self.sb_option = None
         else:
-            # Accumulate subnegotiation data
-            if self.sb_data or byte != 0:  # Skip null bytes at start
+            # Accumulate subnegotiation data (skip if we haven't seen option code yet)
+            if self.sb_option is not None:
                 self.sb_data.append(byte)
 
     def _parse_gmcp(self, gmcp_output: list):

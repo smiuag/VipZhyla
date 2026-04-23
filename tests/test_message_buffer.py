@@ -63,17 +63,21 @@ class TestMessageBuffer:
             msg = ParsedMessage(ChannelType.GENERAL, f"Msg {i}", f"raw{i}")
             buffer.add(msg)
 
-        # Start at end (most recent)
-        current = buffer.navigate(ChannelType.GENERAL, -1)
+        # Start at end (most recent) - position defaults to -1 which converts to last index
+        current = buffer.navigate(ChannelType.GENERAL, 0)  # delta=0 means stay at end
         assert current.text == "Msg 2"
 
-        # Go back one
+        # Go back one message
         current = buffer.navigate(ChannelType.GENERAL, -1)
         assert current.text == "Msg 1"
 
+        # Go back one more
+        current = buffer.navigate(ChannelType.GENERAL, -1)
+        assert current.text == "Msg 0"
+
         # Go forward one
         current = buffer.navigate(ChannelType.GENERAL, 1)
-        assert current.text == "Msg 2"
+        assert current.text == "Msg 1"
 
     def test_multiple_channels_isolated(self):
         """Messages in different channels don't mix."""
