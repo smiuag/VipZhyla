@@ -13,6 +13,8 @@ from client.connection import MUDConnection, ConnectionState
 from client.message_buffer import MessageBuffer
 from client.mud_parser import MUDParser, ChannelType
 from client.gmcp_handler import GmcpHandler
+from ui.list_dialogs import (show_channel_history, show_room_history,
+                             show_telepathy_history, show_event_list)
 
 
 class VipZhylaApp(wx.App):
@@ -166,8 +168,17 @@ class MainWindow(wx.Frame):
         self.keyboard.register_handler(KeyAction.CONNECT, self.on_connect)
         self.keyboard.register_handler(KeyAction.DISCONNECT, self.on_disconnect)
 
-        # History & UI
-        self.keyboard.register_handler(KeyAction.SHOW_CHANNEL_HISTORY, self.on_show_help)
+        # History dialogs (Shift+F1-F4)
+        self.keyboard.register_handler(KeyAction.SHOW_CHANNEL_HISTORY, self.on_show_channel_history)
+        self.keyboard.register_handler(KeyAction.SHOW_ROOM_HISTORY, self.on_show_room_history)
+        self.keyboard.register_handler(KeyAction.SHOW_TELEPATHY_HISTORY, self.on_show_telepathy_history)
+        self.keyboard.register_handler(KeyAction.SHOW_EVENT_LIST, self.on_show_event_list)
+
+        # Channel navigation (Alt+Left/Right)
+        self.keyboard.register_handler(KeyAction.PREV_CHANNEL, self.on_prev_channel)
+        self.keyboard.register_handler(KeyAction.NEXT_CHANNEL, self.on_next_channel)
+
+        # UI toggles
         self.keyboard.register_handler(KeyAction.TOGGLE_VERBOSE, self.on_toggle_verbose)
 
     def on_command_enter(self, event):
@@ -287,6 +298,60 @@ class MainWindow(wx.Frame):
         mode = "Verbose" if self.audio.level == AudioLevel.VERBOSE else "Normal"
         self.status_bar.SetStatusText(f"Modo {mode}", 1)
         self.audio.announce(f"Modo {mode}", AudioLevel.MINIMAL)
+
+    def on_show_channel_history(self, event):
+        """Show channel history dialog (Shift+F1)."""
+        show_channel_history(self, self.buffer, self.audio)
+
+    def on_show_room_history(self, event):
+        """Show room history dialog (Shift+F2)."""
+        show_room_history(self, self.buffer, self.audio)
+
+    def on_show_telepathy_history(self, event):
+        """Show telepathy history dialog (Shift+F3)."""
+        show_telepathy_history(self, self.buffer, self.audio)
+
+    def on_show_event_list(self, event):
+        """Show event list dialog (Shift+F4)."""
+        show_event_list(self, self.buffer, self.audio)
+
+    def on_prev_channel(self, event):
+        """Switch to previous channel with messages (Alt+Left)."""
+        channels = self.buffer.get_all_channels()
+        if not channels:
+            self.audio.announce("Sin mensajes aún.", AudioLevel.MINIMAL)
+            return
+
+        # Find current channel (default to GENERAL)
+        current = getattr(self, '_current_channel', ChannelType.GENERAL)
+        current_idx = channels.index(current) if current in channels else 0
+
+        # Go to previous channel
+        prev_idx = (current_idx - 1) % len(channels)
+        self._current_channel = channels[prev_idx]
+
+        channel_name = self._current_channel.value.title()
+        count = len(self.buffer.get_channel(self._current_channel))
+        self.audio.announce(f"{channel_name}: {count} mensajes", AudioLevel.NORMAL)
+
+    def on_next_channel(self, event):
+        """Switch to next channel with messages (Alt+Right)."""
+        channels = self.buffer.get_all_channels()
+        if not channels:
+            self.audio.announce("Sin mensajes aún.", AudioLevel.MINIMAL)
+            return
+
+        # Find current channel (default to GENERAL)
+        current = getattr(self, '_current_channel', ChannelType.GENERAL)
+        current_idx = channels.index(current) if current in channels else 0
+
+        # Go to next channel
+        next_idx = (current_idx + 1) % len(channels)
+        self._current_channel = channels[next_idx]
+
+        channel_name = self._current_channel.value.title()
+        count = len(self.buffer.get_channel(self._current_channel))
+        self.audio.announce(f"{channel_name}: {count} mensajes", AudioLevel.NORMAL)
 
     # MUD connection callbacks
 
