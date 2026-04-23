@@ -16,6 +16,7 @@ from client.gmcp_handler import GmcpHandler
 from ui.list_dialogs import (show_channel_history, show_room_history,
                              show_telepathy_history, show_event_list)
 from ui.trigger_dialog import show_trigger_manager
+from ui.help_dialog import show_help
 from models.triggers import TriggerManager
 
 
@@ -38,7 +39,7 @@ class VipZhylaApp(wx.App):
         self.frame.Show()
 
         audio.announce(
-            "VipZhyla iniciado. Presiona Ctrl+K para conectar, o Shift+F1 para historial.",
+            "VipZhyla iniciado. Presiona F1 para ayuda, Ctrl+K para conectar.",
             AudioLevel.MINIMAL
         )
 
@@ -180,9 +181,10 @@ class MainWindow(wx.Frame):
         self.keyboard.register_handler(KeyAction.PREV_CHANNEL, self.on_prev_channel)
         self.keyboard.register_handler(KeyAction.NEXT_CHANNEL, self.on_next_channel)
 
-        # UI toggles and triggers
-        self.keyboard.register_handler(KeyAction.TOGGLE_VERBOSE, self.on_toggle_verbose)
+        # UI toggles and management
+        self.keyboard.register_handler(KeyAction.SHOW_HELP, self.on_show_help)
         self.keyboard.register_handler(KeyAction.SHOW_TRIGGERS, self.on_show_triggers)
+        self.keyboard.register_handler(KeyAction.TOGGLE_VERBOSE, self.on_toggle_verbose)
 
     def on_command_enter(self, event):
         """Handle Enter key in input field."""
@@ -274,28 +276,8 @@ class MainWindow(wx.Frame):
         self.audio.announce("Desconectado.", AudioLevel.MINIMAL)
 
     def on_show_help(self, event):
-        """Show help dialog."""
-        help_text = (
-            "VipZhyla Keybindings:\n\n"
-            "Conexión:\n"
-            "  Ctrl+K=Connect, Ctrl+D=Disconnect\n\n"
-            "Movimiento (Alt+key):\n"
-            "  U=West, O=East, I=Up, M=Down\n"
-            "  8=North, K=South, 7=NW, 9=NE, J=SW, L=SE\n"
-            "  ,=In, .=Out\n\n"
-            "Historial (Shift+F1-F4):\n"
-            "  F1=Channels, F2=Room, F3=Telepathy, F4=Events\n\n"
-            "Navegación (Alt+key):\n"
-            "  Up/Down=Message, Left/Right=Channel\n"
-            "  Home=First, End=Last\n\n"
-            "Otro:\n"
-            "  Ctrl+Shift+V=Toggle Verbose\n"
-            "  Enter=Send, Escape=Cancel\n"
-        )
-
-        dlg = wx.MessageDialog(self, help_text, "Help - Keybindings", wx.OK | wx.ICON_INFORMATION)
-        dlg.ShowModal()
-        dlg.Destroy()
+        """Show comprehensive help dialog."""
+        show_help(self)
 
     def on_toggle_verbose(self, event):
         """Toggle verbose mode."""

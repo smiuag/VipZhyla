@@ -52,6 +52,7 @@ class KeyAction(Enum):
     # UI toggles
     TOGGLE_VERBOSE = "toggle_verbose"  # Ctrl+Shift+V
     SHOW_TRIGGERS = "show_triggers"    # Ctrl+T
+    SHOW_HELP = "show_help"            # F1
 
 
 class KeyboardHandler:
@@ -92,7 +93,8 @@ class KeyboardHandler:
         key_map[(wx.WXK_RIGHT, wx.MOD_ALT)] = KeyAction.NEXT_CHANNEL
         key_map[(wx.WXK_LEFT, wx.MOD_ALT)] = KeyAction.PREV_CHANNEL
 
-        # Function keys (Shift+F1-F4)
+        # Help and history keys
+        key_map[(wx.WXK_F1, 0)] = KeyAction.SHOW_HELP
         key_map[(wx.WXK_F1, wx.MOD_SHIFT)] = KeyAction.SHOW_CHANNEL_HISTORY
         key_map[(wx.WXK_F2, wx.MOD_SHIFT)] = KeyAction.SHOW_ROOM_HISTORY
         key_map[(wx.WXK_F3, wx.MOD_SHIFT)] = KeyAction.SHOW_TELEPATHY_HISTORY
@@ -158,6 +160,7 @@ class KeyboardHandler:
             KeyAction.MOVE_DOWN: "Alt+M - Move Down",
             KeyAction.MOVE_IN: "Alt+, - Move In",
             KeyAction.MOVE_OUT: "Alt+. - Move Out",
+            KeyAction.SHOW_HELP: "F1 - Show Help",
             KeyAction.SHOW_CHANNEL_HISTORY: "Shift+F1 - Show Channel History",
             KeyAction.SHOW_ROOM_HISTORY: "Shift+F2 - Show Room History",
             KeyAction.SHOW_TELEPATHY_HISTORY: "Shift+F3 - Show Telepathy History",
