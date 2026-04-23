@@ -15,6 +15,8 @@ from client.mud_parser import MUDParser, ChannelType
 from client.gmcp_handler import GmcpHandler
 from ui.list_dialogs import (show_channel_history, show_room_history,
                              show_telepathy_history, show_event_list)
+from ui.trigger_dialog import show_trigger_manager
+from models.triggers import TriggerManager
 
 
 class VipZhylaApp(wx.App):
@@ -75,6 +77,8 @@ class MainWindow(wx.Frame):
         self.buffer = MessageBuffer()
         self.parser = MUDParser()
         self.gmcp = GmcpHandler(self.audio)
+        self.trigger_manager = TriggerManager(self.audio)
+        self.trigger_manager.send_fn = self.send_command
 
         # Setup connection callbacks
         self.connection.set_data_callback(self._on_mud_data)
@@ -176,8 +180,9 @@ class MainWindow(wx.Frame):
         self.keyboard.register_handler(KeyAction.PREV_CHANNEL, self.on_prev_channel)
         self.keyboard.register_handler(KeyAction.NEXT_CHANNEL, self.on_next_channel)
 
-        # UI toggles
+        # UI toggles and triggers
         self.keyboard.register_handler(KeyAction.TOGGLE_VERBOSE, self.on_toggle_verbose)
+        self.keyboard.register_handler(KeyAction.SHOW_TRIGGERS, self.on_show_triggers)
 
     def on_command_enter(self, event):
         """Handle Enter key in input field."""
@@ -195,6 +200,9 @@ class MainWindow(wx.Frame):
         if self.connection.state != ConnectionState.CONNECTED:
             self.audio.announce("No estás conectado.", AudioLevel.MINIMAL)
             return
+
+        # Expand aliases
+        command = self.trigger_manager.expand_alias(command)
 
         # Send to server
         self.connection.send(command)
@@ -247,6 +255,8 @@ class MainWindow(wx.Frame):
             # Attempt connection
             if self.connection.connect(host, port):
                 self.audio.announce(f"Conectando a {host}:{port}...", AudioLevel.MINIMAL)
+                # Start timers after connection
+                self.trigger_manager.start_timers()
             else:
                 self.audio.announce(f"Error al conectar.", AudioLevel.MINIMAL)
 
@@ -259,6 +269,7 @@ class MainWindow(wx.Frame):
             self.audio.announce("No estás conectado.", AudioLevel.MINIMAL)
             return
 
+        self.trigger_manager.stop_timers()
         self.connection.disconnect()
         self.audio.announce("Desconectado.", AudioLevel.MINIMAL)
 
@@ -351,6 +362,10 @@ class MainWindow(wx.Frame):
         count = len(self.buffer.get_channel(self._current_channel))
         self.audio.announce(f"{channel_name}: {count} mensajes", AudioLevel.NORMAL)
 
+    def on_show_triggers(self, event):
+        """Show trigger/alias/timer manager dialog (Ctrl+T)."""
+        show_trigger_manager(self, self.trigger_manager)
+
     # MUD connection callbacks
 
     def _on_mud_data(self, text: str):
@@ -359,8 +374,10 @@ class MainWindow(wx.Frame):
         for line in text.split('\n'):
             if line.strip():
                 parsed = self.parser.parse_line(line)
+                gagged = self.trigger_manager.evaluate(parsed)
                 self.buffer.add(parsed)
-                self.append_output(f"{parsed.text}\n")
+                if not gagged:
+                    self.append_output(f"{parsed.text}\n")
 
     def _on_gmcp(self, module: str, data: dict):
         """Callback for GMCP data from MUD."""
