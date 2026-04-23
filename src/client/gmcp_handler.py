@@ -12,6 +12,7 @@ GMCP provides structured data alternative to fragile text parsing.
 
 from typing import Callable, Optional, Dict, Any
 from .mud_parser import ChannelType, ParsedMessage
+from .text_corrector import TextCorrector
 from app.audio_manager import AudioManager, AudioLevel
 
 
@@ -35,6 +36,7 @@ class GmcpHandler:
             audio: AudioManager instance for TTS announcements (optional)
         """
         self.audio = audio
+        self.corrector = TextCorrector(keep_accents=True)
 
         # Callbacks
         self.on_channel_message: Optional[Callable[[ParsedMessage], None]] = None
@@ -72,9 +74,11 @@ class GmcpHandler:
             self._handle_comm_channel(data)
         elif module == "Room.Actual":
             if isinstance(data, str) and self.on_room_actual:
+                data = self.corrector.correct(data)
                 self.on_room_actual(data)
         elif module == "Room.Movimiento":
             if isinstance(data, str) and self.on_room_movimiento:
+                data = self.corrector.correct(data)
                 self.on_room_movimiento(data)
         # Silently ignore unknown modules
 
@@ -146,8 +150,17 @@ class GmcpHandler:
             "experience": 50000
         }
         """
-        if self.on_status_changed:
-            self.on_status_changed(data)
+        try:
+            # Correct character name and class if present
+            if 'name' in data and isinstance(data['name'], str):
+                data['name'] = self.corrector.correct(data['name'])
+            if 'class' in data and isinstance(data['class'], str):
+                data['class'] = self.corrector.correct(data['class'])
+
+            if self.on_status_changed:
+                self.on_status_changed(data)
+        except (ValueError, KeyError):
+            pass
 
     def _handle_room_info(self, data: Dict[str, Any]):
         """
@@ -162,7 +175,10 @@ class GmcpHandler:
         """
         try:
             room_name = data.get('name', 'Unknown')
+            room_name = self.corrector.correct(room_name)
             exits = data.get('exits', [])
+            # Correct each exit name
+            exits = [self.corrector.correct(exit_name) for exit_name in exits]
 
             if self.on_room_info:
                 self.on_room_info(room_name, exits)
@@ -192,7 +208,9 @@ class GmcpHandler:
         try:
             channel_name = data.get('channel', 'general').lower()
             talker = data.get('talker', 'Desconocido')
+            talker = self.corrector.correct(talker)
             text = data.get('text', '')
+            text = self.corrector.correct(text)
 
             # Map channel name to ChannelType
             channel_map = {

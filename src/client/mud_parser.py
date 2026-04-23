@@ -8,6 +8,7 @@ This is a fallback when GMCP is not available; GMCP data takes priority.
 import re
 from enum import Enum
 from dataclasses import dataclass
+from .text_corrector import TextCorrector
 
 
 class ChannelType(Enum):
@@ -53,8 +54,8 @@ class MUDParser:
     )
 
     def __init__(self):
-        """Initialize parser."""
-        pass
+        """Initialize parser with text corrector."""
+        self.corrector = TextCorrector(keep_accents=True)  # Keep accented chars (more readable)
 
     def parse_line(self, line: str) -> ParsedMessage:
         """
@@ -67,6 +68,10 @@ class MUDParser:
             ParsedMessage with identified channel and cleaned text
         """
         line = line.rstrip()  # Remove trailing whitespace
+
+        # Correct text (fix encoding issues, normalize whitespace, etc.)
+        line = self.corrector.correct(line)
+
         channel = self._detect_channel(line)
 
         # For text display, remove channel prefix if present
