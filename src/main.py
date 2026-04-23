@@ -20,6 +20,8 @@ from ui.trigger_dialog import show_trigger_manager
 from ui.help_dialog import show_help
 from models.triggers import TriggerManager
 from models.map_service import MapService
+from models.character_state import CharacterState
+from client.character_parser import CharacterParser
 
 
 class VipZhylaApp(wx.App):
@@ -80,8 +82,10 @@ class MainWindow(wx.Frame):
         self.buffer = MessageBuffer()
         self.parser = MUDParser()
         self.gmcp = GmcpHandler(self.audio)
+        self.character_state = CharacterState()  # Character state tracking
         self.trigger_manager = TriggerManager(self.audio)
         self.trigger_manager.send_fn = self.send_command
+        self.trigger_manager.character_state = self.character_state  # Pass state to triggers
 
         # Map service
         self.map_service = MapService()
@@ -97,6 +101,7 @@ class MainWindow(wx.Frame):
 
         self.gmcp.set_channel_callback(self._on_channel_message)
         self.gmcp.set_vitals_callback(self._on_vitals)
+        self.gmcp.set_status_callback(self._on_status_changed)
         self.gmcp.set_room_callback(self._on_room_info)
         self.gmcp.set_room_actual_callback(self._on_room_actual)
         self.gmcp.set_room_movimiento_callback(self._on_room_movimiento)
@@ -425,8 +430,15 @@ class MainWindow(wx.Frame):
 
     def _on_vitals(self, hp: int, maxhp: int, mp: int, maxmp: int):
         """Callback for character vitals from GMCP."""
+        # Update character state
+        self.character_state.update_vitals(hp, maxhp, mp, maxmp)
         vitals_str = f"HP: {hp}/{maxhp} | MP: {mp}/{maxmp}"
         self.status_bar.SetStatusText(vitals_str, 0)
+
+    def _on_status_changed(self, data: dict):
+        """Callback for character status from GMCP Char.Status."""
+        # Update character state with class, race, level, name
+        CharacterParser.parse_gmcp_status(self.character_state, data)
 
     def _on_room_info(self, room_name: str, exits: list):
         """Callback for room info from GMCP."""

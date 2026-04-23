@@ -1,0 +1,163 @@
+{
+  "triggers": [
+    {
+      "id": "trg_hp_monitor",
+      "name": "HP Monitor - Sonidos",
+      "pattern": "",
+      "is_regex": false,
+      "enabled": true,
+      "description": "Reproducir sonidos cuando HP cambia de rango. NO anunciar por voz (solo almacenar).",
+      "triggers_on": "hp_pct_change",
+      "conditions": [
+        {"field": "hp_pct", "operator": "changed", "value": null}
+      ],
+      "actions": [
+        {
+          "action_type": "sound",
+          "value": "RL/Combate/Estado aliado {hp_threshold}.wav",
+          "only_if": "not in_combat",
+          "description": "Reproducir sonido según rango de HP"
+        },
+        {
+          "action_type": "storage",
+          "value": "hp_threshold_flags",
+          "operation": "update",
+          "description": "Guardar qué rango ya reproducimos"
+        }
+      ]
+    },
+    {
+      "id": "trg_low_health_alert",
+      "name": "Alerta: Vida Baja",
+      "pattern": "Your health is low|Tienes poca vida|health is (\\d+)%",
+      "is_regex": true,
+      "enabled": true,
+      "description": "Anunciar cuando tu vida baja de 30%, gagging el output original.",
+      "conditions": [
+        {"field": "hp_pct", "operator": "<", "value": 30},
+        {"field": "in_combat", "operator": "==", "value": true}
+      ],
+      "actions": [
+        {
+          "action_type": "tts",
+          "value": "ALERTA: Vida crítica. HP: {hp} de {maxhp}",
+          "priority": "high"
+        },
+        {
+          "action_type": "gag",
+          "value": null,
+          "description": "Gagging línea original del MUD"
+        }
+      ]
+    },
+    {
+      "id": "trg_poison_class_aware",
+      "name": "Detección Veneno (Sensible a Clase)",
+      "pattern": "You are poisoned|Estás envenenado|has been poisoned",
+      "is_regex": true,
+      "enabled": true,
+      "description": "Anunciar diferente según clase.",
+      "conditions": [
+        {"field": "clase", "operator": "in", "value": ["Druida", "Paladín"]}
+      ],
+      "actions": [
+        {
+          "action_type": "tts",
+          "value": "VENENO: Como {clase}, necesitas contraataque mágico inmediato",
+          "priority": "high"
+        },
+        {
+          "action_type": "storage",
+          "value": "debuffs",
+          "operation": "add",
+          "data": "Veneno",
+          "description": "Guardar en lista de debuffs"
+        }
+      ]
+    },
+    {
+      "id": "trg_buff_tracker",
+      "name": "Buff Tracker (Storage)",
+      "pattern": "You are blessed|You feel stronger|Estás bendecido|sientes más fuerte|Escudo|Shield",
+      "is_regex": true,
+      "enabled": true,
+      "no_announce": true,
+      "description": "Registrar buff sin anunciar (para consultar después en triggers posteriores).",
+      "actions": [
+        {
+          "action_type": "storage",
+          "value": "buffs",
+          "operation": "add",
+          "data": "{matched_buff_name}",
+          "description": "Añadir buff a lista"
+        }
+      ]
+    },
+    {
+      "id": "trg_critical_combat",
+      "name": "Combate Crítico",
+      "pattern": "",
+      "is_regex": false,
+      "enabled": true,
+      "description": "Al entrar en combate crítico, múltiples acciones.",
+      "triggers_on": "combat_state_change",
+      "conditions": [
+        {"field": "in_combat", "operator": "==", "value": true},
+        {"field": "hp_pct", "operator": "<", "value": 50}
+      ],
+      "actions": [
+        {
+          "action_type": "tts",
+          "value": "COMBATE CRÍTICO: {clase} en peligro",
+          "priority": "high"
+        },
+        {
+          "action_type": "sound",
+          "value": "RL/Combate/Estado critico.wav"
+        },
+        {
+          "action_type": "storage",
+          "value": "last_combat_alert",
+          "operation": "set",
+          "data": "{timestamp}",
+          "description": "Timestamp para cooldown"
+        }
+      ]
+    }
+  ],
+  "aliases": [
+    {
+      "id": "alias_help",
+      "abbr": "h",
+      "expansion": "help",
+      "enabled": true
+    },
+    {
+      "id": "alias_look",
+      "abbr": "m",
+      "expansion": "mirar",
+      "enabled": true
+    },
+    {
+      "id": "alias_inv",
+      "abbr": "i",
+      "expansion": "inventario",
+      "enabled": true
+    }
+  ],
+  "timers": [
+    {
+      "id": "timer_hp_check",
+      "name": "Health Check",
+      "interval": 5.0,
+      "enabled": false,
+      "description": "Periodic health status announcement",
+      "actions": [
+        {
+          "action_type": "tts",
+          "value": "Salud: {hp} de {maxhp}. Maná: {mp} de {maxmp}."
+        }
+      ]
+    }
+  ]
+}

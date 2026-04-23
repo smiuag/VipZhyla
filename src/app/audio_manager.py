@@ -8,6 +8,19 @@ Uses pyttsx3 for cross-platform TTS that works alongside NVDA.
 import pyttsx3
 import threading
 from enum import Enum
+from pathlib import Path
+
+try:
+    import pygame
+    PYGAME_AVAILABLE = True
+except ImportError:
+    PYGAME_AVAILABLE = False
+
+try:
+    import winsound
+    WINSOUND_AVAILABLE = True
+except ImportError:
+    WINSOUND_AVAILABLE = False
 
 
 class AudioLevel(Enum):
@@ -161,6 +174,91 @@ class AudioManager:
             pct = int(self.volume * 100)
             self.announce(f"Volume set to {pct} percent", AudioLevel.MINIMAL)
 
+    def play_sound(self, sound_path, pan=0.5, volume=1.0):
+        """Play a sound effect file.
+
+        Args:
+            sound_path (str): Path to sound file (WAV, MP3, etc.)
+            pan (float): Pan left/right (0.0=left, 1.0=right, 0.5=center)
+            volume (float): Volume level (0.0-1.0)
+
+        Returns:
+            bool: True if sound started playing, False if failed
+        """
+        if not self.enabled:
+            return False
+
+        sound_path = str(sound_path)
+        file_path = Path(sound_path)
+
+        # Check if file exists (with common locations)
+        if not file_path.is_absolute():
+            # Try relative to src/data/sounds/
+            alt_paths = [
+                Path("src/data/sounds") / sound_path,
+                Path("src/sounds") / sound_path,
+                Path("sounds") / sound_path,
+                Path(sound_path)
+            ]
+            for alt_path in alt_paths:
+                if alt_path.exists():
+                    file_path = alt_path
+                    break
+
+        if not file_path.exists():
+            print(f"Warning: Sound file not found: {sound_path}")
+            return False
+
+        # Try pygame first (cross-platform)
+        if PYGAME_AVAILABLE:
+            try:
+                return self._play_sound_pygame(str(file_path), pan, volume)
+            except Exception as e:
+                print(f"Warning: pygame sound playback failed: {e}")
+
+        # Fallback to winsound (Windows only)
+        if WINSOUND_AVAILABLE:
+            try:
+                return self._play_sound_winsound(str(file_path))
+            except Exception as e:
+                print(f"Warning: winsound playback failed: {e}")
+
+        print(f"Warning: No sound playback available (install pygame for cross-platform support)")
+        return False
+
+    def _play_sound_pygame(self, file_path, pan=0.5, volume=1.0):
+        """Play sound using pygame mixer."""
+        try:
+            if not pygame.mixer.get_init():
+                pygame.mixer.init()
+
+            sound = pygame.mixer.Sound(file_path)
+            sound.set_volume(max(0.0, min(1.0, volume)))
+
+            # Play in background thread to avoid blocking
+            def play_in_thread():
+                try:
+                    sound.play()
+                except Exception as e:
+                    print(f"Error playing sound: {e}")
+
+            thread = threading.Thread(target=play_in_thread, daemon=True)
+            thread.start()
+            return True
+        except Exception as e:
+            print(f"pygame playback failed: {e}")
+            return False
+
+    def _play_sound_winsound(self, file_path):
+        """Play sound using winsound (Windows only)."""
+        try:
+            # winsound.SND_FILENAME plays WAV files
+            winsound.PlaySound(file_path, winsound.SND_FILENAME | winsound.SND_ASYNC)
+            return True
+        except Exception as e:
+            print(f"winsound playback failed: {e}")
+            return False
+
     def shutdown(self):
         """Shutdown audio manager and clean up resources."""
         if self.engine:
@@ -169,6 +267,12 @@ class AudioManager:
             except Exception:
                 pass
             self.engine = None
+
+        if PYGAME_AVAILABLE:
+            try:
+                pygame.mixer.quit()
+            except Exception:
+                pass
 
     def __del__(self):
         """Cleanup on object destruction."""

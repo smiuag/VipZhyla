@@ -16,10 +16,13 @@ import uuid
 from dataclasses import dataclass, field, asdict
 from enum import Enum
 from pathlib import Path
-from typing import List, Optional, Callable
+from typing import List, Optional, Callable, TYPE_CHECKING
 
 from client.mud_parser import ParsedMessage
 from app.audio_manager import AudioManager, AudioLevel
+
+if TYPE_CHECKING:
+    from models.character_state import CharacterState
 
 
 class ActionType(Enum):
@@ -46,6 +49,7 @@ class Trigger:
     is_regex: bool = False
     actions: List[TriggerAction] = field(default_factory=list)
     enabled: bool = True
+    conditions: List[dict] = field(default_factory=list)  # List of condition dicts for future use
 
 
 @dataclass
@@ -83,9 +87,65 @@ class TriggerManager:
         self.timers: List[Timer] = []
         self.audio = audio
         self.send_fn: Optional[Callable[[str], None]] = None
+        self.character_state: Optional['CharacterState'] = None  # Will be set by main.py
         self._timer_threads: List[threading.Timer] = []
         self._running = False
         self.load()
+
+    def _check_conditions(self, trigger: Trigger) -> bool:
+        """Check if trigger conditions are met.
+
+        Args:
+            trigger: Trigger to check
+
+        Returns:
+            True if all conditions pass (or no conditions), False otherwise
+        """
+        if not trigger.conditions or not self.character_state:
+            return True  # No conditions means always pass
+
+        # Evaluate all conditions (AND logic)
+        for condition in trigger.conditions:
+            field = condition.get('field')
+            operator = condition.get('operator')
+            value = condition.get('value')
+
+            if not field or not operator:
+                continue
+
+            # Get field value from character state
+            if not hasattr(self.character_state, field):
+                return False
+
+            state_value = getattr(self.character_state, field)
+
+            # Evaluate condition based on operator
+            if operator == '==':
+                if state_value != value:
+                    return False
+            elif operator == '<':
+                if not (state_value < value):
+                    return False
+            elif operator == '>':
+                if not (state_value > value):
+                    return False
+            elif operator == '<=':
+                if not (state_value <= value):
+                    return False
+            elif operator == '>=':
+                if not (state_value >= value):
+                    return False
+            elif operator == 'in':
+                if state_value not in value:
+                    return False
+            elif operator == 'not_in':
+                if state_value in value:
+                    return False
+            elif operator == 'changed':
+                # For future use (detect when value changes)
+                pass
+
+        return True
 
     def evaluate(self, parsed: ParsedMessage) -> bool:
         """Evaluate triggers for a parsed message line.
@@ -102,16 +162,21 @@ class TriggerManager:
             if not trigger.enabled:
                 continue
 
-            # Match pattern
-            if trigger.is_regex:
-                try:
-                    if not re.search(trigger.pattern, parsed.raw, re.IGNORECASE):
+            # Match pattern (skip if pattern-based and no pattern matches)
+            if trigger.pattern:  # Only check pattern if pattern is provided
+                if trigger.is_regex:
+                    try:
+                        if not re.search(trigger.pattern, parsed.raw, re.IGNORECASE):
+                            continue
+                    except re.error:
                         continue
-                except re.error:
-                    continue
-            else:
-                if trigger.pattern.lower() not in parsed.raw.lower():
-                    continue
+                else:
+                    if trigger.pattern.lower() not in parsed.raw.lower():
+                        continue
+
+            # Check conditions
+            if not self._check_conditions(trigger):
+                continue
 
             # Trigger matched, execute actions
             for action in trigger.actions:
@@ -161,17 +226,52 @@ class TriggerManager:
         """Internal method to execute actions."""
         if action.action_type == ActionType.TTS:
             if self.audio and action.value:
-                self.audio.announce(action.value, AudioLevel.NORMAL)
+                # Interpolate variables in TTS value
+                tts_text = self._interpolate_text(action.value)
+                self.audio.announce(tts_text, AudioLevel.NORMAL)
 
         elif action.action_type == ActionType.SOUND:
-            # Sound playback reserved for future implementation
+            # Play sound effect
             if self.audio and action.value:
-                # Would call self.audio.play_sound(action.value)
-                pass
+                sound_path = self._interpolate_text(action.value)
+                self.audio.play_sound(sound_path)
 
         elif action.action_type == ActionType.GAG:
             # Gag is handled by evaluate() return value
             pass
+
+    def _interpolate_text(self, text: str) -> str:
+        """Interpolate variables in action text.
+
+        Supports: {hp}, {maxhp}, {mp}, {maxmp}, {hp_pct}, {clase}, {name}, etc.
+
+        Args:
+            text: Text with variable placeholders
+
+        Returns:
+            Interpolated text
+        """
+        if not self.character_state or '{' not in text:
+            return text
+
+        result = text
+        variables = {
+            'hp': str(self.character_state.hp),
+            'maxhp': str(self.character_state.maxhp),
+            'hp_pct': str(self.character_state.hp_pct),
+            'mp': str(self.character_state.mp),
+            'maxmp': str(self.character_state.maxmp),
+            'mp_pct': str(self.character_state.mp_pct),
+            'clase': self.character_state.clase,
+            'raza': self.character_state.raza,
+            'name': self.character_state.name,
+            'level': str(self.character_state.level),
+        }
+
+        for var_name, var_value in variables.items():
+            result = result.replace('{' + var_name + '}', var_value)
+
+        return result
 
     def add_trigger(self, trigger: Trigger):
         """Add a trigger."""
@@ -260,6 +360,9 @@ class TriggerManager:
                 }
                 for a in trigger["actions"]
             ]
+            # Keep conditions as-is (they're already dicts)
+            if "conditions" not in trigger:
+                trigger["conditions"] = []
 
         for timer in data["timers"]:
             timer["actions"] = [
@@ -300,7 +403,8 @@ class TriggerManager:
                     pattern=t["pattern"],
                     is_regex=t.get("is_regex", False),
                     actions=actions,
-                    enabled=t.get("enabled", True)
+                    enabled=t.get("enabled", True),
+                    conditions=t.get("conditions", [])
                 )
                 self.triggers.append(trigger)
 

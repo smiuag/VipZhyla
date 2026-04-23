@@ -32,6 +32,15 @@ try:
                                  show_telepathy_history, show_event_list)
     print("   [OK] list_dialogs imported")
 
+    from models.character_state import CharacterState
+    print("   [OK] CharacterState imported")
+
+    from client.character_parser import CharacterParser
+    print("   [OK] CharacterParser imported")
+
+    from models.triggers import TriggerManager
+    print("   [OK] TriggerManager imported")
+
 except Exception as e:
     print("   [FAIL] Import failed: " + str(e))
     sys.exit(1)
@@ -56,6 +65,12 @@ try:
 
     gmcp = GmcpHandler(audio)
     print("   [OK] GmcpHandler created")
+
+    state = CharacterState()
+    print("   [OK] CharacterState created")
+
+    trigger_manager = TriggerManager(audio)
+    print("   [OK] TriggerManager created")
 
 except Exception as e:
     print("   [FAIL] Instance creation failed: " + str(e))
@@ -118,6 +133,32 @@ except Exception as e:
     print("   [FAIL] Audio test failed: " + str(e))
     sys.exit(1)
 
+# Test 7: CharacterState and CharacterParser
+print("\n7. Testing CharacterState...")
+try:
+    state = CharacterState()
+    state.update_vitals(320, 450, 120, 200)
+    assert state.hp == 320
+    assert state.hp_pct == 71
+    print("   [OK] CharacterState vitals updated (hp_pct: " + str(state.hp_pct) + "%)")
+
+    # Test HP threshold detection
+    threshold = state.get_hp_threshold()
+    assert threshold == 90, f"Expected threshold 90, got {threshold}"
+    print("   [OK] HP threshold detected: " + str(threshold))
+
+    # Test GMCP parser
+    gmcp_data = {"name": "Aeroth", "level": 42, "class": "Soldado", "race": "Elfo"}
+    CharacterParser.parse_gmcp_status(state, gmcp_data)
+    assert state.name == "Aeroth"
+    assert state.clase == "Soldado"
+    assert state.raza == "Elfo"
+    print("   [OK] CharacterParser: GMCP status parsed")
+
+except Exception as e:
+    print("   [FAIL] CharacterState test failed: " + str(e))
+    sys.exit(1)
+
 print("\n" + "=" * 50)
 print("[SUCCESS] ALL TESTS PASSED")
 print("=" * 50)
@@ -129,3 +170,6 @@ print("  - Connection, buffer, parser, GMCP handlers work")
 print("  - Keyboard handlers configured (Shift+F1-F4, Alt+arrows)")
 print("  - Message buffer stores and retrieves messages")
 print("  - Audio/TTS system initialized")
+print("  - CharacterState model with vitals and HP thresholds")
+print("  - CharacterParser GMCP integration")
+print("  - TriggerManager loads and initializes")
