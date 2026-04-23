@@ -11,7 +11,8 @@
       "Bash(curl -s https://www.w3.org/WAI/WCAG22/ -o docs/WCAG2.2/index.html)",
       "Bash(curl -s https://www.w3.org/TR/WCAG22/ -o wcag22-full.html)",
       "WebFetch(domain:github.com)",
-      "WebFetch(domain:raw.githubusercontent.com)"
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebSearch"
     ]
   }
 }
