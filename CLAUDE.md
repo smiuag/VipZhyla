@@ -13,6 +13,10 @@ The repository provides:
 - Pre-defined navigation paths (Paths) between game locations
 - Accessibility features for blind/visually impaired players
 
+### **Important: Read [accesibilidad.md](accesibilidad.md) First!**
+
+If you're developing a desktop application for blind/visually impaired users, read **[accesibilidad.md](accesibilidad.md)** for comprehensive accessibility guidelines integrating WCAG 2.2 principles and proven patterns from ChannelHistory. This is foundational knowledge for the entire project.
+
 ## Repository Structure
 
 ```
@@ -109,6 +113,13 @@ This project prioritizes screen reader support and audio feedback for blind/visu
 - Chat history lists for reviewing communications
 - Audio-based combat awareness (enemy entry/exit, skill confirmations)
 - Configurable accessibility modes
+
+**For development guidelines and best practices:** See **[accesibilidad.md](accesibilidad.md)**
+- WCAG 2.2 principles adapted for desktop apps
+- ChannelHistory accessibility patterns
+- Keyboard navigation standards
+- Screen reader integration examples
+- Practical implementation checklist
 
 ## Contribution Notes
 
