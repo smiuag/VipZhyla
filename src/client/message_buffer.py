@@ -1,8 +1,8 @@
 """
 Message buffer for storing MUD messages by channel.
 
-Implements ChannelHistory pattern:
-- Store up to 5000 messages per channel
+Implements ChannelHistory + VipMud pattern:
+- Store up to 99 messages per channel (VipMud standard, prevents memory bloat)
 - FIFO eviction (oldest messages removed when limit exceeded)
 - Navigation support (forward, backward, jump to specific position)
 - Thread-safe operations
@@ -33,7 +33,7 @@ class MessageBuffer:
     Thread-safe for concurrent read/write from network thread + UI thread.
     """
 
-    MAX_MESSAGES_PER_CHANNEL = 5000
+    MAX_MESSAGES_PER_CHANNEL = 99  # VipMud standard limit (prevents memory bloat in long sessions)
 
     def __init__(self):
         """Initialize message buffer."""

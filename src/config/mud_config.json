@@ -1,0 +1,40 @@
+{
+  "server": {
+    "host": "localhost",
+    "port": 4000,
+    "timeout": 30,
+    "reconnect_attempts": 3,
+    "reconnect_delay": 5
+  },
+  "character": {
+    "name": "YourCharacter",
+    "password": "your_password",
+    "class": "Soldado",
+    "race": "Humano"
+  },
+  "connection": {
+    "encoding": "utf-8",
+    "line_ending": "\r\n",
+    "gmcp_enabled": true,
+    "telnet_negotiation": true
+  },
+  "automation": {
+    "auto_load_triggers": true,
+    "triggers_file": "src/data/triggers.json",
+    "auto_start_timers": true,
+    "log_all_output": false,
+    "log_file": "mud_output.log"
+  },
+  "accessibility": {
+    "tts_enabled": true,
+    "verbosity": "NORMAL",
+    "announce_connection": true,
+    "announce_disconnection": true,
+    "announce_errors": true
+  },
+  "output_filter": {
+    "filter_long_descriptions": true,
+    "max_description_length": 250
+  },
+  "_comment": "Configure host/port/name/password for your MUD server. Use 'localhost:4000' for testing with a local server."
+}

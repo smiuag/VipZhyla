@@ -22,6 +22,7 @@ from ui.preferences_dialog import PreferencesDialog
 from models.triggers import TriggerManager
 from models.map_service import MapService
 from models.character_state import CharacterState
+from models.channel_config import ChannelConfig
 from client.character_parser import CharacterParser
 
 
@@ -85,9 +86,14 @@ class MainWindow(wx.Frame):
         self.parser = MUDParser()
         self.gmcp = GmcpHandler(self.audio)
         self.character_state = CharacterState()  # Character state tracking
+        self.channel_config = ChannelConfig()  # Channel muting configuration
         self.trigger_manager = TriggerManager(self.audio)
         self.trigger_manager.send_fn = self.send_command
         self.trigger_manager.character_state = self.character_state  # Pass state to triggers
+
+        # Output filtering preferences
+        self.filter_long_descriptions = True
+        self.max_description_length = 250
 
         # Map service
         self.map_service = MapService()
@@ -284,17 +290,28 @@ class MainWindow(wx.Frame):
         # Echo to output
         self.append_output(f"> {command}\n")
 
-    def append_output(self, text):
+    def append_output(self, text, channel=None):
         """Append text to output display (thread-safe via wx.CallAfter).
 
         Args:
             text (str): Text to append
+            channel (ChannelType, optional): Channel the message came from (for muting)
         """
         wx.CallAfter(self.output_text.AppendText, text)
         # Announce MUD output to screen reader users (text-to-speech)
         # Only announce if connected (avoid spamming initial welcome message)
         if self.connection.state == ConnectionState.CONNECTED:
-            wx.CallAfter(self.audio.announce, text.strip(), AudioLevel.NORMAL)
+            # Check if channel is muted
+            if channel and self.channel_config.is_muted(channel):
+                return  # Don't announce muted channels
+
+            # Apply output filtering (FiltroSalidas): don't announce very long descriptions
+            should_announce = True
+            if self.filter_long_descriptions and len(text.strip()) > self.max_description_length:
+                should_announce = False
+
+            if should_announce:
+                wx.CallAfter(self.audio.announce, text.strip(), AudioLevel.NORMAL)
 
     def on_connect(self, event):
         """Handle connect request (Ctrl+K)."""
@@ -359,10 +376,19 @@ class MainWindow(wx.Frame):
         """Show preferences dialog."""
         dlg = PreferencesDialog(self, self.connection.encoding)
         if dlg.ShowModal() == wx.ID_OK:
+            # Update encoding
             new_encoding = dlg.get_selected_encoding()
             if new_encoding.lower() != self.connection.encoding.lower():
                 self.connection.set_encoding(new_encoding)
                 self.audio.announce(f"Codificación: {new_encoding}", AudioLevel.MINIMAL)
+
+            # Update output filtering preferences
+            self.filter_long_descriptions = dlg.get_filter_long_descriptions()
+            self.max_description_length = dlg.get_max_description_length()
+            self.audio.announce(
+                f"Filtrado: {'activado' if self.filter_long_descriptions else 'desactivado'}",
+                AudioLevel.MINIMAL
+            )
         dlg.Destroy()
 
     def on_toggle_verbose(self, event):
@@ -456,7 +482,7 @@ class MainWindow(wx.Frame):
                 gagged = self.trigger_manager.evaluate(parsed)
                 self.buffer.add(parsed)
                 if not gagged:
-                    self.append_output(f"{parsed.text}\n")
+                    self.append_output(f"{parsed.text}\n", parsed.channel)
 
     def _on_gmcp(self, module: str, data: dict):
         """Callback for GMCP data from MUD."""
@@ -471,7 +497,7 @@ class MainWindow(wx.Frame):
     def _on_channel_message(self, msg):
         """Callback for channel message from GMCP."""
         self.buffer.add(msg)
-        self.append_output(f"[{msg.channel.value}] {msg.text}\n")
+        self.append_output(f"[{msg.channel.value}] {msg.text}\n", msg.channel)
 
     def _on_vitals(self, hp: int, maxhp: int, mp: int, maxmp: int):
         """Callback for character vitals from GMCP."""

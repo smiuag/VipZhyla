@@ -50,7 +50,8 @@ class TriggerManagerDialog(wx.Dialog):
         self.delete_btn = None
 
         self._build_ui()
-        self.SetSize(600, 400)
+        self.SetSize(800, 600)
+        self.SetMinSize((700, 500))
         self.CentreOnParent()
 
     def _build_ui(self):
@@ -67,7 +68,7 @@ class TriggerManagerDialog(wx.Dialog):
         self.notebook.AddPage(self.alias_panel, "Aliases")
         self.notebook.AddPage(self.timer_panel, "Timers")
 
-        sizer.Add(self.notebook, 1, wx.EXPAND | wx.ALL, 5)
+        sizer.Add(self.notebook, 1, wx.EXPAND | wx.ALL, 10)
 
         # Action buttons at bottom
         button_sizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -76,13 +77,20 @@ class TriggerManagerDialog(wx.Dialog):
         self.delete_btn = wx.Button(self, label="&Borrar")
         close_btn = wx.Button(self, wx.ID_CLOSE, "&Cerrar")
 
-        button_sizer.Add(self.new_btn, 0, wx.RIGHT, 5)
-        button_sizer.Add(self.edit_btn, 0, wx.RIGHT, 5)
-        button_sizer.Add(self.delete_btn, 0, wx.RIGHT, 5)
+        # Set button sizes
+        btn_size = (100, 32)
+        self.new_btn.SetMinSize(btn_size)
+        self.edit_btn.SetMinSize(btn_size)
+        self.delete_btn.SetMinSize(btn_size)
+        close_btn.SetMinSize(btn_size)
+
+        button_sizer.Add(self.new_btn, 0, wx.RIGHT, 8)
+        button_sizer.Add(self.edit_btn, 0, wx.RIGHT, 8)
+        button_sizer.Add(self.delete_btn, 0, wx.RIGHT, 8)
         button_sizer.AddStretchSpacer()
         button_sizer.Add(close_btn, 0)
 
-        sizer.Add(button_sizer, 0, wx.EXPAND | wx.ALL, 5)
+        sizer.Add(button_sizer, 0, wx.EXPAND | wx.ALL, 10)
 
         self.SetSizer(sizer)
 
@@ -380,7 +388,8 @@ class TriggerEditDialog(wx.Dialog):
         self._conditions = list(self._trigger.conditions) if trigger else []
 
         self._build_ui()
-        self.SetSize(700, 600)
+        self.SetSize(850, 750)
+        self.SetMinSize((700, 600))
         self.CentreOnParent()
 
         if trigger:
@@ -390,22 +399,34 @@ class TriggerEditDialog(wx.Dialog):
         """Build dialog UI."""
         sizer = wx.BoxSizer(wx.VERTICAL)
 
+        # Font definitions
+        label_font = wx.Font(10, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
+        input_font = wx.Font(10, wx.FONTFAMILY_TELETYPE, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL)
+
         # Name
-        sizer.Add(wx.StaticText(self, label="Nombre:"), 0, wx.TOP | wx.LEFT | wx.RIGHT, 5)
+        name_label = wx.StaticText(self, label="Nombre:")
+        name_label.SetFont(label_font)
+        sizer.Add(name_label, 0, wx.TOP | wx.LEFT | wx.RIGHT, 10)
         self.name_ctrl = wx.TextCtrl(self)
+        self.name_ctrl.SetFont(input_font)
+        self.name_ctrl.SetMinSize((400, 28))
         self.name_ctrl.SetName("Nombre")
-        sizer.Add(self.name_ctrl, 0, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 5)
+        sizer.Add(self.name_ctrl, 0, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 10)
 
         # Pattern
-        sizer.Add(wx.StaticText(self, label="Patrón:"), 0, wx.LEFT | wx.RIGHT, 5)
+        pattern_label = wx.StaticText(self, label="Patrón:")
+        pattern_label.SetFont(label_font)
+        sizer.Add(pattern_label, 0, wx.LEFT | wx.RIGHT, 10)
         self.pattern_ctrl = wx.TextCtrl(self)
+        self.pattern_ctrl.SetFont(input_font)
+        self.pattern_ctrl.SetMinSize((400, 28))
         self.pattern_ctrl.SetName("Patrón")
-        sizer.Add(self.pattern_ctrl, 0, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 5)
+        sizer.Add(self.pattern_ctrl, 0, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 10)
 
         # Regex checkbox
         self.regex_check = wx.CheckBox(self, label="Es expresión regular")
         self.regex_check.SetName("Es expresión regular")
-        sizer.Add(self.regex_check, 0, wx.LEFT | wx.RIGHT | wx.BOTTOM, 5)
+        sizer.Add(self.regex_check, 0, wx.LEFT | wx.RIGHT | wx.BOTTOM, 10)
 
         # Conditions group
         cond_box = wx.StaticBox(self, label="Condiciones (AND)")
@@ -431,9 +452,18 @@ class TriggerEditDialog(wx.Dialog):
         self.cond_value.SetName("Valor de condición")
         add_cond_sizer.Add(self.cond_value, 0, wx.RIGHT, 3)
 
+        self.cond_negate = wx.CheckBox(self, label="&NO")
+        self.cond_negate.SetValue(False)
+        self.cond_negate.SetName("Negar condición")
+        add_cond_sizer.Add(self.cond_negate, 0, wx.RIGHT, 3)
+
         self.add_cond_btn = wx.Button(self, label="&Añadir")
         self.add_cond_btn.Bind(wx.EVT_BUTTON, self.on_add_condition)
-        add_cond_sizer.Add(self.add_cond_btn, 0)
+        add_cond_sizer.Add(self.add_cond_btn, 0, wx.RIGHT, 3)
+
+        self.add_or_group_btn = wx.Button(self, label="Añadir &OR")
+        self.add_or_group_btn.Bind(wx.EVT_BUTTON, self.on_add_or_group)
+        add_cond_sizer.Add(self.add_or_group_btn, 0)
 
         cond_sizer.Add(add_cond_sizer, 0, wx.EXPAND | wx.ALL, 5)
 
@@ -456,7 +486,7 @@ class TriggerEditDialog(wx.Dialog):
         add_sizer = wx.BoxSizer(wx.HORIZONTAL)
         add_sizer.Add(wx.StaticText(self, label="Tipo:"), 0, wx.RIGHT | wx.ALIGN_CENTER_VERTICAL, 5)
 
-        self.action_type = wx.Choice(self, choices=["TTS", "SOUND", "GAG", "STORAGE"])
+        self.action_type = wx.Choice(self, choices=["TTS", "SOUND", "GAG", "STORAGE", "EXECUTE_TRIGGER"])
         self.action_type.SetSelection(0)
         self.action_type.SetName("Tipo de acción")
         self.action_type.Bind(wx.EVT_CHOICE, self.on_action_type_changed)
@@ -513,8 +543,12 @@ class TriggerEditDialog(wx.Dialog):
         action_type = self.action_type.GetStringSelection()
         is_gag = action_type == "GAG"
         is_storage = action_type == "STORAGE"
+        is_execute = action_type == "EXECUTE_TRIGGER"
 
+        # Show action_value for TTS, SOUND, EXECUTE_TRIGGER
         self.action_value.Enable(not is_gag and not is_storage)
+
+        # Show storage_op only for STORAGE
         if hasattr(self, 'storage_op'):
             if is_storage:
                 self.storage_op.Show()
@@ -531,7 +565,8 @@ class TriggerEditDialog(wx.Dialog):
             "TTS": ActionType.TTS,
             "SOUND": ActionType.SOUND,
             "GAG": ActionType.GAG,
-            "STORAGE": ActionType.STORAGE
+            "STORAGE": ActionType.STORAGE,
+            "EXECUTE_TRIGGER": ActionType.EXECUTE_TRIGGER
         }
         action_type = action_type_map.get(action_type_str, ActionType.TTS)
 
@@ -560,10 +595,11 @@ class TriggerEditDialog(wx.Dialog):
             self._refresh_action_list()
 
     def on_add_condition(self, event):
-        """Add condition to list."""
+        """Add simple condition to list."""
         field = self.cond_field.GetStringSelection()
         operator = self.cond_op.GetStringSelection()
         value = self.cond_value.GetValue()
+        negate = self.cond_negate.GetValue()
 
         if not field or not operator or not value:
             return
@@ -584,9 +620,13 @@ class TriggerEditDialog(wx.Dialog):
             "operator": operator,
             "value": value
         }
+        if negate:
+            condition["negate"] = True
+
         self._conditions.append(condition)
         self._refresh_condition_list()
         self.cond_value.SetValue("")
+        self.cond_negate.SetValue(False)
 
     def on_remove_condition(self, event):
         """Remove selected condition from list."""
@@ -594,6 +634,15 @@ class TriggerEditDialog(wx.Dialog):
         if sel >= 0:
             del self._conditions[sel]
             self._refresh_condition_list()
+
+    def on_add_or_group(self, event):
+        """Add OR group to conditions."""
+        dlg = ORGroupDialog(self)
+        if dlg.ShowModal() == wx.ID_OK:
+            or_group = dlg.get_result()
+            self._conditions.append(or_group)
+            self._refresh_condition_list()
+        dlg.Destroy()
 
     def _refresh_action_list(self):
         """Refresh displayed action list."""
@@ -605,6 +654,8 @@ class TriggerEditDialog(wx.Dialog):
                 text = f"SOUND: {action.value}"
             elif action.action_type == ActionType.STORAGE:
                 text = f"STORAGE: {action.operation} {action.value}"
+            elif action.action_type == ActionType.EXECUTE_TRIGGER:
+                text = f"EXECUTE: {action.value}"
             else:
                 text = "GAG"
             self.action_list.Append(text)
@@ -613,7 +664,18 @@ class TriggerEditDialog(wx.Dialog):
         """Refresh displayed condition list."""
         self.cond_list.Clear()
         for cond in self._conditions:
-            text = f"{cond['field']} {cond['operator']} {cond['value']}"
+            if 'or' in cond:
+                # OR group
+                or_items = cond['or']
+                items_str = " OR ".join([f"{c['field']} {c['operator']} {c['value']}" for c in or_items])
+                text = f"({items_str})"
+                if cond.get('negate', False):
+                    text = f"NOT {text}"
+            else:
+                # Simple condition
+                text = f"{cond['field']} {cond['operator']} {cond['value']}"
+                if cond.get('negate', False):
+                    text = f"NOT ({text})"
             self.cond_list.Append(text)
 
     def _populate_from_trigger(self, trigger: Trigger):
@@ -657,7 +719,8 @@ class AliasEditDialog(wx.Dialog):
         self._alias = alias or Alias(id=trigger_manager.new_id(), abbreviation="", expansion="")
 
         self._build_ui()
-        self.SetSize(400, 200)
+        self.SetSize(500, 280)
+        self.SetMinSize((400, 200))
         self.CentreOnParent()
 
         if alias:
@@ -667,17 +730,29 @@ class AliasEditDialog(wx.Dialog):
         """Build dialog UI."""
         sizer = wx.BoxSizer(wx.VERTICAL)
 
+        # Font definitions
+        label_font = wx.Font(10, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
+        input_font = wx.Font(10, wx.FONTFAMILY_TELETYPE, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL)
+
         # Abbreviation
-        sizer.Add(wx.StaticText(self, label="Abreviatura:"), 0, wx.TOP | wx.LEFT | wx.RIGHT, 5)
+        abbr_label = wx.StaticText(self, label="Abreviatura:")
+        abbr_label.SetFont(label_font)
+        sizer.Add(abbr_label, 0, wx.TOP | wx.LEFT | wx.RIGHT, 10)
         self.abbr_ctrl = wx.TextCtrl(self)
+        self.abbr_ctrl.SetFont(input_font)
+        self.abbr_ctrl.SetMinSize((350, 28))
         self.abbr_ctrl.SetName("Abreviatura")
-        sizer.Add(self.abbr_ctrl, 0, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 5)
+        sizer.Add(self.abbr_ctrl, 0, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 10)
 
         # Expansion
-        sizer.Add(wx.StaticText(self, label="Expansión:"), 0, wx.LEFT | wx.RIGHT, 5)
+        exp_label = wx.StaticText(self, label="Expansión:")
+        exp_label.SetFont(label_font)
+        sizer.Add(exp_label, 0, wx.LEFT | wx.RIGHT, 10)
         self.exp_ctrl = wx.TextCtrl(self)
+        self.exp_ctrl.SetFont(input_font)
+        self.exp_ctrl.SetMinSize((350, 28))
         self.exp_ctrl.SetName("Expansión")
-        sizer.Add(self.exp_ctrl, 0, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 5)
+        sizer.Add(self.exp_ctrl, 0, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 10)
 
         # Enabled checkbox
         self.enabled_check = wx.CheckBox(self, label="Habilitado")
@@ -731,7 +806,8 @@ class TimerEditDialog(wx.Dialog):
         self._actions = list(self._timer.actions) if timer else []
 
         self._build_ui()
-        self.SetSize(500, 400)
+        self.SetSize(650, 550)
+        self.SetMinSize((550, 450))
         self.CentreOnParent()
 
         if timer:
@@ -741,17 +817,29 @@ class TimerEditDialog(wx.Dialog):
         """Build dialog UI."""
         sizer = wx.BoxSizer(wx.VERTICAL)
 
+        # Font definitions
+        label_font = wx.Font(10, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
+        input_font = wx.Font(10, wx.FONTFAMILY_TELETYPE, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL)
+
         # Name
-        sizer.Add(wx.StaticText(self, label="Nombre:"), 0, wx.TOP | wx.LEFT | wx.RIGHT, 5)
+        name_label = wx.StaticText(self, label="Nombre:")
+        name_label.SetFont(label_font)
+        sizer.Add(name_label, 0, wx.TOP | wx.LEFT | wx.RIGHT, 10)
         self.name_ctrl = wx.TextCtrl(self)
+        self.name_ctrl.SetFont(input_font)
+        self.name_ctrl.SetMinSize((400, 28))
         self.name_ctrl.SetName("Nombre")
-        sizer.Add(self.name_ctrl, 0, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 5)
+        sizer.Add(self.name_ctrl, 0, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 10)
 
         # Interval
-        sizer.Add(wx.StaticText(self, label="Intervalo (segundos):"), 0, wx.LEFT | wx.RIGHT, 5)
+        interval_label = wx.StaticText(self, label="Intervalo (segundos):")
+        interval_label.SetFont(label_font)
+        sizer.Add(interval_label, 0, wx.LEFT | wx.RIGHT, 10)
         self.interval_ctrl = wx.TextCtrl(self)
+        self.interval_ctrl.SetFont(input_font)
+        self.interval_ctrl.SetMinSize((400, 28))
         self.interval_ctrl.SetName("Intervalo")
-        sizer.Add(self.interval_ctrl, 0, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 5)
+        sizer.Add(self.interval_ctrl, 0, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 10)
 
         # Actions group
         action_box = wx.StaticBox(self, label="Acciones")
@@ -761,7 +849,7 @@ class TimerEditDialog(wx.Dialog):
         add_sizer = wx.BoxSizer(wx.HORIZONTAL)
         add_sizer.Add(wx.StaticText(self, label="Tipo:"), 0, wx.RIGHT | wx.ALIGN_CENTER_VERTICAL, 5)
 
-        self.action_type = wx.Choice(self, choices=["TTS", "GAG"])
+        self.action_type = wx.Choice(self, choices=["TTS", "GAG", "STORAGE", "EXECUTE_TRIGGER"])
         self.action_type.SetSelection(0)
         self.action_type.SetName("Tipo de acción")
         self.action_type.Bind(wx.EVT_CHOICE, self.on_action_type_changed)
@@ -810,8 +898,12 @@ class TimerEditDialog(wx.Dialog):
         action_type = self.action_type.GetStringSelection()
         is_gag = action_type == "GAG"
         is_storage = action_type == "STORAGE"
+        is_execute = action_type == "EXECUTE_TRIGGER"
 
+        # Show action_value for TTS, SOUND, EXECUTE_TRIGGER
         self.action_value.Enable(not is_gag and not is_storage)
+
+        # Show storage_op only for STORAGE
         if hasattr(self, 'storage_op'):
             if is_storage:
                 self.storage_op.Show()
@@ -822,10 +914,28 @@ class TimerEditDialog(wx.Dialog):
     def on_add_action(self, event):
         """Add action to list."""
         action_type_str = self.action_type.GetStringSelection()
-        value = self.action_value.GetValue() if action_type_str == "TTS" else ""
 
-        action_type = ActionType.TTS if action_type_str == "TTS" else ActionType.GAG
-        action = TriggerAction(action_type=action_type, value=value)
+        # Map string to ActionType
+        action_type_map = {
+            "TTS": ActionType.TTS,
+            "GAG": ActionType.GAG,
+            "STORAGE": ActionType.STORAGE,
+            "EXECUTE_TRIGGER": ActionType.EXECUTE_TRIGGER
+        }
+        action_type = action_type_map.get(action_type_str, ActionType.TTS)
+
+        # Get value (TTS, STORAGE, EXECUTE_TRIGGER)
+        value = self.action_value.GetValue() if action_type_str != "GAG" else ""
+
+        # For STORAGE, get operation (if available)
+        operation = self.storage_op.GetStringSelection() if action_type_str == "STORAGE" and hasattr(self, 'storage_op') else ""
+
+        action = TriggerAction(
+            action_type=action_type,
+            value=value,
+            operation=operation,
+            data=""
+        )
         self._actions.append(action)
 
         self._refresh_action_list()
@@ -844,6 +954,10 @@ class TimerEditDialog(wx.Dialog):
         for action in self._actions:
             if action.action_type == ActionType.TTS:
                 text = f"TTS: {action.value}"
+            elif action.action_type == ActionType.STORAGE:
+                text = f"STORAGE: {action.operation} {action.value}"
+            elif action.action_type == ActionType.EXECUTE_TRIGGER:
+                text = f"EXECUTE: {action.value}"
             else:
                 text = "GAG"
             self.action_list.Append(text)
@@ -869,6 +983,117 @@ class TimerEditDialog(wx.Dialog):
             actions=self._actions,
             enabled=self.enabled_check.GetValue()
         )
+
+
+class ORGroupDialog(wx.Dialog):
+    """Dialog for creating OR groups in conditions."""
+
+    def __init__(self, parent):
+        super().__init__(parent, title="Agrupar con OR", style=wx.DEFAULT_DIALOG_STYLE)
+        self._conditions = []
+        self._build_ui()
+
+    def _build_ui(self):
+        """Build the dialog UI."""
+        sizer = wx.BoxSizer(wx.VERTICAL)
+
+        # Instructions
+        info = wx.StaticText(self, label="Añade 2 o más condiciones que se evalúen con OR")
+        sizer.Add(info, 0, wx.ALL, 5)
+
+        # Condition add panel
+        add_cond_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        add_cond_sizer.Add(wx.StaticText(self, label="Campo:"), 0, wx.RIGHT | wx.ALIGN_CENTER_VERTICAL, 3)
+
+        self.cond_field = wx.Choice(self, choices=CONDITION_FIELDS)
+        self.cond_field.SetSelection(0)
+        self.cond_field.SetName("Campo de condición")
+        add_cond_sizer.Add(self.cond_field, 0, wx.RIGHT, 3)
+
+        add_cond_sizer.Add(wx.StaticText(self, label="Op:"), 0, wx.RIGHT | wx.ALIGN_CENTER_VERTICAL, 3)
+        self.cond_op = wx.Choice(self, choices=CONDITION_OPERATORS)
+        self.cond_op.SetSelection(0)
+        self.cond_op.SetName("Operador")
+        add_cond_sizer.Add(self.cond_op, 0, wx.RIGHT, 3)
+
+        add_cond_sizer.Add(wx.StaticText(self, label="Valor:"), 0, wx.RIGHT | wx.ALIGN_CENTER_VERTICAL, 3)
+        self.cond_value = wx.TextCtrl(self, size=(80, -1))
+        self.cond_value.SetName("Valor de condición")
+        add_cond_sizer.Add(self.cond_value, 0, wx.RIGHT, 3)
+
+        self.add_cond_btn = wx.Button(self, label="&Añadir")
+        self.add_cond_btn.Bind(wx.EVT_BUTTON, self.on_add_condition)
+        add_cond_sizer.Add(self.add_cond_btn, 0)
+
+        sizer.Add(add_cond_sizer, 0, wx.EXPAND | wx.ALL, 5)
+
+        # Conditions list
+        self.cond_list = wx.ListBox(self, style=wx.LB_SINGLE, size=(-1, 80))
+        self.cond_list.SetName("Lista de condiciones OR")
+        sizer.Add(self.cond_list, 1, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 5)
+
+        # Remove button
+        self.remove_cond_btn = wx.Button(self, label="&Quitar condición")
+        self.remove_cond_btn.Bind(wx.EVT_BUTTON, self.on_remove_condition)
+        sizer.Add(self.remove_cond_btn, 0, wx.LEFT | wx.RIGHT | wx.BOTTOM, 5)
+
+        # Buttons
+        btn_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        ok_btn = wx.Button(self, wx.ID_OK, "&Aceptar")
+        cancel_btn = wx.Button(self, wx.ID_CANCEL, "Cancelar")
+        btn_sizer.Add(ok_btn, 0, wx.RIGHT, 5)
+        btn_sizer.Add(cancel_btn, 0)
+        sizer.Add(btn_sizer, 0, wx.ALIGN_RIGHT | wx.ALL, 5)
+
+        self.SetSizer(sizer)
+        self.SetSize(500, 300)
+
+    def on_add_condition(self, event):
+        """Add condition to OR group."""
+        field = self.cond_field.GetStringSelection()
+        operator = self.cond_op.GetStringSelection()
+        value = self.cond_value.GetValue()
+
+        if not field or not operator or not value:
+            return
+
+        # Parse value
+        try:
+            if operator in ["<", ">", "<=", ">="] or field.endswith("_pct"):
+                value = int(value)
+            elif operator in ["in", "not_in"]:
+                value = [v.strip() for v in value.split(",")]
+        except ValueError:
+            pass
+
+        condition = {
+            "field": field,
+            "operator": operator,
+            "value": value
+        }
+        self._conditions.append(condition)
+        self._refresh_condition_list()
+        self.cond_value.SetValue("")
+
+    def on_remove_condition(self, event):
+        """Remove selected condition from OR group."""
+        sel = self.cond_list.GetSelection()
+        if sel >= 0:
+            del self._conditions[sel]
+            self._refresh_condition_list()
+
+    def _refresh_condition_list(self):
+        """Refresh displayed conditions."""
+        self.cond_list.Clear()
+        for cond in self._conditions:
+            text = f"{cond['field']} {cond['operator']} {cond['value']}"
+            self.cond_list.Append(text)
+
+    def get_result(self) -> dict:
+        """Get OR group result."""
+        return {
+            "or": self._conditions
+        }
 
 
 def show_trigger_manager(parent, trigger_manager: TriggerManager) -> None:

@@ -21,7 +21,10 @@
       "Bash(python *)",
       "Bash(echo \"App startup result: $?\")",
       "PowerShell($json = Get-Content 'src/data/triggers.json' -Encoding UTF8 -Raw; $parsed = $json | ConvertFrom-Json; Write-Host \"triggers.json is valid JSON with $\\($parsed.triggers.Count\\) triggers, $\\($parsed.aliases.Count\\) aliases, $\\($parsed.timers.Count\\) timers\")",
-      "Bash(git reset *)"
+      "Bash(git reset *)",
+      "Bash(grep -E \"SyntaxError|Error|OK|$\")",
+      "Bash(cd C:\\\\\\\\proyectos\\\\\\\\Claude\\\\\\\\VipZhyla)",
+      "Bash(pkill -f \"python src/main.py\")"
     ]
   }
 }

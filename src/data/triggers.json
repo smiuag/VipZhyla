@@ -1,52 +1,149 @@
 {
   "triggers": [
     {
-      "id": "trg_add_debuff",
-      "name": "Add Debuff",
-      "pattern": "poisoned",
-      "is_regex": false,
+      "id": "trg_poison",
+      "name": "Poison Detection",
+      "pattern": "poisoned|poison",
+      "is_regex": true,
       "actions": [
+        {
+          "action_type": "tts",
+          "value": "Poison detected! Need antidote!",
+          "operation": "",
+          "data": ""
+        },
         {
           "action_type": "storage",
           "value": "debuffs",
           "operation": "add",
-          "data": "Veneno"
+          "data": "Poison"
         }
       ],
       "enabled": true,
       "conditions": []
     },
     {
-      "id": "trg_remove_debuff",
-      "name": "Remove Debuff",
-      "pattern": "clean|cured|limpio",
+      "id": "trg_buff",
+      "name": "Buff Detection",
+      "pattern": "blessed|stronger|shield|protection",
       "is_regex": true,
       "actions": [
         {
-          "action_type": "storage",
-          "value": "debuffs",
-          "operation": "remove",
-          "data": "Veneno"
-        }
-      ],
-      "enabled": true,
-      "conditions": []
-    },
-    {
-      "id": "trg_hp_threshold",
-      "name": "Mark HP Threshold",
-      "pattern": "low health|poca vida",
-      "is_regex": true,
-      "actions": [
-        {
-          "action_type": "storage",
-          "value": "hp_threshold_flags",
-          "operation": "update",
+          "action_type": "tts",
+          "value": "Buff received!",
+          "operation": "",
           "data": ""
         },
         {
+          "action_type": "storage",
+          "value": "buffs",
+          "operation": "add",
+          "data": "Active Buff"
+        }
+      ],
+      "enabled": true,
+      "conditions": []
+    },
+    {
+      "id": "trg_combat",
+      "name": "Combat Trigger",
+      "pattern": "combat|battle|fight",
+      "is_regex": true,
+      "actions": [
+        {
           "action_type": "tts",
-          "value": "Vida baja",
+          "value": "Combat status changed",
+          "operation": "",
+          "data": ""
+        }
+      ],
+      "enabled": true,
+      "conditions": []
+    },
+    {
+      "id": "a7d47932-9f46-421d-ad09-04249f5a3bf2",
+      "name": "Test Combat Trigger",
+      "pattern": "enemy|attack|combat",
+      "is_regex": true,
+      "actions": [
+        {
+          "action_type": "tts",
+          "value": "Combat detected!",
+          "operation": "",
+          "data": ""
+        },
+        {
+          "action_type": "storage",
+          "value": "combat_alerts",
+          "operation": "add",
+          "data": ""
+        }
+      ],
+      "enabled": true,
+      "conditions": [
+        {
+          "field": "in_combat",
+          "operator": "==",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "f0dad07a-968e-4db8-8839-2f8708a6fceb",
+      "name": "Status Alert",
+      "pattern": "hp|health|status",
+      "is_regex": true,
+      "actions": [
+        {
+          "action_type": "tts",
+          "value": "Critical status!",
+          "operation": "",
+          "data": ""
+        }
+      ],
+      "enabled": true,
+      "conditions": [
+        {
+          "or": [
+            {
+              "field": "hp_pct",
+              "operator": "<",
+              "value": 30
+            },
+            {
+              "field": "mp_pct",
+              "operator": "<",
+              "value": 20
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "1c61db64-6e04-41f7-b794-cb8c7b275cc1",
+      "name": "Chain A",
+      "pattern": "poison|toxic",
+      "is_regex": true,
+      "actions": [
+        {
+          "action_type": "execute_trigger",
+          "value": "a7d47932-9f46-421d-ad09-04249f5a3bf2",
+          "operation": "",
+          "data": ""
+        }
+      ],
+      "enabled": true,
+      "conditions": []
+    },
+    {
+      "id": "trg_low_health",
+      "name": "EDITED: Low Health Alert",
+      "pattern": "low|critical|damage",
+      "is_regex": true,
+      "actions": [
+        {
+          "action_type": "tts",
+          "value": "Health warning: HP below 50 percent",
           "operation": "",
           "data": ""
         }
@@ -56,36 +153,599 @@
         {
           "field": "hp_pct",
           "operator": "<",
-          "value": 30
+          "value": 50
         }
       ]
     },
     {
-      "id": "trg_set_state",
-      "name": "Set Last State",
-      "pattern": "critical",
-      "is_regex": false,
+      "id": "59eeed23-e112-415a-a366-f2c2ac60f0d9",
+      "name": "HP Warning",
+      "pattern": "health|hp|damage",
+      "is_regex": true,
       "actions": [
         {
+          "action_type": "tts",
+          "value": "Health critical! HP below 50 percent!",
+          "operation": "",
+          "data": ""
+        },
+        {
           "action_type": "storage",
-          "value": "last_state",
+          "value": "alerts",
+          "operation": "add",
+          "data": "hp_low"
+        }
+      ],
+      "enabled": true,
+      "conditions": [
+        {
+          "field": "hp_pct",
+          "operator": "<",
+          "value": 50
+        }
+      ]
+    },
+    {
+      "id": "25c77f2f-024b-4a03-b0b5-d522f8c50def",
+      "name": "Combat Detector",
+      "pattern": "enemy|attack|battle|combat",
+      "is_regex": true,
+      "actions": [
+        {
+          "action_type": "tts",
+          "value": "Combat status: engaged",
+          "operation": "",
+          "data": ""
+        },
+        {
+          "action_type": "storage",
+          "value": "combat",
           "operation": "set",
-          "data": "Critical condition"
+          "data": "true"
         }
       ],
       "enabled": true,
       "conditions": []
     },
     {
-      "id": "trg_clear_buffs",
-      "name": "Clear Buffs",
-      "pattern": "dispel",
-      "is_regex": false,
+      "id": "aefa9074-5010-4c3c-9f69-82d27f146f7d",
+      "name": "Buff Alert",
+      "pattern": "blessed|protected|shield|buff",
+      "is_regex": true,
       "actions": [
+        {
+          "action_type": "tts",
+          "value": "Buff received!",
+          "operation": "",
+          "data": ""
+        },
         {
           "action_type": "storage",
           "value": "buffs",
-          "operation": "clear",
+          "operation": "add",
+          "data": "Enhancement"
+        }
+      ],
+      "enabled": true,
+      "conditions": []
+    },
+    {
+      "id": "0a094f9f-cfba-465f-a4b4-ec8be8ffb60d",
+      "name": "Recovery Status",
+      "pattern": "heal|cure|recover",
+      "is_regex": true,
+      "actions": [
+        {
+          "action_type": "tts",
+          "value": "Recovering resources",
+          "operation": "",
+          "data": ""
+        }
+      ],
+      "enabled": true,
+      "conditions": [
+        {
+          "or": [
+            {
+              "field": "hp_pct",
+              "operator": "<",
+              "value": 60
+            },
+            {
+              "field": "mp_pct",
+              "operator": "<",
+              "value": 40
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "2c53f3e6-7edd-4ee8-9591-6b50acda8747",
+      "name": "Chain Start",
+      "pattern": "poison|toxin",
+      "is_regex": true,
+      "actions": [
+        {
+          "action_type": "execute_trigger",
+          "value": "aefa9074-5010-4c3c-9f69-82d27f146f7d",
+          "operation": "",
+          "data": ""
+        }
+      ],
+      "enabled": true,
+      "conditions": []
+    },
+    {
+      "id": "efc037ae-5b08-4ab7-9e82-f6a5ed63d04e",
+      "name": "HP Warning",
+      "pattern": "health|hp|damage",
+      "is_regex": true,
+      "actions": [
+        {
+          "action_type": "tts",
+          "value": "Health critical! HP below 50 percent!",
+          "operation": "",
+          "data": ""
+        },
+        {
+          "action_type": "storage",
+          "value": "alerts",
+          "operation": "add",
+          "data": "hp_low"
+        }
+      ],
+      "enabled": true,
+      "conditions": [
+        {
+          "field": "hp_pct",
+          "operator": "<",
+          "value": 50
+        }
+      ]
+    },
+    {
+      "id": "ab577e64-2786-4fe4-8be5-bae96115d6ec",
+      "name": "Combat Detector",
+      "pattern": "enemy|attack|battle|combat",
+      "is_regex": true,
+      "actions": [
+        {
+          "action_type": "tts",
+          "value": "Combat status: engaged",
+          "operation": "",
+          "data": ""
+        },
+        {
+          "action_type": "storage",
+          "value": "combat",
+          "operation": "set",
+          "data": "true"
+        }
+      ],
+      "enabled": true,
+      "conditions": []
+    },
+    {
+      "id": "56698f6a-b33a-4cd5-91fc-b758a1df42a1",
+      "name": "Buff Alert",
+      "pattern": "blessed|protected|shield|buff",
+      "is_regex": true,
+      "actions": [
+        {
+          "action_type": "tts",
+          "value": "Buff received!",
+          "operation": "",
+          "data": ""
+        },
+        {
+          "action_type": "storage",
+          "value": "buffs",
+          "operation": "add",
+          "data": "Enhancement"
+        }
+      ],
+      "enabled": true,
+      "conditions": []
+    },
+    {
+      "id": "ae5e3bf2-a9c6-48be-884e-a84ee0778f1a",
+      "name": "Recovery Status",
+      "pattern": "heal|cure|recover",
+      "is_regex": true,
+      "actions": [
+        {
+          "action_type": "tts",
+          "value": "Recovering resources",
+          "operation": "",
+          "data": ""
+        }
+      ],
+      "enabled": true,
+      "conditions": [
+        {
+          "or": [
+            {
+              "field": "hp_pct",
+              "operator": "<",
+              "value": 60
+            },
+            {
+              "field": "mp_pct",
+              "operator": "<",
+              "value": 40
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "f83e8bb1-9c34-4650-903f-36957b7562c3",
+      "name": "Chain Start",
+      "pattern": "poison|toxin",
+      "is_regex": true,
+      "actions": [
+        {
+          "action_type": "execute_trigger",
+          "value": "56698f6a-b33a-4cd5-91fc-b758a1df42a1",
+          "operation": "",
+          "data": ""
+        }
+      ],
+      "enabled": true,
+      "conditions": []
+    },
+    {
+      "id": "a266035c-88c2-46e3-9f2f-85b2daabda79",
+      "name": "HP Warning",
+      "pattern": "health|hp|damage",
+      "is_regex": true,
+      "actions": [
+        {
+          "action_type": "tts",
+          "value": "Health critical! HP below 50 percent!",
+          "operation": "",
+          "data": ""
+        },
+        {
+          "action_type": "storage",
+          "value": "alerts",
+          "operation": "add",
+          "data": "hp_low"
+        }
+      ],
+      "enabled": true,
+      "conditions": [
+        {
+          "field": "hp_pct",
+          "operator": "<",
+          "value": 50
+        }
+      ]
+    },
+    {
+      "id": "2feb834d-f846-48d4-8518-6e520b2fea0f",
+      "name": "Combat Detector",
+      "pattern": "enemy|attack|battle|combat",
+      "is_regex": true,
+      "actions": [
+        {
+          "action_type": "tts",
+          "value": "Combat status: engaged",
+          "operation": "",
+          "data": ""
+        },
+        {
+          "action_type": "storage",
+          "value": "combat",
+          "operation": "set",
+          "data": "true"
+        }
+      ],
+      "enabled": true,
+      "conditions": []
+    },
+    {
+      "id": "76a603d9-6f3b-44e7-817f-499523188b3f",
+      "name": "Buff Alert",
+      "pattern": "blessed|protected|shield|buff",
+      "is_regex": true,
+      "actions": [
+        {
+          "action_type": "tts",
+          "value": "Buff received!",
+          "operation": "",
+          "data": ""
+        },
+        {
+          "action_type": "storage",
+          "value": "buffs",
+          "operation": "add",
+          "data": "Enhancement"
+        }
+      ],
+      "enabled": true,
+      "conditions": []
+    },
+    {
+      "id": "2bd500af-de6d-4649-aeac-b78d67069eaa",
+      "name": "Recovery Status",
+      "pattern": "heal|cure|recover",
+      "is_regex": true,
+      "actions": [
+        {
+          "action_type": "tts",
+          "value": "Recovering resources",
+          "operation": "",
+          "data": ""
+        }
+      ],
+      "enabled": true,
+      "conditions": [
+        {
+          "or": [
+            {
+              "field": "hp_pct",
+              "operator": "<",
+              "value": 60
+            },
+            {
+              "field": "mp_pct",
+              "operator": "<",
+              "value": 40
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "2f723d75-b53e-4d18-b873-233d5daff26a",
+      "name": "Chain Start",
+      "pattern": "poison|toxin",
+      "is_regex": true,
+      "actions": [
+        {
+          "action_type": "execute_trigger",
+          "value": "76a603d9-6f3b-44e7-817f-499523188b3f",
+          "operation": "",
+          "data": ""
+        }
+      ],
+      "enabled": true,
+      "conditions": []
+    },
+    {
+      "id": "32fb7e4a-695d-4893-961e-c9abc689cea0",
+      "name": "HP Warning",
+      "pattern": "health|hp|damage",
+      "is_regex": true,
+      "actions": [
+        {
+          "action_type": "tts",
+          "value": "Health critical! HP below 50 percent!",
+          "operation": "",
+          "data": ""
+        },
+        {
+          "action_type": "storage",
+          "value": "alerts",
+          "operation": "add",
+          "data": "hp_low"
+        }
+      ],
+      "enabled": true,
+      "conditions": [
+        {
+          "field": "hp_pct",
+          "operator": "<",
+          "value": 50
+        }
+      ]
+    },
+    {
+      "id": "50770a5e-8aea-40a5-96c4-e102239eab69",
+      "name": "Combat Detector",
+      "pattern": "enemy|attack|battle|combat",
+      "is_regex": true,
+      "actions": [
+        {
+          "action_type": "tts",
+          "value": "Combat status: engaged",
+          "operation": "",
+          "data": ""
+        },
+        {
+          "action_type": "storage",
+          "value": "combat",
+          "operation": "set",
+          "data": "true"
+        }
+      ],
+      "enabled": true,
+      "conditions": []
+    },
+    {
+      "id": "4d925c52-86c6-4fb5-9cc6-eeb126b759d3",
+      "name": "Buff Alert",
+      "pattern": "blessed|protected|shield|buff",
+      "is_regex": true,
+      "actions": [
+        {
+          "action_type": "tts",
+          "value": "Buff received!",
+          "operation": "",
+          "data": ""
+        },
+        {
+          "action_type": "storage",
+          "value": "buffs",
+          "operation": "add",
+          "data": "Enhancement"
+        }
+      ],
+      "enabled": true,
+      "conditions": []
+    },
+    {
+      "id": "7fdafaa0-9b56-4ff5-b12b-1f6a310d66ba",
+      "name": "Recovery Status",
+      "pattern": "heal|cure|recover",
+      "is_regex": true,
+      "actions": [
+        {
+          "action_type": "tts",
+          "value": "Recovering resources",
+          "operation": "",
+          "data": ""
+        }
+      ],
+      "enabled": true,
+      "conditions": [
+        {
+          "or": [
+            {
+              "field": "hp_pct",
+              "operator": "<",
+              "value": 60
+            },
+            {
+              "field": "mp_pct",
+              "operator": "<",
+              "value": 40
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "9dc8f5e2-52f6-4acf-8e9f-df095bf72269",
+      "name": "Chain Start",
+      "pattern": "poison|toxin",
+      "is_regex": true,
+      "actions": [
+        {
+          "action_type": "execute_trigger",
+          "value": "4d925c52-86c6-4fb5-9cc6-eeb126b759d3",
+          "operation": "",
+          "data": ""
+        }
+      ],
+      "enabled": true,
+      "conditions": []
+    },
+    {
+      "id": "e09c1daa-407c-4046-be77-61bc32f287fc",
+      "name": "HP Warning",
+      "pattern": "health|hp|damage",
+      "is_regex": true,
+      "actions": [
+        {
+          "action_type": "tts",
+          "value": "Health critical! HP below 50 percent!",
+          "operation": "",
+          "data": ""
+        },
+        {
+          "action_type": "storage",
+          "value": "alerts",
+          "operation": "add",
+          "data": "hp_low"
+        }
+      ],
+      "enabled": true,
+      "conditions": [
+        {
+          "field": "hp_pct",
+          "operator": "<",
+          "value": 50
+        }
+      ]
+    },
+    {
+      "id": "79307aae-fe27-46b4-aa45-e80b07923ad2",
+      "name": "Combat Detector",
+      "pattern": "enemy|attack|battle|combat",
+      "is_regex": true,
+      "actions": [
+        {
+          "action_type": "tts",
+          "value": "Combat status: engaged",
+          "operation": "",
+          "data": ""
+        },
+        {
+          "action_type": "storage",
+          "value": "combat",
+          "operation": "set",
+          "data": "true"
+        }
+      ],
+      "enabled": true,
+      "conditions": []
+    },
+    {
+      "id": "8e869199-19cc-48d6-8db0-7a37a38d8c2e",
+      "name": "Buff Alert",
+      "pattern": "blessed|protected|shield|buff",
+      "is_regex": true,
+      "actions": [
+        {
+          "action_type": "tts",
+          "value": "Buff received!",
+          "operation": "",
+          "data": ""
+        },
+        {
+          "action_type": "storage",
+          "value": "buffs",
+          "operation": "add",
+          "data": "Enhancement"
+        }
+      ],
+      "enabled": true,
+      "conditions": []
+    },
+    {
+      "id": "992e20fc-6c10-4a1d-844c-1fa92a61f650",
+      "name": "Recovery Status",
+      "pattern": "heal|cure|recover",
+      "is_regex": true,
+      "actions": [
+        {
+          "action_type": "tts",
+          "value": "Recovering resources",
+          "operation": "",
+          "data": ""
+        }
+      ],
+      "enabled": true,
+      "conditions": [
+        {
+          "or": [
+            {
+              "field": "hp_pct",
+              "operator": "<",
+              "value": 60
+            },
+            {
+              "field": "mp_pct",
+              "operator": "<",
+              "value": 40
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "09949b88-863a-41ed-8ae8-7b39e35517b4",
+      "name": "Chain Start",
+      "pattern": "poison|toxin",
+      "is_regex": true,
+      "actions": [
+        {
+          "action_type": "execute_trigger",
+          "value": "8e869199-19cc-48d6-8db0-7a37a38d8c2e",
+          "operation": "",
           "data": ""
         }
       ],
@@ -93,6 +753,60 @@
       "conditions": []
     }
   ],
-  "aliases": [],
-  "timers": []
+  "aliases": [
+    {
+      "id": "alias_help",
+      "abbreviation": "h",
+      "expansion": "help",
+      "enabled": true
+    },
+    {
+      "id": "alias_look",
+      "abbreviation": "m",
+      "expansion": "mirar",
+      "enabled": true
+    },
+    {
+      "id": "alias_inv",
+      "abbreviation": "i",
+      "expansion": "inventario",
+      "enabled": true
+    },
+    {
+      "id": "66f6c595-338f-4957-9285-c0631899f93b",
+      "abbreviation": "c",
+      "expansion": "cast heal",
+      "enabled": true
+    }
+  ],
+  "timers": [
+    {
+      "id": "timer_hp_check",
+      "name": "Health Check",
+      "interval": 5.0,
+      "actions": [
+        {
+          "action_type": "tts",
+          "value": "Salud: {hp} de {maxhp}. Maná: {mp} de {maxmp}.",
+          "operation": "",
+          "data": ""
+        }
+      ],
+      "enabled": false
+    },
+    {
+      "id": "cf980aea-bd16-4112-82c3-a112260dcfbb",
+      "name": "Health Check",
+      "interval": 5.0,
+      "actions": [
+        {
+          "action_type": "tts",
+          "value": "HP: {hp}/{maxhp}, MP: {mp}/{maxmp}",
+          "operation": "",
+          "data": ""
+        }
+      ],
+      "enabled": true
+    }
+  ]
 }

@@ -28,7 +28,7 @@ class PreferencesDialog(wx.Dialog):
     def _build_ui(self):
         """Build preferences dialog UI."""
         sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.SetMinSize((480, 330))
+        sizer.SetMinSize((500, 450))
 
         # Fonts
         header_font = wx.Font(11, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
@@ -58,13 +58,44 @@ class PreferencesDialog(wx.Dialog):
 
         sizer.Add(encoding_box_sizer, 0, wx.EXPAND | wx.ALL, 12)
 
+        # === Output Filtering Section ===
+        filter_box = wx.StaticBox(self, label="Filtrado de Salida")
+        filter_box_sizer = wx.StaticBoxSizer(filter_box, wx.VERTICAL)
+
+        # Filter long descriptions checkbox
+        self.filter_descriptions_check = wx.CheckBox(
+            self,
+            label="Filtrar descripciones largas de rooms"
+        )
+        self.filter_descriptions_check.SetName("Filtrar descripciones largas")
+        self.filter_descriptions_check.SetValue(True)  # Default enabled
+        filter_box_sizer.Add(self.filter_descriptions_check, 0, wx.LEFT | wx.TOP | wx.RIGHT, 8)
+
+        # Description length threshold
+        length_label = wx.StaticText(self, label="Longitud máxima antes de filtrar (caracteres):")
+        length_label.SetFont(label_font)
+        filter_box_sizer.Add(length_label, 0, wx.LEFT | wx.TOP | wx.RIGHT, 8)
+
+        self.max_description_length = wx.SpinCtrl(
+            self,
+            value="250",
+            min=50,
+            max=2000
+        )
+        self.max_description_length.SetName("Longitud máxima")
+        filter_box_sizer.Add(self.max_description_length, 0, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 8)
+
+        sizer.Add(filter_box_sizer, 0, wx.EXPAND | wx.ALL, 12)
+
         # === Info text ===
         info_text = wx.StaticText(
             self,
-            label="UTF-8: Compatible con caracteres internacionales\n"
+            label="Codificación:\n"
+                  "UTF-8: Compatible con caracteres internacionales\n"
                   "ISO-8859-1: Para MUDs con caracteres latinos\n"
-                  "CP1252: Windows extended ASCII\n"
-                  "ASCII: Solo caracteres básicos"
+                  "\n"
+                  "Filtrado:\n"
+                  "Activa para evitar spam al viajar rápido"
         )
         info_text.SetFont(wx.Font(9, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_ITALIC, wx.FONTWEIGHT_NORMAL))
         sizer.Add(info_text, 0, wx.LEFT | wx.RIGHT | wx.BOTTOM, 12)
@@ -93,9 +124,9 @@ class PreferencesDialog(wx.Dialog):
         try:
             with open(self.config_path, 'r', encoding='utf-8') as f:
                 config = json.load(f)
-                encoding = config.get('connection', {}).get('encoding', 'utf-8').upper()
 
-                # Map encoding name to choice index
+                # Load encoding
+                encoding = config.get('connection', {}).get('encoding', 'utf-8').upper()
                 encoding_map = {
                     'UTF-8': 0,
                     'ISO-8859-1': 1,
@@ -104,6 +135,11 @@ class PreferencesDialog(wx.Dialog):
                 }
                 index = encoding_map.get(encoding, 0)
                 self.encoding_choice.SetSelection(index)
+
+                # Load output filtering settings
+                filter_config = config.get('output_filter', {})
+                self.filter_descriptions_check.SetValue(filter_config.get('filter_long_descriptions', True))
+                self.max_description_length.SetValue(filter_config.get('max_description_length', 250))
         except Exception:
             pass
 
@@ -121,10 +157,16 @@ class PreferencesDialog(wx.Dialog):
             selected_index = self.encoding_choice.GetSelection()
             new_encoding = encoding_names[selected_index]
 
-            # Update config
+            # Update connection settings
             if 'connection' not in config:
                 config['connection'] = {}
             config['connection']['encoding'] = new_encoding
+
+            # Update output filtering settings
+            if 'output_filter' not in config:
+                config['output_filter'] = {}
+            config['output_filter']['filter_long_descriptions'] = self.filter_descriptions_check.GetValue()
+            config['output_filter']['max_description_length'] = self.max_description_length.GetValue()
 
             # Save back to file
             with open(self.config_path, 'w', encoding='utf-8') as f:
@@ -136,6 +178,14 @@ class PreferencesDialog(wx.Dialog):
         """Get selected encoding as uppercase string (UTF-8, ISO-8859-1, etc.)."""
         encoding_names = ['UTF-8', 'ISO-8859-1', 'CP1252', 'ASCII']
         return encoding_names[self.encoding_choice.GetSelection()]
+
+    def get_filter_long_descriptions(self):
+        """Get whether to filter long descriptions."""
+        return self.filter_descriptions_check.GetValue()
+
+    def get_max_description_length(self):
+        """Get maximum description length threshold."""
+        return self.max_description_length.GetValue()
 
     def ShowModal(self):
         """Show dialog and return result."""

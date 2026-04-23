@@ -27,11 +27,12 @@ if TYPE_CHECKING:
 
 class ActionType(Enum):
     """Action types for triggers and timers."""
-    TTS = "tts"         # Text-to-speech announcement
-    SOUND = "sound"     # Play sound file
-    GAG = "gag"         # Hide line from output
-    SEND = "send"       # Send command (reserved for future)
-    STORAGE = "storage" # Store/update character state (buffs, flags, etc.)
+    TTS = "tts"                     # Text-to-speech announcement
+    SOUND = "sound"                 # Play sound file
+    GAG = "gag"                     # Hide line from output
+    SEND = "send"                   # Send command (reserved for future)
+    STORAGE = "storage"             # Store/update character state (buffs, flags, etc.)
+    EXECUTE_TRIGGER = "execute_trigger"  # Execute another trigger by ID
 
 
 @dataclass
@@ -77,6 +78,8 @@ class Timer:
 class TriggerManager:
     """Manages triggers, aliases, and timers."""
 
+    MAX_CHAIN_DEPTH = 10  # Prevent infinite loops in trigger chaining
+
     # Try to find triggers.json in multiple locations
     @staticmethod
     def _find_save_path() -> Path:
@@ -111,6 +114,14 @@ class TriggerManager:
     def _check_conditions(self, trigger: Trigger) -> bool:
         """Check if trigger conditions are met.
 
+        Supports AND logic (all top-level conditions must pass), OR groups,
+        and NOT negation.
+
+        Condition structure:
+        - Simple: {"field": "hp_pct", "operator": "<", "value": 30}
+        - OR group: {"or": [condition1, condition2, ...]}
+        - Negated: {"field": "in_combat", "operator": "==", "value": true, "negate": true}
+
         Args:
             trigger: Trigger to check
 
@@ -120,48 +131,93 @@ class TriggerManager:
         if not trigger.conditions or not self.character_state:
             return True  # No conditions means always pass
 
-        # Evaluate all conditions (AND logic)
+        # Evaluate all top-level conditions (AND logic)
         for condition in trigger.conditions:
-            field = condition.get('field')
-            operator = condition.get('operator')
-            value = condition.get('value')
-
-            if not field or not operator:
-                continue
-
-            # Get field value from character state
-            if not hasattr(self.character_state, field):
+            if not self._evaluate_condition_group(condition):
                 return False
 
-            state_value = getattr(self.character_state, field)
-
-            # Evaluate condition based on operator
-            if operator == '==':
-                if state_value != value:
-                    return False
-            elif operator == '<':
-                if not (state_value < value):
-                    return False
-            elif operator == '>':
-                if not (state_value > value):
-                    return False
-            elif operator == '<=':
-                if not (state_value <= value):
-                    return False
-            elif operator == '>=':
-                if not (state_value >= value):
-                    return False
-            elif operator == 'in':
-                if state_value not in value:
-                    return False
-            elif operator == 'not_in':
-                if state_value in value:
-                    return False
-            elif operator == 'changed':
-                # For future use (detect when value changes)
-                pass
-
         return True
+
+    def _evaluate_condition_group(self, condition: dict) -> bool:
+        """Evaluate a single condition or OR group.
+
+        Args:
+            condition: Condition dict or OR group dict
+
+        Returns:
+            True if condition passes, False otherwise
+        """
+        # Check if this is an OR group
+        if 'or' in condition:
+            or_result = self._evaluate_or_group(condition['or'])
+            # Apply negation if present
+            if condition.get('negate', False):
+                return not or_result
+            return or_result
+
+        # Regular condition
+        result = self._evaluate_single_condition(condition)
+        # Apply negation if present
+        if condition.get('negate', False):
+            return not result
+        return result
+
+    def _evaluate_or_group(self, or_conditions: list) -> bool:
+        """Evaluate an OR group (any condition can be true).
+
+        Args:
+            or_conditions: List of condition dicts
+
+        Returns:
+            True if any condition is true, False if all are false
+        """
+        for condition in or_conditions:
+            if self._evaluate_single_condition(condition):
+                return True
+        return False
+
+    def _evaluate_single_condition(self, condition: dict) -> bool:
+        """Evaluate a single atomic condition.
+
+        Args:
+            condition: Condition dict with field/operator/value
+
+        Returns:
+            True if condition passes, False otherwise
+        """
+        field = condition.get('field')
+        operator = condition.get('operator')
+        value = condition.get('value')
+
+        if not field or not operator:
+            return True  # Malformed condition passes
+
+        # Get field value from character state
+        if not hasattr(self.character_state, field):
+            return False
+
+        state_value = getattr(self.character_state, field)
+
+        # Evaluate condition based on operator
+        if operator == '==':
+            return state_value == value
+        elif operator == '<':
+            return state_value < value
+        elif operator == '>':
+            return state_value > value
+        elif operator == '<=':
+            return state_value <= value
+        elif operator == '>=':
+            return state_value >= value
+        elif operator == 'in':
+            return state_value in value
+        elif operator == 'not_in':
+            return state_value not in value
+        elif operator == 'changed':
+            # For future use (detect when value changes)
+            return True
+        else:
+            return True
 
     def evaluate(self, parsed: ParsedMessage) -> bool:
         """Evaluate triggers for a parsed message line.
@@ -173,6 +229,7 @@ class TriggerManager:
             True if line should be gagged (hidden), False otherwise
         """
         should_gag = False
+        visited_triggers = set()  # Track triggers in this evaluation to prevent loops
 
         for trigger in self.triggers:
             if not trigger.enabled:
@@ -194,9 +251,10 @@ class TriggerManager:
             if not self._check_conditions(trigger):
                 continue
 
-            # Trigger matched, execute actions
+            # Trigger matched, mark as visited and execute actions
+            visited_triggers.add(trigger.id)
             for action in trigger.actions:
-                self._execute_action(action)
+                self._execute_action(action, visited_triggers, depth=0)
 
                 # Track if any action is GAG
                 if action.action_type == ActionType.GAG:
@@ -236,9 +294,9 @@ class TriggerManager:
         Args:
             action: TriggerAction to execute
         """
-        self._execute_action(action)
+        self._execute_action(action, set(), depth=0)
 
-    def _execute_action(self, action: TriggerAction):
+    def _execute_action(self, action: TriggerAction, visited_triggers: set = None, depth: int = 0):
         """Internal method to execute actions."""
         if action.action_type == ActionType.TTS:
             if self.audio and action.value:
@@ -256,6 +314,13 @@ class TriggerManager:
             # Store/update character state
             if self.character_state and action.value:
                 self._handle_storage_action(action)
+
+        elif action.action_type == ActionType.EXECUTE_TRIGGER:
+            # Execute another trigger by ID
+            if action.value:
+                if visited_triggers is None:
+                    visited_triggers = set()
+                self._execute_trigger(action.value, visited_triggers, depth)
 
         elif action.action_type == ActionType.GAG:
             # Gag is handled by evaluate() return value
@@ -316,6 +381,31 @@ class TriggerManager:
                         setattr(self.character_state, field, data)
                 except (ValueError, AttributeError):
                     pass
+
+    def _execute_trigger(self, trigger_id: str, visited_triggers: set = None, depth: int = 0):
+        """Execute another trigger by ID.
+
+        Args:
+            trigger_id: ID of trigger to execute
+            visited_triggers: Set of trigger IDs already visited (for loop prevention)
+            depth: Current chain depth (for loop prevention)
+        """
+        # Initialize visited_triggers if not provided
+        if visited_triggers is None:
+            visited_triggers = set()
+
+        # Check for loops: already visited or max depth exceeded
+        if trigger_id in visited_triggers or depth >= self.MAX_CHAIN_DEPTH:
+            return  # Stop the chain to prevent infinite loops
+
+        # Find and execute the trigger
+        for trigger in self.triggers:
+            if trigger.id == trigger_id and trigger.enabled:
+                # Mark as visited and execute all actions
+                visited_triggers.add(trigger_id)
+                for action in trigger.actions:
+                    self._execute_action(action, visited_triggers, depth + 1)
+                break
 
     def _interpolate_text(self, text: str) -> str:
         """Interpolate variables in action text.
