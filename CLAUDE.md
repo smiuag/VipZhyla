@@ -20,32 +20,51 @@ If you're developing a desktop application for blind/visually impaired users, re
 ## Repository Structure
 
 ```
-Reinos de leyenda/
-├── ScripsRL/
-│   ├── Clases/           # Character class-specific scripts (Soldados.set, Khazads.set, etc.)
-│   ├── Paths/            # Pre-defined navigation routes between game locations
-│   ├── Ambientacion/     # Region/kingdom-specific scripts (Anduar, Dendra, Takome, etc.)
-│   ├── Oficios/          # Trade/profession scripts (Minero, Herrero, Marinero, etc.)
-│   ├── Doc/              # Installation and usage documentation
-│   ├── Configuracion.set # Core configuration
-│   ├── Alias_Macros.set  # Keybindings and macros
-│   ├── Combate.set       # Combat system
-│   ├── Modos.set         # Game mode toggles (XP, Expert, Silent, Idle)
-│   └── [other core scripts for communication, movement, effects, etc.]
-├── Reinos de leyenda.set # Main loader file for the game
-sounds/
-├── RL/                   # Sound files organized by category (Combat, Movement, Items, etc.)
-VipMud.set               # VipMud client configuration
-start.set                # Startup configuration
-speech.ini               # Screen reader configuration
+VipZhyla/
+├── Scripts/                    # ⭐ All game scripts and configurations
+│   ├── Reinos de leyenda/      # Main game folder
+│   │   ├── ScripsRL/           # Script library
+│   │   │   ├── Clases/         # Character class scripts
+│   │   │   ├── Paths/          # Navigation routes
+│   │   │   ├── Ambientacion/   # Regional scripts
+│   │   │   ├── Oficios/        # Trade/profession scripts
+│   │   │   ├── Doc/            # Original documentation (Spanish)
+│   │   │   └── [core scripts]  # Alias, Combat, Movimiento, etc.
+│   │   └── Reinos de leyenda.set # Main game loader
+│   ├── sounds/                 # Sound effects (.wav files)
+│   ├── VipMud.set              # Client configuration
+│   ├── start.set               # Startup script
+│   └── speech.ini              # Screen reader config
+├── scripts.md                  # ⭐ Quick reference for Scripts folder
+├── accesibilidad.md            # Accessibility guidelines (WCAG 2.2 + ChannelHistory)
+├── CLAUDE.md                   # This file
+├── docs/WCAG2.2/               # WCAG 2.2 specification
+└── [other documentation]
 ```
 
-## Key Files and Their Purpose
+### **Quick Reference: See [scripts.md](scripts.md)**
 
-- **Reinos de leyenda/ScripsRL/Clases/*.set** — Class-specific keybindings and combat macros. Add new classes here.
-- **Reinos de leyenda/ScripsRL/Paths/*.set** — Navigation routes. Each file represents paths from/to a specific location.
-- **Reinos de leyenda/ScripsRL/Doc/*.txt** — Installation instructions and usage guide (in Spanish).
-- **sounds/RL/** — Sound event triggers. Organized by event type (Combate, Movimiento, Items, etc.).
+The `Scripts/` folder contains 1700+ files. Don't browse it manually—use **[scripts.md](scripts.md)** as your index:
+- Structure overview
+- File purposes (when to edit, when to consult)
+- Keyboard shortcuts summary
+- Troubleshooting quick-fix table
+- Examples of common tasks
+
+## Where to Find Things
+
+**⚠️ Don't browse Scripts/ manually—use [scripts.md](scripts.md) as your guide.**
+
+| Need | Location | Reference |
+|------|----------|-----------|
+| New character class | `Scripts/Reinos de leyenda/ScripsRL/Clases/` | [scripts.md § Carpeta Clases/](scripts.md#carpeta-clases) |
+| Navigation route | `Scripts/Reinos de leyenda/ScripsRL/Paths/` | [scripts.md § Carpeta Paths/](scripts.md#carpeta-paths) |
+| Regional content | `Scripts/Reinos de leyenda/ScripsRL/Ambientacion/` | [scripts.md § Carpeta Ambientacion/](scripts.md#carpeta-ambientacion) |
+| Trade/profession | `Scripts/Reinos de leyenda/ScripsRL/Oficios/` | [scripts.md § Carpeta Oficios/](scripts.md#carpeta-oficios) |
+| Sound file | `Scripts/sounds/RL/[Category]/` | [scripts.md § Carpeta sounds/RL/](scripts.md#carpeta-soundsrl) |
+| Global aliases | `Scripts/Reinos de leyenda/ScripsRL/Alias_Macros.set` | [scripts.md § Core Scripts](scripts.md#core-scripts-sistema-principal) |
+| Combat system | `Scripts/Reinos de leyenda/ScripsRL/Combate.set` | [scripts.md § Core Scripts](scripts.md#core-scripts-sistema-principal) |
+| Original docs | `Scripts/Reinos de leyenda/ScripsRL/Doc/` | [scripts.md § Referencias Documentación](scripts.md#referencias-documentación-original) |
 
 ## Working with Script Files
 
