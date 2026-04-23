@@ -31,13 +31,16 @@ class ActionType(Enum):
     SOUND = "sound"     # Play sound file
     GAG = "gag"         # Hide line from output
     SEND = "send"       # Send command (reserved for future)
+    STORAGE = "storage" # Store/update character state (buffs, flags, etc.)
 
 
 @dataclass
 class TriggerAction:
     """Single action within a trigger or timer."""
     action_type: ActionType
-    value: str = ""  # TTS text, sound path, or empty for gag
+    value: str = ""  # TTS text, sound path, or field name for storage
+    operation: str = ""  # For storage: add, remove, set, update
+    data: str = ""  # For storage: data to add/set
 
 
 @dataclass
@@ -74,7 +77,19 @@ class Timer:
 class TriggerManager:
     """Manages triggers, aliases, and timers."""
 
-    SAVE_PATH = Path("triggers.json")
+    # Try to find triggers.json in multiple locations
+    @staticmethod
+    def _find_save_path() -> Path:
+        """Find triggers.json in src/data or root directory."""
+        candidates = [
+            Path("src/data/triggers.json"),
+            Path("triggers.json"),
+        ]
+        for path in candidates:
+            if path.exists():
+                return path
+        # Default to src/data (even if it doesn't exist yet, save there)
+        return Path("src/data/triggers.json")
 
     def __init__(self, audio: AudioManager):
         """Initialize trigger manager.
@@ -90,6 +105,7 @@ class TriggerManager:
         self.character_state: Optional['CharacterState'] = None  # Will be set by main.py
         self._timer_threads: List[threading.Timer] = []
         self._running = False
+        self.SAVE_PATH = self._find_save_path()
         self.load()
 
     def _check_conditions(self, trigger: Trigger) -> bool:
@@ -236,9 +252,70 @@ class TriggerManager:
                 sound_path = self._interpolate_text(action.value)
                 self.audio.play_sound(sound_path)
 
+        elif action.action_type == ActionType.STORAGE:
+            # Store/update character state
+            if self.character_state and action.value:
+                self._handle_storage_action(action)
+
         elif action.action_type == ActionType.GAG:
             # Gag is handled by evaluate() return value
             pass
+
+    def _handle_storage_action(self, action: TriggerAction):
+        """Handle storage action (update character state).
+
+        Examples:
+        - value="buffs", operation="add", data="Fuerza" → add "Fuerza" to buffs list
+        - value="debuffs", operation="remove", data="Veneno" → remove "Veneno" from debuffs
+        - value="in_combat", operation="set", data="true" → set in_combat to True
+        - value="hp_threshold_flags", operation="update" → mark current HP threshold as announced
+        """
+        if not action.value:
+            return
+
+        field = action.value
+        operation = action.operation or "set"
+        data = action.data
+
+        # Handle list operations (buffs, debuffs, state_history)
+        if field in ["buffs", "debuffs", "state_history"]:
+            field_list = getattr(self.character_state, field, None)
+            if not isinstance(field_list, list):
+                return
+
+            if operation == "add":
+                # Interpolate data if needed
+                item = self._interpolate_text(data) if data else ""
+                if item and item not in field_list:
+                    field_list.append(item)
+            elif operation == "remove":
+                item = self._interpolate_text(data) if data else ""
+                if item and item in field_list:
+                    field_list.remove(item)
+            elif operation == "clear":
+                field_list.clear()
+
+        # Handle dict operations (hp_threshold_flags)
+        elif field == "hp_threshold_flags":
+            if operation == "update":
+                # Mark current HP threshold as announced
+                threshold = self.character_state.get_hp_threshold()
+                if threshold:
+                    self.character_state.hp_threshold_flags[threshold] = True
+
+        # Handle scalar fields
+        elif hasattr(self.character_state, field):
+            if operation == "set":
+                # Try to parse data as appropriate type
+                try:
+                    if isinstance(getattr(self.character_state, field), bool):
+                        setattr(self.character_state, field, data.lower() in ["true", "1", "yes"])
+                    elif isinstance(getattr(self.character_state, field), int):
+                        setattr(self.character_state, field, int(data))
+                    else:
+                        setattr(self.character_state, field, data)
+                except (ValueError, AttributeError):
+                    pass
 
     def _interpolate_text(self, text: str) -> str:
         """Interpolate variables in action text.
@@ -356,7 +433,9 @@ class TriggerManager:
             trigger["actions"] = [
                 {
                     "action_type": a["action_type"].value,
-                    "value": a["value"]
+                    "value": a.get("value", ""),
+                    "operation": a.get("operation", ""),
+                    "data": a.get("data", "")
                 }
                 for a in trigger["actions"]
             ]
@@ -368,14 +447,16 @@ class TriggerManager:
             timer["actions"] = [
                 {
                     "action_type": a["action_type"].value,
-                    "value": a["value"]
+                    "value": a.get("value", ""),
+                    "operation": a.get("operation", ""),
+                    "data": a.get("data", "")
                 }
                 for a in timer["actions"]
             ]
 
         try:
-            with open(self.SAVE_PATH, "w") as f:
-                json.dump(data, f, indent=2)
+            with open(self.SAVE_PATH, "w", encoding="utf-8") as f:
+                json.dump(data, f, indent=2, ensure_ascii=False)
         except Exception as e:
             print(f"Failed to save triggers: {e}")
 
@@ -385,7 +466,7 @@ class TriggerManager:
             return
 
         try:
-            with open(self.SAVE_PATH, "r") as f:
+            with open(self.SAVE_PATH, "r", encoding="utf-8") as f:
                 data = json.load(f)
 
             # Load triggers
@@ -393,7 +474,9 @@ class TriggerManager:
                 actions = [
                     TriggerAction(
                         action_type=ActionType(a["action_type"]),
-                        value=a.get("value", "")
+                        value=a.get("value", ""),
+                        operation=a.get("operation", ""),
+                        data=a.get("data", "")
                     )
                     for a in t.get("actions", [])
                 ]
@@ -423,7 +506,9 @@ class TriggerManager:
                 actions = [
                     TriggerAction(
                         action_type=ActionType(a["action_type"]),
-                        value=a.get("value", "")
+                        value=a.get("value", ""),
+                        operation=a.get("operation", ""),
+                        data=a.get("data", "")
                     )
                     for a in t.get("actions", [])
                 ]
