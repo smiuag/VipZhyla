@@ -93,6 +93,9 @@ class GmcpHandler:
             mp = int(data.get('mp', 0))
             maxmp = int(data.get('maxmp', 0))
 
+            # Save previous HP for TTS announcement (before updating)
+            prev_hp = self.last_vitals.get('hp')
+
             # Check for changes
             changed = (
                 hp != self.last_vitals['hp'] or
@@ -114,7 +117,7 @@ class GmcpHandler:
                     self.on_vitals_changed(hp, maxhp, mp, maxmp)
 
                 # TTS announcement if HP changed
-                if hp != self.last_vitals.get('hp'):
+                if hp != prev_hp:
                     if self.audio:
                         msg = f"Vida: {hp} de {maxhp}"
                         self.audio.announce(msg, AudioLevel.NORMAL)
