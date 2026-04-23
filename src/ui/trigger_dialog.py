@@ -13,6 +13,19 @@ from models.triggers import (
     TriggerManager, Trigger, Alias, Timer, TriggerAction, ActionType
 )
 
+# Available fields for conditions (from CharacterState)
+CONDITION_FIELDS = [
+    "hp_pct", "mp_pct", "hp", "maxhp", "mp", "maxmp",
+    "nivel", "in_combat", "is_target", "clase", "raza", "name"
+]
+
+# Operators for conditions
+CONDITION_OPERATORS = ["==", "<", ">", "<=", ">=", "in", "not_in"]
+
+# Storage operations
+STORAGE_OPERATIONS = ["add", "remove", "set", "update", "clear"]
+STORAGE_FIELDS = ["buffs", "debuffs", "hp_threshold_flags", "last_state", "state_history"]
+
 
 class TriggerManagerDialog(wx.Dialog):
     """Main dialog for managing triggers, aliases, and timers."""
@@ -364,9 +377,10 @@ class TriggerEditDialog(wx.Dialog):
         self.editing = trigger is not None
         self._trigger = trigger or Trigger(id=trigger_manager.new_id(), name="", pattern="")
         self._actions = list(self._trigger.actions) if trigger else []
+        self._conditions = list(self._trigger.conditions) if trigger else []
 
         self._build_ui()
-        self.SetSize(500, 400)
+        self.SetSize(700, 600)
         self.CentreOnParent()
 
         if trigger:
@@ -393,6 +407,47 @@ class TriggerEditDialog(wx.Dialog):
         self.regex_check.SetName("Es expresión regular")
         sizer.Add(self.regex_check, 0, wx.LEFT | wx.RIGHT | wx.BOTTOM, 5)
 
+        # Conditions group
+        cond_box = wx.StaticBox(self, label="Condiciones (AND)")
+        cond_sizer = wx.StaticBoxSizer(cond_box, wx.VERTICAL)
+
+        # Add condition panel
+        add_cond_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        add_cond_sizer.Add(wx.StaticText(self, label="Campo:"), 0, wx.RIGHT | wx.ALIGN_CENTER_VERTICAL, 3)
+
+        self.cond_field = wx.Choice(self, choices=CONDITION_FIELDS)
+        self.cond_field.SetSelection(0)
+        self.cond_field.SetName("Campo de condición")
+        add_cond_sizer.Add(self.cond_field, 0, wx.RIGHT, 3)
+
+        add_cond_sizer.Add(wx.StaticText(self, label="Op:"), 0, wx.RIGHT | wx.ALIGN_CENTER_VERTICAL, 3)
+        self.cond_op = wx.Choice(self, choices=CONDITION_OPERATORS)
+        self.cond_op.SetSelection(0)
+        self.cond_op.SetName("Operador")
+        add_cond_sizer.Add(self.cond_op, 0, wx.RIGHT, 3)
+
+        add_cond_sizer.Add(wx.StaticText(self, label="Valor:"), 0, wx.RIGHT | wx.ALIGN_CENTER_VERTICAL, 3)
+        self.cond_value = wx.TextCtrl(self, size=(80, -1))
+        self.cond_value.SetName("Valor de condición")
+        add_cond_sizer.Add(self.cond_value, 0, wx.RIGHT, 3)
+
+        self.add_cond_btn = wx.Button(self, label="&Añadir")
+        self.add_cond_btn.Bind(wx.EVT_BUTTON, self.on_add_condition)
+        add_cond_sizer.Add(self.add_cond_btn, 0)
+
+        cond_sizer.Add(add_cond_sizer, 0, wx.EXPAND | wx.ALL, 5)
+
+        # Conditions list
+        self.cond_list = wx.ListBox(self, style=wx.LB_SINGLE, size=(-1, 60))
+        self.cond_list.SetName("Lista de condiciones")
+        cond_sizer.Add(self.cond_list, 1, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 5)
+
+        self.remove_cond_btn = wx.Button(self, label="&Quitar condición")
+        self.remove_cond_btn.Bind(wx.EVT_BUTTON, self.on_remove_condition)
+        cond_sizer.Add(self.remove_cond_btn, 0, wx.LEFT | wx.RIGHT | wx.BOTTOM, 5)
+
+        sizer.Add(cond_sizer, 0, wx.EXPAND | wx.ALL, 5)
+
         # Actions group
         action_box = wx.StaticBox(self, label="Acciones")
         action_sizer = wx.StaticBoxSizer(action_box, wx.VERTICAL)
@@ -401,7 +456,7 @@ class TriggerEditDialog(wx.Dialog):
         add_sizer = wx.BoxSizer(wx.HORIZONTAL)
         add_sizer.Add(wx.StaticText(self, label="Tipo:"), 0, wx.RIGHT | wx.ALIGN_CENTER_VERTICAL, 5)
 
-        self.action_type = wx.Choice(self, choices=["TTS", "GAG"])
+        self.action_type = wx.Choice(self, choices=["TTS", "SOUND", "GAG", "STORAGE"])
         self.action_type.SetSelection(0)
         self.action_type.SetName("Tipo de acción")
         self.action_type.Bind(wx.EVT_CHOICE, self.on_action_type_changed)
@@ -411,6 +466,14 @@ class TriggerEditDialog(wx.Dialog):
         self.action_value = wx.TextCtrl(self)
         self.action_value.SetName("Valor de acción")
         add_sizer.Add(self.action_value, 1, wx.EXPAND | wx.RIGHT, 5)
+
+        # Storage operation selector (shown only for STORAGE actions)
+        add_sizer.Add(wx.StaticText(self, label="Op:"), 0, wx.RIGHT | wx.ALIGN_CENTER_VERTICAL, 5)
+        self.storage_op = wx.Choice(self, choices=STORAGE_OPERATIONS)
+        self.storage_op.SetSelection(0)
+        self.storage_op.SetName("Operación de storage")
+        self.storage_op.Hide()
+        add_sizer.Add(self.storage_op, 0, wx.RIGHT, 5)
 
         self.add_action_btn = wx.Button(self, label="&Añadir")
         self.add_action_btn.Bind(wx.EVT_BUTTON, self.on_add_action)
@@ -447,16 +510,43 @@ class TriggerEditDialog(wx.Dialog):
 
     def on_action_type_changed(self, event):
         """Enable/disable action_value based on type."""
-        is_gag = self.action_type.GetStringSelection() == "GAG"
-        self.action_value.Enable(not is_gag)
+        action_type = self.action_type.GetStringSelection()
+        is_gag = action_type == "GAG"
+        is_storage = action_type == "STORAGE"
+
+        self.action_value.Enable(not is_gag and not is_storage)
+        if hasattr(self, 'storage_op'):
+            if is_storage:
+                self.storage_op.Show()
+            else:
+                self.storage_op.Hide()
+            self.Layout()
 
     def on_add_action(self, event):
         """Add action to list."""
         action_type_str = self.action_type.GetStringSelection()
-        value = self.action_value.GetValue() if action_type_str == "TTS" else ""
 
-        action_type = ActionType.TTS if action_type_str == "TTS" else ActionType.GAG
-        action = TriggerAction(action_type=action_type, value=value)
+        # Map string to ActionType
+        action_type_map = {
+            "TTS": ActionType.TTS,
+            "SOUND": ActionType.SOUND,
+            "GAG": ActionType.GAG,
+            "STORAGE": ActionType.STORAGE
+        }
+        action_type = action_type_map.get(action_type_str, ActionType.TTS)
+
+        # Get value (TTS, SOUND, STORAGE)
+        value = self.action_value.GetValue() if action_type_str != "GAG" else ""
+
+        # For STORAGE, get operation
+        operation = self.storage_op.GetStringSelection() if action_type_str == "STORAGE" else ""
+
+        action = TriggerAction(
+            action_type=action_type,
+            value=value,
+            operation=operation,
+            data=""
+        )
         self._actions.append(action)
 
         self._refresh_action_list()
@@ -469,15 +559,62 @@ class TriggerEditDialog(wx.Dialog):
             del self._actions[sel]
             self._refresh_action_list()
 
+    def on_add_condition(self, event):
+        """Add condition to list."""
+        field = self.cond_field.GetStringSelection()
+        operator = self.cond_op.GetStringSelection()
+        value = self.cond_value.GetValue()
+
+        if not field or not operator or not value:
+            return
+
+        # Parse value based on operator/field
+        try:
+            if operator in ["<", ">", "<=", ">="] or field.endswith("_pct"):
+                # Numeric comparison
+                value = int(value)
+            elif operator in ["in", "not_in"]:
+                # List of values (comma-separated)
+                value = [v.strip() for v in value.split(",")]
+        except ValueError:
+            pass
+
+        condition = {
+            "field": field,
+            "operator": operator,
+            "value": value
+        }
+        self._conditions.append(condition)
+        self._refresh_condition_list()
+        self.cond_value.SetValue("")
+
+    def on_remove_condition(self, event):
+        """Remove selected condition from list."""
+        sel = self.cond_list.GetSelection()
+        if sel >= 0:
+            del self._conditions[sel]
+            self._refresh_condition_list()
+
     def _refresh_action_list(self):
         """Refresh displayed action list."""
         self.action_list.Clear()
         for action in self._actions:
             if action.action_type == ActionType.TTS:
                 text = f"TTS: {action.value}"
+            elif action.action_type == ActionType.SOUND:
+                text = f"SOUND: {action.value}"
+            elif action.action_type == ActionType.STORAGE:
+                text = f"STORAGE: {action.operation} {action.value}"
             else:
                 text = "GAG"
             self.action_list.Append(text)
+
+    def _refresh_condition_list(self):
+        """Refresh displayed condition list."""
+        self.cond_list.Clear()
+        for cond in self._conditions:
+            text = f"{cond['field']} {cond['operator']} {cond['value']}"
+            self.cond_list.Append(text)
 
     def _populate_from_trigger(self, trigger: Trigger):
         """Populate dialog from existing trigger."""
@@ -486,6 +623,7 @@ class TriggerEditDialog(wx.Dialog):
         self.regex_check.SetValue(trigger.is_regex)
         self.enabled_check.SetValue(trigger.enabled)
         self._refresh_action_list()
+        self._refresh_condition_list()
 
     def get_result(self) -> Trigger:
         """Build and return Trigger from dialog values."""
@@ -495,7 +633,8 @@ class TriggerEditDialog(wx.Dialog):
             pattern=self.pattern_ctrl.GetValue(),
             is_regex=self.regex_check.GetValue(),
             actions=self._actions,
-            enabled=self.enabled_check.GetValue()
+            enabled=self.enabled_check.GetValue(),
+            conditions=self._conditions
         )
 
 
@@ -668,8 +807,17 @@ class TimerEditDialog(wx.Dialog):
 
     def on_action_type_changed(self, event):
         """Enable/disable action_value based on type."""
-        is_gag = self.action_type.GetStringSelection() == "GAG"
-        self.action_value.Enable(not is_gag)
+        action_type = self.action_type.GetStringSelection()
+        is_gag = action_type == "GAG"
+        is_storage = action_type == "STORAGE"
+
+        self.action_value.Enable(not is_gag and not is_storage)
+        if hasattr(self, 'storage_op'):
+            if is_storage:
+                self.storage_op.Show()
+            else:
+                self.storage_op.Hide()
+            self.Layout()
 
     def on_add_action(self, event):
         """Add action to list."""
