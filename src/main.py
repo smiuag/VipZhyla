@@ -195,6 +195,9 @@ class MainWindow(wx.Frame):
         # Register keyboard handlers
         self._register_keyboard_handlers()
 
+        # Build accessible menu bar
+        self._build_menu_bar()
+
         # Set focus to input
         self.input_field.SetFocus()
 
@@ -238,6 +241,64 @@ class MainWindow(wx.Frame):
         self.keyboard.register_handler(KeyAction.SHOW_TRIGGERS, self.on_show_triggers)
         self.keyboard.register_handler(KeyAction.TOGGLE_VERBOSE, self.on_toggle_verbose)
         self.keyboard.register_handler(KeyAction.STOP_SPEECH, lambda e: self.audio.stop())
+
+    def _build_menu_bar(self):
+        """Build accessible menu bar (read by NVDA/Narrator automatically)."""
+        menu_bar = wx.MenuBar()
+
+        # === Archivo (File) Menu ===
+        file_menu = wx.Menu()
+        connect_item = file_menu.Append(wx.ID_ANY, "Conectar\tCtrl+K", "Conectar al servidor MUD")
+        disconnect_item = file_menu.Append(wx.ID_ANY, "Desconectar\tCtrl+D", "Desconectar del servidor")
+        file_menu.AppendSeparator()
+        exit_item = file_menu.Append(wx.ID_EXIT, "&Salir\tAlt+F4", "Salir de VipZhyla")
+
+        self.Bind(wx.EVT_MENU, self.on_connect, connect_item)
+        self.Bind(wx.EVT_MENU, self.on_disconnect, disconnect_item)
+        self.Bind(wx.EVT_MENU, self.on_exit, exit_item)
+
+        # === Ver (View) Menu ===
+        view_menu = wx.Menu()
+        ch_item = view_menu.Append(wx.ID_ANY, "Historial de Canales\tShift+F1", "Ver historial de canales")
+        rh_item = view_menu.Append(wx.ID_ANY, "Historial de Sala\tShift+F2", "Ver historial de la sala")
+        th_item = view_menu.Append(wx.ID_ANY, "Historial de Telepátia\tShift+F3", "Ver historial de telepátia")
+        eh_item = view_menu.Append(wx.ID_ANY, "Eventos\tShift+F4", "Ver lista de eventos")
+        view_menu.AppendSeparator()
+        verb_item = view_menu.Append(wx.ID_ANY, "Modo Verboso\tCtrl+Shift+V", "Activar/desactivar modo verboso")
+
+        self.Bind(wx.EVT_MENU, self.on_show_channel_history, ch_item)
+        self.Bind(wx.EVT_MENU, self.on_show_room_history, rh_item)
+        self.Bind(wx.EVT_MENU, self.on_show_telepathy_history, th_item)
+        self.Bind(wx.EVT_MENU, self.on_show_event_list, eh_item)
+        self.Bind(wx.EVT_MENU, self.on_toggle_verbose, verb_item)
+
+        # === Herramientas (Tools) Menu ===
+        tools_menu = wx.Menu()
+        triggers_item = tools_menu.Append(wx.ID_ANY, "Triggers/Alias/Timers\tCtrl+T", "Gestionar triggers, aliases y timers")
+        prefs_item = tools_menu.Append(wx.ID_ANY, "Preferencias\tCtrl+P", "Configurar preferencias (encoding, filtrado)")
+        tools_menu.AppendSeparator()
+        stop_speech_item = tools_menu.Append(wx.ID_ANY, "Detener Discurso\tCtrl+S", "Detener el anuncio de TTS en progreso")
+
+        self.Bind(wx.EVT_MENU, self.on_show_triggers, triggers_item)
+        self.Bind(wx.EVT_MENU, self.on_show_preferences, prefs_item)
+        self.Bind(wx.EVT_MENU, lambda e: self.audio.stop(), stop_speech_item)
+
+        # === Ayuda (Help) Menu ===
+        help_menu = wx.Menu()
+        help_item = help_menu.Append(wx.ID_HELP, "&Ayuda\tF1", "Mostrar ayuda de VipZhyla")
+        about_item = help_menu.Append(wx.ID_ABOUT, "&Acerca de", "Información sobre VipZhyla")
+
+        self.Bind(wx.EVT_MENU, self.on_show_help, help_item)
+        self.Bind(wx.EVT_MENU, self.on_about, about_item)
+
+        # Add menus to menu bar
+        menu_bar.Append(file_menu, "&Archivo")
+        menu_bar.Append(view_menu, "&Ver")
+        menu_bar.Append(tools_menu, "&Herramientas")
+        menu_bar.Append(help_menu, "A&yuda")
+
+        # Set menu bar
+        self.SetMenuBar(menu_bar)
 
     def on_command_enter(self, event):
         """Handle Enter key in input field."""
@@ -371,6 +432,36 @@ class MainWindow(wx.Frame):
     def on_show_help(self, event):
         """Show comprehensive help dialog."""
         show_help(self)
+
+    def on_about(self, event):
+        """Show about dialog."""
+        info = wx.adv.AboutDialogInfo()
+        info.SetName("VipZhyla")
+        info.SetVersion("0.1.0")
+        info.SetDescription(
+            "Cliente MUD accesible para usuarios ciegos y con discapacidad visual.\n\n"
+            "VipZhyla proporciona acceso completo a servidores MUD a través de "
+            "navegación por teclado, síntesis de voz (TTS), y soporte total para "
+            "lectores de pantalla (NVDA, JAWS, Narrator)."
+        )
+        info.SetWebSite("https://github.com/smiuag/VipZhyla")
+        info.AddDeveloper("Diego Gandia (Desarrollo)\nClaude Haiku 4.5 (IA)")
+        info.SetLicense("GPL-3.0")
+        wx.adv.AboutBox(info)
+
+    def on_exit(self, event):
+        """Handle exit request."""
+        if self.connection.state != ConnectionState.DISCONNECTED:
+            dlg = wx.MessageDialog(
+                self,
+                "¿Desconectar antes de salir?",
+                "Confirmar salida",
+                wx.YES_NO | wx.ICON_QUESTION
+            )
+            if dlg.ShowModal() == wx.ID_YES:
+                self.on_disconnect(None)
+            dlg.Destroy()
+        self.Close(True)
 
     def on_show_preferences(self, event):
         """Show preferences dialog."""
