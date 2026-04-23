@@ -35,7 +35,8 @@ local FEATURES = {
     path_recording = true,      -- Phase 6E: Record/playback routes
     ambient_sounds = true,      -- Phase 6E: Regional ambient audio
     ability_detection = true,   -- Phase 6E: 50+ ability patterns
-    class_abilities = false,    -- Phase 6E: Not yet (needs class integration)
+    professions = true,         -- Phase 6E: 5 profession systems (Minero, Herrero, Marinero, Jornalero, Crear)
+    class_abilities = true,     -- Phase 6E: All 24 character classes implemented
     interactive_prompts = false, -- Phase 6E: Not yet (needs UI)
 }
 
@@ -135,6 +136,7 @@ function game.init()
     game.init_module("navigation")      -- Navigation/paths (Phase 6E)
     game.init_module("paths")           -- Path recording (Phase 6E)
     game.init_module("ambientacion")    -- Ambient sounds (Phase 6E)
+    game.init_module("oficios")         -- Profession system (Phase 6E)
 
     -- Mark as initialized
     game.initialized = true
@@ -144,6 +146,8 @@ function game.init()
     vipzhyla.say("  Path Recording: " .. (FEATURES.path_recording and "✓" or "✗"))
     vipzhyla.say("  Ambient Sounds: " .. (FEATURES.ambient_sounds and "✓" or "✗"))
     vipzhyla.say("  Ability Detection: " .. (FEATURES.ability_detection and "✓" or "✗"))
+    vipzhyla.say("  Professions: " .. (FEATURES.professions and "✓" or "✗"))
+    vipzhyla.say("  Character Classes: " .. (FEATURES.class_abilities and "✓" or "✗"))
 
     vipzhyla.announce("Scripts initialized successfully")
     helpers.log("All modules loaded and ready")

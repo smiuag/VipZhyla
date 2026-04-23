@@ -24,7 +24,9 @@
       "Bash(git reset *)",
       "Bash(grep -E \"SyntaxError|Error|OK|$\")",
       "Bash(cd C:\\\\\\\\proyectos\\\\\\\\Claude\\\\\\\\VipZhyla)",
-      "Bash(pkill -f \"python src/main.py\")"
+      "Bash(pkill -f \"python src/main.py\")",
+      "Bash(xargs wc *)",
+      "PowerShell(Get-ChildItem *)"
     ]
   }
 }
