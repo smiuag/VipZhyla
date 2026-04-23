@@ -51,6 +51,7 @@ class KeyAction(Enum):
 
     # UI toggles
     TOGGLE_VERBOSE = "toggle_verbose"  # Ctrl+Shift+V
+    SHOW_TRIGGERS = "show_triggers"    # Ctrl+T
 
 
 class KeyboardHandler:
@@ -103,6 +104,7 @@ class KeyboardHandler:
         key_map[(ord('C'), wx.MOD_CONTROL)] = KeyAction.COPY_TO_CLIPBOARD
         key_map[(ord('K'), wx.MOD_CONTROL)] = KeyAction.CONNECT
         key_map[(ord('D'), wx.MOD_CONTROL)] = KeyAction.DISCONNECT
+        key_map[(ord('T'), wx.MOD_CONTROL)] = KeyAction.SHOW_TRIGGERS
         key_map[(ord('V'), wx.MOD_CONTROL | wx.MOD_SHIFT)] = KeyAction.TOGGLE_VERBOSE
 
         return key_map
@@ -171,6 +173,7 @@ class KeyboardHandler:
             KeyAction.COPY_TO_CLIPBOARD: "Ctrl+C - Copy to Clipboard",
             KeyAction.CONNECT: "Ctrl+K - Connect to Server",
             KeyAction.DISCONNECT: "Ctrl+D - Disconnect from Server",
+            KeyAction.SHOW_TRIGGERS: "Ctrl+T - Manage Triggers/Aliases/Timers",
             KeyAction.TOGGLE_VERBOSE: "Ctrl+Shift+V - Toggle Verbose Mode",
         }
         return descriptions.get(action, "Unknown action")
