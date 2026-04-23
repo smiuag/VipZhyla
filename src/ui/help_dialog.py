@@ -163,6 +163,29 @@ class HelpDialog(wx.Dialog):
             "    Left: Connection status and health points\n"
             "    Right: Current mode (Normal/Verbose)"
         ),
+        "Map": (
+            "MAPA Y NAVEGACIÓN\n"
+            "=================\n\n"
+            "El mapa sigue tu posición automáticamente.\n\n"
+            "Localización inicial:\n"
+            "  Escribe 'locate' y pulsa Enter\n"
+            "  El cliente envía 'ojear' al MUD y registra tu sala\n\n"
+            "Tras localizar, el mapa te sigue:\n"
+            "  Al moverte (norte, sur, etc.)\n"
+            "  Al seguir a otro personaje (seguir Fulano)\n"
+            "  El cliente anuncia la nueva sala y sus salidas\n\n"
+            "Navegar a una sala:\n"
+            "  Escribe 'irsala nombre' y pulsa Enter\n"
+            "  Si hay una sola coincidencia, navega automáticamente\n"
+            "  Si hay varias, te muestra las opciones\n"
+            "  Escribe 'parar' para cancelar el viaje\n\n"
+            "Ejemplos:\n"
+            "  locate            → localiza tu posición actual\n"
+            "  irsala mercado    → va al mercado más cercano\n"
+            "  irsala plaza mayor → navega a la Plaza Mayor\n"
+            "  parar             → cancela el viaje en curso\n\n"
+            "Nota: Escribe 'locate' siempre que cambies de zona."
+        ),
         "Keyboard Map": (
             "COMPLETE KEYBOARD REFERENCE\n"
             "===========================\n\n"
@@ -185,7 +208,11 @@ class HelpDialog(wx.Dialog):
             "  Ctrl+T = Triggers/Aliases/Timers\n"
             "  Ctrl+Shift+V = Toggle Verbose\n"
             "  Enter = Send command\n"
-            "  Escape = Close dialog"
+            "  Escape = Close dialog\n\n"
+            "NAVIGATION:\n"
+            "  locate = Localize your position\n"
+            "  irsala <name> = Navigate to room\n"
+            "  parar = Stop current walk"
         ),
     }
 

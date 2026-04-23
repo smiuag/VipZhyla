@@ -6,6 +6,7 @@ Accessible MUD Client for Blind and Visually Impaired Users
 
 import wx
 import sys
+import re
 from app.accessibility_core import AccessiblePanel
 from app.keyboard_handler import KeyboardHandler, KeyAction
 from app.audio_manager import AudioManager, AudioLevel
@@ -18,6 +19,7 @@ from ui.list_dialogs import (show_channel_history, show_room_history,
 from ui.trigger_dialog import show_trigger_manager
 from ui.help_dialog import show_help
 from models.triggers import TriggerManager
+from models.map_service import MapService
 
 
 class VipZhylaApp(wx.App):
@@ -81,6 +83,13 @@ class MainWindow(wx.Frame):
         self.trigger_manager = TriggerManager(self.audio)
         self.trigger_manager.send_fn = self.send_command
 
+        # Map service
+        self.map_service = MapService()
+        self.map_service.load("src/data/map-reinos.json")
+        self._waiting_for_locate = False
+        self._walk_steps: list[str] = []
+        self._walk_index = 0
+
         # Setup connection callbacks
         self.connection.set_data_callback(self._on_mud_data)
         self.connection.set_gmcp_callback(self._on_gmcp)
@@ -89,6 +98,8 @@ class MainWindow(wx.Frame):
         self.gmcp.set_channel_callback(self._on_channel_message)
         self.gmcp.set_vitals_callback(self._on_vitals)
         self.gmcp.set_room_callback(self._on_room_info)
+        self.gmcp.set_room_actual_callback(self._on_room_actual)
+        self.gmcp.set_room_movimiento_callback(self._on_room_movimiento)
 
         # Create sizer for layout
         sizer = wx.BoxSizer(wx.VERTICAL)
@@ -199,6 +210,31 @@ class MainWindow(wx.Frame):
         Args:
             command (str): The command to send
         """
+        # Stop walk if in progress (user typed a command)
+        if self._walk_steps:
+            self._stop_walk()
+
+        # Handle locate command (sends "ojear" to MUD)
+        if command.strip().lower() == "locate":
+            if self.connection.state != ConnectionState.CONNECTED:
+                self.audio.announce("No estás conectado.", AudioLevel.MINIMAL)
+                return
+            self._waiting_for_locate = True
+            self.connection.send("ojear")
+            self.append_output(f"> {command}\n")
+            return
+
+        # Handle irsala command (client-side navigation)
+        if command.lower().startswith("irsala "):
+            self._handle_irsala(command[7:].strip())
+            return
+
+        # Handle parar command (stop walk)
+        if command.strip().lower() == "parar":
+            self.audio.announce("Detenido.", AudioLevel.MINIMAL)
+            return
+
+        # Normal MUD commands
         if self.connection.state != ConnectionState.CONNECTED:
             self.audio.announce("No estás conectado.", AudioLevel.MINIMAL)
             return
@@ -355,6 +391,17 @@ class MainWindow(wx.Frame):
         # Parse each line
         for line in text.split('\n'):
             if line.strip():
+                # Check for locate response (line ending with [exits])
+                if self._waiting_for_locate and re.search(r'\[.*?\]\s*$', line):
+                    self._waiting_for_locate = False
+                    room = self.map_service.find_room(line)
+                    if room:
+                        exits = ", ".join(room.e.keys())
+                        self.audio.announce(f"Localizado: {room.n}. Salidas: {exits}", AudioLevel.MINIMAL)
+                        self.map_service.set_current_room(room.id)
+                    else:
+                        self.audio.announce("No localizado. Sala ambigua o no encontrada.", AudioLevel.MINIMAL)
+
                 parsed = self.parser.parse_line(line)
                 gagged = self.trigger_manager.evaluate(parsed)
                 self.buffer.add(parsed)
@@ -385,6 +432,74 @@ class MainWindow(wx.Frame):
         """Callback for room info from GMCP."""
         # Could update a room display, for now just announce
         pass
+
+    def _on_room_actual(self, name_line: str):
+        """Callback for Room.Actual GMCP (room name with exits)."""
+        # Resync only if already localized (avoid noise)
+        if self.map_service.get_current_room() is not None:
+            room = self.map_service.find_room(name_line)
+            if room:
+                self.map_service.set_current_room(room.id)
+
+    def _on_room_movimiento(self, direction: str):
+        """Callback for Room.Movimiento GMCP (direction taken)."""
+        room = self.map_service.move_by_direction(direction)
+        if room:
+            exits = ", ".join(room.e.keys())
+            self.audio.announce(f"{room.n}. Salidas: {exits}", AudioLevel.MINIMAL)
+
+    def _handle_irsala(self, query: str):
+        """Handle irsala (navigate to room) command."""
+        if not self.map_service.get_current_room():
+            self.audio.announce("No localizado. Escribe 'locate' primero.", AudioLevel.MINIMAL)
+            return
+
+        results = self.map_service.search_rooms(query)
+        if not results:
+            self.audio.announce(f"Sala no encontrada: {query}", AudioLevel.MINIMAL)
+        elif len(results) == 1:
+            self._walk_to(results[0])
+        else:
+            names = ", ".join(r.n for r in results[:5])
+            count = len(results)
+            suffix = "..." if count > 5 else ""
+            self.audio.announce(f"{count} salas encontradas: {names}{suffix}", AudioLevel.MINIMAL)
+            self.append_output(f"Varias salas encontradas:\n" + "\n".join(f"  {r.n}" for r in results) + "\n")
+
+    def _walk_to(self, target):
+        """Start walking to a target room."""
+        current = self.map_service.get_current_room()
+        if not current:
+            self.audio.announce("No localizado.", AudioLevel.MINIMAL)
+            return
+
+        path = self.map_service.find_path(current.id, target.id)
+        if path is None:
+            self.audio.announce("Ruta no encontrada.", AudioLevel.MINIMAL)
+            return
+
+        self._walk_steps = path
+        self._walk_index = 0
+        self.audio.announce(f"Yendo a {target.n}. {len(path)} pasos.", AudioLevel.MINIMAL)
+        self._walk_next_step()
+
+    def _walk_next_step(self):
+        """Send next step in walk sequence."""
+        if self._walk_index >= len(self._walk_steps):
+            self._walk_steps = []
+            self._walk_index = 0
+            return
+
+        step = self._walk_steps[self._walk_index]
+        self._walk_index += 1
+        self.connection.send(step)
+        wx.CallLater(1100, self._walk_next_step)
+
+    def _stop_walk(self):
+        """Stop current walk."""
+        self._walk_steps = []
+        self._walk_index = 0
+        self.audio.announce("Viaje detenido.", AudioLevel.MINIMAL)
 
 
 def main():

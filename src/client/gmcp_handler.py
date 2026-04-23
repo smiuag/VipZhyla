@@ -40,6 +40,8 @@ class GmcpHandler:
         self.on_channel_message: Optional[Callable[[ParsedMessage], None]] = None
         self.on_vitals_changed: Optional[Callable[[int, int, int, int], None]] = None
         self.on_room_info: Optional[Callable[[str, list[str]], None]] = None
+        self.on_room_actual: Optional[Callable[[str], None]] = None
+        self.on_room_movimiento: Optional[Callable[[str], None]] = None
         self.on_status_changed: Optional[Callable[[Dict[str, Any]], None]] = None
 
         # Track previous vitals for change detection
@@ -50,7 +52,7 @@ class GmcpHandler:
             'maxmp': None,
         }
 
-    def handle(self, module: str, data: Dict[str, Any]):
+    def handle(self, module: str, data: Any):
         """
         Handle a GMCP module with data.
 
@@ -68,6 +70,12 @@ class GmcpHandler:
             self._handle_room_info(data)
         elif module == "Comm.Channel":
             self._handle_comm_channel(data)
+        elif module == "Room.Actual":
+            if isinstance(data, str) and self.on_room_actual:
+                self.on_room_actual(data)
+        elif module == "Room.Movimiento":
+            if isinstance(data, str) and self.on_room_movimiento:
+                self.on_room_movimiento(data)
         # Silently ignore unknown modules
 
     def _handle_core_hello(self, data: Dict[str, Any]):
@@ -232,3 +240,11 @@ class GmcpHandler:
     def set_status_callback(self, callback: Callable[[Dict[str, Any]], None]):
         """Register callback for status changes."""
         self.on_status_changed = callback
+
+    def set_room_actual_callback(self, callback: Callable[[str], None]):
+        """Register callback for Room.Actual (room name with exits)."""
+        self.on_room_actual = callback
+
+    def set_room_movimiento_callback(self, callback: Callable[[str], None]):
+        """Register callback for Room.Movimiento (direction taken)."""
+        self.on_room_movimiento = callback
