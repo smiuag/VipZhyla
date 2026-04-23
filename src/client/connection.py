@@ -53,8 +53,8 @@ class MUDConnection:
         self.on_gmcp: Optional[Callable[[str, dict], None]] = None
         self.on_state: Optional[Callable[[ConnectionState, str], None]] = None
 
-        # Telnet processor
-        self.telnet = TelnetProcessor(send_raw_callback=self._send_raw)
+        # Telnet processor (will be initialized with encoding in set_encoding method)
+        self.telnet = TelnetProcessor(send_raw_callback=self._send_raw, encoding=encoding)
 
     def connect(self, host: str, port: int) -> bool:
         """
@@ -119,6 +119,16 @@ class MUDConnection:
             self.receive_thread = None
 
         self._set_state(ConnectionState.DISCONNECTED, "Desconectado")
+
+    def set_encoding(self, encoding: str):
+        """
+        Change character encoding (for dynamic preference changes).
+
+        Args:
+            encoding: Character encoding (utf-8, iso-8859-1, cp1252, etc.)
+        """
+        self.encoding = encoding
+        self.telnet.encoding = encoding
 
     def send(self, text: str):
         """

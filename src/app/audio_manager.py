@@ -259,6 +259,14 @@ class AudioManager:
             print(f"winsound playback failed: {e}")
             return False
 
+    def stop(self):
+        """Stop current speech immediately."""
+        if self.engine:
+            try:
+                self.engine.stop()
+            except Exception:
+                pass
+
     def shutdown(self):
         """Shutdown audio manager and clean up resources."""
         if self.engine:

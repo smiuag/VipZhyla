@@ -52,7 +52,9 @@ class KeyAction(Enum):
     # UI toggles
     TOGGLE_VERBOSE = "toggle_verbose"  # Ctrl+Shift+V
     SHOW_TRIGGERS = "show_triggers"    # Ctrl+T
+    SHOW_PREFERENCES = "show_preferences"  # Ctrl+P
     SHOW_HELP = "show_help"            # F1
+    STOP_SPEECH = "stop_speech"        # Ctrl+S
 
 
 class KeyboardHandler:
@@ -106,6 +108,8 @@ class KeyboardHandler:
         key_map[(ord('C'), wx.MOD_CONTROL)] = KeyAction.COPY_TO_CLIPBOARD
         key_map[(ord('K'), wx.MOD_CONTROL)] = KeyAction.CONNECT
         key_map[(ord('D'), wx.MOD_CONTROL)] = KeyAction.DISCONNECT
+        key_map[(ord('P'), wx.MOD_CONTROL)] = KeyAction.SHOW_PREFERENCES
+        key_map[(ord('S'), wx.MOD_CONTROL)] = KeyAction.STOP_SPEECH
         key_map[(ord('T'), wx.MOD_CONTROL)] = KeyAction.SHOW_TRIGGERS
         key_map[(ord('V'), wx.MOD_CONTROL | wx.MOD_SHIFT)] = KeyAction.TOGGLE_VERBOSE
 
@@ -176,6 +180,8 @@ class KeyboardHandler:
             KeyAction.COPY_TO_CLIPBOARD: "Ctrl+C - Copy to Clipboard",
             KeyAction.CONNECT: "Ctrl+K - Connect to Server",
             KeyAction.DISCONNECT: "Ctrl+D - Disconnect from Server",
+            KeyAction.SHOW_PREFERENCES: "Ctrl+P - Preferences",
+            KeyAction.STOP_SPEECH: "Ctrl+S - Stop Speech",
             KeyAction.SHOW_TRIGGERS: "Ctrl+T - Manage Triggers/Aliases/Timers",
             KeyAction.TOGGLE_VERBOSE: "Ctrl+Shift+V - Toggle Verbose Mode",
         }

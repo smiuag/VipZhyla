@@ -48,17 +48,20 @@ class TelnetProcessor:
     # ANSI escape code pattern: ESC[0-9;]*[mGKHF]
     ANSI_PATTERN = re.compile(r'\x1b\[[0-9;]*[mGKHF]')
 
-    def __init__(self, send_raw_callback: Optional[Callable[[bytes], None]] = None):
+    def __init__(self, send_raw_callback: Optional[Callable[[bytes], None]] = None, encoding: str = "utf-8"):
         """
         Initialize Telnet processor.
 
         Args:
             send_raw_callback: Called with bytes when Telnet response is needed.
                               If None, responses are silently dropped.
+            encoding: Character encoding for text decoding (default: utf-8)
         """
         self.send_raw = send_raw_callback or (lambda x: None)
+        self.encoding = encoding
         self.state = TelnetState.TEXT
         self.text_buffer = ""
+        self.text_bytes = bytearray()  # Accumulate raw bytes for proper UTF-8 decoding
         self.iac_buffer = []
         self.sb_data = bytearray()
         self.sb_option = None
@@ -84,6 +87,15 @@ class TelnetProcessor:
             elif self.state == TelnetState.DO_DONT_WILL_WONT:
                 self._handle_command_state(byte)
 
+        # Flush any remaining accumulated text bytes
+        if self.text_bytes:
+            try:
+                text = self.text_bytes.decode(self.encoding, errors='replace')
+                text_output.append(text)
+            except Exception:
+                text_output.append(self.text_bytes.decode('utf-8', errors='replace'))
+            self.text_bytes = bytearray()
+
         # Strip ANSI codes from accumulated text
         clean_text = self._strip_ansi(''.join(text_output))
 
@@ -92,15 +104,18 @@ class TelnetProcessor:
     def _handle_text_state(self, byte: int, text_output: list, gmcp_output: list):
         """Handle normal text byte."""
         if byte == IAC:
-            # IAC found, switch to IAC state
+            # IAC found - flush accumulated text bytes and switch to IAC state
+            if self.text_bytes:
+                try:
+                    text = self.text_bytes.decode(self.encoding, errors='replace')
+                    text_output.append(text)
+                except Exception:
+                    text_output.append(self.text_bytes.decode('utf-8', errors='replace'))
+                self.text_bytes = bytearray()
             self.state = TelnetState.IAC
         else:
-            # Regular character
-            try:
-                text_output.append(chr(byte))
-            except ValueError:
-                # Invalid UTF-8 byte, skip (will be handled by connection.py with errors='replace')
-                pass
+            # Accumulate byte for later decoding
+            self.text_bytes.append(byte)
 
     def _handle_iac_state(self, byte: int):
         """Handle byte after IAC."""

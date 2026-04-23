@@ -18,6 +18,7 @@ from ui.list_dialogs import (show_channel_history, show_room_history,
                              show_telepathy_history, show_event_list)
 from ui.trigger_dialog import show_trigger_manager
 from ui.help_dialog import show_help
+from ui.preferences_dialog import PreferencesDialog
 from models.triggers import TriggerManager
 from models.map_service import MapService
 from models.character_state import CharacterState
@@ -71,7 +72,8 @@ class MainWindow(wx.Frame):
             audio: AudioManager instance
             keyboard: KeyboardHandler instance
         """
-        super().__init__(parent, title=title, size=(600, 400))
+        super().__init__(parent, title=title, size=(1000, 700))
+        self.SetMinSize((800, 600))
 
         # Use provided managers (not duplicated)
         self.audio = audio or AudioManager()
@@ -106,15 +108,56 @@ class MainWindow(wx.Frame):
         self.gmcp.set_room_actual_callback(self._on_room_actual)
         self.gmcp.set_room_movimiento_callback(self._on_room_movimiento)
 
-        # Create sizer for layout
-        sizer = wx.BoxSizer(wx.VERTICAL)
-
         # Create main panel
         self.main_panel = AccessiblePanel(
             self,
             name="Main Application Panel",
             description="MUD client with text input and output areas"
         )
+        self.main_panel.SetBackgroundColour(wx.Colour(240, 240, 245))
+
+        # Create sizer for layout
+        sizer = wx.BoxSizer(wx.VERTICAL)
+        sizer.SetMinSize((950, 650))
+
+        # Fonts
+        header_font = wx.Font(11, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
+        output_font = wx.Font(10, wx.FONTFAMILY_TELETYPE, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL)
+        input_font = wx.Font(10, wx.FONTFAMILY_TELETYPE, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL)
+
+        # Output label
+        output_label = wx.StaticText(self.main_panel, label="MUD Output:")
+        output_label.SetFont(header_font)
+        output_label.SetForegroundColour(wx.Colour(40, 40, 80))
+        sizer.Add(output_label, 0, wx.LEFT | wx.TOP | wx.RIGHT, 12)
+
+        # Output area
+        self.output_text = wx.TextCtrl(
+            self.main_panel,
+            style=wx.TE_MULTILINE | wx.TE_READONLY | wx.TE_WORDWRAP,
+            value="VipZhyla v0.1.0 - Accessible MUD Client\n"
+                  "=" * 60 + "\n"
+                  "Ctrl+K: Connect to MUD\n"
+                  "Ctrl+P: Preferences (encoding, etc.)\n"
+                  "Ctrl+S: Stop speech\n"
+                  "Alt+U/O/I/K: Movement (West/East/Up/Down)\n"
+                  "Alt+8/K/7/9: Movement (North/South/NW/NE)\n"
+                  "Shift+F1-F4: History dialogs\n"
+                  "Ctrl+T: Trigger Manager\n"
+                  "Ctrl+Shift+V: Toggle verbose mode\n"
+                  "F1: Help\n"
+                  "=" * 60 + "\n"
+        )
+        self.output_text.SetFont(output_font)
+        self.output_text.SetBackgroundColour(wx.Colour(255, 255, 255))
+        self.output_text.SetForegroundColour(wx.Colour(20, 20, 60))
+        sizer.Add(self.output_text, 1, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.TOP, 10)
+
+        # Input label
+        input_label = wx.StaticText(self.main_panel, label="Command Input:")
+        input_label.SetFont(header_font)
+        input_label.SetForegroundColour(wx.Colour(40, 40, 80))
+        sizer.Add(input_label, 0, wx.LEFT | wx.TOP | wx.RIGHT, 12)
 
         # Input field
         self.input_field = wx.TextCtrl(
@@ -122,35 +165,21 @@ class MainWindow(wx.Frame):
             style=wx.TE_PROCESS_ENTER,
             value=""
         )
-        self.input_field.SetName("Command Input")
+        self.input_field.SetFont(input_font)
+        self.input_field.SetBackgroundColour(wx.Colour(255, 255, 255))
+        self.input_field.SetForegroundColour(wx.Colour(0, 0, 0))
+        self.input_field.SetMinSize((-1, 32))
         self.input_field.Bind(wx.EVT_TEXT_ENTER, self.on_command_enter)
+        sizer.Add(self.input_field, 0, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 10)
 
-        # Output area
-        self.output_text = wx.TextCtrl(
-            self.main_panel,
-            style=wx.TE_MULTILINE | wx.TE_READONLY | wx.TE_WORDWRAP,
-            value="VipZhyla v0.1.0 - Accessible MUD Client\n"
-                  "=" * 50 + "\n"
-                  "Press Ctrl+K to connect to a MUD.\n"
-                  "Alt+U/O/I/K for movement (West/East/Up/Down)\n"
-                  "Shift+F1-F4 for history\n"
-                  "Ctrl+Shift+V to toggle verbose mode\n"
-                  "=" * 50 + "\n"
-        )
+        self.main_panel.SetSizer(sizer)
         self.output_text.SetName("Output Display")
 
         # Status bar (HP/MP and connection status)
         self.status_bar = self.CreateStatusBar(2)
-        self.status_bar.SetStatusText("Desconectado", 0)
-        self.status_bar.SetStatusText("Modo Normal", 1)
-
-        # Add controls to sizer
-        sizer.Add(wx.StaticText(self.main_panel, label="Game Output:"), 0, wx.ALL, 5)
-        sizer.Add(self.output_text, 3, wx.EXPAND | wx.ALL, 5)
-        sizer.Add(wx.StaticText(self.main_panel, label="Command Input:"), 0, wx.ALL, 5)
-        sizer.Add(self.input_field, 0, wx.EXPAND | wx.ALL, 5)
-
-        self.main_panel.SetSizer(sizer)
+        self.status_bar.SetStatusText("Desconectado | Modo Normal", 0)
+        status_font = wx.Font(9, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL)
+        self.status_bar.SetFont(status_font)
 
         # Bind keyboard events
         self.Bind(wx.EVT_KEY_DOWN, self.on_key_down)
@@ -170,18 +199,18 @@ class MainWindow(wx.Frame):
     def _register_keyboard_handlers(self):
         """Register all keyboard action handlers."""
         # Movement (only active when connected)
-        self.keyboard.register_handler(KeyAction.MOVE_WEST, lambda e: self.send_command("west"))
-        self.keyboard.register_handler(KeyAction.MOVE_EAST, lambda e: self.send_command("east"))
-        self.keyboard.register_handler(KeyAction.MOVE_NORTH, lambda e: self.send_command("north"))
-        self.keyboard.register_handler(KeyAction.MOVE_SOUTH, lambda e: self.send_command("south"))
-        self.keyboard.register_handler(KeyAction.MOVE_NORTHWEST, lambda e: self.send_command("nw"))
-        self.keyboard.register_handler(KeyAction.MOVE_NORTHEAST, lambda e: self.send_command("ne"))
-        self.keyboard.register_handler(KeyAction.MOVE_SOUTHWEST, lambda e: self.send_command("sw"))
-        self.keyboard.register_handler(KeyAction.MOVE_SOUTHEAST, lambda e: self.send_command("se"))
-        self.keyboard.register_handler(KeyAction.MOVE_UP, lambda e: self.send_command("up"))
-        self.keyboard.register_handler(KeyAction.MOVE_DOWN, lambda e: self.send_command("down"))
-        self.keyboard.register_handler(KeyAction.MOVE_IN, lambda e: self.send_command("enter"))
-        self.keyboard.register_handler(KeyAction.MOVE_OUT, lambda e: self.send_command("exit"))
+        self.keyboard.register_handler(KeyAction.MOVE_WEST, lambda e: self.send_command("oeste"))
+        self.keyboard.register_handler(KeyAction.MOVE_EAST, lambda e: self.send_command("este"))
+        self.keyboard.register_handler(KeyAction.MOVE_NORTH, lambda e: self.send_command("norte"))
+        self.keyboard.register_handler(KeyAction.MOVE_SOUTH, lambda e: self.send_command("sur"))
+        self.keyboard.register_handler(KeyAction.MOVE_NORTHWEST, lambda e: self.send_command("noroeste"))
+        self.keyboard.register_handler(KeyAction.MOVE_NORTHEAST, lambda e: self.send_command("noreste"))
+        self.keyboard.register_handler(KeyAction.MOVE_SOUTHWEST, lambda e: self.send_command("sudoeste"))
+        self.keyboard.register_handler(KeyAction.MOVE_SOUTHEAST, lambda e: self.send_command("sudeste"))
+        self.keyboard.register_handler(KeyAction.MOVE_UP, lambda e: self.send_command("arriba"))
+        self.keyboard.register_handler(KeyAction.MOVE_DOWN, lambda e: self.send_command("abajo"))
+        self.keyboard.register_handler(KeyAction.MOVE_IN, lambda e: self.send_command("entrar"))
+        self.keyboard.register_handler(KeyAction.MOVE_OUT, lambda e: self.send_command("salir"))
 
         # Connection
         self.keyboard.register_handler(KeyAction.CONNECT, self.on_connect)
@@ -199,8 +228,10 @@ class MainWindow(wx.Frame):
 
         # UI toggles and management
         self.keyboard.register_handler(KeyAction.SHOW_HELP, self.on_show_help)
+        self.keyboard.register_handler(KeyAction.SHOW_PREFERENCES, self.on_show_preferences)
         self.keyboard.register_handler(KeyAction.SHOW_TRIGGERS, self.on_show_triggers)
         self.keyboard.register_handler(KeyAction.TOGGLE_VERBOSE, self.on_toggle_verbose)
+        self.keyboard.register_handler(KeyAction.STOP_SPEECH, lambda e: self.audio.stop())
 
     def on_command_enter(self, event):
         """Handle Enter key in input field."""
@@ -260,6 +291,10 @@ class MainWindow(wx.Frame):
             text (str): Text to append
         """
         wx.CallAfter(self.output_text.AppendText, text)
+        # Announce MUD output to screen reader users (text-to-speech)
+        # Only announce if connected (avoid spamming initial welcome message)
+        if self.connection.state == ConnectionState.CONNECTED:
+            wx.CallAfter(self.audio.announce, text.strip(), AudioLevel.NORMAL)
 
     def on_connect(self, event):
         """Handle connect request (Ctrl+K)."""
@@ -319,6 +354,16 @@ class MainWindow(wx.Frame):
     def on_show_help(self, event):
         """Show comprehensive help dialog."""
         show_help(self)
+
+    def on_show_preferences(self, event):
+        """Show preferences dialog."""
+        dlg = PreferencesDialog(self, self.connection.encoding)
+        if dlg.ShowModal() == wx.ID_OK:
+            new_encoding = dlg.get_selected_encoding()
+            if new_encoding.lower() != self.connection.encoding.lower():
+                self.connection.set_encoding(new_encoding)
+                self.audio.announce(f"Codificación: {new_encoding}", AudioLevel.MINIMAL)
+        dlg.Destroy()
 
     def on_toggle_verbose(self, event):
         """Toggle verbose mode."""
@@ -432,7 +477,9 @@ class MainWindow(wx.Frame):
         """Callback for character vitals from GMCP."""
         # Update character state
         self.character_state.update_vitals(hp, maxhp, mp, maxmp)
-        vitals_str = f"HP: {hp}/{maxhp} | MP: {mp}/{maxmp}"
+        hp_pct = int((hp / maxhp * 100)) if maxhp > 0 else 0
+        mp_pct = int((mp / maxmp * 100)) if maxmp > 0 else 0
+        vitals_str = f"HP: {hp}/{maxhp} ({hp_pct}%) | MP: {mp}/{maxmp} ({mp_pct}%)"
         self.status_bar.SetStatusText(vitals_str, 0)
 
     def _on_status_changed(self, data: dict):
