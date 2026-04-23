@@ -38,7 +38,7 @@ local FEATURES = {
     professions = true,         -- Phase 6E: 5 profession systems (Minero, Herrero, Marinero, Jornalero, Crear)
     class_abilities = true,     -- Phase 6E: All 24 character classes implemented
     audio_panning = true,       -- Phase 6E: 3D spatial audio with panning and distance simulation
-    interactive_prompts = false, -- Phase 6E: Not yet (needs UI)
+    interactive_prompts = true, -- Phase 6E: Dialog system for class/mode selection + startup wizard
 }
 
 -- ========== Initialize Core Tables ==========
@@ -138,19 +138,21 @@ function game.init()
     game.init_module("paths")           -- Path recording (Phase 6E)
     game.init_module("ambientacion")    -- Ambient sounds (Phase 6E)
     game.init_module("audio")           -- Audio panning (Phase 6E)
+    game.init_module("prompts")         -- Interactive prompts (Phase 6E)
     game.init_module("oficios")         -- Profession system (Phase 6E)
 
     -- Mark as initialized
     game.initialized = true
 
     -- Log feature status
-    vipzhyla.say("[FEATURES]")
+    vipzhyla.say("[FEATURES - Phase 6E COMPLETE]")
     vipzhyla.say("  Path Recording: " .. (FEATURES.path_recording and "✓" or "✗"))
     vipzhyla.say("  Ambient Sounds: " .. (FEATURES.ambient_sounds and "✓" or "✗"))
     vipzhyla.say("  Ability Detection: " .. (FEATURES.ability_detection and "✓" or "✗"))
-    vipzhyla.say("  Professions: " .. (FEATURES.professions and "✓" or "✗"))
-    vipzhyla.say("  Character Classes: " .. (FEATURES.class_abilities and "✓" or "✗"))
-    vipzhyla.say("  Audio Panning: " .. (FEATURES.audio_panning and "✓" or "✗"))
+    vipzhyla.say("  Professions (5): " .. (FEATURES.professions and "✓" or "✗"))
+    vipzhyla.say("  Character Classes (24): " .. (FEATURES.class_abilities and "✓" or "✗"))
+    vipzhyla.say("  Audio Panning (3D): " .. (FEATURES.audio_panning and "✓" or "✗"))
+    vipzhyla.say("  Interactive Prompts: " .. (FEATURES.interactive_prompts and "✓" or "✗"))
 
     vipzhyla.announce("Scripts initialized successfully")
     helpers.log("All modules loaded and ready")

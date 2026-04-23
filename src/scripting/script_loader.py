@@ -6,7 +6,7 @@ to Lua APIs (audio, TTS, state, etc.).
 """
 
 import logging
-from typing import Optional, Dict, Any, Callable
+from typing import Optional, Dict, Any, Callable, List
 from pathlib import Path
 
 from .lua_runtime import LuaRuntime
@@ -42,6 +42,12 @@ class ScriptLoader:
         self.on_play_directional_sound: Optional[Callable[[str, str, float, int, str], None]] = None
         self.on_update_sound_position: Optional[Callable[[str, str, float], None]] = None
         self.on_stop_sound: Optional[Callable[[str], None]] = None
+        self.on_show_list_dialog: Optional[Callable[[str, str, List[str], str, str], Optional[str]]] = None
+        self.on_show_yes_no_dialog: Optional[Callable[[str, str], Optional[int]]] = None
+        self.on_show_text_dialog: Optional[Callable[[str, str, str], Optional[str]]] = None
+        self.on_show_multi_select_dialog: Optional[Callable[[str, str, List[str], str, str], Optional[List[int]]]] = None
+        self.on_save_character_config: Optional[Callable[[str, Dict[str, Any]], None]] = None
+        self.on_load_character_config: Optional[Callable[[str], Optional[Dict[str, Any]]]] = None
 
     def load_scripts(self) -> bool:
         """
@@ -85,6 +91,12 @@ class ScriptLoader:
             'play_directional_sound': self._callback_play_directional_sound,
             'update_sound_position': self._callback_update_sound_position,
             'stop_sound': self._callback_stop_sound,
+            'show_list_dialog': self._callback_show_list_dialog,
+            'show_yes_no_dialog': self._callback_show_yes_no_dialog,
+            'show_text_dialog': self._callback_show_text_dialog,
+            'show_multi_select_dialog': self._callback_show_multi_select_dialog,
+            'save_character_config': self._callback_save_character_config,
+            'load_character_config': self._callback_load_character_config,
         }
 
         # Register each callback
@@ -166,6 +178,54 @@ class ScriptLoader:
             self.on_stop_sound(sound_id)
         else:
             logger.info(f"[Lua Stop Sound] {sound_id}")
+
+    def _callback_show_list_dialog(
+        self, title: str, message: str, items: list, ok_label: str, cancel_label: str
+    ) -> Optional[str]:
+        """Handle vipzhyla.show_list_dialog() from Lua."""
+        if self.on_show_list_dialog:
+            return self.on_show_list_dialog(title, message, items, ok_label, cancel_label)
+        logger.info(f"[Lua List Dialog] {title}: {items}")
+        return items[0] if items else None
+
+    def _callback_show_yes_no_dialog(self, title: str, message: str) -> Optional[int]:
+        """Handle vipzhyla.show_yes_no_dialog() from Lua."""
+        if self.on_show_yes_no_dialog:
+            return self.on_show_yes_no_dialog(title, message)
+        logger.info(f"[Lua Yes/No Dialog] {title}: {message}")
+        return 1
+
+    def _callback_show_text_dialog(
+        self, title: str, message: str, default_value: str
+    ) -> Optional[str]:
+        """Handle vipzhyla.show_text_dialog() from Lua."""
+        if self.on_show_text_dialog:
+            return self.on_show_text_dialog(title, message, default_value)
+        logger.info(f"[Lua Text Dialog] {title}: {message}")
+        return default_value
+
+    def _callback_show_multi_select_dialog(
+        self, title: str, message: str, items: list, ok_label: str, cancel_label: str
+    ) -> Optional[List[int]]:
+        """Handle vipzhyla.show_multi_select_dialog() from Lua."""
+        if self.on_show_multi_select_dialog:
+            return self.on_show_multi_select_dialog(title, message, items, ok_label, cancel_label)
+        logger.info(f"[Lua Multi-Select Dialog] {title}: {items}")
+        return list(range(len(items)))
+
+    def _callback_save_character_config(self, class_name: str, config: Dict[str, Any]):
+        """Handle vipzhyla.save_character_config() from Lua."""
+        if self.on_save_character_config:
+            self.on_save_character_config(class_name, config)
+        else:
+            logger.info(f"[Lua Save Config] {class_name}: {config}")
+
+    def _callback_load_character_config(self, class_name: str) -> Optional[Dict[str, Any]]:
+        """Handle vipzhyla.load_character_config() from Lua."""
+        if self.on_load_character_config:
+            return self.on_load_character_config(class_name)
+        logger.info(f"[Lua Load Config] {class_name}")
+        return None
 
     # ===== Python -> Lua Event Dispatching =====
 
