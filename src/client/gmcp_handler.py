@@ -12,7 +12,7 @@ GMCP provides structured data alternative to fragile text parsing.
 
 from typing import Callable, Optional, Dict, Any
 from .mud_parser import ChannelType, ParsedMessage
-from src.app.audio_manager import AudioManager, AudioLevel
+from app.audio_manager import AudioManager, AudioLevel
 
 
 class GmcpHandler:

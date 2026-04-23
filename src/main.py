@@ -102,7 +102,6 @@ class MainWindow(wx.Frame):
             value=""
         )
         self.input_field.SetName("Command Input")
-        self.input_field.SetDescription("Type MUD commands here")
         self.input_field.Bind(wx.EVT_TEXT_ENTER, self.on_command_enter)
 
         # Output area
@@ -118,7 +117,6 @@ class MainWindow(wx.Frame):
                   "=" * 50 + "\n"
         )
         self.output_text.SetName("Output Display")
-        self.output_text.SetDescription("Game text and messages appear here")
 
         # Status bar (HP/MP and connection status)
         self.status_bar = self.CreateStatusBar(2)

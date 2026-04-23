@@ -88,11 +88,9 @@ class AccessiblePanel(wx.Panel):
         self._name = name
         self._description = description
 
-        # Set accessibility info
+        # Set accessibility info (wx.Panel only supports SetName)
         if name:
             self.SetName(name)
-        if description:
-            self.SetDescription(description)
 
     def MakeAccessible(self):
         """Enable accessibility for this panel and its children."""
@@ -132,8 +130,6 @@ class AccessibleTextCtrl(wx.TextCtrl, AccessibleControl):
 
         if name:
             self.SetName(name)
-        if description:
-            self.SetDescription(description)
 
 
 def announce_via_accessible(window, message):

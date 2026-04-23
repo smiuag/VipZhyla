@@ -16,7 +16,10 @@
       "Bash(python -m pytest tests/test_telnet_protocol.py -v)",
       "Bash(python -m venv venv)",
       "Bash(call venv\\\\Scripts\\\\activate.bat)",
-      "Bash(pip install *)"
+      "Bash(pip install *)",
+      "Bash(python -m pytest tests/ -v)",
+      "Bash(python *)",
+      "Bash(echo \"App startup result: $?\")"
     ]
   }
 }
