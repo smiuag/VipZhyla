@@ -1,0 +1,45 @@
+;Módulo: Takome.set
+;Versión: 1.0, 26/01/2024
+;Descripción: Triggers de sonidos puntuales de ambientación del reino de Takome.
+;Autor: Rhomdur.
+
+
+#Class Ambientacion
+
+#GTrigger {Levantas un par de piedras de enormes proporciones y las intentas apartar a un lado.} {
+#Play {RL\Ambientacion\Takome\Iripza\apartar piedras2.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {Apartas unas cuantas piedras y observas un agujero tan grande como tu brazo en la formación rocosa.} {
+#Play {RL\Ambientacion\Takome\Iripza\apartar piedras1.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {Apartas a un lado unas cuantas piedras pero todavía quedan muchas más en el montículo.} {
+#Play {RL\Ambientacion\Takome\Iripza\apartar piedras1.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {Apartas unas cuantas piedras más del montículo dejando el paso libre al interior de la cueva.} {
+#Play {RL\Ambientacion\Takome\Iripza\apartar piedras3.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {¡GGRRRRRRRRRRRRRRRRRRRRCLOCK!} {
+#Play {RL\Ambientacion\Takome\Iripza\palanca1.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {De pronto las cabezas de las serpientes de piedra cobran vida y se disponen a defender el portal?n.} {
+#Play {RL\Ambientacion\Takome\Iripza\cobras1.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {Empujas el caracter * que se hunde en la pared.} {
+#Play {RL\Ambientacion\Takome\Iripza\puzle1.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {Un ruído seco resuena en el interior del portal?n.} {
+#Play {RL\Ambientacion\Takome\Iripza\puzle2.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {Empujas el bloque de granito y una parte de la pared se desplaza dejando a la vista un nuevo pasillo.} {
+#Play {RL\Ambientacion\Takome\Iripza\puzle3.wav} @VolAmb1
+} {} AnyCase
+
+#Class 0

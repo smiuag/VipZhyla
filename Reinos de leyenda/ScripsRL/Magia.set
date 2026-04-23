@@ -1,0 +1,476 @@
+;Módulo: Magia.set
+;Versión: 2.0, 29/11/2021
+;Descripción: Triggers generales para magia.
+;Autores: eyrhien y Rhomdur.
+
+
+;Generales:
+
+#GTrigger {* empieza a formular un hechizo.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FuncComprobarSujeto %1 {RL\Hechizos\Hechizo aliado.wav} {RL\Hechizos\Hechizo enemigo.wav};
+#If {@ModoE = 1} {
+ #Say {%1} NoDisplay|Incoming;
+ #GagLine voice
+}
+} {}
+
+#GTrigger {* toca con su mano derecha su Cinturón del Guardián de la Magia.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FuncComprobarSujeto %1 {RL\Hechizos\Hechizo aliado.wav} {RL\Hechizos\Hechizo enemigo.wav};
+#If {@ModoE = 1} {
+ #Say {%1} NoDisplay|Incoming;
+ #GagLine voice
+}
+} {}
+
+#GTrigger {* alza un brazo al frente y extiende la palma de su mano mirando al frente.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FuncComprobarSujeto %1 {RL\Hechizos\Hechizo aliado.wav} {RL\Hechizos\Hechizo enemigo.wav};
+#If {@ModoE = 1} {
+ #Say {%1} NoDisplay|Incoming;
+ #GagLine voice
+}
+} {}
+
+#GTrigger {* pronuncia el cántico: *} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FuncComprobarSujeto %1 {RL\Hechizos\Pronuncia aliado.wav} {RL\Hechizos\Pronuncia enemigo.wav};
+#If {@ModoE = 1} {
+ #Say {%1: %2} NoDisplay|Incoming;
+ #GagLine Voice
+}
+} {}
+
+#GTrigger {¡Resistes los efectos del hechizo de *!} {
+#Play {RL\Hechizos\Resistes hechizo.wav}
+} {} AnyCase
+
+#GTrigger {Resistes los efectos del conjuro de *} {
+#Play {RL\Hechizos\Resistes hechizo.wav}
+} {} AnyCase
+
+#GTrigger {¡El hechizo de * no tiene ningún efecto en *!} {
+#Play {RL\Hechizos\Hechizo sin efecto.wav}
+} {} AnyCase
+
+
+
+;Pieles y protecciones:
+
+#GTrigger {La piel de * vuelve a su estado normal.} {
+FEventos %1 sin pieles!;
+FuncComprobarSujeto %1 0 0;
+#Play {RL\Hechizos\Pieles_espejos agenos off.wav};
+#If {@ModoE = 1} {
+ #Say {%1} NoDisplay|Incoming;
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {Las imágenes de * se desvanecen.} {
+FEventos %1 sin imágenes!;
+FuncComprobarSujeto %1 0 0;
+#Play {RL\Hechizos\Pieles_espejos agenos off.wav};
+#If {@ModoE = 1} {
+ #Say {%1} NoDisplay|Incoming;
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {* imágenes idénticas a * se dispersan desde su posición con un movimiento simétrico al que * realiza.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FEventos %1 %2 se dispersa;
+FuncComprobarSujeto %2 0 0;
+#Play {RL\Hechizos\Dispersion ilusoria.wav};
+#If {@ModoE = 1} {
+ #Say {%1 %2} NoDisplay|Output;
+ #GagLine Voice
+}
+} {}
+
+#GTrigger {*¡Tu movimiento rompe tu concentración y tu hechizo de * queda arruinado!} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Hechizos\Hechizo arruinado.wav}
+} {} AnyCase
+
+#GTrigger {* Tu ataque rebota en la piel de piedra de *} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Hechizos\Piel de piedra.wav};
+#If {@ModoE = 1} {
+ #Say {%1} NoDisplay|Incoming;
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {*[#] ¡Un tent?culo de oscuridad de los que rodea a * sale disparado y se enrosca sobre tu *} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Combate\Loa enemiga.wav};
+#If {@ModoE = 1} {
+ #GagLine voice
+}
+} {} AnyCase
+
+#GTrigger {[#] Una de las espadas guardianas que rodeaban a * bloquea tu golpe mientras parpadea absorviendo *.} {
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {}
+
+#GTrigger {Las espadas guardianas que rodeaban a * desaparecen.} {
+FEventos {%1 espadas guardianas off!};
+FuncComprobarSujeto %1 0 0;
+#Play {RL\Hechizos\Espadas guardianas agenas off.wav};
+#If {@ModoE = 1} {
+ #Say {%1} NoDisplay|Incoming;
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {Las serpientes de las Melenas de Dabahak de * se abalanzan sobre su cuello, mordiéndole con saña *} {
+FuncComprobarSujeto %1 0 0;
+#Play {RL\Hechizos\Carne a piedra.wav}
+} {} AnyCase
+
+#GTrigger {* deja de ser una estatua de piedra y pasa a ser de carne y hueso.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FuncComprobarSujeto %1 0 0;
+#Play {RL\Hechizos\Piedra a carne.wav}
+} {} AnyCase
+
+#GTrigger {¡Plop! ¡* aparece repentinamente ante tus ojos!} {
+FuncComprobarSujeto %1 0 0;
+FEventos %1 aparecido;
+#Play {RL\Hechizos\Aparecer.wav}
+} {} AnyCase
+
+
+;Retener:
+
+#GTrigger {*Sientes como una fuerza divina te rodea, frenando la posibilidad de cualquier movimiento.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Hechizos\Retener recibido.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {* termina un hechizo con unos gestos y * queda r?gid? como un poste.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FEventos %2 Retenido!;
+FuncComprobarSujeto %2 {RL\Hechizos\Retener a aliado.wav} {RL\Hechizos\Retener a enemigo.wav};
+#If {@ModoE = 1} {
+ #Say {%2! %2!} NoDisplay|Incoming;
+ #GagLine Voice
+}
+} {}
+
+#GTrigger {Puedes moverte libremente de nuevo.} {
+#Play {RL\Combate\Libre propio.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {* queda liberad? de la fuerza que le reten?a.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FEventos %1 libre!;
+FuncComprobarSujeto %1 {RL\Combate\Libre aliado.wav} {RL\Combate\Libre enemigo.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {[¡]Paralizas a * con tus ataque!} {
+#Play {RL\Hechizos\Retener.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {*Tu piel vuelve a su estado normal.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FEventos %0;
+#Play {RL\Hechizos\Pieles_espejos off.wav}
+} {} AnyCase
+
+#GTrigger {Tu piel se transforma en dura corteza de roble.} {
+#Play {RL\Hechizos\Piel de corteza.wav}
+} {} AnyCase
+
+#GTrigger {*Inicias una salmodia de extrañas palabras incomprensibles.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Hechizos\Salmodia propia.wav}
+} {} AnyCase
+
+#GTrigger {* inicia una salmodia de extrañas palabras incomprensibles.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FuncComprobarSujeto %1 0 0;
+#Play {RL\Hechizos\Salmodia agena.wav}
+} {} AnyCase
+
+
+;Acción libre:
+
+#GTrigger {*instantáneamente sientes como un aura de color amarillo recorre tu cuerpo, haciéndote cosquillas.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FEventos Acción libre On;
+#Play {RL\Hechizos\Accion libre on.wav}
+} {}
+
+#GTrigger {* te toca mientras formula su sortilegio, haciendo que un aura de color amarillo recubra tu cuerpo.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FEventos Acción libre on;
+#Play {RL\Hechizos\Accion libre on.wav}
+} {}
+
+#GTrigger {*El aura de protección de movimientos que te rodeaba parpadea rápidamente hasta desaparecer.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FEventos Acción libre Off;
+#Play {RL\Hechizos\Accion libre off.wav}
+} {}
+
+
+
+;Disipar magia:
+
+#GTrigger {Finalizas el hechizo 'disipar magia' sobre * y destruyes sus ridículos hechizos.} {
+FEventos %0;
+#Play {RL\Hechizos\Disipar magia.wav}
+} {} AnyCase
+
+#GTrigger {Finalizas el hechizo 'disipar magia' sobre * intentando destruír sus encantamientos.} {
+FEventos %0;
+#Play {RL\Hechizos\Disipar magia.wav}
+} {} AnyCase
+
+#GTrigger {Finalizas el hechizo 'disipar magia' sobre * y logras destruir algunos de sus hechizos*} {
+FEventos %0;
+#Play {RL\Hechizos\Disipar magia.wav}
+} {} AnyCase
+
+#GTrigger {Finalizas el hechizo sobre * pero sientes como sus hechizos son demasiado poderosos para tu habilidad*} {
+FEventos %0;
+#Play {RL\Hechizos\Hechizo sin efecto.wav}
+} {} AnyCase
+
+
+;Contrarrestar:
+
+#GTrigger {[#] Lanzas una descarga de éter puro contra *, haciendo que sus delicados movimientos*} {
+#Play {RL\Hechizos\Contrarrestar.wav}
+} {} AnyCase
+
+#GTrigger {[#] Lanzas una ráfaga de éter contra * con la intención de desconcentrarl*, pero su fuerza mental es*} {
+#Play {RL\Hechizos\Hechizo sin efecto.wav}
+} {} AnyCase
+
+#GTrigger {Tu hechizo contra * falla.} {
+#Play {RL\Hechizos\Hechizo sin objetivo.wav}
+} {} AnyCase
+
+#GTrigger {[#] Abres tu mano y lanzas una ráfaga de éter contra *, que no sufre otro efecto que un momentáneo mareo*} {
+#Play {RL\Hechizos\Hechizo sin efecto.wav}
+} {} AnyCase
+
+
+;Curaciones:
+
+#GTrigger {* cura algunas de sus heridas más *.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FEventos %1 %2;
+FuncComprobarSujeto %1 0 0;
+#Play {RL\Hechizos\Cura otro.wav};
+#If {@ModoE = 1} {
+ #Say {%1 %2} NoDisplay|Output;
+ #GagLine Voice
+}
+} {}
+
+#GTrigger {* formula un hechizo y cura algunas de las heridas más * de *.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FEventos %1 %2 %3;
+FuncComprobarSujeto %3 0 0;
+#Play {RL\Hechizos\Cura otro.wav};
+#If {@ModoE = 1} {
+ #Say {%1 %2 %3} NoDisplay|Output;
+ #GagLine Voice
+}
+} {}
+
+#GTrigger {* te toca, cur?ndote algunas de tus heridas más *.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FuncComprobarSujeto %1 0 0;
+#Play {RL\Sucesos\Cura recibida.wav};
+#If {@ModoE = 1} {
+ #Say {%1 %3} NoDisplay|Output;
+ #GagLine Voice
+}
+} {}
+
+#GTrigger {* te cura a través de vuestro enlace vital, sanando algunas de tus heridas más *.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Sucesos\Cura recibida.wav};
+#If {@ModoE = 1} {
+ #Say {%2} NoDisplay|Output;
+ #GagLine Voice
+}
+} {}
+
+#GTrigger {¡Te envuelve una tormenta de luz curativa!} {
+FEventos Tormenta Sagrada;
+#Play {RL\Sucesos\Cura recibida.wav}
+} {} AnyCase
+
+#GTrigger {Eres restablecid? por el poder curativo de las aguas de Eralie mientras su bendición cae sobre ti.} {
+FEventos Cántaro de Eralie;
+#Play {RL\Sucesos\Cura recibida.wav}
+} {} AnyCase
+
+#GTrigger {*te toca y te transmite un extraño cosquilleo. Éste, se extiende por todo tu cuerpo y sientes una gran *} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FEventos curación recibida;
+#Play {RL\Sucesos\Cura recibida.wav}
+} {} AnyCase
+
+#GTrigger {Algunas de tus heridas sanan m?gicamente.} {
+FEventos Regeneración mágica;
+#Play {RL\Sucesos\Cura recibida.wav}
+} {} AnyCase
+
+
+#GTrigger {De repente percibes una sombra mágica acechante. Parece que alguien está interesado en tus acciones.} {
+#Play {RL\Hechizos\Sombra mágica.wav}
+} {} AnyCase
+
+
+;Esfera mágica de wilan:
+
+#GTrigger {Un brillante globo de fuerza surge de las manos de * y se proyecta hacia ti intentándo engullirte*} {
+FEventos Wilan fallida de %1;
+#Play {RL\Hechizos\Wilan fallo.wav}
+} {} AnyCase
+
+#GTrigger {Un brillante globo de fuerza surge de las manos de * y se precipita sobre ti dejándote encerrad? dentro.} {
+FEventos Wilan recibida de %1;
+#Play {RL\Hechizos\Wilan on.wav}
+} {} AnyCase
+
+#GTrigger {La esfera de energía que te envolvía desaparece.} {
+FEventos Wilan fuera;
+#Play {RL\Hechizos\Wilan off.wav}
+} {} AnyCase
+
+#GTrigger {Un brillante globo de fuerza surge de las manos de * y se precipita sobre * dejándolo encerrado dentro.} {
+FEventos %1 wilan %2;
+FuncComprobarSujeto %2 0 0;
+#Play {RL\Hechizos\Wilan otro on.wav}
+} {} AnyCase
+
+#GTrigger {La esfera de energía que envolvía a * desaparece.} {
+FEventos Wilan %1 fuera;
+FuncComprobarSujeto %1 0 0;
+#Play {RL\Hechizos\Wilan otro off.wav}
+} {} AnyCase
+
+
+;Resis y protes:
+
+#GTrigger {Tu resistencia de * se desvanece.} {
+FEventos %0;
+#Play {RL\Hechizos\Protes resis of.wav}
+} {} AnyCase
+
+#GTrigger {Eres cubierto por un aura *.} {
+#Play {RL\Hechizos\Protes resis on.wav}
+} {} AnyCase
+
+
+;Enlace vital:
+
+#GTrigger {* hace unos aspavientos con las manos y respira hondo, al terminar el hechizo notas una conexión con él.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FEventos Enlace vital on;
+#Play {RL\Hechizos\Enlace vital on.wav}
+} {}
+
+#GTrigger {Tu hechizo de 'enlace vital' desaparece.} {
+FEventos Enlace vital off;
+#Play {RL\Hechizos\Enlace vital of.wav}
+} {} AnyCase
+
+#GTrigger {*[#] [¡]El cielo ruge cuando invocas un relámpago que cae sobre *!} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Hechizos\Relampago.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+
+;Regeneración mágica:
+
+#GTrigger {* le lanza el hechizo de regeneraci?n a *.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FuncComprobarSujeto %3 0 0;
+FEventos %0;
+#Play {RL\Hechizos\Regeneracion otro on.wav};
+#If {@ModoE = 1} {
+ #Say {%3} NoDisplay|Incoming;
+ #GagLine Voice
+}
+} {}
+
+#GTrigger {* lanza el hechizo de regeneraci?n sobre ti.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FEventos %0;
+#Play {RL\Hechizos\Regeneracion on.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {}
+ 
+#GTrigger {La regeneraci?n m?gica de * termina.} {
+FuncComprobarSujeto %3 0 0;
+FEventos %0;
+#Play {RL\Hechizos\Regeneracion otro off.wav};
+#If {@ModoE = 1} {
+ #Say {%3} NoDisplay|Incoming;
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {Un s?bito y g?lido escalofrio trepa por tu espalda anunciando el fin del hechizo de 'regeneraci?n' que te afectaba.} {
+FEventos Regeneración mágica off;
+#Play {RL\Hechizos\Regeneracion off.wav}
+} {} AnyCase
+
+
+;Espadas guardianas:

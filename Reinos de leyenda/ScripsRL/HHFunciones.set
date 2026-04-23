@@ -1,0 +1,248 @@
+;Módulo: Otros.set
+;Versión: 1.0, 10/02/2025
+;Descripción: Funciones para la gestión de los ataques de otros, ya sea sobre nosotros o sobre terceros.
+;Autor: Rhomdur.
+
+;Carga de los ficheros de habilidades y hechizos:
+#Load ScripsRL\Habilidades_otros.set
+#Load ScripsRL\Hechizos_otros.set
+
+;Variables:
+#Var HHOtro
+#Var HHVerbalizar
+
+
+;Función de verbalización de habilidades y hechizos recibidos.
+#GAlias FuncHHVerbalizar {
+#If {@ModoE = 0} {#Abort};
+#GagLine Voice;
+#Var HHVerbalizar {%Replace(@HHVerbalizar," 0","")};
+#Var HHVerbalizar {%RTrim(@HHVerbalizar)};
+#Say {@HHVerbalizar} NoDisplay|output
+}
+
+
+;Función de reproducción de habilidades que se preparan.
+;%1: Nombre de habilidad.
+#GAlias FuncReproducirHabilidadPreparando {
+#if {%IfWord(%1,@ListaAlertasHabilidades,|)} {
+ FuncComprobarSujeto 0 {RL\HHOtros\Alerta aliados\%1.wav} {RL\HHOtros\Alerta enemigos\%1.wav};
+ #Var HHOtro
+} {
+ #Var HHOtro %1
+}
+}
+
+
+;Función de reproducción de habilidades y hechizos recibidas:
+;%1: habilidad o hechizo. %2: receptor.
+;%2: 0, impacto a uno mismo. 1, agrupado a aliado. 2, agrupado a enemigo. 3, enemigo a agrupado.
+#GAlias FuncReproducirHabilidadRecibida {
+#if {%IfWord(%1,@ListaImpactosHabilidades,|)} {
+ #Play {RL\HHOtros\Habilidades impacto\%1.wav};
+ #Var HHOtro;
+ #Abort
+};
+#if {%IfWord(%1,@ListaImpactosHechizos,|)} {
+ #Play {RL\HHOtros\Hechizos impacto\%1.wav};
+ #Var HHOtro;
+ #Abort
+};
+#Var HHOtro %1;
+#If {%2 = 0} {
+ #Play {RL\HHOtros\Generales\Impacto generico propio.wav};
+ #Abort
+};
+#If {%2 = 1} {
+ #Play {RL\HHOtros\Generales\Impacto generico agrupado-aliado.wav}
+ #Abort
+};
+#If {%2 = 2} {
+ #Play {RL\HHOtros\Generales\Impacto generico agrupado-enemigo.wav}
+};
+#If {%2 = 3} {
+ #Play {RL\HHOtros\Generales\Impacto generico enemigo-agrupado.wav};
+ #Abort
+}
+}
+
+
+;Función general para las habilidades que se preparan:
+; %1 ejecutante, %2 habilidad, %3 objetivo.
+;%3 = 0 si el receptor es uno mismo.
+;%3 puede ser una dirección
+#GAlias FuncHabilidadPreparando {
+FEventos {Alerta %2 de %1 %If(%IfWord(%3,0, ),,"sobre %3")};
+;Si el receptor es uno mismo:
+#If {%3 = 0 or %3 = ""} {
+ FuncComprobarSujeto %1 {RL\HHOtros\Alerta aliados\Alerta propia.wav} {RL\\HHOtros\Alerta enemigos\Alerta propia.wav};
+ FuncReproducirHabilidadPreparando %2;
+ #Var HHOtro {@HHOtro de};
+ #Var HHVerbalizar {@HHOtro %1};
+ FuncHHVerbalizar;
+ #Abort
+};
+;Si el ejecutante está agrupado
+FuncComprobarGrupo %1;
+#If {@FlagComprobarGrupo = 1} {
+ FuncComprobarSujeto %1 1 1;
+ FuncReproducirHabilidadPreparando %2;
+ #If {%IfWord(%3,@ListaDireccionesValidas,|)} {
+  #Play {RL\HHOtros\Alerta aliados\Alerta agrupado-enemigo.wav}
+ } {
+  FuncComprobarSujeto %3 {RL\HHOtros\Alerta aliados\Alerta agrupado-aliado.wav} {RL\HHOtros\Alerta aliados\Alerta agrupado-enemigo.wav}
+ };
+ #Var HHOtro {@HHOtro a};
+ #Var HHVerbalizar {@HHOtro %3};
+ FuncHHVerbalizar;
+ #Abort
+};
+;Si el receptor está agrupado
+FuncComprobarGrupo %3;
+#If {@FlagComprobarGrupo = 1} {
+ FuncComprobarSujeto %1 {RL\HHOtros\Alerta aliados\Alerta aliado-aliado.wav} {RL\HHOtros\Alerta enemigos\Alerta enemigo-agrupado.wav};
+ FuncReproducirHabilidadPreparando %2;
+ #Var HHOtro {@HHOtro de};
+ #Var HHVerbalizar {@HHOtro %1};
+ FuncHHVerbalizar;
+ #Abort
+};
+#Var HHVerbalizar {%1 %2 %3};
+FuncHHVerbalizar;
+;Si el ejecutante es aliado o enemigo:
+FuncComprobarSujeto %1 1 1;
+#If {@FlagComprobarSujeto = 0} {
+ FuncComprobarSujeto %3 {RL\HHOtros\Alerta aliados\Alerta aliado-aliado.wav} {RL\HHOtros\Alerta aliados\Alerta aliado-enemigo.wav}
+} {
+ #If {%3 = "aquí" or %3 = "alguien"} {
+  #Play {RL\HHOtros\Alerta enemigos\Alerta propia.wav};
+  #Abort
+ };
+ FuncComprobarSujeto %3 {RL\HHOtros\Alerta enemigos\Alerta enemigo-aliado.wav} {RL\HHOtros\Alerta enemigos\Alerta enemigo-enemigo.wav}
+}
+}
+
+;Función general para las habilidades y hechizos que se reciben:
+; %1: ejecutante. %2: habilidad. %3: receptor. %4: critico. %5: tipo impacto. %6: direccion.
+;%3 = 0 si el receptor es uno mismo.
+;%4: 0 normal, 1 crítico.
+;%5: 1 impacto. 2 fuera de alcance. 3 esquivada. 4 parada.
+;%6: dirección válida, 0 si no hay dirección.
+#GAlias FuncHHImpacto {
+#If {%5 = 1} {
+ FEventos {Impacto %2 %If(%IfWord(%4,1, ),"crítico ",) %If(%Ifword(%1,0, ),,"de %1") %If(%IfWord(%3,0, ),,"sobre %3 ") %If(%IfWord(%6,0, ),,"desde %6") %If(%Defined(TempInfoImpacto),"(@TempINfoImpacto)",)}
+};
+#If {%5 = 2} {
+ FEventos {%2 %If(%IfWord(%3,0, ),,"de %1 ") sin objetivo}
+};
+#If {%5 = 3} {
+ FEventos {%If(%IfWord(%3,0, ),"Esquivas ","%3 esquiva ") %If(%IfWord(%4,1, ),"críticamente ",) %2 de %1 %If(%IfWord(%6,0, ),,"desde %6")}
+};
+#If {%5 = 4} {
+ FEventos {%If(%IfWord(%3,0, ),"Paras ","%3 para ") %If(%IfWord(%4,1, ),"críticamente ",) %2 de %1 %If(%IfWord(%6,0, ),,"desde %6")}
+};
+#Unvar TempInfoImpacto;
+;Sonido crítico:
+#If {%4 = 1} {
+ #Play {RL\HHOtros\Generales\Critico otro.wav}
+};
+;Si el receptor es uno mismo:
+#If {%3 = 0} {
+ #If {%5 = 1} {
+  FuncReproducirHabilidadRecibida %2 0 %4;
+  FuncDanoRecibido
+ };
+ #If {%5 = 3} {
+  #Play {RL\HHOtros\Generales\Esquiva propia.wav}
+ };
+ #If {%5 = 4} {
+  #Play {RL\HHOtros\Generales\Parada propia.wav}
+ };
+ FuncReproducirDireccion %1 %6 3;
+ #Var HHVerbalizar {@HHOtro %1};
+ FuncHHVerbalizar;
+ #Abort
+};
+;Si el receptor es cualquier otro:
+;Si el ejecutante está agrupado
+FuncComprobarGrupo %1;
+#If {@FlagComprobarGrupo = 1} {
+ #If {%5 = 2} {
+  #Play {RL\HHOtros\Generales\Sin objetivo agrupado.wav};
+  #Var HHVerbalizar %2
+ };
+ #If {%5 = 1} {
+  FuncComprobarSujeto %3 1 1;
+  #If {@FlagComprobarSujeto = 0} {
+   FuncReproducirHabilidadRecibida %2 1 %4
+  } {
+   FuncReproducirHabilidadRecibida %2 2 %4
+  };
+  #Var HHVerbalizar {@HHOtro %3}
+ };
+ #If {%5 = 3} {
+  #Play {RL\HHOtros\Generales\Esquiva otro.wav};
+  #Var HHVerbalizar {%1 %2 %3}
+ };
+ #If {%5 = 4} {
+  #Play {RL\HHOtros\Generales\Parada otro-agrupado.wav};
+  #Var HHVerbalizar {%2 de %3}
+ };
+ FuncReproducirDireccion %1 %6 3;
+ FuncHHVerbalizar;
+ #Abort
+};
+;Si el receptor está agrupado
+FuncComprobarGrupo %3;
+#If {@FlagComprobarGrupo = 1} {
+ FuncComprobarSujeto %1 1 1;
+ FuncReproducirDireccion %6 3;
+ #If {%5 = 1} {
+  FuncReproducirHabilidadRecibida %2 3 %4;
+  #Var HHVerbalizar {@HHOtro %3};
+  #If {@FlagComprobarSujeto = 0} {
+   #Play {RL\HHOtros\Generales\Impacto aliado-aliado.wav}
+  } {
+   #Play {RL\HHOtros\Generales\Impacto enemigo-Agrupado.wav}
+  }
+ };
+ #If {%5 = 3} {
+  #Play {RL\HHOtros\Generales\Esquiva agrupado-otro.wav};
+  #Var HHVerbalizar {%1 %2 %3}
+ };
+ #If {%5 = 4} {
+  #Play {RL\HHOtros\Generales\Parada agrupado-otro.wav};
+  #Var HHVerbalizar {%1 %2 %3}
+ };
+ FuncReproducirDireccion %1 %6 3;
+ FuncHHVerbalizar;
+ #Abort
+};
+;Si el receptor es cualquier otro:
+#If {%5 = 2} {
+ FuncComprobarSujeto %1 {RL\HHOtros\Generales\Sin objetivo aliado.wav} {RL\HHOtros\Generales\Sin objetivo enemigo.wav};
+ #Var HHVerbalizar {%2 de %1};
+ FuncReproducirDireccion %1 %6 3;
+ FuncHHVerbalizar;
+ #Abort
+};
+#Var HHVerbalizar {%1 %2 %3};
+#If {%5 = 1} {
+ FuncComprobarSujeto %1 1 1;
+ #If {@FlagComprobarSujeto = 0} {
+  FuncComprobarSujeto %3 {RL\HHOtros\Generales\Impacto aliado-aliado.wav} {RL\HHOtros\Generales\Impacto aliado-enemigo.wav}
+ } {
+  FuncComprobarSujeto %3 {RL\HHOtros\Generales\Impacto enemigo-aliado.wav} {RL\HHOtros\Generales\Impacto enemigo-enemigo.wav}
+ }
+};
+#If {%5 = 3} {
+#Play {RL\HHOtros\Generales\Esquiva otro.wav}
+};
+#If {%5 = 4} {
+ #Play {RL\HHOtros\Generales\Parada otro.wav}
+};
+FuncReproducirDireccion %1 %6 3;
+FuncHHVerbalizar
+}
+
+

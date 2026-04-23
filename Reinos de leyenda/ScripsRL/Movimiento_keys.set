@@ -1,0 +1,209 @@
+;Módulo: Movimiento_keys.set
+;Versión: 2.2, 07/12/2024
+;Descripción: Incluye todas las keys y funciones relacionadas con el movimiento.
+;Autor: Rhomdur.
+
+;Declaración de variables:
+#Var Direccion
+
+
+;Función que recibe una salida del tedclado, la filtra y la envía a función de movimiento primario.
+;%1 Salida que se recibe del teclado.
+;Var FiltroSalidas: 0 desactiva la comprobación, 1 la activa.
+#GAlias FuncMovKeys {
+#Var FlagComprobarSalida 0;
+#If {@FiltroSalidas = 1} {
+ #If {%IfWord(%1,@SalidasLista,|) or %IfWord(%1,@SalidasEspecialesLista,|) or %IfWord("No ves nada",@SalidasLista,|) or %IfWord("Todas",@SalidasLista,|)} {
+  FuncMov1 %1
+ } {
+  #Play {RL\Movimiento\Direccion erronea.wav}
+ }
+} {
+ FuncMov1 %1
+}
+}
+
+;Función que recibe las salidas de los paths y las envía como movimiento primario.
+;%1: Salida que envía el path.
+#GAlias FuncMovPath {
+FuncMov1 %1
+}
+
+
+;Función que ejecuta el movimiento principal adaptando el comando según localización, modos etc.
+#GAlias FuncMov1 {
+#Var Direccion %1;
+#If {%IfWord("Árbol: Entre las ramas",@Localizacion, )} {
+ saltar %1;
+ #Abort
+};
+#If {%IfWord("Fondo Marino",@Localizacion, ) or %IfWord("Bajo el Océano",@Localizacion, )} {
+ nadar %1;
+ #Abort
+};
+#If {%Defined(ModoSigilar) and @ModoSigilar = 1} {
+ #Var FlagSigilando 1;
+ sigilar %1;
+ #Abort
+};
+#If {%Defined(ModoMarinero) and @ModoMarinero = 1} {
+ FuncMarineroKeys %1;
+ #Abort
+};
+#If {%Defined(FlagSigilando) and @FlagSigilando = 1} {
+ #Var FlagSigilando 0
+};
+%1
+}
+
+;Función que ejecuta el movimiento secundario adaptando el comando según localización, modos etc.
+#GAlias FuncMov2 {
+#Var Direccion %1;
+#If {@FlagMontado = 1} {
+ galopar %1;
+ #Abort
+};
+#If {%Defined(ModoSigilar) and @ModoSigilar = 1} {
+ #Var FlagSigilando 0;
+ %1;
+ #Abort
+};
+#If {%Defined(ModoMarinero) and @ModoMarinero = 1} {
+ %1;
+ #Var ModoMarinero 0;
+ #Abort
+};
+#If {%Defined(FlagMov2)} {
+ FuncMov2Clase %1;
+ #Abort
+};
+#Play {RL\Generales\Tecla bloqueada.wav}
+}
+
+
+
+;Keys de movimiento primario teclado qwerty:
+
+#GKey Alt-8 {FuncMovKeys n}
+#GKey Alt-k {FuncMovKeys s}
+#GKey Alt-o {FuncMovKeys e}
+#GKey Alt-u {FuncMovKeys o}
+#GKey Alt-9 {FuncMovKeys ne}
+#GKey Alt-7 {FuncMovKeys no}
+#GKey Alt-l {FuncMovKeys se}
+#GKey Alt-j {FuncMovKeys so}
+#GKey Alt-i {FuncMovKeys ar}
+#GKey Alt-m {FuncMovKeys ab}
+#GKey Alt-, {FuncMovKeys de} 
+#GKey Alt-. {FuncMovKeys fu}
+
+
+;Keys de movimientosecundario teclado qwerty:
+
+#GKey Alt-shift-8 {FuncMov2 n}
+#GKey Alt-shift-k {FuncMov2 s}
+#GKey Alt-shift-o {FuncMov2 e}
+#GKey Alt-shift-u {FuncMov2 o}
+#GKey Alt-shift-9 {FuncMov2 ne}
+#GKey Alt-shift-7 {FuncMov2 no}
+#GKey Alt-shift-l {FuncMov2 se}
+#GKey Alt-shift-j {FuncMov2 so}
+#GKey Alt-shift-i {FuncMov2 ar}
+#GKey Alt-shift-m {FuncMov2 ab}
+#GKey Alt-shift-, {FuncMov2 de}
+#GKey Alt-shift-. {FuncMov2 fu}
+
+
+;Keys de movimiento teclado numérico:
+
+#GKey numpad8 {FuncMovKeys n}
+#GKey numpad2 {FuncMovKeys s}
+#GKey numpad6 {FuncMovKeys e}
+#GKey numpad4 {FuncMovKeys o}
+#GKey numpad9 {FuncMovKeys ne}
+#GKey numpad7 {FuncMovKeys no}
+#GKey numpad3 {FuncMovKeys se}
+#GKey numpad1 {FuncMovKeys so}
+#GKey numpad5 {FuncMovKeys ar}
+#GKey numpad0 {FuncMovKeys ab}
+#GKey numpad. {FuncMovKeys de} 
+#GKey numpad+ {FuncMovKeys fu}
+
+
+; Leer el último movimiento de enemigos:
+#GKey alt-3 {
+#If {@UltimoMovimientoE = ""} {
+ #Say {Aún no has visto moverse a ningún enemigo} NoDisplay|OutPut
+} {
+ #Say {@UltimoMovimientoE} NoDisplay|OutPut
+}
+}
+
+;Desplegar el historial de movimientos enemigos:
+#GKey alt-shift-3 {
+#If {@HistorialMovimientosE = ""} {
+ #Say {Historial de movimientos de enemigos vacío.} NoDisplay|OutPut
+} {
+#Pic {%ReverseList(@HistorialMovimientosE)}
+}
+}
+
+
+; Leer el último movimiento de aliados:
+#GKey alt-4 {
+#If {@UltimoMovimientoA = ""} {
+ #Say {Aún no has visto moverse a ningún aliado} NoDisplay|OutPut
+} {
+ #Say {@UltimoMovimientoA} NoDisplay|OutPut
+}
+}
+
+;Desplegar el historial de movimientos aliados:
+#GKey alt-shift-4 {
+#If {@HistorialMovimientosA = ""} {
+ #Say {Historial de movimientos de aliados vacío.} NoDisplay|OutPut
+} {
+#Pic {%ReverseList(@HistorialMovimientosA)}
+}
+}
+
+
+;Detener cualquier tipo de movimiento en curso y limpiar la cola de comandos: 
+#GKey ctrl-d {
+#Stop;
+#Var FlagAutoMov 0;
+#Var AutoMovManual 0;
+#If {@Galopando = 1} {decir so};
+parar
+}
+
+;Verbalizar nuestra localización:
+#GKey ctrl-h {
+#Say {@Localizacion} NoDisplay|Output
+}
+
+;Verbalizar la dirección desde la que llegamos:
+#GKey ctrl-shift-p {
+#If {@DireccionRetorno = ""} {
+ #Say {No se sabe como has llegado hasta aquí} NoDisplay|output
+} {
+#Say {Has llegado desde @DireccionRetorno} NoDisplay|Output
+}
+}
+
+;Verbalizar la última dirección de salida del objetivo principal:
+#GKey alt-p {
+#If {@Objetivo = ""} {
+ #Say {No hay un objetivo definido. Define el nick X antes} NoDisplay|Output;
+ #Abort
+};
+#If {@ObjetivoSeVa = "" and @ObjetivoLlega = ""} {
+ #Say {No has visto moverse a @Objetivo} NoDisplay|Output
+} {
+ #If {@ObjetivoSeVa <> ""} {
+  #Say {@ObjetivoSeVa. @Objetivo se va} VoiceOnly|Output
+  } {
+  #Say {@ObjetivoLlega. @Objetivo llega} VoiceOnly|Output
+ }
+}
+}

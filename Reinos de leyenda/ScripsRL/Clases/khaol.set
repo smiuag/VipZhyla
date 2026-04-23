@@ -1,0 +1,40 @@
+;Módulo: khaol.set
+Versión: 1.0, 16/12/2020
+;Descripción: Soporte para la clase sacerdote de Khaol
+;Autor: eyrhien. 
+
+
+#Load ScripsRL\Clases\Sigiladores.set
+#Load ScripsRL\Clases\Magia_clerical.set
+
+#Key alt-z {  abrojos }
+
+#Key alt-x {   oportunidad x }
+
+#Key alt-c {   apuñalar x }
+#Key alt-a {   formular plaga de desdicha:x }
+#Key alt-s {   formular horror ponzoñoso:x }
+#Key alt-d {   formular circulo de nausea:x }
+#Key alt-w {   formular tormenta arcana:x }
+#Key alt-q {   formular afligir:x  }
+#Key alt-e {   formular disipar magia:x  }
+
+#TRIGGER {Vislumbras una oportunidad de ataque contra *.} {#Play {RL\Habilidades\khaol\oportunidad.wav}} {}
+#TRIGGER {Vislumbras una oportunidad de ataque contra *.} {#Play {RL\Habilidades\khaol\oportunidad.wav}} {}
+#TRIGGER {# ¡Alcanzas a * con tu maniobra de apuñalar!} {#Play {RL\Habilidades\khaol\apuñalar.wav}} {}
+#TRIGGER {# ¡Alcanzas a * con tu maniobra de apuñalar!} {#Play {RL\Habilidades\khaol\apuñalar.wav}} {}
+#TRIGGER {* ¡Alcanzas a * con tu maniobra de apuñalar!} {#Play {RL\Habilidades\khaol\apuñalar.wav}} {}
+#TRIGGER {¡Lanzas un ataque de oportunidad contra *!} {#Play {RL\Habilidades\khaol\oportunidad impacta.wav}} {}
+#TRIGGER {* ¡* logra esquivar tu maniobra de apuñalar!} {#Play {RL\Habilidades\khaol\apuñalar falla.wav}} {}
+#TRIGGER {*¡Abres tu boca y expulsas una horda de asquerosas ratas zombi que muerden y arañan con sus garras putrefactas a *, haciendo que su cuerpo se gangrene y se pudra!} {#Play {RL\Habilidades\khaol\plaga 2.wav}} {}
+#TRIGGER {*¡Abres tu boca y expulsas una nube de insectos de plaga que inyectan su terrible veneno a *, infectándole con enfermedades desgarradoras!} {#Play {RL\Habilidades\khaol\plaga 3.wav}} {}
+#TRIGGER {*¡Abres tu boca y expulsas una densa y repulsiva nube de esporas que golpea de lleno a *, derritiendo su carne y pudriendo sus pulmones!} {#Play {RL\Habilidades\khaol\plaga 1.wav}} {}
+#TRIGGER {*¡Abres tu boca y expulsas una horda de asquerosas ratas zombi que muerden y arañan con sus garras putrefactas a *, *, haciendo que su cuerpo se gangrene y se pudra!} {#Play {RL\Habilidades\khaol\plaga 2.wav}
+} {}
+#TRIGGER {*¡Abres tu boca y expulsas una nube de insectos de plaga que inyectan su terrible veneno a *, *, infectándole con enfermedades desgarradoras!} {#Play {RL\Habilidades\khaol\plaga 3.wav}
+} {}
+#TRIGGER {*¡Abres tu boca y expulsas una densa y repulsiva nube de esporas que golpea de lleno a *, *, derritiendo su carne y pudriendo sus pulmones!} {#Play {RL\Habilidades\khaol\plaga 1.wav}} {}
+#TRIGGER {*¡Abres tu boca y expulsas un asqueroso chorro de mucosidad que salpica a *, llenando su piel de pústulas que explotan al instante!} {#Play {RL\Habilidades\khaol\plaga 4.wav}} {}
+#TRIGGER {*¡Abres tu boca y expulsas un asqueroso chorro de mucosidad que salpica a *, *, llenando su piel de pústulas que explotan al instante!} {#Play {RL\Habilidades\khaol\plaga 4.wav}} {}
+#TRIGGER {Pasas la mano sobre tu arma mientras conjuras el poder del fuego oscuro.} {#Play {RL\Habilidades\khaol\fuego oscuro on.wav}} {}
+#TRIGGER {El fuego oscuro de tu * se disipa lentamente.} {#Play {RL\Habilidades\khaol\fuego oscuro off.wav}} {}

@@ -1,0 +1,387 @@
+;Módulo: Embarcaciones.set
+;Versión: 1.0, 14/02/2025
+;Descripción: Todos los eventos que ocurren en el mar y no son especÃ­ficos para marineros.
+;Autor: Rhomdur
+
+
+;Declaración de variables:
+#Var ControlMovBarco 0
+#Var FlagNavegando 0
+#Var FlagOceanoControl 0
+
+
+
+;Función de control para activar la clase:
+;Se ejecuta al entrar en cada room.
+#GAlias FuncOceanoControl {
+#If {@FlagOceanoControl <> 0} {
+ #Var FlagOceanoControl 0;
+ #Class Marinero disable
+};
+#If {%IfWord("Puente de Gobierno",%0, ) or %IfWord("Ars Strategvm",%0, )} {
+ #Class Embarcaciones enable;
+ #Mat FlagOceanoControl {@FlagOceanoControl + 1}
+}
+}
+
+
+;Triggers de activación de la clase:
+
+#GTrigger {Cruzas la pasarela de acceso al * y llegas a su cubierta.} {
+#Class Embarcaciones enable;
+#Play {RL\Oceano\Embarcar.wav};
+#If {%IfWord(%char,%1, )} {
+ #Play {RL\Oceano\Bienvenida tripulacion.wav}
+}
+} {} AnyCase
+
+#GTrigger {Te las apa?as como puedes para trepar la escalera * y llegar as? a su cubierta.} {
+#Class Embarcaciones enable;
+#Play {RL\Oceano\Subir escalerilla.wav};
+#If {%IfWord(%char,%1, )} {
+ #Play {RL\Oceano\Bienvenida tripulacion.wav}
+}
+} {} AnyCase
+
+
+;En el interior de los barcos:
+#Class Embarcaciones
+
+;Acciones de desembarcar y desactivación de clases:
+
+#GTrigger {Coges carrerilla hasta saltar por la borda del * y *} {
+#Class Marinero disable;
+#Class Embarcaciones disable;
+#If {@ModoMarinero = 1} {
+ #Var ModoMarinero 0;
+ #Say {Modo marinero desactivado} NoDisplay|Output;
+ #Play {RL\Modos\Off.wav}
+};
+#Play {RL\Movimiento\Saltando.wav};
+#If {%IfWord("agua",%2, )} {
+ #Play {RL\Oceano\Zambullirse*2.wav}
+}
+} {} AnyCase
+
+#GTrigger {Desciendes por la escalera de* hasta llegar *.} {
+#Class Marinero disable;
+#Class Embarcaciones disable;
+#If {@ModoMarinero = 1} {
+ #Var ModoMarinero 0;
+ #Say {Modo marinero desactivado} NoDisplay|Output;
+ #Play {RL\Modos\Off.wav}
+};
+#Play {RL\Oceano\Bajar escalerilla.wav};
+#If {%IfWord("agua",%2, )} {
+ #Play {RL\Oceano\En el agua*2.wav}
+}
+} {} AnyCase
+
+#GTrigger {Cierras los ojos, rezas tus plegarias y te lanzas al vac?o desde lo alto del m?stil...} {
+#Class Embarcaciones disable;
+#Play {RL\Movimiento\Saltando.wav}
+} {} AnyCase
+
+#GTrigger {Al ver que el barco explota, te lanzas desesperadamente por la borda.} {
+#Class Marinero disable;
+#Class Embarcaciones disable;
+#If {@ModoMarinero = 1} {
+ #Var ModoMarinero 0;
+ #Say {Modo marinero desactivado} NoDisplay|Output;
+ #Play {RL\Modos\Off.wav}
+};
+#Play {RL\Oceano\Zambullirse*2.wav}
+} {} AnyCase
+
+#GTrigger {Por suerte has ca?do en tierra firme y no serás pasto de los tiburones. Aunque el mamporro en la cara no te lo quita nadie.} {
+#Class Marinero disable;
+#Class Embarcaciones disable;
+#Play {RL\Combate\Caida*4.wav}
+} {} AnyCase
+
+
+;Función para el movimiento del barco en el que estamos:
+;%1: Título de room. %2: coordenada oeste. %3: coordenada sur.
+#GAlias FuncMovBarco {
+#If {%IfWord("SL:",%1, )} {#Abort};
+#Var SalidasEspeciales {%1: %2 %3};
+#Var SalidasModoMarinero {%2 %3. %1};
+#If {@ControlMovBarco = 4} {
+ #Var ControlMovBarco 1
+} {
+ #Math ControlMovBarco {@ControlMovBarco + 1}
+};
+#If {@ControlMovBarco = 1 or @ControlMovBarco = 3} {
+ FuncPlayPan {RL\Oceano\Movimiento barco *4.wav} -4000;
+ FuncPlayFrec 43 47
+} {
+ FuncPlayPan {RL\Oceano\Movimiento barco *4.wav} 4000;
+ FuncPlayFrec 43 47
+};
+#If {@ModoE = 1} {
+ #Say {%1 (%2 %3)} NoDisplay|Incoming;
+ #GagLine Voice
+};
+#Var Presentes;
+#Var PresentesE
+}
+
+
+;Triggers que se disparan al llegar a una room en barco:
+
+#GTrigger {* [[]* Oeste, * Sur]} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FuncMovBarco %1 %2 %3
+} {} AnyCase
+ 
+#GTrigger {* [[]Todas]} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FuncMovBarco %1 todas
+} {} AnyCase
+
+
+;Movimiento de embarcaciones y personajes:
+
+#GTrigger {* se aproxima a*posici?n desde el *.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Var SujetoMovimiento2;
+#Var TipoMovimientoSalida;
+FuncAcortarDirecciones %4;
+FuncReproducirMovimientos 1 %1 %4;
+FuncHistorialMovimientos 0 %0;
+FuncVerbalizarMovimientos;
+FuncPlayPan {RL\Oceano\Embarcacion llega.wav} 0;
+#GagLine Voice
+} {}
+
+#GTrigger {* se aleja de*posici?n en direcci?n *.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Var SujetoMovimiento2;
+#Var TipoMovimientoSalida;
+FuncAcortarDirecciones %5;
+FuncReproducirMovimientos 2 %1 %5;
+FuncHistorialMovimientos 1 %0;
+FuncVerbalizarMovimientos;
+FuncPlayPan {RL\Oceano\Embarcacion se va.wav} 0;
+#GagLine Voice
+} {}
+
+#GTrigger {Algo sucede en el exterior: *} {
+#Play {RL\Oceano\Exterior.wav}
+} {} AnyCase
+
+#GTrigger {¡* acaba de llegar a la cubierta del *!} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FEventos %0;
+FuncComprobarSujeto %1 1 {RL\Oceano\Enemigo a bordo*2.wav};
+#Play {RL\Oceano\Llega a bordo.wav}
+} {}
+
+#GTrigger {* llega de la superficie.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Oceano\Salir agua otro*2.wav}
+} {}
+
+#GTrigger {* salta por la borda de la embarcaci?n y se zambulle en el agua.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FEventos %0;
+FuncComprobarSujeto %1 0 0;
+#Play {RL\Movimiento\Se va saltando.wav};
+#Play {RL\Oceano\Zambullirse otro.wav}
+} {}
+
+
+;Acciones a bordo:
+
+#GTrigger {Desenrollas la Escalera de Embarque anclada en la borda, y esta cae con un gracioso claqueteo*} { 
+#Play {RL\Oceano\Soltar escalera.wav}
+} {} AnyCase
+
+#GTrigger {Recoges lentamente la pesada Escalera de Embarque, impidiendo que nadie pueda acceder *} {
+#Play {RL\Oceano\Recoger escalera.wav}
+} {} AnyCase
+
+#GTrigger {* desenrolla la Escalera de Embarque anclada en la borda.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Oceano\Suelta escalera.wav}
+} {}
+
+#GTrigger {* recoge la Escalera de Embarque anclada en la borda.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Oceano\Recoge escalera.wav}
+} {}
+
+#GTrigger {Giras la pesada manivela que controla el Molinete del Ancla y lentamente ?sta aparece chorreando agua al cabo del tiempo.} {
+#Play {RL\Oceano\Recoger ancla.wav}
+} {} AnyCase
+
+#GTrigger {Giras la manivela que controla el Molinete del Ancla y ?sta se zambulle en el agua hasta desaparecer de tu vista*.} {
+#Play {RL\Oceano\Soltar ancla.wav}
+} {} AnyCase
+
+#GTrigger {* gira una manivela y, en el exterior, el ancla de la embarcaci?n se zambulle en el agua*} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Oceano\Suelta Ancla.wav}
+} {}
+
+#GTrigger {* gira una manivela y recoge el ancla de la embarcaci?n.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Oceano\Recoge ancla.wav}
+} {}
+
+#GTrigger {Con esfuerzo arrojas cuerpo de * por la borda y este cae al agua desapareciendo en sus profundidades.} {
+#Play {RL\Oceano\Por la borda.wav}
+} {} AnyCase
+
+
+;Acciones de navegación:
+
+#GTrigger {La embarcaci?n termina de orientarse hacia el *.} {
+#Play {RL\Oceano\Vela*4.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+	#GTrigger {[¡]Se produce una gran sacudida que por poco te hace caer de bruces al suelo! [¡]la embarcaci?n *} {
+#Var FlagNavegando 0;
+#Play {RL\Oceano\Choque barco.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {La embarcaci?n se detiene al haber llegado a un muelle.} {
+#Var FlagNavegando 0;
+#Play {RL\Oceano\Atracar.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+};
+#Var Presentes;
+#Var PresentesE
+} {}
+
+#GTrigger {La embarcaci?n se detiene.} {
+#Var FlagNavegando 0;
+#Play {RL\Oceano\Vela abajo.wav};
+#Play {RL\Oficios\Marinero\Navegar Detener.wav};
+#If {@ModoE = 1} {
+ #GagLine voice
+}
+} {} AnyCase
+
+#GTrigger {¡Qu? desastre! ¡nadie est? manejando el tim?n y la navegaci?n se va al traste!} {
+#Var FlagNavegando 0;
+#Play {RL\Oceano\Vela abajo.wav}
+} {} AnyCase
+
+
+;Efectos meteorológicos a bordo:
+
+#GTrigger {[¡]Viento en popa! [¡]la corriente favorable aumenta la velocidad!} {
+#Play {RL\Oceano\Corriente favorable.wav}
+} {} AnyCase
+
+#GTrigger {¡La fuerte corriente ralentiza la navegaci?n!} {
+#Play {RL\Oceano\Corriente desfavorable 1.wav}
+} {} AnyCase
+
+#GTrigger {¡La fort?sima corriente ralentiza terriblemente la navegaci?n!} {
+#Play {RL\Oceano\Corriente desfavorable 2.wav}
+} {} AnyCase
+
+
+;Ataques de embarcaciones:
+
+#GTrigger {Hab?is sido avistados por los piratas del Barco de la Tr?ada. ¡Es hora de luchar!} {
+#Play {RL\Oceano\Ataque piratas.wav}
+} {} AnyCase
+
+
+;Hundimientos:
+
+#GTrigger {¡* explota en miles de pedazos que salen disparados por los aires y caen con fuerza en el agua!} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Oceano\Hundimiento otro.wav}
+} {} AnyCase
+
+#GTrigger {¡* explota en miles de pedazos que salen disparados por los aires y caen con fuerza en el agua! ¡y TÚ eres uno de esos pedazos!} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Oceano\Hundimiento propio.wav}
+} {} AnyCase
+
+
+;Disparos de embarcaciones enemigas:
+
+#GTrigger {* [*] Un silbido in-crescendo es el aviso inminente de la bala disparada por * cuya cruenta explosión*} {
+#Play {RL\Oceano\Cañonazo enemigo *5.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {* [*] Una bala disparada por * hace explosión, causando daños moderados y lanzando maderos en llamas*} {
+#Play {RL\Oceano\Cañonazo enemigo *5.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {* [*] Una bala disparada por * se hunde en el casco de la embarcación. Cuando pensabas que*} {
+#Play {RL\Oceano\Cañonazo enemigo *5.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {* [*] Una bala lanzada por * se hunde en el casco * para explotar*} {
+#Play {RL\Oceano\Cañonazo enemigo *5.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {* [*] Varias saetas llegan desde *, clavándose con poca fuerza por doquier.} {
+#Play {RL\Oceano\Saeta enemigo *5.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {* [*] Disparan unas discretas saetas desde * pero apenas dañan la embarcación.} {
+#Play {RL\Oceano\Saeta enemigo *5.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {* [*] Las saetas disparadas desde * te pillan por sorpresa y se hunden con doloroso atino*} {
+#Play {RL\Oceano\Saeta enemigo *5.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {* [*] ¡Una lluvia de saetas disparadas desde * lo atraviesa todo a su paso!*} {
+#Play {RL\Oceano\Saeta enemigo *5.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+
+#Class 0
+#Class Embarcaciones disable

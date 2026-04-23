@@ -1,0 +1,642 @@
+;Módulo: Sucesos.set
+;Versión: 2.0, 14/03/2023
+;Descripción: Triggers de sonido para sucesos generales.
+;Autor: Rhomdur.
+
+;Declaración de variables:
+#Var FlagInvComp 0
+
+
+;Funciones:
+
+;Funciones para abrir y cerrar cosas:
+
+#GAlias FuncAbrir {
+#If {%IfWord("taquilla",%1, )} {
+ #Play {RL\Sucesos\Abrir taquilla.wav}
+};
+#If {%IfWord("puerta",%1, )} {
+ #Play {RL\Sucesos\Abrir puerta.wav}
+};
+#If {%IfWord("cofre",%1, )} {
+ #Play {RL\Sucesos\Abrir cofre.wav}
+}
+}
+
+#GAlias FuncCerrar {
+#If {%IfWord("taquilla",%1, )} {
+ #Play {RL\Sucesos\Cerrar taquilla.wav}
+};
+#If {%IfWord("puerta",%1, )} {
+ #Play {RL\Sucesos\Cerrar puerta.wav}
+};
+#If {%IfWord("cofre",%1, )} {
+ #Play {RL\Sucesos\Cerrar cofre.wav}
+}
+}
+
+
+;Sonidos para abrir y cerrar diferentes cosas:
+
+#GTrigger {*Abres *.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FuncAbrir %0
+} {} AnyCase
+
+#GTrigger {*abre *.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FuncAbrir %2
+} {}
+
+#GTrigger {*Cierras *.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FuncCerrar %0
+} {} AnyCase
+
+#GTrigger {*cierra *.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FuncCerrar %2
+} {}
+
+#GTrigger {Acerrojas la cerradura de *.} {
+#Play {RL\Sucesos\Cerradura bloquear.wav}
+} {} AnyCase
+
+#GTrigger {Descerrojas la cerradura de *.} {
+#Play {RL\Sucesos\Cerradura desbloquear.wav}
+} {} AnyCase
+
+#GTrigger {*acerroja la cerradura de *.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Sucesos\Cerradura bloquear.wav}
+} {} AnyCase
+
+#GTrigger {* descerroja la cerradura de *.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Sucesos\Cerradura desbloquear.wav}
+} {} AnyCase
+
+#GTrigger {*La puerta * se abre.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Sucesos\Abrir puerta.wav}
+} {} AnyCase
+
+#GTrigger {*La puerta * se cierra.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Sucesos\Cerrar puerta.wav}
+} {} AnyCase
+
+
+;Empuñar, desempuñar, mano etc:
+
+#GTrigger {*Equilibras tu * para sostenerl* con una sola mano.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#If {%Defined(FlagAtrapando) and @FlagAtrapando = 1} {#Var FlagAtrapando 0};
+#Play {RL\Contador\1P.wav};
+#Play {RL\Sucesos\1 mano.wav}
+} {} AnyCase
+
+#GTrigger {*Pones tu mano libre sobre la empuñadura de tu * sosteniéndol* a 2 manos.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Contador\2P.wav};
+#Play {RL\Sucesos\2 manos.wav}
+} {} AnyCase
+
+#GTrigger {*Finalmente equilibras *.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Sucesos\Equilibrar.wav}
+} {} AnyCase
+
+#GTrigger {*Empuñas tu *.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Sucesos\Empuñar.wav}
+} {} AnyCase
+
+#GTrigger {*Dejas de sostener tu *.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Sucesos\Dejas de sostener.wav}
+} {} AnyCase
+
+#GTrigger {*Desenvainas *} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Sucesos\Desenvainar.wav}
+} {} AnyCase
+
+#GTrigger {*Equilibras, con la destreza de tod? un* maestr?, *.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Sucesos\Equilibrar.wav}
+} {} AnyCase
+
+#GTrigger {*Equilibras r?pidamente *.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Sucesos\Equilibrar.wav}
+} {} AnyCase
+
+#GTrigger {*Envainas tu * en *} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Sucesos\Envainar.wav}
+} {} AnyCase
+
+#GTrigger {*Intercambias de mano *} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Sucesos\Intercambiar mano.wav}
+} {} AnyCase
+
+
+;Coger, dar, ofrecer etc.
+
+#GTrigger {* coge *} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#If {%NumWords(%1) = 1} {
+ #Play {RL\Sucesos\Coge.mp3}
+}
+} {}
+
+#GTrigger {* te ofrece *} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#If {%NumWords(%1) <= 2} {
+ #Play {RL\Sucesos\Te ofrece.wav}
+}
+} {}
+
+#GTrigger {*Finalmente logras cargar *} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Var FlagInvComp 0;
+#Play {RL\Sucesos\Cargar.wav}
+} {} AnyCase
+
+#GTrigger {Llevas demasiadas cosas y se te pueden caer.} {
+#If {@FlagInvComp = 0} {
+ #Var FlagInvComp = 1;
+ #Play {RL\Sucesos\Inventario completo.wav}
+} {
+ #GagLine All
+}
+} {} AnyCase
+
+#GTrigger {Recibes *, pero no puedes cargar con * y se te cae.} {
+#Play {RL\Sucesos\Se te cae.wav}
+} {} AnyCase
+
+#GTrigger {Dejas caer *.} {
+#Var FlagInvComp 0;
+#Play {RL\Sucesos\Se te cae.wav}
+} {} AnyCase
+
+#GTrigger {Oyes el ruído de algo cayendo al suelo.} {
+#Play {RL\Sucesos\Dejar oculto.wav}
+} {} AnyCase
+
+
+;Equiparse, desequiparse etc:
+
+#GTrigger {*Comienzas a ponerte tu*} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Sucesos\Equiparse inicio.wav}
+} {} AnyCase
+
+#GTrigger {*Terminas de ponerte tu*} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Sucesos\Equiparse fin.wav}
+} {} AnyCase
+
+#GTrigger {*Te quitas *} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Sucesos\Quitarse.wav}
+} {} AnyCase
+
+#GTrigger {*Dejas de usar *.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Sucesos\Quitarse.wav}
+} {} AnyCase
+
+
+;Beber, comer etc:
+
+#GTrigger {*Abres el frasco que contiene el elixir y de un trago lo vacías.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Sucesos\Beber pocion.wav}
+} {} AnyCase
+
+
+;Maestrías:
+
+#GTrigger {Mejoras tu maestría en * gracias a la experiencia adquirida durante los combates.} {
+#Play {RL\Sucesos\Maestria.wav}
+} {} AnyCase
+
+#GTrigger {Obtienes la maestría en * gracias a la experiencia adquirida durante los combates.} {
+#Play {RL\Sucesos\Maestria.wav}
+} {} AnyCase
+
+#GTrigger {[[]Mejoras tu maestría en *]} {
+#Play {RL\Sucesos\Maestria.wav}
+} {} AnyCase
+
+#GTrigger {[[]Subes a nivel *]} {
+FEventos %0;
+#Play {RL\Sucesos\Nivel*3.wav}
+} {} AnyCase
+
+#GTrigger {* sube de nivel.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Sucesos\Nivel otro.wav}
+} {} AnyCase
+
+
+;Recuperación de puntos de vida con plantas, lagrima etc:
+
+#GTrigger {*Te sientes restablecid* por el poder curativo de tu *.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Sucesos\Cura recibida.wav}
+} {} AnyCase
+
+
+;Pagar, cobrar, ingresar etc:
+
+#GTrigger {* te paga * *.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FEventos %0;
+#Play {RL\Sucesos\Te paga.wav}
+} {} AnyCase
+
+#GTrigger {* recupera * * de * de su caja de caudales y te las entrega en una pequeña bolsa de tela.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Sucesos\Recuperar monedas.wav}
+} {} AnyCase
+
+#GTrigger {Pagas *} {
+#Play {RL\Sucesos\Pagas.wav}
+} {} AnyCase
+
+#GTrigger {Le entregas una bolsa de monedas a *, ?? cual empieza a revisar su contenido rápidamente. } {
+#Play {RL\Sucesos\Ingresar monedas.wav}
+} {} AnyCase
+
+
+;Misiones y logros:
+
+#GTrigger {¡Has iniciado la misión '*'!} {
+FEventos %0;
+#Play {RL\Sucesos\Misión iniciada.wav}
+} {} AnyCase
+
+#GTrigger {¡Has completado la misión '*'!} {
+FEventos %0;
+#Play {RL\Sucesos\Misión completada.wav}
+}  {} AnyCase
+
+#GTrigger {Un nuevo hito se ha escrito en tu diario de la misión '*'.} {
+FEventos %0;
+#Play {RL\Sucesos\Hito.wav}
+} {} AnyCase
+
+#GTrigger {[[]Obtienes el logro '*' (*)]} {
+FEventos %0;
+#Play {RL\Sucesos\Logro.wav}
+} {} AnyCase
+
+#GTrigger {Ganas experiencia debido al conocimiento adquirido con tus exploraciones.} {
+#Play {RL\Sucesos\Punto exploracion.wav}
+} {} AnyCase
+
+
+;Roturas de equipo:
+#GTrigger {Tu * se rompe en mil pedazos inservibles.} {
+#Play {RL\Sucesos\Rotura equipo.wav}
+} {} AnyCase
+
+
+;Agacharse y levantarse:
+
+#GTrigger {*Te agachas.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Sucesos\Agacharse.wav}
+} {} AnyCase
+
+#GTrigger {*Te reincorporas.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Sucesos\Levantarse.wav}
+} {} AnyCase
+
+
+;Vendar, aplicar etc.
+
+#GTrigger {*Te vendas tu *.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Sucesos\Vendar.wav}
+} {} AnyCase
+
+#GTrigger {*Aplicas tu * sobre tus heridas.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Sucesos\Aplicar.wav}
+} {} AnyCase
+
+
+;Cuernos de combate:
+
+#GTrigger {El sonido de un cuerno retumba en el entorno: *} {
+#Play {RL\Sucesos\Cuerno2.wav}
+} {} AnyCase
+
+#GTrigger {* empuña con fuerza su Cuerno y lo hace soplar con todo el aire de sus pulmones.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Sucesos\Cuerno2.wav}
+} {} AnyCase
+
+#GTrigger {*Empuñas con fuerza tu Cuerno y lo haces sonar con todo el aire de tus pulmones.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Sucesos\Cuerno1.wav}
+} {} AnyCase
+
+
+;Beber, comer etc.
+
+
+;Sigiladores:
+
+#GTrigger {* observa a su alrededor buscando algo.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Sucesos\Busca escondite.WAV};
+#If {@ModoE = 1} {
+ #Say {%1} NoDisplay|Incoming;
+ #GagLine Voice
+}
+} {}
+
+#GTrigger {*Te haces consciente de la presencia de *.} {
+#Say %2;
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FEventos %0;
+FuncComprobarSujeto %2 {RL\Sucesos\Consciente presencia aliado.wav} {RL\Sucesos\Consciente presencia enemigo.wav};
+#If {@ModoE = 1} {
+ #Say {%2} NoDisplay|Incoming;
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {*Descubres a * intentando moverse en silencio!} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FEventos %0;
+FuncComprobarSujeto %2 {RL\Sucesos\Aliado descubierto.wav} {RL\Sucesos\Enemigo descubierto.wav};
+#If {@ModoE = 1} {
+ #Say {%2} NoDisplay|Incoming;
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {* empieza a inspeccionar la zona detenidamente.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#If {@ModoE = 1 or @ModoJ >= 1} {
+ #Say {%1} NoDisplay|Incoming;
+ #GagLine voice
+};
+#Play {RL\Sucesos\Busqueda.wav}
+} {}
+
+#GTrigger {* detiene su búsqueda.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#If {@ModoE = 1 or @ModoJ >= 1} {
+ #Say {%1} NoDisplay|Incoming;
+ #GagLine voice
+};
+#Play {RL\Sucesos\Busqueda detenida.wav}
+} {}
+
+#GTrigger {* descubre a * intentando moverse en silencio!} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FEventos %0;
+FuncComprobarSujeto %1 0 0;
+FuncComprobarSujeto %2 {RL\Sucesos\Aliado descubierto.wav} {RL\Sucesos\Enemigo descubierto.wav};
+#If {@ModoE = 1} {
+ #Say {%1, %2} NoDisplay|Incoming;
+ #GagLine Voice
+}
+} {}
+
+#GTrigger {*Cuidadosamente rastreas el suelo buscando algo de interés.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Sucesos\Busqueda detenida.wav};
+#If {@ModoE = 1 or @ModoJ >= 1} {
+ #GagLine voice
+}
+} {} AnyCase
+
+#GTrigger {*Buscas atentamente a tu alrededor, tratando de encontrar algo oculto.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Sucesos\Busqueda detenida.wav};
+#If {@ModoE = 1 or @ModoJ >= 1} {
+ #GagLine voice
+}
+} {} AnyCase
+
+#GTrigger {*Remueves todo a tu alrededor buscando algo interesante.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Sucesos\Busqueda detenida.wav};
+#If {@ModoE = 1 or @ModoJ >= 1} {
+ #GagLine voice
+}
+} {} AnyCase
+
+#GTrigger {*Examinas toda la zona buscando algo que no hubieses advertido.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Sucesos\Busqueda detenida.wav};
+#If {@ModoE = 1 or @ModoJ >= 1} {
+ #GagLine voice
+}
+} {} AnyCase
+
+#GTrigger {*Buscas esforzadamente algo en tu entorno.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Sucesos\Busqueda detenida.wav};
+#If {@ModoE = 1 or @ModoJ >= 1} {
+ #GagLine voice
+}
+} {} AnyCase
+
+#GTrigger {*Empiezas a inspeccionar la zona en busca de algo que no hayas visto.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Sucesos\Busqueda.wav};
+#If {@ModoE = 1 or @ModoJ >= 1} {
+ #GagLine voice
+}
+} {} AnyCase
+
+#GTrigger {*Tu movimiento ha interrumpido la búsqueda.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Sucesos\Busqueda interrumpida.wav};
+#If {@ModoE = 1 or @ModoJ >= 1} {
+ #GagLine voice
+}
+} {} AnyCase
+
+#GTrigger {*Estás demasiado cansad? para buscar ahora.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Generales\Habilidad no disponible.wav};
+#If {@ModoE = 1 or @ModoJ >= 1} {
+ #GagLine voice
+}
+} {} AnyCase
+
+;Alineamiento y estatus:
+
+#GTrigger {*Tu estatus con * ha aumentado*} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Sucesos\Estatus sube.wav}
+} {} AnyCase
+
+#GTrigger {*Tu estatus con * ha disminuído*} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Sucesos\Estatus baja.wav}
+} {} AnyCase
+
+#GTrigger {[[]Tu alineamiento ha aumentado]} {
+#Play {RL\Sucesos\Alineamiento empeora.wav}
+} {} AnyCase
+
+#GTrigger {[[]Tu alineamiento ha disminuído]} {
+#Play {RL\Sucesos\Alineamiento mejora.wav}
+} {} AnyCase
+
+#GTrigger {Tus recientes acciones han provocado que *, aumente su confianza en ti.} {
+#Play {RL\Sucesos\Confianza sube.wav}
+} {} AnyCase
+
+
+
+;Triggers genéricos:
+
+#GTrigger {Veta de *} {
+#Play {RL\Sucesos\Veta.wav}
+} {} AnyCase
+
+#GTrigger {* y veta de *} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Sucesos\Veta.wav}
+} {}
+
+
+;Sucesos del mud, xp doble, temporadas etc:
+
+#GTrigger {¡¡¡Se inicia la jornada de XP Doble!!!} {
+#Play {RL\Sucesos\XP doble inicio.wav}
+} {} AnyCase
+
+#GTrigger {- XP doble durante un día completo de Eirea.} {
+#Play {RL\Sucesos\XP doble inicio.wav}
+} {} AnyCase
+
+#GTrigger {- Periodo especial de XP doble durante *.} {
+#Play {RL\Sucesos\XP doble inicio.wav}
+} {} AnyCase
+
+#GTrigger {[¡]Comienza el d?a de gloria, que empiece la batalla!} {
+#Play {RL\Sucesos\Gloria doble inicio.wav}
+} {} AnyCase
+
+#GTrigger {[¡]Termina el día de gloria!} {
+#Play {RL\Sucesos\Gloria doble fin.wav}
+} {} AnyCase
+
+;Puertas de kheleb:
+
+#GTrigger {La gran puerta de piedra se abre lentamente ante tus asombrados ojos con un rugido rocoso.} {
+#Play {RL\Sucesos\Kheleb 1.wav}
+} {} AnyCase
+
+#GTrigger {La entrada de la montaña se cierra lenta y pesadamente.} {
+#Play {RL\Sucesos\Kheleb 2.wav}
+} {} AnyCase
+
+
+;Cantos de Bardos:
+
+#GTrigger {* canta: *} {
+#If {%NumWords(%1, ) > 1} {#Abort};
+FuncCorrectorSignos %0;
+FEventos @Corregir;
+FuncComprobarSujeto %1 {RL\Sucesos\Cantar aliado*2.wav} {RL\Sucesos\Cantar enemigo.wav};
+#If {@ModoE = 1} {
+ #Say {%1} NoDisplay|Incoming;
+ #GagLine Voice
+}
+} {} AnyCase
+
+
+;Enterrar:
+
+#GTrigger {Entierras * bajo tierra.} {
+#Play {RL\Sucesos\Enterrar*4.wav}
+} {} AnyCase
+
+#GTrigger {* entierra * bajo tierra.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Sucesos\Enterrar*4.wav}
+} {}
+
+
+;Varios:
+
+#GTrigger {Del fondo de la taberna, te llega el siguiente rumor:} {
+#Play {RL\Sucesos\Rumor.wav}
+} {} AnyCase
+
+#GTrigger {[[]Has completado el objetivo de saga '*']} {
+FEventos %0;
+#Play {RL\Sucesos\Saga.wav}
+} {} AnyCase
+

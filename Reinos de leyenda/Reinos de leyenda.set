@@ -1,0 +1,127 @@
+;Módulo: Reinos de leyenda.set
+;Versión: 2.2, 25/04/2025
+;Descripción: Carga todos los módulos, incluye la portada y la bienvenida.
+;Autor: Rhomdur.
+
+
+;Carga de configuraciones añadidas:
+
+#Load ScripsRL\Ambientacion.set
+#Load ScripsRL\Alias_macros.set
+#Load ScripsRL\Bloqueos.set
+#Load ScripsRL\Combate.set
+#Load ScripsRL\Comunicaciones.set
+#Load ScripsRL\Configuracion.set
+#Load ScripsRL\Corrector.set
+#Load ScripsRL\Funciones.set
+#Load ScripsRL\Efectos.set
+#Load ScripsRL\Embarcaciones.set
+#Load ScripsRL\Emociones.set
+#Load ScripsRL\Estados.set
+#Load ScripsRL\Eventos.set
+#Load ScripsRL\Generales.set
+#Load ScripsRL\Grupos.set
+#Load ScripsRL\HHFunciones.set
+#Load ScripsRL\Items.set
+#Load ScripsRL\Listas.set
+#Load ScripsRL\Magia.set
+#Load ScripsRL\Modos.set
+#Load ScripsRL\Monturas.set
+#Load ScripsRL\Movimiento_keys.set
+#Load ScripsRL\Movimiento_otros.set
+#Load ScripsRL\Movimiento_propio.set
+#Load ScripsRL\Nicks.set
+#Load ScripsRL\NPCs.set
+#Load ScripsRL\Oceano.set
+#Load ScripsRL\Oficios\Oficios.set
+#Load ScripsRL\Paths.set
+#Load ScripsRL\Personales.set
+#Load ScripsRL\Stats.set
+#Load ScripsRL\Sucesos.set
+
+
+; Declaración de variables.
+
+#Var Version {2.7, 26/12/2025}
+
+
+;Portada y bienvenida:
+
+#GTrigger {LPmud version: FluffOS *} {
+#GagOn
+} {} AnyCase
+
+#GTrigger {Introduce el nombre de tu personaje:<VERSION>} {
+#UnGagOn;
+#Play {RL\Generales\Conectar1.wav}
+} {} AnyCase
+
+#GTrigger {Este MUD está ambientado en el multiverso de Eirea. Consulta la Eireapedia (ver "Comunidad y recursos" a*} {
+#If {@ModoE = 1} {
+ #GagOn
+}
+} {} AnyCase
+
+#GTrigger {  Eventos                                                                                 } {
+#UnGagOn
+} {} AnyCase
+
+#GTrigger {*Los Dioses te dan la bienvenida a sus Reinos de Leyenda, *} {
+#Play {RL\Generales\Conectar2.wav};
+#Say {Scrips RL @Version};
+#If {@ModoE = 1} {
+ #Say {Modo experto activado} NoDisplay|Output
+};
+#If {@ModoS = 1} {
+ #Say {Modo silencioso activado} NoDisplay|Output
+};
+ FuncModoJuego
+} {} AnyCase
+
+
+#GTrigger {* Son las *:* del * de * del * Era *} {
+#If {%2 >= 7 and %2 < 19} {
+ #Var MomentoDia dia
+} {
+ #Var MomentoDia noche
+}
+} {} AnyCase
+
+#GTrigger {Tu personaje ya se encuentra en Reinos de Leyenda. ¿Deseas entrar con la copia existente? [[]s/n] } {
+#Play {RL\Generales\Conectar3.wav}
+} {} AnyCase
+
+
+;Desconexión:
+
+#GTrigger {Te concentras en orbitar hacia el limbo para proyectar allí tu cuerpo mientras tu conciencia necesite *} {
+#Play {RL\Generales\Desconectar1.wav}
+} {} AnyCase
+
+#GTrigger {Te iluminas y orbitas hacia el limbo donde tu cuerpo descansará hasta que puedas volver a Eirea.} {
+#If {@AlertaVida1 <> 0} {
+ #PC @AlertaVida1 stop
+};
+#If {@AlertaVida2 <> 0} {
+ #PC @AlertaVida2 stop
+};
+#If {@AlertaVida3 <> 0} {
+ #PC @AlertaVida3 stop
+};
+#If {@SAmbAct1 <> 0} {
+ FuncStopAmbiente 1;
+};
+#If {@SAmbAct2 <> 0} {
+ FuncStopAmbiente 2
+};
+#Play {RL\Generales\Desconectar2.wav}
+} {} AnyCase
+
+#GTrigger {  Agradecimientos:} {
+#GagOn Voice
+} {} AnyCase
+
+#GTrigger {                    posible que el MUD siga mejorando.} {
+#UnGagOn;
+#GagLine Voice
+} {}

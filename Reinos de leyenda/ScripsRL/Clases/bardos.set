@@ -1,0 +1,26 @@
+;Módulo: bardos.set
+;Versión: 1.0, 16/12/2020
+;Descripción: Soporte para la clase bardo
+;Autor: eyrhien.
+
+#Load ScripsRL\Clases\magia_arcana.set
+#Load ScripsRL\Clases\Sigiladores.set
+
+#TRIGGER {Mueves tus dedos por las cuerdas de tu * con maestría y virtuosismo, creando una melodía que suena a tu alrededor y llena tu cuerpo de la energía que necesitas para formular el} {#Play {RL\Habilidades\bardos\hechizo de cuerda.wav}} {}
+#TRIGGER {Comienzas a soplar por tu * con brío y soltura, creando una música mágica que vuela en el entorno y te ayuda a despertar el poder del hechizo '*'.} {#Play {RL\Habilidades\bardos\hechizo de viento.wav}} {}
+#TRIGGER {¡Mejoras tu maestría en Cuerda gracias a la experiencia adquirida durante tus actuaciones!} {#Play {RL\Habilidades\bardos\maestría cuerda.wav}} {}
+#TRIGGER {¡Mejoras tu maestría en Viento gracias a la experiencia adquirida durante tus actuaciones!} {#Play {RL\Habilidades\bardos\maestría viento.wav}} {}
+#TRIGGER {Golpeas con fuerza y vigor tu *, creando un redoble creciente que resuena en el entorno y te ayuda a conseguir la energía necesaria para formular el hechizo '*'.} {#Play {RL\Habilidades\bardos\hechizo de percusión.wav}} {}
+#TRIGGER {¡Tu virtuoso solo te ha otorgado una maestría en Arpa!} {#Play {RL\Habilidades\bardos\virtuoso.wav}} {}
+#TRIGGER {Cantas: *} {#Play {RL\Habilidades\bardos\cantas.wav}} {}
+#TRIGGER {* ¡Alcanzas a * con tu maniobra de sesgar!} {#Play {RL\Habilidades\bardos\sesgar.wav}} {}
+#TRIGGER {* ¡Alcanzas criticamente a * con tu maniobra de sesgar!} {#Play {RL\Habilidades\bardos\sesgar critico.wav}} {}
+#TRIGGER {¡Tu interpretación termina bruscamente al no poder continuar desde tu posición!} {#Play {RL\Habilidades\bardos\interrumpe canción.wav}} {}
+#Key alt-q {neruandi x  }
+#Key alt-e {formular precognicion  }
+#Key alt-w {formular disipar magia:x  }
+#Key alt-f {tocar defenestrar:x  }
+#Key alt-d {tocar proyectil magico mayor:x  }
+#Key alt-s {tocar golpe de rayo:x  }
+#Key alt-a {tocar cono de frio:x  }
+#Key alt-z {tocar flecha de piedra:x  }

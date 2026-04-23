@@ -1,0 +1,93 @@
+;Módulo: Oficios.set
+;Versión: 1.5, 21/09/2025
+;Descripción: Configs generales para oficios y llamadas a configs de cada oficio.
+;Autor: Rhomdur.
+
+
+;Declaración de variables:
+
+#Var AmbOficio 0
+#Var HandAmbOficio 0
+#Var VolAmbOficio 100
+#Var ContadorTurnos 0
+
+
+;Carga de los archivos de configuración de oficios.
+#Load ScripsRL\Oficios\Herrero.set
+#Load ScripsRL\Oficios\Jornalero.set
+#Load ScripsRL\Oficios\Minero.set
+#Load ScripsRL\Oficios\Marinero.set
+#Load ScripsRL\Oficios\Crear.set
+
+;Deshabilita todos los oficios por defecto:
+#Class Herrero disable
+#Class jornalero disable
+#Class Marinero disable
+#Class Minero disable
+#Class Leñador disable
+#Class Crear disable
+
+
+;Función que reproduce el sonido de ambiente asignado a un oficio:
+#GAlias FuncAmbienteOficio {
+#If {@AmbOficio = 0} {#Abort};
+#PlayLoop {@AmbOficio} @VolAmb1;
+#Var HandAmbOficio %PlayHandle
+}
+
+;Función que detiene la reproducción de los ambientes de oficios:
+#GAlias FuncStopAmbienteOficio {
+#If {@HandAmbOficio = 0} {#Abort};
+#Var AmbOficio 0;
+#PC @HandAmbOficio stop;
+#Var HandAmbOficio 0
+}
+
+
+;Triggers generales:
+
+#GTrigger {[[]Obtienes * punto*de oficio (*)]} {
+FEventos %0;
+#Play {RL\Oficios\Punto oficio.wav}
+} {} AnyCase
+
+#GTrigger {Debido a tu experiencia avanzas a nivel * de *.} {
+FEventos %0;
+#Play {RL\Oficios\Subir oficio.wav}
+} {} AnyCase
+
+
+;Triggers comunes en la forja:
+
+#GTrigger {Introduces un Trozo de * de * gramos en la fragua.*} {
+#Play {RL\Oficios\Herrero\Introducir*5.wav}
+} {} AnyCase
+
+#GTrigger {Alimentas el hogar de la fragua con un trozo de carbón de *.} {
+#Play {RL\Oficios\Herrero\Alimentar.wav}
+} {} AnyCase
+
+
+;Triggers comunes en la mina:
+
+#GTrigger {Veta de *} {
+#Play {RL\Oficios\Minero\Veta.wav}
+} {} AnyCase
+
+#GTrigger {Parece que esta veta de mineral ha sido explotada recientemente, agotando todo el mineral útil*} {
+#Play {RL\Oficios\Minero\Veta explotada recientemente.wav}
+} {} AnyCase
+
+#GTrigger {Pones Trozo de * en Saco de *} {
+#Play {RL\Oficios\Minero\Saco*8.wav}
+} {} AnyCase
+
+#GTrigger {Pones Trozo de * en bolsa de minerales.} {
+#Play {RL\Oficios\Minero\Saco*8.wav}
+} {} AnyCase
+
+#GTrigger {Pones * Trozos de * en Saco de Trozos de *.} {
+#Play {RL\Oficios\Minero\Saco*8.wav}
+} {} AnyCase
+
+

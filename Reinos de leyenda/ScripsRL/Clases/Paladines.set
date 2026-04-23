@@ -1,0 +1,149 @@
+;Módulo: Paladines.set
+;Versión: 1.0, 22/01/2019
+;Descripción: Configs para la clase paladín de eralie.
+;Autor: Rhomdur.
+
+#Load ScripsRL\Clases\Centrar.set
+#Load ScripsRL\Clases\Magia_clerical.set
+
+
+;Golperedentor:
+
+#GTrigger {*[#] Tu fiero golpe redentor con * alcanza a * envolviéndolo en en un aura de *.} {
+#Play {RL\Habilidades\Paladines\Golperedentor*2.wav};
+#Alarm GolpeRedentor 6 {
+ FEventos El bloqueo golperedentor termina;
+ #Play {RL\Bloqueos\Bloqueo.wav};
+ #Play {RL\Bloqueos\Paladines\Redentor.wav}
+};
+#If {@ModoE = 1} {
+ #GagLine voice
+}
+} {} AnyCase
+
+#GTrigger {*[#] Dejas una estela de pureza en el aire cuando fallas tu ataque redentor a *} {
+#Play {RL\Habilidades\Generales\Habilidad esquivada.wav};
+#Alarm GolpeRedentor 6 {
+ FEventos El bloqueo golperedentor termina;
+ #Play {RL\Bloqueos\Bloqueo.wav};
+ #Play {RL\Bloqueos\Paladines\Redentor.wav}
+};
+#If {@ModoE = 1} {
+ #GagLine voice
+}
+} {} AnyCase
+
+#GTrigger {Cruzas tus brazos a la altura del pecho mientras comienzas a canalizar todo el poder de tu señor en*} {
+#Play {RL\Habilidades\Generales\Impulso1.wav};
+#If {@ModoE = 1} {
+ #GagLine voice
+}
+} {} AnyCase
+
+#GTrigger {¡Envuelves a * en tu estallido de *!} {
+#Play {RL\Habilidades\Paladines\Golperedentor area*2.wav};
+#Alarm GolpeRedentor 12 {
+ FEventos El bloqueo golperedentor termina;
+ #Play {RL\Bloqueos\Bloqueo.wav};
+ #Play {RL\Bloqueos\Paladines\Redentor.wav}
+};
+#If {@ModoE = 1} {
+ #GagLine voice
+}
+} {} AnyCase
+
+
+;Carga:
+
+#GTrigger {Espoleas a * y te lanzas a la carrera contra *.} {
+#Play {RL\Habilidades\Generales\Impulso1.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {? Espoleas a * y te lanzas a la carrera contra *.} {
+#Play {RL\Habilidades\Generales\Impulso1.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {[#] ¡Maldici?n!, ¡* consigue evitar vuestra carga, dejándoos en muy mala posición!} {
+#Play {RL\Habilidades\Generales\Habilidad esquivada.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {[#] Arrollas brutalmente a * con tu *, reduciéndole a un montón de huesos rotos y sangre desparramada.} {
+#Play {RL\Habilidades\Generales\Impacto4.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {¡* te bendice con una carga crítica!} {
+FPlay {RL\Combate\Kills\Propios\Critico.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {[#] Saltas sobre * golpeándole con un ataque vertical de tu * destrozando*} {
+#Play {RL\Habilidades\Generales\Impacto1.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {[#] Corres con determinación hacia * mientras levantas y colocas tu * apuntando hacia *} {
+#Play {RL\Habilidades\Generales\Impacto1.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {[#] Te lanzas a la carga contra * con tu * en alto y tu fiel * levantando nubes de polvo*} {
+#Play {RL\Habilidades\Generales\Impacto1.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {[#] Agitando frenéticamente la riendas de tu * lo obligas a correr hacia * tu tan solo esperas*} {
+#Play {RL\Habilidades\Generales\Impacto1.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+
+;Pulsaciones de teclas:
+
+#GKey alt-s {
+golperedentor area
+}
+
+#GKey alt-d {
+#If {@ModoJ = 2} {
+ cargar xp
+} {
+ #If {@AutoCentrar = 1} {
+  centrar x;cargar x
+ } {
+  cargar x
+ }
+}}
+
+#GKey alt-f {
+#If {@ModoJ = 2} {
+golperedentor xp
+} {
+ #If {@AutoCentrar = 1} {
+  centrar x;golperedentor x
+ } {
+  golperedentor x
+ }
+}}
+

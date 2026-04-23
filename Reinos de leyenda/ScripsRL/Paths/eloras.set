@@ -1,0 +1,130 @@
+;Módulo: Eloras.set
+;Versión: 1.3, 28/09/2019
+;Descripción: Paths que comienzan en las colinas de Ostigurth, en las cercanías de eloras y en eloras.
+;Autor: Rhomdur.
+
+
+;Origen:  cruce de ostigurth (COs):
+
+#GTrigger {Colinas de Ostigurth *[[]e,se,no] } {
+FPathDisponible;
+#Var Mapa {
+Eloras, Plaza:FPath;.COsEloC
+|
+Mor Groddur, Puertas:FPath;.COsMGP
+|
+Anduar, Plaza:FPath;.COsAndC
+|
+Galador, Puerta sur:FPath;.COsGalPS
+|
+Ancarak, centro (Por puerta sur):FPath;.COsAncC
+|
+Golthur, puerta oeste:FPath;.COsGolPo
+}
+} {} AnyCase
+
+#GAlias {.COsGolPo} {
+e;ne;n;e;n;ne;n;ne;n;ar;n;no;n;no;ne;no;n;o;no;ne;no;n;ab;so;no;no;o;n;no;n;ab;o;no;o;no;o;no;o;o;so;ab;o;o;no;o;o;so;o;no;no;o;no;o;ab;o;so;o;o;so;o;o;no;no;o;no;o;o;o;o;o;o;so;o;o;o;o;no;o;o;o;o;so;no;o;o;o;so;o;o;so;o;o;o;o;so;o;o;no;o;so;no;so;so;o;n;no;n;n;ne;n;n;ne;ne;no;no;n;ne;ne;no;n;n;ne;n;ne;n;n;n;n;n;n;n;no;no;n;n;n;e;se;se;ne;ne;e;e;e;se;se;ne;ne;e;e;e;se;e;se;e;n;no;n;no;n;n;n;ne;ne;no;no;n;n;n;ne;n;n;no;n;n;n;ne;ne;no;no;n;n;n;ne;n;ne;n;o;so;o;so;o;o;o;no;no;so;so;o;o;o;no;no;so;so;o;n;n;ne;n;n;n;n;n;ne;n;n;ne;n;n;ne;n;n;ne;n;ne;ne;e;ne;ne;n;ne;ne;no;ne;n;e;n;ne;n;ne;n;e;se;e;e;n;e;ne;e;se;e;ar;ne;ne;no;no;n;no;o;o;no;no;n;no;n;ne;n;ne;n;ne;ne;ne;n;e;ne;ne;e;e;se;e;ne;ne;n;no;n;n;ne;ne;e;se;s;s;se;se;e;ne;n;n;no;n;ne;ne;n;no;n;ne;ne;ne;e;e;e;ne;ne;ne;n;n;ne;n;n;no;n;ne;n;n;no;no;n;no;no;o;no;n;ne;n;no;no;o;no;n;n;ne;n;ne;n;no;o;so;o;o;so;o;no;no;n;n;ne;no;n;ne;n;no;n;n;ne;ne;e;se;ne;e;e;e}
+
+#GAlias {.COsAndC} {
+se;se;ne;se;e;se;ab;so;o;so;se;ab;se;e;ab;se;s;se;e;se;o;so;s;se;e;se;se;s;s;s;se;e;e;se;s;so;so;s;se;s;so;se;e;se;se;so;so;s;e;se;s;s;s;so;s;so;s;se;e;se;s;s;so;s;so;s;se;se;s;s;se;s;s;s;s;s;s;s;s;s;s;s;s;s}
+
+#GAlias {.COsGalPS} {
+e;ne;n;e;n;ne;n;ne;n;ar;n;no;n;no;ne;no;n;o;no;ne;no;n;ab;so;no;no;o;n;no;n;ab;o;no;o;no;o;no;o;o;so;ab;o;o;no;o;o;so;o;no;no;o;no;o;ab;o;so;o;o;so;o;o;no;no;o;no;o;o;o;o;o;o;so;o;o;o;o;no;o;o;o;o;so;no;o;o;o;so;o;o;so;o;o;o;o;so;o;o;no;o;so;no;so;so;o;n;no;n;n;ne;n;n;ne;ne;no;no;n;ne;ne;no;n;n;ne;n;ne;n;n;n;n;n;n;n;no;no;n;n;n;e;se;se;ne;ne;e;e;e;se;se;ne;ne;e;e;e;se;e;se;e;n;no;n;no;n;n;n;ne;ne;no;no;n;n;n;ne;n;e;e;e;se;se;e;e;e;e;e;e;e;ne;n;ne;s;s;ne;s;so;s;s;ne;n;ne;e;se;e;e;se;se;se;se;se;e;ne;n;ne;e;se;so;s;se;ne;se;ne;ne;no;ne;n;ne;se;s;se;so;se;e;ne;e;ne;ne;e;ne;se;e;se;e;ne;ne;se;e;ne;e;e;se;e;e;ne;e;ne;n;n;n;ne;n;no;n;n;no;n;no;n}
+
+#GAlias {.COsEloC} {
+no;ab;so;s;se;s;so;s;o;so;ab;o;n;no;ne;no;n;no;no;no;ne;n;n;n}
+
+#GAlias {.COsAncC} {
+e;ne;n;e;n;ne;n;ne;n;ar;n;no;n;no;ne;no;n;o;no;ne;no;n;ab;so;no;no;o;n;no;n;ab;o;no;o;no;o;no;o;o;so;ab;o;o;no;o;o;so;o;no;no;o;no;o;ab;o;so;o;o;so;o;o;no;no;o;no;o;o;o;o;o;o;so;o;o;o;o;no;o;o;o;o;so;no;o;o;o;so;o;o;so;o;o;o;o;so;o;o;no;o;so;no;so;so;o;n;no;n;n;ne;n;n;ne;ne;no;no;n;ne;ne;no;n;n;ne;n;ne;n;n;n;n;n;n;n;no;no;n;n;n;e;se;se;ne;ne;e;e;e;se;se;ne;ne;e;e;e;se;e;se;e;n;no;n;no;n;n;n;ne;ne;no;no;n;n;n;ne;n;n;no;n;n;n;ne;ne;no;no;n;n;n;ne;n;ne;n;o;so;o;so;o;o;o;no;no;so;so;o;o;o;no;no;so;so;o;n;n;ne;n;n;n;n;n;ne;n;n;ne;n;n;ne;n;n;ne;n;ne;ne;e;ne;ne;n;ne;ne;no;ne;n;e;n;ne;n;ne;n;e;se;e;e;n;e;ne;e;se;e;ar;ne;ne;no;no;n;no;o;o;no;no;n;no;n;ne;n;ne;n;ne;ne;ne;n;e;ne;ne;e;e;se;e;ne;ne;n;no;n;n;ne;ne;e;se;s;s;se;se;e;ne;n;n;no;n;ne;ne;n;no;n;ne;ne;ne;e;e;e;ne;ne;ne;n;n;ne;n;n;no;n;ne;n;e;ab;se;e;ne;e;ne;ne;e;ab;se;ne;e;ne;e;ne;e;ab;e;se;s;so;so;ab;so;s;se;e;ne;e;se;s;e;ab;n;no;no;o;o;no;o;no;no;n;ne}
+
+#GAlias {.COsMGP} {
+no;ab;so;s;se;s;so;s;o;so;ab;o;o;no;o;n;no;o;ar;no;o;no;o;o;o;ab;o;o;so;so;o;o;no;o;so;o;ar;ar;ar;ar;o;o;so;so;o;no;o;so;so;o;no;no;o;no;ar;ar;e;n;no;ab;ab;ab}
+
+
+;Origen: Cruce al sur de eloras en colinas de Ostigurth (CCO)
+
+#GTrigger {Colinas de Ostigurth *[[]n,e,o] } {
+FPathDisponible;
+#Var Mapa {
+Eloras, Plaza:FPath;.CCOEloC
+|
+Mor Groddur, Puertas:FPath;.CCOMGP
+|
+Anduar, Plaza:FPath;.CCOAndC
+|
+Galador, puerta sur:FPath;.CCOGalPs
+|
+Ancarak, centro (Por puerta sur):FPath;.CCOAncC
+|
+Golthur, Puerta oeste:FPath;.CCOGolPo
+}
+} {} AnyCase
+
+#GAlias {.CCOGolPo} {
+e;ar;ne;e;n;ne;n;no;n;ne;ar;se;e;ne;n;e;n;ne;n;ne;n;ar;n;no;n;no;ne;no;n;o;no;ne;no;n;ab;so;no;no;o;n;no;n;ab;o;no;o;no;o;no;o;o;so;ab;o;o;no;o;o;so;o;no;no;o;no;o;ab;o;so;o;o;so;o;o;no;no;o;no;o;o;o;o;o;o;so;o;o;o;o;no;o;o;o;o;so;no;o;o;o;so;o;o;so;o;o;o;o;so;o;o;no;o;so;no;so;so;o;n;no;n;n;ne;n;n;ne;ne;no;no;n;ne;ne;no;n;n;ne;n;ne;n;n;n;n;n;n;n;no;no;n;n;n;e;se;se;ne;ne;e;e;e;se;se;ne;ne;e;e;e;se;e;se;e;n;no;n;no;n;n;n;ne;ne;no;no;n;n;n;ne;n;n;no;n;n;n;ne;ne;no;no;n;n;n;ne;n;ne;n;o;so;o;so;o;o;o;no;no;so;so;o;o;o;no;no;so;so;o;n;n;ne;n;n;n;n;n;ne;n;n;ne;n;n;ne;n;n;ne;n;ne;ne;e;ne;ne;n;ne;ne;no;ne;n;e;n;ne;n;ne;n;e;se;e;e;n;e;ne;e;se;e;ar;ne;ne;no;no;n;no;o;o;no;no;n;no;n;ne;n;ne;n;ne;ne;ne;n;e;ne;ne;e;e;se;e;ne;ne;n;no;n;n;ne;ne;e;se;s;s;se;se;e;ne;n;n;no;n;ne;ne;n;no;n;ne;ne;ne;e;e;e;ne;ne;ne;n;n;ne;n;n;no;n;ne;n;n;no;no;n;no;no;o;no;n;ne;n;no;no;o;no;n;n;ne;n;ne;n;no;o;so;o;o;so;o;no;no;n;n;ne;no;n;ne;n;no;n;n;ne;ne;e;se;ne;e;e;e}
+
+#GAlias {.CCOEloC} {
+n;no;ne;no;n;no;no;no;ne;n;n;n}
+
+#GAlias {.CCOAndC} {
+e;ar;ne;e;n;ne;n;no;n;ne;ar;se;se;se;ne;se;e;se;ab;so;o;so;se;ab;se;e;ab;se;s;se;e;se;o;so;s;se;e;se;se;s;s;s;se;e;e;se;s;so;so;s;se;s;so;se;e;se;se;so;so;s;e;se;s;s;s;so;s;so;s;se;e;se;s;s;so;s;so;s;se;se;s;s;se;s;s;s;s;s;s;s;s;s;s;s;s;s}
+
+#GAlias {.CCOMGP} {
+o;no;o;n;no;o;ar;no;o;no;o;o;o;ab;o;o;so;so;o;o;no;o;so;o;ar;ar;ar;ar;o;o;so;so;o;no;o;so;so;o;no;no;o;no;ar;ar;e;n;no;ab;ab;ab}
+
+#GAlias {.CCOGalPs} {
+e;ar;ne;e;n;ne;n;no;n;ne;ar;se;e;ne;n;e;n;ne;n;ne;n;ar;n;no;n;no;ne;no;n;o;no;ne;no;n;ab;so;no;no;o;n;no;n;ab;o;no;o;no;o;no;o;o;so;ab;o;o;no;o;o;so;o;no;no;o;no;o;ab;o;so;o;o;so;o;o;no;no;o;no;o;o;o;o;o;o;so;o;o;o;o;no;o;o;o;o;so;no;o;o;o;so;o;o;so;o;o;o;o;so;o;o;no;o;so;no;so;so;o;n;no;n;n;ne;n;n;ne;ne;no;no;n;ne;ne;no;n;n;ne;n;ne;n;n;n;n;n;n;n;no;no;n;n;n;e;se;se;ne;ne;e;e;e;se;se;ne;ne;e;e;e;se;e;se;e;n;no;n;no;n;n;n;ne;ne;no;no;n;n;n;ne;n;e;e;e;se;se;e;e;e;e;e;e;e;ne;n;ne;s;s;ne;s;so;s;s;ne;n;ne;e;se;e;e;se;se;se;se;se;e;ne;n;ne;e;se;so;s;se;ne;se;ne;ne;no;ne;n;ne;se;s;se;so;se;e;ne;e;ne;ne;e;ne;se;e;se;e;ne;ne;se;e;ne;e;e;se;e;e;ne;e;ne;n;n;n;ne;n;no;n;n;no;n;no;n}
+
+#GAlias {.CCOAncC} {
+e;ar;ne;e;n;ne;n;no;n;ne;ar;se;e;ne;n;e;n;ne;n;ne;n;ar;n;no;n;no;ne;no;n;o;no;ne;no;n;ab;so;no;no;o;n;no;n;ab;o;no;o;no;o;no;o;o;so;ab;o;o;no;o;o;so;o;no;no;o;no;o;ab;o;so;o;o;so;o;o;no;no;o;no;o;o;o;o;o;o;so;o;o;o;o;no;o;o;o;o;so;no;o;o;o;so;o;o;so;o;o;o;o;so;o;o;no;o;so;no;so;so;o;n;no;n;n;ne;n;n;ne;ne;no;no;n;ne;ne;no;n;n;ne;n;ne;n;n;n;n;n;n;n;no;no;n;n;n;e;se;se;ne;ne;e;e;e;se;se;ne;ne;e;e;e;se;e;se;e;n;no;n;no;n;n;n;ne;ne;no;no;n;n;n;ne;n;n;no;n;n;n;ne;ne;no;no;n;n;n;ne;n;ne;n;o;so;o;so;o;o;o;no;no;so;so;o;o;o;no;no;so;so;o;n;n;ne;n;n;n;n;n;ne;n;n;ne;n;n;ne;n;n;ne;n;ne;ne;e;ne;ne;n;ne;ne;no;ne;n;e;n;ne;n;ne;n;e;se;e;e;n;e;ne;e;se;e;ar;ne;ne;no;no;n;no;o;o;no;no;n;no;n;ne;n;ne;n;ne;ne;ne;n;e;ne;ne;e;e;se;e;ne;ne;n;no;n;n;ne;ne;e;se;s;s;se;se;e;ne;n;n;no;n;ne;ne;n;no;n;ne;ne;ne;e;e;e;ne;ne;ne;n;n;ne;n;n;no;n;ne;n;e;ab;se;e;ne;e;ne;ne;e;ab;se;ne;e;ne;e;ne;e;ab;e;se;s;so;so;ab;so;s;se;e;ne;e;se;s;e;ab;n;no;no;o;o;no;o;no;no;n;ne}
+
+
+;Origen: eloras plaza (EloC):
+
+#GTrigger {Plaza del Roble Eterno *[[]?n?,s,e,o] } {
+FPathDisponible;
+#Var Mapa {
+Anduar, plaza:FPath;.EloCAndC
+|
+Kattak, plaza:FPath;.EloCKtC
+|
+Takome, plaza:FPath;.EloCTkC
+|
+Thorin, claro:FPath;.EloCThC
+|
+Poldarn, puertas:FPath;.EloCPdP
+|
+Veleiron, centro:FPath;.EloCVelC
+|
+Aethia, plaza:FPath;.EloCAetC
+|
+Akhanon, puertas:FPath;.EloCAkaP
+}
+} {} AnyCase
+
+#GAlias {.EloCAndC} {
+s;s;s;so;se;se;se;s;se;so;se;s;e;ar;ne;e;n;ne;n;no;n;ne;ar;se;se;se;ne;se;e;se;ab;so;o;so;se;ab;se;e;ab;se;s;se;e;se;o;so;s;se;e;se;se;s;s;s;se;e;e;se;s;so;so;s;se;s;so;se;e;se;se;so;so;s;e;se;s;s;s;so;s;so;s;se;e;se;s;s;so;s;so;s;se;se;s;s;se;s;s;s;s;s;s;s;s;s;s;s;s;s}
+
+#GAlias {.EloCTkC} {
+s;s;s;so;se;se;se;s;se;so;se;s;e;ar;ne;e;n;ne;n;no;n;ne;ar;se;se;se;ne;se;e;se;ab;so;o;so;se;ab;se;e;ab;se;s;se;e;se;o;so;s;se;e;se;se;s;s;s;se;e;e;se;s;so;so;s;se;s;so;se;e;se;se;so;so;s;e;se;s;s;s;so;s;so;s;se;e;se;s;s;so;s;so;s;se;se;s;s;se;s;s;e;e;e;e;e;e;e;e;e;e;e;s;s;s;s;s;s;s;s;s;s;s;e;e;ne;e;se;e;ne;e;ne;n;ne;e;ne;se;se;e;ne;e;se;se;s;e;se;e;se;e;se;e;ne;e;e;ne;e;e;e;e;e;e;e;e;e;e;e;s;se;se;s;s;se;se;s;se;se;se;s;se;se;e;ne;e;e;ne;e;se;e;ne;ne;ne;e;ne;n;ne;e;ne;e;ne;e;se;e;ne;ne;n;ne;n;ne;ne;ne;ne;e;e;e;e;ne;ne;e;ne;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n}
+
+#GAlias {.EloCVelC} {
+s;s;s;so;se;se;se;s;se;so;se;s;e;ar;ne;e;n;ne;n;no;n;ne;ar;se;se;se;ne;se;e;se;ab;so;o;so;se;ab;se;e;ab;se;s;se;e;se;o;so;s;se;e;se;se;s;s;s;se;e;e;se;s;so;so;s;se;s;so;se;e;se;se;so;so;s;e;se;s;s;s;so;s;so;s;se;e;se;s;s;so;s;so;s;se;se;s;s;se;s;s;e;e;e;e;e;e;e;e;e;e;e;s;s;s;s;s;s;s;s;s;s;s;e;e;ne;e;se;e;ne;e;ne;n;ne;e;ne;se;se;e;ne;e;se;se;s;e;se;e;se;e;se;e;ne;e;e;ne;e;e;e;e;e;e;e;e;e;e;e;s;se;se;s;s;se;se;s;se;se;se;s;se;se;e;s;s;o;o;so;o;so;o;so;o;so;so;s;so;s;s;so;s;s;s;so;s;s;s;s;se;s;s;s;se;s;s;se;s;s;s;se;e;e;e;ne;e;ne;n;n;n;n;n;n;n}
+
+#GAlias {.EloCThC} {
+s;s;s;so;se;se;se;s;se;so;se;s;e;ar;ne;e;n;ne;n;no;n;ne;ar;se;se;se;ne;se;e;se;ab;so;o;so;se;ab;se;e;ab;se;s;se;e;se;o;so;s;se;e;se;se;s;s;s;se;e;e;se;s;so;so;s;se;s;so;se;e;se;se;so;so;s;e;se;s;s;s;so;s;so;s;se;e;se;s;s;so;s;so;s;se;se;s;s;se;s;s;e;e;e;e;e;e;e;e;e;e;e;s;s;s;s;s;s;s;s;s;s;s;e;e;ne;e;se;e;ne;e;ne;n;ne;e;ne;se;se;e;ne;e;se;se;s;e;se;e;se;e;se;e;ne;e;e;ne;e;e;e;e;e;e;e;e;e;e;e;s;se;se;s;s;se;se;s;se;se;se;s;se;se;e;ne;e;e;ne;e;se;e;ne;ne;ne;e;ne;n;ne;e;ne;e;ne;e;se;e;ne;ne;n;ne;n;ne;ne;ne;ne;e;e;e;e;ne;ne;e;ne;n;n;o;o;no;no;no;o;no;o;o;o;no;o;o;no;o;no;n;no;no;o;no;n;no;no;n;ne;n;n;no;n;n;n;no;n;o;no;o;no;no;so;n;no;no;no;o;o;no;no;n;n;no;no;no;o;o;o;o;no;no;no;o;s;s;so;o;s}
+
+#GAlias {.EloCAetC} {
+s;s;s;so;se;se;se;s;se;so;se;s;e;ar;ne;e;n;ne;n;no;n;ne;ar;se;se;se;ne;se;e;se;ab;so;o;so;se;ab;se;e;ab;se;s;se;e;se;o;so;s;se;e;se;se;s;s;s;se;e;e;se;s;so;so;s;se;s;so;se;e;se;se;so;so;s;e;se;s;s;s;so;s;so;s;se;e;se;s;s;so;s;so;s;se;se;s;s;se;s;s;e;e;e;e;e;e;e;e;e;e;e;s;s;s;s;s;s;s;s;s;s;s;e;e;ne;e;se;e;ne;e;ne;n;ne;e;ne;se;se;e;ne;e;se;se;s;e;se;e;se;e;se;e;ne;e;e;ne;e;e;e;e;e;e;e;e;e;e;e;s;se;se;s;s;se;se;s;se;se;se;s;se;se;e;ne;e;e;ne;e;se;e;ne;ne;ne;e;ne;n;ne;e;ne;e;ne;e;se;e;ne;ne;n;ne;n;ne;ne;ne;ne;e;e;e;e;ne;ne;e;ne;n;n;o;o;no;no;no;o;no;o;o;o;no;o;o;no;o;no;n;no;no;o;no;n;no;no;n;ne;n;n;no;n;n;n;no;n;o;no;o;no;no;so;n;no;no;no;o;o;no;no;n;n;no;no;no;o;o;o;o;no;no;no;o;o;no;no;ne;no;n;o;no;no;so;no;ne;no;so;so;s;no;n;no;no;n;ne;n;ne;n;n;no;n;ne;n;o;no;n;no;ab;o;o;no;o;n;n;o;no;ab;o;no;n;n;no;ab;o;so;o;o;no;n;so;no;n;so;n;o;so;o;o;no;no;so;n;o;so;no;n;n;ne;n;no;n;so;no;ne;ne;e;no;o;no;n;n;n;no;n;no;n;no;n;no;ne;n;no;so;no;n;ne;ne;n;ne;ne;ne;e;e;se;e;e;se;se;ne;n;ne;se;e;se;ne;ne;e;ne;s;e;se;ne;se;se;se;s;e;e}
+
+#GAlias {.EloCPdP} {
+s;s;s;so;se;se;se;s;se;so;se;s;e;ar;ne;e;n;ne;n;no;n;ne;ar;se;se;se;ne;se;e;se;ab;so;o;so;se;ab;se;e;ab;se;s;se;e;se;o;so;s;se;e;se;se;s;s;s;se;e;e;se;s;so;so;s;se;s;so;se;e;se;se;so;so;s;e;se;s;s;s;so;s;so;s;se;e;se;s;s;so;s;so;s;se;se;s;s;se;s;s;e;e;e;e;e;e;e;e;e;e;e;s;s;s;s;s;s;s;s;s;s;s;e;e;ne;e;se;e;ne;e;ne;n;ne;e;ne;se;se;e;ne;e;se;se;s;e;se;e;se;e;se;e;ne;e;e;ne;e;e;e;e;e;e;e;e;e;e;e;s;se;se;s;s;se;se;s;se;se;se;s;se;se;e;ne;e;e;ne;e;se;e;ne;ne;ne;e;ne;n;ne;e;ne;e;ne;e;se;e;ne;ne;n;ne;n;ne;ne;ne;ne;e;e;e;e;ne;ne;e;ne;n;n;o;o;no;no;no;o;no;o;o;o;no;o;o;no;o;no;n;no;no;o;no;n;no;no;n;ne;n;n;no;n;n;n;no;n;o;no;o;no;no;so;n;no;no;no;o;o;no;no;n;n;no;no;no;o;o;o;o;no;no;no;o;o;no;no;ne;no;ne;n;ne;n;n;n;no;n;n;n;n;n;n;ne;ne;e;ne;se;e;n;ne;e;e;ne;n;ne;e;ne;e;se;e;ne;n;ne;e;e;ne}
+
+#GAlias {.EloCKtC} {
+s;s;s;so;se;se;se;s;se;so;se;s;e;ar;ne;e;n;ne;n;no;n;ne;ar;se;se;se;ne;se;e;se;ab;so;o;so;se;ab;se;e;ab;se;s;se;e;se;o;so;s;se;e;se;se;s;s;s;se;e;e;se;s;so;so;s;se;s;so;se;e;se;se;so;so;s;e;se;s;s;s;so;s;so;s;se;e;se;s;s;so;s;so;s;se;se;s;s;se;s;s;o;o;o;o;o;o;o;o;o;o;o;s;s;s;s;s;s;s;s;s;s;s;o;so;so;o;no;o;so;o;so;no;o;so;s;so;o;so;o;no;o;so;so;so;o;o;no;o;o;so;s;so;o;o;so;o;o;no;o;o;o;o;o;o;o;so;so;so;o;no;o;o;so;o;no;no;o;so;o;so;so;s;so;s;so;s;se;s;s;so;s;o;no;n;no;o;o;o;o;o;o;no;so;so;no;so;o;so;no;o;o;no;so;no;so;o;so;no;o;o;so;no;o;o;o;so;o;o;so;s;so;o;no;o;so;so;o;so;o;so;so;o;o;n;no;o;so;o;o;o;so;s;so;o;no;o;no;o;o;o;o;o;o;o;o;o;o;o}
+
+#GAlias {.EloCAkaP} {
+s;s;s;so;se;se;se;s;se;so;se;s;e;ar;ne;e;n;ne;n;no;n;ne;ar;se;se;se;ne;se;e;se;ab;so;o;so;se;ab;se;e;ab;se;s;se;e;se;o;so;s;se;e;se;se;s;s;s;se;e;e;se;s;so;so;s;se;s;so;se;e;se;se;so;so;s;e;se;s;s;s;so;s;so;s;se;e;se;s;s;so;s;so;s;se;se;s;s;se;s;s;o;o;o;o;o;o;o;o;o;o;o;s;s;s;s;s;s;s;s;s;s;s;o;so;so;o;no;o;so;o;so;no;o;so;s;so;o;so;o;no;o;so;so;so;o;o;no;o;o;so;s;so;o;o;so;o;o;no;o;o;o;o;o;o;o;so;so;so;o;no;o;o;so;o;no;no;o;so;o;so;so;s;so;s;so;s;se;s;s;so;s;o;no;n;no;o;o;o;o;o;o;no;so;so;no;so;o;so;no;o;o;no;so;no;so;o;so;no;o;s;s;so;so;s;se;e;s;se;s;so;ar;s;s;se;s;s;s;s;se;s;so;s;so;so;so;s;o;s;se;se;se;so;ar;o;o;so;no;o;no;o;so;so;o;so;o;se;o;so;o;so;s;ab;so;se;s;so;s;so;no;so;so;s;so;so;so;s;so;o;so;o;no;o;so;o;so;o;so;o;no;no;o;s;so;o;so;s;so;o;ab;o;so;o;so;so;no;so;o;so;so;se;s;so;s;so;se;s;so;ar;s;s;so;o;o;so;so;s;so;so;o;so;ar;so;so;o;so;o;no;so;so;s;ar;o;so;o;so;o;so;no;o;so;o;so;ar;o;o;no;s;so;s;so;o;no;o;n;n;no;no;no;no;o;o;n;no;no;o;o;o;o;o;ar;no;ne;no;n;n;n;o;ab;o;o}
+
+

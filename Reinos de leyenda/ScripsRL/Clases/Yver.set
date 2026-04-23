@@ -1,0 +1,26 @@
+;Módulo: iver.set
+Versión: 1.0, 16/12/2020
+Descripción: Soporte para la clase guerrero iver adras.
+Autor: eyrhien.
+
+
+#Load ScripsRL\Clases\Cazadores.set
+#Key alt-a {  extorsionar x }
+
+#Key alt-f {  zancadilla x }
+
+#Key alt-s {    centrar x;sorprender x }
+
+#Key alt-d {    centrar x;torbellino x }
+
+#Key alt-w { seguir x }
+#TRIGGER {* ¡Alcanzas a * con * golpe de tu torbellino!} {#Play {RL\Habilidades\Yver\torbellino.wav}} {}
+#TRIGGER {* ¡Alcanzas a * con * golpes de tu torbellino!} {#Play {RL\Habilidades\Yver\torbellino.wav}} {}
+#TRIGGER {* ¡Sorprendes con * ataques a *!} {#Play {RL\Habilidades\Yver\sorprender.wav}} {}
+#TRIGGER {Detienes tu maniobra de torbellino, pues la has realizado durante demasiado tiempo y temes que tu rival esté preparado para otra acometida.} {#Play {RL\Habilidades\Yver\torbellino fin.wav}} {}
+#TRIGGER {Detienes tu implacable ráfaga de golpes puesto que tu enemigo ha fenecido.} {#Play {RL\Habilidades\Yver\torbellino fin.wav}} {}
+#TRIGGER {# ¡Pateas sádicamente el posterior de la rodilla de *, haciendo que este trastabille y caiga al suelo entre gritos de dolor!} {#Play {RL\Habilidades\Yver\zancadilla impacta.wav}} {}
+#TRIGGER {* Golpeas brutalmente a * en la parte posterior de la rodilla, pero es lo suficientemente ágil como para rodar y reincorporarse rápidamente} {#Play {RL\Habilidades\Yver\zancadilla falla.wav}} {}
+#TRIGGER {* ¡En una rápida e inesperada maniobra, pateas varias veces la espinilla de *, haciendo que trastabille momentáneamente!} {#Play {RL\Habilidades\Yver\zancadilla impacta.wav}} {}
+#TRIGGER {* ¡Pateas malintencionadamente la espinilla de *, pero a pesar de que le has magullado, éste aguanta estóicamente el dolor y no pierde el equilibrio!} {#Play {RL\Habilidades\Yver\zancadilla falla.wav}} {}
+#TRIGGER {* * te ataca exactamente como habías previsto y esquivas su ataque con facilidad.} {#Play {RL\Habilidades\Yver\yver esquiva.wav}} {}

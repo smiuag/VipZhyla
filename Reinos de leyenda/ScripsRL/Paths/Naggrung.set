@@ -1,0 +1,234 @@
+;Módulo: Naggrung.set
+;Versión: 1.1, 07/07/2024
+;Descripción: Paths para la isla de naggrung.
+;Autor: Rhomdorthus.
+
+
+;Origen: Altar de los dioses (CAD)
+
+#GTrigger {Ihdne Allor: Altar de los Dioses *[[]o,e,s,n] } {
+FPathDisponible;
+#Var Mapa {
+Keel (Centro):FPath;.CADKeeC
+|
+Nalaghar, puertas:FPath;.CADNalP
+|
+Ciudad abandonada de Rekinsthar:FPath;.CADCAR
+|
+Acantilados del Trueno:FPath;.CADAT
+|
+Templo de Ankhalas:FPath;.CADTAn
+|
+Antiguo refugio de piedra:FPath;.CADARP}
+} {} AnyCase
+
+#GAlias {.CADCAR} {
+e;e;e;ne;ne;e;se;e;ne;e;e;ne;e;se;s;ne;ne;ne;e;ne;e;ne;n;n;ne;e;ne;e;ne;ne;n;ne;ne;ne;n;e;n;ne;e;se;n;ne;ne;e;ne;e;ne;no;n;n;n;n;n;o;o;o;no;e;ne;e;n;no;s;no;ne;e;s;e;n;no;o;no;n;no;e;n;no;e;se;s;e;e}
+
+#GAlias {.CADNalP} {
+s;se;e;s;se;s;so;so;s;so;s;o;se;s;so;s;so;no;so;s;no;so;o;ar;n;no;so;s;se;ar;se;so;se;so;no;ab;o;no;n;o;ar;no;so;s;se;so;ar;s;so;s;s;s;s;so;so;ar;o;so;se;so;o;s;se;se;so;so;ar;s;e;se;o;se;s;se;s;se;e;ab;e;e;se;se;ab;se;s;se;e;s;s;so;s;se;s;se;so;s;se;e;se;se;se;s;so;o;no;no;o;so;so;s;o;no;o}
+
+#GAlias {.CADAT} {
+e;e;e;ne;ne;e;se;e;ne;e;e;ne;e;se;s;ne;ne;ne;e;ne;e;ne;n;n;ne;e;ne;e;ne;ne;n;ne;n;no;n;ne;n;e;se;se;s;e;ne;ne;n;ne;ne;e;ne;e;ne;no;n;n;n;n;n;o;o;o;no;e;ne;no;o;n;n;no;n;e;ne;no;no;so;so;s;o;so;so;so;s;no;s;o;o;s;o;so;no;o;o;no;o;no;o;o;n;no;ar;no;ne;no;so;o;so;no;e;n;n;e;no;o;o;no;ar;o;no;o;n;ne;no;o;o;n;o;no;ar;e;ne;n;no;no;o;so;o;so;ab;o;no;n;no;s;o;so;o;so;no;ab;n;ne;n;ne;n;n;no;n;n;ne;n;n;n;no;ne;n;n;n;no;o;n;no;no;no}
+
+#GAlias {.CADTAn} {
+o;so;s;so;so;o;so;o;so;so;n;o;o;no;o;ab;o;no;so;o;no;no;so;o;o;no;o;no;so;o;no;so;so;o;so;o;o}
+
+#GAlias {.CADKeeC} {
+s;se;e;s;se;s;se;se;s;e;e;ne;se;s;se;s;s;se;se;se;s;s;se;o;s;e;so;s;e;se;e;e;e;e;e;e;e;e;e;e;e}
+
+#GAlias {.CADARP} {
+e;e;e;ne;ne;e;se;e;ne;e;e;ne;e;se;s;ne;ne;ne;e;ne;e;ne;n;n;ne;e;ne;e;ne;ne;n;ne;n;no;n;ne;n;e;se;se;s;e;ne;ne;n;ne;ne;e;ne;e;ne;no;n;n;n;n;n;o;o;o;no;e;ne;no;o;n;n;no;n;e;ne;no;no;so;so;s;o;so;so;so;s;no;s;o;o;s;o;so;no;o;o;no;o;no;o;o;n;no;ar;no;ne;no;so;o;so;no;e;n;n;e;no;o;o;no;ar;o;no;o;n;ne;no;o;o;n;o;no;ar;e;ne;n;no;no;o;so;o;so;ab;o;no;n;no;s;o;so;o;so;no;ab;n;ne;n;ne;n;n;no;n;n;ne;n;n;n;no;no;no;so;s;se;s;s;so;so;s;s;s;s;s;se;se;n;e;s;so;no;no;o;so;s;s;so;so;o;o;o;n;no;o;so;no;no;o;s;no;so;o;no;so;so;o;no;no;n;n;n;n;no;n;ne;ne;ne;n;ne;e;e;se;se;s;se;e;s;se;s;so;s;so;so;o;no;so;so;o;no;n;n;n;n;no;n;ne;ne;ne;n;e;e;se;s;se;se;se;s;so;s;so;o;no;so;so;o;n;ne;no;n;no;n;ne;ne;ne;e;s;se;s;se;e;s;so;s;o;no;so;no;n;no;n;ne;ne;se;s;se;s;o;so;n;no;ne;n}
+
+;Origen: Tundra, lomas de la cordillera sur (CTL)
+
+#GTrigger {Tundra: Lomas de la Cordillera Sur *[[]o,s,ne] } {
+FPathDisponible;
+#Var Mapa {
+Nalaghar, puertas:FPath;.CTLNalP
+|
+Keel (Centro):FPath;.CTLKeeC
+|
+Altar de los dioses:FPath;.CTLCAD
+}
+} {} AnyCase
+
+#GAlias {.CTLNalP} {
+s;s;so;s;se;s;se;so;s;se;e;se;se;se;s;so;o;no;no;o;so;so;s;o;no;o}
+
+#GAlias {.CTLCAD} {
+o;no;n;no;ar;no;no;o;o;ar;o;no;n;no;n;no;e;no;o;n;ab;ne;ne;no;no;n;e;ne;no;ne;e;ab;ne;ne;n;n;n;n;ne;n;ab;ne;no;n;ne;se;ab;e;s;se;e;ar;se;ne;no;ne;no;ab;no;n;ne;se;s;ab;e;ne;se;n;ne;se;ne;n;ne;n;no;e;n;ne;n;ne;ne;n;no;n;o;no;n}
+
+#GAlias {.CTLKeeC} {
+crear
+}
+
+
+;Origen: Nalaghar puertas: (NalP)
+
+#GTrigger {Bosque Blanco: Entrada a Nalaghar *[[]e,s,o] } {
+FPathDisponible;
+#Var Mapa {
+Keel (Centro):FPath;.NalPKeeC
+|
+Altar de los Dioses:FPath;.NalPCAD
+|
+Ciudad abandonada de Rekinstar:Fpath;.
+} } {} AnyCase
+
+#GAlias {.NalPCAD} {
+e;se;e;n;ne;ne;e;se;se;e;ne;n;no;no;no;o;no;n;ne;no;n;no;n;ne;n;n;o;no;n;no;ar;no;no;o;o;ar;o;no;n;no;n;no;e;no;o;n;ab;ne;ne;no;no;n;e;ne;no;ne;e;ab;ne;ne;n;n;n;n;ne;n;ab;ne;no;n;ne;se;ab;e;s;se;e;ar;se;ne;no;ne;no;ab;no;n;ne;se;s;ab;e;ne;se;n;ne;se;ne;n;ne;n;no;e;n;ne;n;ne;ne;n;no;n;o;no;n}
+
+#GAlias {.NalPKeeC} {
+crear
+}
+
+
+;Origen: Acantilados del trueno, (AT):
+
+#GTrigger {Acantilados del Trueno *[[]se,so] } {
+FPathDisponible;
+#Var Mapa {
+Keel (Centro):FPath;.ATKeeC
+|
+Ciudad abandonada de Rekinsthar:FPath;.AtCAR
+|
+Antiguo refugio de piedra:FPath;.ATARP
+}
+} {} AnyCase
+
+#GAlias {.ATKeeC} {
+se;se;se;s;e;se;s;s;s;so;se;s;s;s;so;s;s;se;s;s;so;s;so;s;ar;se;ne;e;ne;e;n;se;s;se;e;ar;ne;e;ne;e;se;se;s;so;o;ab;se;e;s;e;e;se;so;s;e;se;e;ab;se;e;e;se;o;s;s;o;se;ne;e;ne;se;so;se;ab;se;s;e;e;se;e;ne;se;se;se;ne;e;n;e;e;n;se;n;ne;ne;ne;e;n;ne;ne;se;se;so;s;e;s;so;s;e;se;so;o;se;e;e;e;s;s;s;s;s;se;so;o;so;o;so;so;s;so;so;o;n;o;s;so;so;so;s;so;so;o;so;o;so;s;s;so;o;so;o;so;so;so;n;no;o;so;o;o;so;o;no;o;so;so;o;o;so;se;e;s;se;s;se;se;s;e;e;ne;se;s;se;s;s;se;se;se;s;s;se;s;s;s;se;e;e;e;e;e;e;e;e;e;e;e}
+
+
+#GAlias {.ATCAR} {
+crear
+}
+
+#GAlias {.ATARP} {
+se;se;se;s;e;se;s;s;s;so;no;no;so;s;se;s;s;so;so;s;s;s;s;s;se;se;n;e;s;so;no;no;o;so;s;s;so;so;o;o;o;n;no;o;so;no;no;o;s;no;so;o;no;so;so;o;no;no;n;n;n;n;no;n;ne;ne;ne;n;ne;e;e;se;se;s;se;e;s;se;s;so;s;so;so;o;no;so;so;o;no;n;n;n;n;no;n;ne;ne;ne;n;e;e;se;s;se;se;se;s;so;s;so;o;no;so;so;o;n;ne;no;n;no;n;ne;ne;ne;e;s;se;s;se;e;s;so;s;o;no;so;no;n;no;n;ne;ne;se;s;se;s;o;so;n;no;ne;n}
+
+
+;Origen: Páramos del viento helado oeste, (PVO):
+
+#GTrigger {P?ramos del Viento Helado *[[]o,se,ne] } {
+FPathDisponible;
+#Var Mapa {
+Ciudad abandonada de Rekinsthar:FPath;.PVOCAR
+|
+Keel:FPath;.PVOKeeC
+|
+Acantilados del trueno:FPath;.PVOAT
+|
+Antiguo refugio de piedra:FPath;.PVOARP
+}
+} {} AnyCase
+
+#GAlias {.PVOAT} {
+o;no;o;o;n;no;ar;no;ne;no;so;o;so;no;e;n;n;e;no;o;o;no;ar;o;no;o;n;ne;no;o;o;n;o;no;ar;e;ne;n;no;no;o;so;o;so;ab;o;no;n;no;s;o;so;o;so;no;ab;n;ne;n;ne;n;n;no;n;n;ne;n;n;n;no;ne;n;n;n;no;o;n;no;no;no}
+
+#GAlias {.PVOKeeC} {
+ne;se;se;se;ne;e;n;e;e;n;se;n;ne;ne;ne;e;n;ne;ne;se;se;so;s;e;s;so;s;e;se;so;o;se;e;e;e;s;s;s;s;s;se;so;o;so;o;so;so;s;so;so;o;n;o;s;so;so;so;s;so;so;o;so;o;so;s;s;so;o;so;o;so;so;so;n;no;o;so;o;o;so;o;no;o;so;so;o;o;so;se;e;s;se;s;se;se;s;e;e;ne;se;s;se;s;s;se;se;se;s;s;se;s;s;s;se;e;e;e;e;e;e;e;e;e;e;e}
+
+
+#GAlias {.PVOCAR} {
+crear
+}
+
+#GAlias {.PVOARP} {
+o;no;o;o;n;no;ar;no;ne;no;so;o;so;no;e;n;n;e;no;o;o;no;ar;o;no;o;n;ne;no;o;o;n;o;no;ar;e;ne;n;no;no;o;so;o;so;ab;o;no;n;no;s;o;so;o;so;no;ab;n;ne;n;ne;n;n;no;n;n;ne;n;n;n;no;no;no;so;s;se;s;s;so;so;s;s;s;s;s;se;se;n;e;s;so;no;no;o;so;s;s;so;so;o;o;o;n;no;o;so;no;no;o;s;no;so;o;no;so;so;o;no;no;n;n;n;n;no;n;ne;ne;ne;n;ne;e;e;se;se;s;se;e;s;se;s;so;s;so;so;o;no;so;so;o;no;n;n;n;n;no;n;ne;ne;ne;n;e;e;se;s;se;se;se;s;so;s;so;o;no;so;so;o;n;ne;no;n;no;n;ne;ne;ne;e;s;se;s;se;e;s;so;s;o;no;so;no;n;no;n;ne;ne;se;s;se;s;o;so;n;no;ne;n}
+
+
+;Origen: Paramos del viento helado sur (PVS):
+
+#GTrigger {P?ramos del Viento Helado *[[]s,n,no] } {
+FPathDisponible;
+#Var Mapa {
+Keel (Centro):FPath;.PVSKeeC
+|
+Acantilados del trueno:FPath;.PVSAT
+|
+Ciudad abandonada de Rekinsthar:FPath;.PVSCAR
+|
+Antiguo refugio de piedra:FPath;.PVSARP
+}
+} {} AnyCase
+
+#GAlias {.PVSAT} {
+n;n;n;o;o;o;no;e;ne;no;o;n;n;no;n;e;ne;no;no;so;so;s;o;so;so;so;s;no;s;o;o;s;o;so;no;o;o;no;o;no;o;o;n;no;ar;no;ne;no;so;o;so;no;e;n;n;e;no;o;o;no;ar;o;no;o;n;ne;no;o;o;n;o;no;ar;e;ne;n;no;no;o;so;o;so;ab;o;no;n;no;s;o;so;o;so;no;ab;n;ne;n;ne;n;n;no;n;n;ne;n;n;n;no;ne;n;n;n;no;o;n;no;no;no}
+
+#GAlias {.PVSCAR} {
+n;n;n;o;o;o;no;e;ne;e;n;no;s;no;ne;e;s;e;n;no;o;no;n;no;e;n;no;e;se;s;e;e}
+
+#GAlias {.PVSKeeC} {
+s;s;se;so;o;so;o;so;so;s;so;so;o;n;o;s;so;so;so;s;so;so;o;so;o;so;s;s;so;o;so;o;so;so;so;n;no;o;so;o;o;so;o;no;o;so;so;o;o;so;se;e;s;se;s;se;se;s;e;e;ne;se;s;se;s;s;se;se;se;s;s;se;s;s;s;se;e;e;e;e;e;e;e;e;e;e;e}
+
+#GAlias {.PVSARP} {
+n;n;n;o;o;o;no;e;ne;no;o;n;n;no;n;e;ne;no;no;so;so;s;o;so;so;so;s;no;s;o;o;s;o;so;no;o;o;no;o;no;o;o;n;no;ar;no;ne;no;so;o;so;no;e;n;n;e;no;o;o;no;ar;o;no;o;n;ne;no;o;o;n;o;no;ar;e;ne;n;no;no;o;so;o;so;ab;o;no;n;no;s;o;so;o;so;no;ab;n;ne;n;ne;n;n;no;n;n;ne;n;n;n;no;no;no;so;s;se;s;s;so;so;s;s;s;s;s;se;se;n;e;s;so;no;no;o;so;s;s;so;so;o;o;o;n;no;o;so;no;no;o;s;no;so;o;no;so;so;o;no;no;n;n;n;n;no;n;ne;ne;ne;n;ne;e;e;se;se;s;se;e;s;se;s;so;s;so;so;o;no;so;so;o;no;n;n;n;n;no;n;ne;ne;ne;n;e;e;se;s;se;se;se;s;so;s;so;o;no;so;so;o;n;ne;no;n;no;n;ne;ne;ne;e;s;se;s;se;e;s;so;s;o;no;so;no;n;no;n;ne;ne;se;s;se;s;o;so;n;no;ne;n}
+
+
+;Origen: Bosque de las yanuras sudoeste (BY)
+
+#GTrigger {Bosque de las Llanuras: Sendero - Linde Sur *[[]se,o,s,n] } {
+FPathDisponible;
+#Var Mapa {
+Keel (Centro):FPath;.BYKeeC
+|
+Acantilados del trueno:FPath;.BYAT
+|
+Ciudad abandonada de Rekinsthar:FPath;.BYCAR
+}
+} {} AnyCase
+
+#GAlias {.BYAT} {
+n;ne;e;ne;e;ne;ne;n;ne;ne;ne;n;e;n;ne;e;se;n;ne;ne;e;ne;e;ne;no;n;n;n;n;n;o;o;o;no;e;ne;no;o;n;n;no;n;e;ne;no;no;so;so;s;o;so;so;so;s;no;s;o;o;s;o;so;no;o;o;n;o;no;o;o;n;no;ar;no;ne;no;so;o;so;no;e;n;n;e;no;o;o;no;ar;o;no;o;n;ne;no;o;o;n;o;no;ar;e;ne;n;no;no;o;so;o;so;ab;o;no;n;no;s;o;so;o;so;no;ab;n;ne;n;ne;n;n;no;n;n;ne;n;n;n;no;ne;n;n;n;no;o;n;no;no;no}
+
+#GAlias {.BYCAR} {
+n;ne;e;ne;e;ne;ne;n;ne;ne;ne;n;e;n;ne;e;se;n;ne;ne;e;ne;e;ne;no;n;n;n;n;n;o;o;o;no;e;ne;e;n;no;s;no;ne;e;s;e;n;no;o;no;n;no;e;n;no;e;se;s;e;e}
+
+#GAlias {.BYKeeC} {
+s;so;o;so;o;so;so;so;n;no;o;so;o;o;so;o;no;o;so;so;o;o;so;se;e;s;se;s;se;se;s;e;e;ne;se;s;se;s;s;se;se;se;s;s;se;s;s;s;se;e;e;e;e;e;e;e;e;e;e;e}
+
+
+;Origen: Antiguo refugio de piedra (ARP):
+
+#GTrigger {Cordillera Norte: Antiguo refugio de piedra *[[]?so?,s] } {
+FPathDisponible;
+#Var Mapa {
+Acantilados del trueno:FPath;.ARPAT
+|
+Keel, centro:FPath;.ARPKeeC
+}
+} {} AnyCase
+
+#GAlias {.ARPAT} {
+s;so;se;s;ne;e;n;no;n;no;so;so;s;se;s;se;ne;se;e;n;ne;n;o;no;n;no;n;o;so;so;so;s;se;s;se;so;s;e;ne;ne;se;e;ne;n;ne;n;no;no;no;n;no;o;o;s;so;so;so;s;se;s;s;s;s;se;e;ne;ne;se;e;ne;ne;n;ne;n;no;n;o;no;n;no;no;o;o;so;s;so;so;so;s;se;s;s;s;s;se;se;e;ne;ne;se;e;ne;se;n;e;se;se;ne;e;se;s;e;e;e;ne;ne;n;n;ne;e;se;se;ne;n;o;s;no;no;n;n;n;n;n;ne;ne;n;n;no;n;ne;se;se;ne;n;n;n;no;o;n;no;no;no}
+
+#GAlias {.ARPKeeC} {
+s;so;se;s;ne;e;n;no;n;no;so;so;s;se;s;se;ne;se;e;n;ne;n;o;no;n;no;n;o;so;so;so;s;se;s;se;so;s;e;ne;ne;se;e;ne;n;ne;n;no;no;no;n;no;o;o;s;so;so;so;s;se;s;s;s;s;se;e;ne;ne;se;e;ne;ne;n;ne;n;no;n;o;no;n;no;no;o;o;so;s;so;so;so;s;se;s;s;s;s;se;se;e;ne;ne;se;e;ne;se;n;e;se;se;ne;e;se;s;e;e;e;ne;ne;n;n;ne;e;se;se;ne;n;o;s;no;no;n;n;n;n;n;ne;ne;n;n;no;n;ne;se;se;se;s;s;s;so;s;s;se;s;s;so;s;so;s;ar;se;ne;e;ne;e;n;se;s;se;e;ar;ne;e;ne;e;se;se;s;so;o;ab;se;e;s;e;e;se;so;s;e;se;e;ab;se;e;e;se;o;s;s;o;se;ne;e;ne;se;so;se;ab;se;s;e;e;se;e;se;e;e;se;ne;e;n;e;e;n;se;n;ne;ne;ne;e;n;ne;ne;se;se;so;o;s;se;s;s;e;se;so;o;se;e;e;e;s;s;s;s;s;se;so;o;so;o;so;so;s;so;so;o;n;no;no;o;s;so;s;se;s;so;s;so;so;o;so;o;so;s;s;so;o;so;o;so;so;so;n;no;o;so;o;o;so;o;no;o;so;so;o;o;so;se;e;s;se;s;se;se;s;e;e;ne;se;s;se;s;s;se;se;se;s;s;se;o;s;e;so;s;e;se;e;e;e;e;e;e;e;e;e;e;e}
+
+;Origen: Keel, centro (KeeC):
+
+#GTrigger {Ciudad de Keel: Mercado *[[]?de?,n,ne,no,e,o,s] } {
+FPathDisponible;
+#Var Mapa {
+Acantilados del trueno:FPath;.KeeCAT
+|
+Antiguo refugio de piedra:FPath;.KeeCARP
+|
+Altar de los dioses:FPath;.AD
+}
+} {} AnyCase
+
+#GAlias {.KeeCAT} {
+o;o;o;o;o;o;o;o;o;o;o;no;o;n;ne;o;n;e;no;n;n;no;no;no;n;n;no;n;no;so;o;o;n;no;no;n;no;n;o;no;ne;e;e;ne;ne;e;se;e;ne;e;e;ne;e;se;s;ne;ne;ne;e;ne;e;ne;n;n;ne;e;ne;e;ne;ne;n;ne;n;no;n;ne;n;e;se;se;s;e;ne;ne;n;ne;ne;e;ne;e;ne;no;n;n;n;n;n;o;o;o;no;e;ne;no;o;n;n;no;n;e;ne;no;no;so;so;s;o;so;so;so;s;no;s;o;o;s;o;so;no;o;o;no;o;no;o;o;n;no;ar;no;ne;no;so;o;so;no;e;n;n;e;no;o;o;no;ar;o;no;o;n;ne;no;o;o;n;o;no;ar;e;ne;n;no;no;o;so;o;so;ab;o;no;n;no;s;o;so;o;so;no;ab;n;ne;n;ne;n;n;no;n;n;ne;n;n;n;no;ne;n;n;n;no;o;n;no;no;no}
+
+#GAlias {.KeeCARP} {
+o;o;o;o;o;o;o;o;o;o;o;no;o;n;ne;o;n;e;no;n;n;no;no;no;n;n;no;n;no;so;o;o;n;no;no;n;no;n;o;no;ne;e;e;ne;ne;e;se;e;ne;e;e;ne;e;se;s;ne;ne;ne;e;ne;e;ne;n;n;ne;e;ne;e;ne;ne;n;ne;n;no;n;ne;n;e;se;se;s;e;ne;ne;n;ne;ne;e;ne;e;ne;no;n;n;n;n;n;o;o;o;no;e;ne;no;o;n;n;no;n;e;ne;no;no;so;so;s;o;so;so;so;s;no;s;o;o;s;o;so;no;o;o;no;o;no;o;o;n;no;ar;no;ne;no;so;o;so;no;e;n;n;e;no;o;o;no;ar;o;no;o;n;ne;no;o;o;n;o;no;ar;e;ne;n;no;no;o;so;o;so;ab;o;no;n;no;s;o;so;o;so;no;ab;n;ne;n;ne;n;n;no;n;n;ne;n;n;n;no;no;no;so;s;se;s;s;so;so;s;s;s;s;s;se;se;n;e;s;so;no;no;o;so;s;s;so;so;o;o;o;n;no;o;so;no;no;o;s;no;so;o;no;so;so;o;no;no;n;n;n;n;no;n;ne;ne;ne;n;ne;e;e;se;se;s;se;e;s;se;s;so;s;so;so;o;no;so;so;o;no;n;n;n;n;no;n;ne;ne;ne;n;e;e;se;s;se;se;se;s;so;s;so;o;no;so;so;o;n;ne;no;n;no;n;ne;ne;ne;e;s;se;s;se;e;s;so;s;o;no;so;no;n;no;n;ne;ne;se;s;se;s;o;so;n;no;ne;n}
+
+#GAlias {.AD} {
+o;o;o;o;o;o;o;o;o;o;o;no;o;n;ne;o;n;e;no;n;n;no;no;no;n;n;no;n;no;so;o;o;n;no;no;n;no;n;o;no;n}
+
+
+;Origen: Puerto de Keel, (Keep):
+;Origen: Keel, puerta oeste, (KeePo):

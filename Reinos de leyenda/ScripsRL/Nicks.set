@@ -1,0 +1,102 @@
+;Módulo: Nicks.set.
+;Versión: 1.9, 01/02/2024
+;Descripción: Manejo de nicks.
+;Autor: Rhomdur.
+
+
+;Declaración de variables:
+
+#Var NickX
+#Var Objetivo
+
+
+#GAlias FuncNickX {
+#Var NickX %0;
+#Var NickX {%Replace(@NickX,",","|")};
+#Var NickX {%Replace(@NickX,".",)};
+#Var NickX {%Trim(@NickX)};
+#Var Objetivo {%Word(@NickX,"|",1)};
+#Play {RL\Combate\Nick fijado.wav}
+}
+
+
+;Triggers para capurar el uso de nicks y fijar objetivo:
+
+#GTrigger {Nombre corto * x quedando *} {
+FuncNickX %2
+} {} AnyCase
+
+#GTrigger {? Nombre corto * x quedando *} {
+FuncNickX %2
+} {} AnyCase
+
+#GTrigger {Añadiendo nombre corto x como *} {
+FuncNickX %1
+} {} AnyCase
+
+#GTrigger {Nombre corto x cambiado de * a *} {
+FuncNickX %2;
+#If {@ModoE = 1} {
+ #Say {Nick x cambiado a %2} NoDisplay|Incoming;
+ #GagLine voice
+}
+} {} AnyCase
+
+#GTrigger {? Nombre corto x cambiado de * a *} {
+FuncNickX %2;
+#If {@ModoE = 1} {
+ #Say {Nick x cambiado a %2} NoDisplay|Incoming;
+ #GagLine voice
+}
+} {} AnyCase
+
+#GTrigger {El nickname x equivale a *} {
+FuncNickX %1
+} {} AnyCase
+
+#GTrigger {? El nickname x equivale a *} {
+FuncNickX %1
+} {} AnyCase
+
+#GTrigger {Nombre corto x borrado.} {
+#Var NickX 0
+} {} AnyCase
+
+
+;Keys para nicks:
+
+;Muestra el nickX y añade nombres al principio al pulsar enter sobre ellos:
+#GKey control-shift-n {
+#Var X;
+#If {@NickX = ""} {
+ #Say {No hay nick x almacenado} NoDisplay|Output
+} {
+ #For @NickX {
+  #AddItem X {%i:mnick x %i}
+ }
+};
+#Pick @X;
+#UnVar X
+}
+
+
+;Lee la variable Objetivo:
+#GKey control-shift-o {
+#If {@Objetivo = ""} {
+ #Say {No hay un objetivo enemigo definido. Define el nick X antes} NoDisplay|Output
+} {
+#Say {@Objetivo Objetivo enemigo} NoDisplay|Output
+}
+}
+
+;Alias para cambiar la variable objetivo:
+#GAlias obj {
+#If {%1 = ""} {
+ #Say {Para fijar un objetivo enemigo: Obj nombre} NoDisplay|Output;
+ #Abort
+};
+#Var Objetivo %1;
+#Say {Objetivo enemigo fijado en @Objetivo} NoDisplay|Output;
+#Play {RL\Combate\Objetivo fijado.wav}
+}
+

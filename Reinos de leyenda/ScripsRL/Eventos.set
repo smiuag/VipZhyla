@@ -1,0 +1,35 @@
+;Módulo: Eventos.set
+;Versión: 1.8, 25/04/2019
+;Descripción: Historial de eventos.
+;Autor: Rhomdur
+
+
+;Declaración de variables:
+#Var HistorialEventos
+#Var UltimoEvento {No hay eventos registrados}
+
+;Funciones:
+
+#GAlias FEventos {
+#Var UltimoEvento %0;
+#AddItem HistorialEventos {@UltimoEvento:FCopiar @UltimoEvento};
+#If {%NumWords(@HistorialEventos,|) = 99} {#Var HistorialEventos {%DelNItem(@HistorialEventos,1)}}
+}
+
+
+;Keys:
+
+; Shift-f4 saca el historial de eventos.
+#GKey shift-F4 {
+#If {@HistorialEventos = ""} {
+ #Say {Historial de eventos vacío} NoDisplay|Output
+} {
+ #Pick {%ReverseList(@HistorialEventos)}
+}
+}
+
+;f4 lee el ultimo evento.
+#GKey F4 {
+#Say {@{UltimoEvento}} NoDisplay|Output
+}
+

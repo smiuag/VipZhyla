@@ -1,0 +1,165 @@
+;Módulo: Efectos.set
+;Versión: 2.0, 08/02/2025
+;Descripción: Triggers de sonido para los efectos generales.
+;Autor: Rhomdur.
+
+
+;Antimagia:
+#GTrigger {[¡]Tu ataque antim?gico anula parte de los hechizos de tu enemigo!} {
+#Alarm antimagia 120 {
+ FEventos El bloqueo antimágia termina;
+ #Play {RL\Bloqueos\Bloqueo.wav};
+ #Play {RL\Bloqueos\Antimagico.wav}
+};
+#Play {RL\Efectos\Antimagico.wav};
+#If {@ModoE = 1} {
+ #GagLine voice
+}
+} {} AnyCase
+
+
+;Cólera de verdugo:
+#GTrigger {[¡]Tu c?lera de verdugo golpea a *!} {
+#Play {RL\Efectos\Verdugo.wav};
+#If {@ModoE = 1} {
+ #GagLine voice
+}
+} {} AnyCase
+
+
+;Ejecutor:
+#GTrigger {[¡]Ejecutas a * con tu ataque!} {
+#Play {RL\Efectos\Ejecutor.wav};
+#If {@ModoE = 1} {
+ #GagLine voice
+}
+} {} AnyCase
+
+
+;Barrido:
+#GTrigger {[¡]El alcance de tu arma te permite barrer a tus enemigos!} {
+#Play {RL\Efectos\Barrido.wav};
+#If {@ModoE = 1} {
+ #GagLine voice
+}
+} {} AnyCase
+
+
+;Derribo:
+
+#GTrigger {[¡]Tu ataque derriba a *} {
+FEventos {Derribo a %1};
+#Play {RL\Efectos\Derribo.wav};
+#If {@ModoE = 1} {
+ #Say {%1} NoDisplay|Output;
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {[¡]El ataque de * te derriba!} {
+FEventos %0;
+#Play {RL\Efectos\Derribo recibido.wav};
+#If {@ModoE = 1} {
+ #Say {%1} NoDisplay|Output;
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {* se levanta a toda prisa.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Combate\Se levanta.wav};
+#If {@ModoE = 1} {
+ #Say {%1} NoDisplay|Output;
+ #GagLine Voice
+}
+} {}
+
+
+;Migraña:
+#GTrigger {[¡]Tu ataque provoca una horrorosa migra?a a *!} {
+#Play {RL\Efectos\Migrana.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+;marca
+;Desorientar:
+#GTrigger {[¡]El ataque de * te deja desorientad*!} {
+#Play {RL\Efectos\Desorientar recibido.wav}
+} {} AnyCase
+
+#GTrigger {Embobad* y desorientad* te mueves sin ver saber muy bien por dónde vas.} {
+#Play {RL\Efectos\Desorientado.wav}
+} {} AnyCase
+
+#GTrigger {[¡]Tu ataque desorienta a *!} {
+#Play {RL\Efectos\Desorientar.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {Tu cabeza se despeja y dejas de estar desorientad*} {
+#Play {RL\Efectos\Efecto off.wav}
+} {} AnyCase
+
+;Celeridad:
+#GTrigger {Tras beber la poci?n, notas un cosquilleo por todo el cuerpo.} {
+#Play {RL\Efectos\Celeridad on.wav}
+} {}
+
+#GTrigger {Tu capacidad de movimiento vuelve a su estado normal.} {
+#Play {RL\Efectos\Celeridad off.wav}
+} {}
+
+;Iluminación:
+#GTrigger {[¡]Tus ataques envuelven a * en luz!} {
+#Play {RL\Efectos\Iluminacion on.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {Tu efecto de iluminaci?n que afectaba a * se termina.} {
+#Play {RL\Efectos\Iluminacion off.wav}
+} {} AnyCase
+
+;Sanguijuela:
+#GTrigger {[¡]Tu * te entrega la energía de *!} {
+#Play {RL\Efectos\Sanguijuela.wav}
+} {} AnyCase
+
+;Ceguera:
+#GTrigger {* parece haber perdido la visión} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FuncComprobarSujeto %1 0 0;
+#Play {RL\Efectos\Ceguera.wav}
+} {} AnyCase
+
+;Daño:
+#GTrigger {Tu capacidad destructiva vuelve a su estado normal.} {
+#Play {RL\Efectos\Dano.wav}
+} {} AnyCase
+
+;Relentizar:
+#GTrigger {[¡]Tu * ralentiza a *!} {
+#Play {RL\Efectos\Ralentizar.wav}
+} {} AnyCase
+
+;Inspiración:
+
+#GTrigger {Inspirado por tus camaradas te sientes reforzado para la guerra.} {
+#Play {RL\Efectos\Inspiracion on.wav}
+} {} AnyCase
+
+#GTrigger {¡El ind?mito aullido te enaltece!} {
+#Play {RL\Efectos\Inspiracion on.wav}
+} {} AnyCase
+
+#GTrigger {Sientes como ha finalizado el efecto inspirador de tus camaradas.} {
+#Play {RL\Efectos\Inspiracion off.wav}
+} {} AnyCase
+

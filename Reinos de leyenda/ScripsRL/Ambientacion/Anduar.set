@@ -1,0 +1,41 @@
+;Módulo: Anduar.set
+;Versión: 1.0, 26/01/2024
+;Descripción: Triggers de sonidos puntuales de ambientación del reino de Anduar.
+;Autor: Rhomdur.
+
+
+#Class Ambientacion
+
+#GTrigger {Apartas los arbustos y ves una senda agreste y poco transitada hacia el *.} {
+#Play {RL\Ambientacion\Templo en Ruinas\apartas arbustos.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {Empuñas con fuerza tu * y cortas la maleza dejando libre la senda en dirección *.} {
+#Play {RL\Ambientacion\Templo en Ruinas\cortas maleza.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {Abres el Arc?n cuidadosamente.} {
+#Play {RL\Ambientacion\Templo en Ruinas\abres arcón.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {Los huesos esparcidos sobre el ataúd empiezan a vibrar de forma extraña.} {
+#Play {RL\Ambientacion\Templo en Ruinas\esqueleto1.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {Observas con consternaci?n como los huesos empiezan a moverse y se van juntando encajando uno sobre otro.} {
+#Play {RL\Ambientacion\Templo en Ruinas\esqueleto2.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {Los huesos se unen y van adquiriendo forma de un extraño esqueleto...} {
+#Play {RL\Ambientacion\Templo en Ruinas\esqueleto3.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {El ser se recompone con un horrible chillido y te observa con odio.} {
+#Play {RL\Ambientacion\Templo en Ruinas\esqueleto4.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {Hundes tu Pala en la tierra, justo delante de la lápida de Thran.} {
+#Play {RL\Ambientacion\Templo en Ruinas\cavas lápida.wav} @VolAmb1
+} {} AnyCase
+
+#Class 0

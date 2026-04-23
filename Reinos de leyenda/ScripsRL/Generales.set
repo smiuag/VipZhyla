@@ -1,0 +1,240 @@
+;Módulo: Generales.set
+;Versión: 2.0, 23/11/2024
+;Descripción: Triggers generales.
+;Autor: Rhomdur.
+
+;Declaración de variables:
+#Var UltimoConectado Nadie
+#Var UltimoDesconectado Nadie
+
+;Triggers:
+
+
+;Triggers para orbitar.
+
+#GTrigger {[[]* orbita a Eirea*]*} {
+#If {%IfWord(%char,%1, )} {#Abort};
+#If {%Word(%1, ,2) = "Legendario" or %Word(%1, ,2) = "Legendaria"} {
+ #Var UltimoConectado {%Word(%1, ,3)};
+ #Play {RL\Generales\Orbita l1.wav}
+} {
+ #Var UltimoConectado {%Word(%1, ,1)}
+};
+#Play {RL\Generales\Orbita 1.wav};
+#If {@ModoJ = 3} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {[[]* orbita al Limbo*]*} {
+#If {%IfWord(%char,%1, )} {#Abort};
+#If {%Word(%1, ,2) = "Legendario" or %Word(%1, ,2) = "Legendaria"} {
+ #Var UltimoDesconectado {%Word(%1, ,3)};
+ #Play {RL\Generales\Orbita l2.wav}
+} {
+ #Var UltimoDesconectado {%Word(%1, ,1)}
+};
+#Play {RL\Generales\Orbita 2.wav};
+#If {@ModoJ = 3} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {Una intensa luz desciende hasta la zona y se concentra formando la figura de *.} {
+#Play {RL\Sucesos\Orbita room.wav}
+} {} AnyCase
+
+#GTrigger {Eirea acaba de sufrir el caos, has de esperar almenos 2 minutos para poder entrar.} {
+#Play {RL\Generales\Orbita caos.wav}
+} {} AnyCase
+
+#GTrigger {[[]* entra en juego en modo tutorial]} {
+#Var UltimoConectado {%Word(%1, ,1)};
+#Play {RL\Generales\Orbita 1.wav};
+#If {@ModoJ = 3} {
+ #GagLine Voice
+}
+} {}
+
+#GTrigger {* ha reconectado.} {
+#Play {RL\Generales\Conexion recuperada.wav}
+} {}
+
+#GTrigger {* empieza a brillar y parece perder la conciencia.} {
+#Play {RL\Generales\Conexion perdida.wav}
+} {}
+
+
+;Triggers generales:
+
+#GTrigger {Oso pardo se lanza al ataque con una inusual fiereza.} {
+#If {@ModoE = 1 or @ModoJ >= 1} {
+ #GagLine voice
+}
+} {} AnyCase
+
+#GTrigger {[[]Obtienes * puntos de experiencia]} {
+#If {%1 >= 10000} {
+ FEventos %0;
+ #Play {RL\Generales\XP ganada.wav};
+ #Abort
+};
+#If {@ModoE = 1 or @ModoJ >= 1} {
+ #GagLine voice
+};
+#If {@ModoE = 0 and @ModoJ = 2} {
+ #Say {%1 XP} NoDisplay|Incoming;
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {*Cola de comandos borrada ('peleas parar' detendrá los combates si es lo que querías).} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#If {@ModoE = 1 or @ModoJ >= 1} {
+ #GagLine voice
+};
+#Play {RL\Generales\Parar.wav}
+} {}
+
+#GTrigger {*Ignorando '*'. No puedes ejecutar más acciones de ese tipo durante este turno.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Generales\Turno completo.wav};
+#If {@ModoE = 1} {
+ #GagLine voice
+}
+} {} AnyCase
+
+#GTrigger {*No est?s suficientemente calmad?.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Generales\Habilidad no disponible.wav};
+#If {@ModoE = 1} {
+ #GagLine voice
+}
+} {} AnyCase
+
+#GTrigger {Est?s concentrad? en otra habilidad y te resulta difícil *.} {
+#Play {RL\Generales\Habilidad ocupada.wav};
+#If {@ModoE = 1} {
+ #GagLine voice
+}
+} {} AnyCase
+
+
+;Tiradas de dados:
+
+#GTrigger {[[]Tiradas] * % de éxito: *. Tirada: * (*).} {
+FEventos %0;
+#Play {RL\Generales\Tirada dados.wav};
+#If {%4 = "Éxito"} {
+ #Play {RL\Generales\Tirada acierto.wav}
+} {
+ #Play {RL\Generales\Tirada fallo.wav}
+};
+#If {@ModoE = 1} {
+ #Say {%1 %4} NoDisplay|Incoming;
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {[[]Tiradas]: * a dificultad: * (* para pasar). Tirada: * (*)} {
+FEventos %0;
+#Play {RL\Generales\Tirada dados.wav};
+#If {%5 = "Éxito"} {
+ #Play {RL\Generales\Tirada acierto.wav}
+} {
+ #Play {RL\Generales\Tirada fallo.wav}
+};
+#If {@ModoE = 1} {
+ #Say {%1 %5} NoDisplay|Incoming;
+ #GagLine Voice
+}
+} {} AnyCase
+
+
+;Triggers para el HB.
+
+#GTrigger {[]]*} {
+#Play {RL\Generales\HB en espera.wav}
+} {}
+
+#GTrigger {[]]} {
+#gagline voice} {}
+
+#GTrigger {[]] } {
+#gagline voice} {}
+
+#GTrigger {>} {
+#gagline voice} {}
+
+#GTrigger {> } {
+#GagLine Voice
+} {}
+
+
+;Trigger de inicio de habilidad genérica:
+
+#GTrigger {*Te preparas para ejecutar *} {
+
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+
+#If {@ModoE = 1} {
+ #GagLine Voice
+};
+
+;Sonidos de habilidades específicas generales:
+;#If {%2 = ""} {
+; #Play {RL\Habilidades\Generales\Rezar.wav};
+; #Abort
+;};
+
+#If {%Defined(ImpulsoHabilidad)} {
+ #Play {@ImpulsoHabilidad}
+} {
+ #Play {RL\Habilidades\Generales\Impulso1.wav}
+}
+} {} AnyCase
+
+
+;Eventos de juego, carnaval:
+
+#GTrigger {Un disfraz ha caído en el Reino de *, en la zona conocida como *.} {
+FEventos %0;
+#Play {RL\Generales\Carnaval 1.wav}
+} {} AnyCase
+
+#GTrigger {Parece que alguien ha encontrado el disfraz de carnaval.} {
+FEventos %0;
+#Play {RL\Generales\Carnaval 2.wav}
+} {} AnyCase
+
+#GTrigger {Parece que nadie ha encontrado el disfraz de carnaval.} {
+FEventos %0;
+#Play {RL\Generales\Carnaval 3.wav}
+} {} AnyCase
+
+
+;Keys:
+
+;Leer y utilizar la variable UltimoConectado
+
+#GKey alt-5 { #say {Conectado: @{UltimoConectado}} nodisplay|Output}
+
+#GKey shift-alt-5 {
+#say {@{UltimoConectado} Copiado} nodisplay|Output;
+#clipboard @UltimoConectado}
+
+#GKey ctrl-alt-shift-5 {diplomacia @{UltimoConectado}}
+
+
+; Leer y utilizar la variable UltimoDesconectado
+
+#GKey alt-6 { #say {Desconectado: @{UltimoDesconectado}} nodisplay|Output}
+
+#GKey shift-alt-6 {
+#say {@{UltimoDesconectado} Copiado} nodisplay|Output;
+#clipboard @UltimoDesconectado}
+

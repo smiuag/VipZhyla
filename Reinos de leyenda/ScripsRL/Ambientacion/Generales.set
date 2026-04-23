@@ -1,0 +1,103 @@
+;Módulo: Ambientes_generales.set
+;Versión: 1.0, 26/01/2024
+;Descripción: Triggers que disparan los sonidos de ambientes generales a todos los reinos.
+;Autor: Rhomdur y recopiladores varios.
+
+;Variables:
+#Var MomentoDia 0
+#Var SAmanecer
+#Var SAnochecer
+
+;Función que asigna el momento del día como día o noche y reinicia sonidos de ambiente.
+;%1: 1 dia, 2 noche.
+#GAlias FuncMomentoDia {
+#If {%1 = 1 and @MomentoDia = "noche" and @SAmanecer <> "" and @ModoAmbientacion = 1} {
+ #Play @SAmanecer
+};
+#If {%1 = 2 and @MomentoDia = "dia" and @SAnochecer <> "" and @ModoAmbientacion = 1} {
+ #Play @SAnochecer
+};
+#If {%1 = 1} {
+ #Var MomentoDia dia
+};
+#If {%1 = 2} {
+ #Var MomentoDia noche
+};
+FuncAmbiente
+}
+
+
+;Triggers para dia y noche:
+
+#GTrigger {Hoy es * de * del * Era *, son las *:*.} {
+#If {%5 >= 7 and %5 < 19} {
+ FuncMomentoDia 1
+} {
+ FuncMomentoDia 2
+};
+#Play {RL\Generales\Reloj.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {* (*C) de la Estaci?n*.} {
+#If {%Word(%1, ,1) = "noche"} {
+ FuncMomentoDia 2
+} {
+ FuncMomentoDia 1
+}
+} {}
+
+#GTrigger {El Sol sale por el horizonte indic?ndote el comienzo de un nuevo d?a.} {
+FuncMomentoDia 1;
+#If {@ModoAmbientacion = 1} {
+ #Play {RL\Ambientacion\Generales\Amanecer.wav} @VolAmb1
+}
+} {} AnyCase
+
+#GTrigger {La noche cubre Eirea con su oscuro manto.} {
+FuncMomentoDia 2;
+#If {@ModoAmbientacion = 1} {
+ #Play {RL\Ambientacion\Generales\Anochecer.wav} @VolAmb1
+}
+} {} AnyCase
+
+
+#Clas Ambientacion
+
+#GTrigger {Est? lloviendo.} {
+#Play {RL\Ambientacion\Generales\Llover inicio.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {> En el exterior está lloviendo.} {
+#Play {RL\Ambientacion\Generales\Lluvia.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {Empieza a nevar.} {
+#Play {RL\Ambientacion\Generales\Nevar inicio.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {Deja de nevar.} {
+#Play {RL\Ambientacion\Generales\Nevar fin.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {Gato suelta un bufido.} {
+#Play {RL\Ambientacion\animales\gatito bufido1.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {Gato maúlla.} {
+#Play {RL\Ambientacion\animales\gatito maulla1.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {Gato está aquí.} {
+#Play {RL\Ambientacion\animales\gatito1.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {Perro te ladra con fiereza.} {
+#Play {RL\Ambientacion\animales\perro grunido1.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {Perro ladra: ¡Wau! ¡wau! ¡Wau!} {
+#Play {RL\Ambientacion\animales\perro ladrido1.wav} @VolAmb1
+} {} AnyCase
+
+
+#Class 0

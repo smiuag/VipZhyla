@@ -1,0 +1,156 @@
+;Módulo: Modos.set
+;Versión: 1.9, 21/09/2025
+;Descripción: Incluye todos los modos y configuraciones opcionales.
+;Autor: Rhomdur.
+
+
+
+;Modo silencioso:
+
+#GAlias modos {
+#if {@ModoS = 0} {
+ #Var ModoS 1;
+ #SetSpeech incoming off;
+ #say {Modo silencioso activado} NoDisplay|output;
+ #Play {RL\Modos\On.wav}
+} {
+ #Var ModoS 0;
+ #SetSpeech Incoming on;
+ #say {Modo silencioso desactivado} NoDisplay|output;
+ #Play {RL\Modos\Off.wav}
+}
+}
+
+#GKey f12 {modos}
+
+
+;Modo de juego:
+
+#GAlias FuncModoJuego {
+#If {@ModoJ = 1} {
+ #Say {Modo de juego: Combate} NoDisplay|Output
+};
+#If {@ModoJ = 2} {
+ #Say {Modo de juego: XP} NoDisplay|Output
+};
+#If {@ModoJ = 3} {
+ FuncModoIdleOn
+}
+}
+
+#GAlias FuncModoIdleOn {
+#PC 0 volume 30;
+#Var SilencioTels 1;
+#Var SilencioRoom 1;
+#Var SilencioGeneral 1;
+#Var AlertaVida 0;
+#If {@AlertaVida1 <> 0} {
+ #PC @AlertaVida1 stop;
+ #Var AlertaVida1 0
+};
+#If {@AlertaVida2 <> 0} {
+ #PC @AlertaVida2 stop;
+ #Var AlertaVida2 0
+};
+#If {@AlertaVida3 <> 0} {
+ #PC @AlertaVida3 stop;
+ #Var AlertaVida3 0
+};
+#Say {Modo de juego: Idle} NoDisplay|Output
+}
+
+#GAlias FuncModoIdleOf {
+#PC 0 volume 100;
+#Var SilencioTels 0;
+#Var SilencioRoom 0;
+#Var SilencioGeneral 0;
+#Var AlertaVida 1;
+FAlertaPVS
+}
+
+#GKey F11 {
+#If {@ModoJ < 3} {
+ #Mat ModoJ {@ModoJ+1}
+} {
+ #Var ModoJ 1
+};
+#If {@ModoJ = 1} {
+ FuncModoIdleOf;
+ #Play {RL\Modos\Boton.wav}
+} {
+ #Play {RL\Modos\Boton.wav}
+};
+FuncModoJuego
+}
+
+#GKey shift-F11 {
+#If {@ModoJ > 0} {
+ #Mat ModoJ {@ModoJ-1}
+} {
+ #Var ModoJ 3
+};
+#If {@ModoJ = 2} {
+ FuncModoIdleOf;
+ #Play {RL\Modos\Boton.wav}
+} {
+ #Play {RL\Modos\Boton.wav}
+};
+FuncModoJuego
+}
+
+
+
+;Modo experto:
+
+#GKey f10 {
+modoe
+}
+
+#GAlias ModoE {
+#If {@ModoE = 0} {
+ #Var ModoE 1;
+ #Say {Modo experto activado} NoDisplay|Output;
+ #Play {RL\Modos\On.wav}
+} {
+ #Var ModoE 0;
+ #Say {Modo experto desactivado} NoDisplay|Output;
+ #Play {RL\Modos\Off.wav}
+}
+}
+
+
+;Sonidos de ambientación:
+
+#GAlias modoa {
+#if {@ModoAmbientacion = 0} {
+ #Var ModoAmbientacion 1;
+ #say {Sonidos de ambientación activados} NoDisplay|output;
+ #Play {RL\Modos\On.wav};
+ #Class Ambientacion enable;
+ FuncAmbiente
+} {
+ #Var ModoAmbientacion 0;
+ #Class Ambientacion disable;
+ #say {Sonidos de ambientación desactivados} NoDisplay|output;
+ FuncStopAmbiente 1;
+ FuncStopAmbiente 2;
+ #Play {RL\Modos\Off.wav}
+}
+}
+
+#GKey F9 {modoa}
+
+
+;Modo de audio mono:
+
+#GAlias modom {#if {@ModoMono = 0} {
+ #Var ModoMono 1;
+ #say {Modo de audio mono} NoDisplay|output
+} {
+ #Var ModoMono 0;
+ #say {Modo de audio estéreo} NoDisplay|output
+};
+#Play {RL\Modos\Boton.wav}
+}
+
+#GKey F8 {modom}

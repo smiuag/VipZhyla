@@ -1,0 +1,73 @@
+;Módulo: Sigiladores.set
+;Versión: 1.0, 24/11/2022 
+;Descripción: Configs generales que deben heredar todas las clases de tipo sigilador que no sean cazadores.
+;Autor: Rhomdur.
+
+
+#Var ModoSigilar 0
+#Var FlagMov2 1
+#Var FlagSigilando 0
+
+#GAlias FuncMov2Clase {
+#If {@FlagSigilando = 0} {
+ #Var FlagSigilando 1
+};
+sigilar %1
+}
+
+
+#Alias MSI {
+#if {@ModoSigilar = 0} {
+ #Var ModoSigilar 1;
+ #say {Modo Ssigilar activado} nodisplay|output;
+ #Play {RL\Modos\On.wav}
+} {
+ #Var ModoSigilar 0;
+ #say {Modo sigilar desactivado} nodisplay|output;
+ #Play {RL\Modos\Off.wav}
+}
+}
+
+
+;Esconderse:
+
+#GTrigger {*Empiezas a buscar un buen escondite por la zona.} {
+#Play {RL\Habilidades\sigiladores\Esconderse inicio.wav}
+} {} AnyCase
+
+#GTrigger {*Encuentras lo que parece un buen sitio y empiezas a buscar una buena posición para quedar ocult?.} {
+#Play {RL\Habilidades\sigiladores\Esconderse buscando.wav}
+} {} AnyCase
+
+#GTrigger {*Finalmente logras colocarte y te escondes perfectamente.} {
+#Play {RL\Habilidades\sigiladores\Esconderse ok.wav}
+} {} AnyCase
+
+#GTrigger {*¡Has quedado al descubierto!} {
+#Play {RL\Sucesos\Descubierto.wav}
+} {} AnyCase
+
+#GTrigger {Despu?s de un rato intentándolo ves tan dif?cil esconderte aqu? que decides buscar otro sitio.} {
+#Play {RL\Habilidades\Sigiladores\Esconderse fallo.wav}
+} {} AnyCase
+
+#GTrigger {No es posible sigilar, estás inmerso en una lucha.} {
+#Play {RL\Habilidades\Sigiladores\No sigilar.wav}
+} {} AnyCase
+
+;Puertas:
+
+#GTrigger {Consigues abrir la puerta * con tal disimulo que nadie se percata.} {
+#Play {RL\Sucesos\Abrir puerta s*3.wav}
+} {} AnyCase
+
+#GTrigger {Consigues cerrar la puerta * con tal disimulo que nadie se percata.} {
+#Play {RL\Sucesos\Cerrar puerta s*3.wav}
+} {} AnyCase
+
+
+;Keys:
+
+#GKey alt-e {esconderse}
+
+#GKey F7 {msi}

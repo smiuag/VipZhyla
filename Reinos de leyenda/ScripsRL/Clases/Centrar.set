@@ -1,0 +1,35 @@
+;Módulo: Centrar.set
+;Versión: 1.2, 09/08/2019
+;Descripción: Incluye las configuraciones de la habilidad centrar y el modo autocentrado.
+;Autor: Rhomdur.
+
+
+;Centrar:
+
+#GTrigger {Empiezas a centrar tus golpes sobre *} {
+#Play {RL\Habilidades\Generales\Centrar on.wav};
+#If {@ModoE = 1} {
+ #Say {%1} Nodisplay|Output;
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {Ya estás centrando tus golpes sobre *} {
+#If {@ModoJ = 1 or @ModoE = 1} {
+ #GagLine voice
+}
+} {} AnyCase
+
+#Alias MAC {
+#if {@AutoCentrar = 0} {
+ #Var AutoCentrar 1;
+ #say {Autocentrar activado} nodisplay|output;
+ #Play {RL\Modos\On.wav}
+} {
+ #Var AutoCentrar 0;
+ #say {Autocentrar desactivado} nodisplay|output;
+ #Play {RL\Modos\Off.wav}
+}
+}
+
+#Key f7 {MAC}

@@ -1,0 +1,129 @@
+;Módulo: Start.set
+;Descripción: Archivo de configuraciones iniciales para el vipmud, optimizado para Reinos de Leyenda por Rhomdur.
+;Autor: Rhomdur
+
+
+; Definición de direcciones.
+#dir n s
+#dir s n
+#dir e o
+#dir o e
+#dir ar ab
+#dir ab ar
+#dir ne so
+#dir no se
+#dir se no
+#dir so ne
+#dir de fu
+#dir fu de
+#dir es es
+
+
+;Funciones para uso general:
+
+#GAlias FCopiar {
+#ClipBoard %0;
+#Say {%ClipBoard copiado} NoDisplay|Output;
+#Play {RL\Generales\Portapapeles.wav}
+}
+
+
+
+; Teclas de búsqueda:
+
+#GKey ctrl-shift-f { 
+#prompt temp {Buscar hacia el principio.} ; 
+#find {@temp} FIRST|Reverse;
+#say  {%foundline} NoDisplay|Output
+}
+
+#GKey alt-ctrl-shift-f { 
+#find {@temp}  reverse|next ;
+#say {%foundline} NoDisplay|Output
+}
+
+#GKey ctrl-f { 
+#prompt temp {Buscar hacia el final.} ; 
+#find {@temp} first|forward ; 
+#say {%foundline} NoDisplay|Output
+}
+
+#GKey alt-ctrl-f { 
+#find {@temp}  forward|next ; 
+#say {%foundline} NoDisplay|Output
+}
+
+
+; Teclas ctrl número para leer las ultimas líneas recibidas:
+#GKey Control-1 {#say %lastline(1) NoDisplay|Output}
+#GKey Control-2 {#say %lastline(2) NoDisplay|Output}
+#GKey Control-3 {#say %lastline(3) NoDisplay|Output}
+#GKey Control-4 {#say %lastline(4) NoDisplay|Output}
+#GKey Control-5 {#say %lastline(5) NoDisplay|Output}
+#GKey Control-6 {#say %lastline(6) noDisplay|Output}
+#GKey Control-7 {#say %lastline(7) NoDisplay|Output}
+#GKey Control-8 {#say %lastline(8) NoDisplay|Output}
+#GKey Control-9 {#say %lastline(9) NoDisplay|Output}
+
+
+; Teclas ctrl shift número para copiar las ultimas líneas recibidas:
+#GKey Ctrl-shift-1 {FCopiar %lastline(1)}
+#GKey Ctrl-shift-2 {FCopiar %lastline(2)}
+#GKey Ctrl-shift-3 {FCopiar %lastline(3)}
+#GKey Ctrl-shift-4 {FCopiar %lastline(4)}
+#GKey Ctrl-shift-5 {FCopiar %lastline(5)}
+#GKey Ctrl-shift-6 {FCopiar %lastline(6)}
+#GKey Ctrl-shift-7 {FCopiar %lastline(7)}
+#GKey Ctrl-shift-8 {FCopiar %lastline(8)}
+#GKey Ctrl-shift-9 {FCopiar %lastline(9)}
+
+
+; Combinaciones de teclas del sistema:
+
+#GKey Escape {#Syskey clear_line}
+#GKey control-N {#Syskey MOVE_COMMAND}
+#GKey control-shift-] {#Syskey FIND_OTHER_BRACE}
+#GKey shift-control-[ {#Syskey FIND_OTHER_BRACE}
+#GKey control-] {#Syskey FIND_OTHER_BRACE}
+#GKey control-[ {#Syskey FIND_OTHER_BRACE}
+#GKey control-shift-pagedown {#Syskey DECREASE_SAPI_RATE}
+#GKey control-shift-pageup {#Syskey INCREASE_SAPI_RATE}
+#GKey control-space {#Syskey GET_WORD_FROM_OUTPUT}
+#GKey Alt-space {#Syskey INSERT_TAB_WORD}
+#GKey control-r {#Syskey RECALL_LINE}
+#GKey shift-enter {#Syskey EXECUTE_LINE}
+#GKey control-alt-space {#Syskey ADD_TAB_WORD}
+
+
+; Combinaciones de teclas generales:
+#GKey Control-Enter {#window output}
+#GKey Control-Shift-r {#autoMenu main|connect|reload} // reload the current character's script files
+#GKey control-shift-t {#Tab}
+
+
+; the following are commands that start an loop a mp3 song, change volumes, and stop it
+; Usage: music theme.mp3
+; Usage: StopMusic 
+#GAlias music {#if {%MP3Loop>0} {#PC %MP3LOOP STOP}; #PlayLoop %0 50; #GVar ThemeVolume 50}
+#GAlias StopMusic {#pc %mp3loop stop}
+; assign the shift pageup and page down keys to theme music volume up and down
+#GKey shift-PageUp {#GMath ThemeVolume {%min(@ThemeVolume+5,100)};
+   #PC %MP3Loop Volume @ThemeVolume} 
+#GKey shift-PageDown {#GMath ThemeVolume {%max(@ThemeVolume-5,0)};
+   #PC %MP3Loop Volume @ThemeVolume} 
+; Set-up the controls  for the starting master volume for all sounds
+#GKey Control-PageUp {#pc 0 volume {%min(%volume+5,100)};#say {%volume percent}}
+#GKey Control-PageDown {#pc 0 Volume {%max(%volume-5,0)};#say {%volume percent}}
+
+;Comando capturar+nombre de archivo  para guardar el texto entrante en un archivo, capturar solo para detener y guardar
+#GAlias grabartexto {
+#if {%1<>""} 
+    {#file 5 %1;
+    #trigger {<cap>*} {#write 5 %0}; #Say {Capturando texto entrante} NoDisplay|Output; #Play {VipMud\Capturar on.wav}} 
+   {#close 5;
+    #untrigger cap; #Say {Archivo guardado} NoDisplay|Output; #Play {VipMud\Capturar off.wav}} }
+    
+
+; standard login
+#GAlias login {#wait 2;%charInfo(name);%charInfo(password)}
+

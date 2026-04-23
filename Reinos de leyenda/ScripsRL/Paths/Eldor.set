@@ -1,0 +1,174 @@
+;Módulo: Paths_Eldor.set
+;Versión: 1.4, 10/11/2018
+;Descripción: Paths que se originan o transcurren en el reino de Eldor.
+;Autor: Rhomdur.
+
+
+;Origen: Cruce del tronco caído en arboleda de Ardhavaen:
+
+#GTrigger {Arboleda de Ardhavaen: Senda *[[]se,e,n] } {
+FPathDisponible;
+#Var Mapa {
+Aethia, plaza:FPath;.CrAAetC
+|
+Drimelan:FPath;.CrADrim
+|
+Thorin, claro:FPath;.CrAThC
+|
+Takome, cruzada:FPath;.CrATkC
+|
+Anduar, plaza:FPath;.CrAAndC
+|
+Camino entre las Montañas, entrada al Bosque Oscuro:FPath;.CrACMeBO
+}
+} {} AnyCase
+
+#GAlias {.CrADrim} {
+e;ne;s;e;se;ne;ne;n;e;ne;e;e;n;se;ne;n;n;e;ab;e;se;e;se;e;se;ne;s;s;se;se;e;ne;e;se;n;ne;e;ne;e;e;ne;n;e;se;ne;ne;se;so;e;e;ne;n;ne;ne;n;ne;ne;no;e;e;e;ne;n;ne;ne;no;o;n;ne;ne;ne;n;ne;ne;ne}
+
+#GAlias {.CrAAetC} {
+n;ne;n;o;no;n;no;ab;o;o;no;o;n;n;o;no;ab;o;no;n;n;no;ab;o;so;o;o;no;n;so;no;n;so;n;o;so;o;o;no;no;so;n;o;so;no;n;n;ne;n;no;n;so;no;ne;ne;e;no;o;no;n;n;n;no;n;no;n;no;n;no;ne;n;no;so;no;n;ne;ne;n;ne;ne;ne;e;e;se;e;e;se;se;ne;n;ne;se;e;se;ne;ne;e;ne;s;e;se;ne;se;se;se;s;e;e}
+
+#GAlias {.CrAThC} {
+se;s;s;so;s;so;s;se;se;s;se;n;ne;ne;se;so;se;ne;se;se;e;s;se;so;se;se;se;s;so;o;s}
+
+#GAlias {.CrATkC} {
+se;s;s;so;s;so;s;se;se;s;se;n;ne;ne;se;so;se;ne;se;se;e;s;se;so;se;se;e;e;se;se;se;e;e;e;e;se;se;se;s;s;se;se;e;e;se;se;se;s;ne;se;se;e;se;e;e;e;e;e;e;e;e;e;e;e;e;s;se;s;so;se;so;s;s;se;so;e;se;e;se;se;e;ne;e;ne;e;se;e;n;n;n;n;n;n;n;n;n;n;n;n}
+
+#GAlias {.CrAAndC} {
+se;s;s;so;s;so;s;se;se;s;se;n;ne;ne;se;so;se;ne;se;se;e;s;se;so;se;se;e;e;se;se;se;e;e;e;e;se;se;se;s;s;se;se;e;e;se;se;se;s;ne;se;se;e;se;e;s;se;s;s;s;se;s;s;so;s;se;se;s;se;e;se;se;s;se;e;se;e;e;se;e;e;e;se;e;se;se;se;e;e;s;s;so;o;so;so;o;o;o;o;so;so;so;so;s;so;s;so;so;o;no;o;so;o;so;o;so;s;so;o;so;so;so;o;no;o;so;o;o;so;o;no;no;n;no;no;no;n;no;no;n;n;no;no;n;o;o;o;o;o;o;o;o;o;o;o;so;o;o;so;o;no;o;no;o;no;o;n;no;no;o;so;o;no;no;so;o;so;s;so;o;so;o;so;o;no;o;o;o;o;o;o;o;o;o;o;o;o;o}
+
+#GAlias {.CrACMeBO} {
+n;ne;n;o;no;n;no;ab;o;o;no;o;n;n;o;no;ab;o;no;n;n;no;ab;o;so;o;so;so;no;o;o;so;o;ar;so;s;e;ar;se;e;se;e;ar;o;so;n;no;o;ar;o;so;ar;s;se;so;e;se;ar;s}
+
+
+;Origen: Cruce wig con bosque Aethia sur:
+
+#GTrigger {Estrecho de Wigh: Senda de la Costa Oeste *[[]so,ne,no] } {
+FPathDisponible;
+#Var Mapa {
+Aethia, Plaza central:FPath;.CrWsAetC
+|
+Thorin, claro:FPath;.CrWSThC
+|
+Takome, cruzada:FPath;.CrWsTkC
+|
+Anduar, plaza:FPath;.CrWsAndC
+}
+} {} AnyCase
+
+#GAlias {.CrWsAetC} {
+ne;e;e;se;e;e;se;se;ne;n;ne;se;e;se;ne;ne;e;ne;s;e;se;ne;se;se;se;s;e;e}
+
+#GAlias {.CrWsThC} {
+so;so;s;so;so;s;se;ne;se;s;so;se;s;se;s;se;s;se;s;s;s;se;e;se;o;so;so;se;se;n;se;s;so;s;s;se;se;e;ne;e;se;e;e;se;e;se;so;e;e;se;ne;ne;e;ne;e;ar;se;s;s;se;e;ar;se;e;s;s;e;se;e;e;ar;se;s;se;e;s;so;s;se;s;s;so;s;so;s;se;se;s;se;n;ne;ne;se;so;se;ne;se;se;e;s;se;so;se;se;se;s;so;o;s}
+
+#GAlias {.CrWsTkC} {
+so;so;s;so;so;s;se;ne;se;s;so;se;s;se;s;se;s;se;s;s;s;se;e;se;o;so;so;se;se;n;se;s;so;s;s;se;se;e;ne;e;se;e;e;se;e;se;so;e;e;se;ne;ne;e;ne;e;ar;se;s;s;se;e;ar;se;e;s;s;e;se;e;e;ar;se;s;se;e;s;so;s;se;s;s;so;s;so;s;se;se;s;se;n;ne;ne;se;so;se;ne;se;se;e;s;se;so;se;se;e;e;se;se;se;e;e;e;e;se;se;se;s;s;se;se;e;e;se;se;se;s;ne;se;se;e;se;e;e;e;e;e;e;e;e;e;e;e;e;s;se;s;so;se;so;s;s;se;so;e;se;e;se;se;e;ne;e;ne;e;se;e;n;n;n;n;n;n;n;n;n;n;n;n}
+
+#GAlias {.CrWsAndC} {
+so;so;s;so;so;s;se;ne;se;s;so;se;s;se;s;se;s;se;s;s;s;se;e;se;o;so;so;se;se;n;se;s;so;s;s;se;se;e;ne;e;se;e;e;se;e;se;so;e;e;se;ne;ne;e;ne;e;ar;se;s;s;se;e;ar;se;e;s;s;e;se;e;e;ar;se;s;se;e;s;so;s;se;s;s;so;s;so;s;se;se;s;se;n;ne;ne;se;so;se;ne;se;se;e;s;se;so;se;se;e;e;se;se;se;e;e;e;e;se;se;se;s;s;se;se;e;e;se;se;se;s;ne;se;se;e;se;e;s;se;s;s;s;se;s;s;so;s;se;se;s;se;e;se;se;s;se;e;se;e;e;se;e;e;e;se;e;se;se;se;e;e;s;s;so;o;so;so;o;o;o;o;so;so;so;so;s;so;s;so;so;o;no;o;so;o;so;o;so;s;so;o;so;so;so;o;no;o;so;o;o;so;o;no;no;n;no;no;no;n;no;no;n;n;no;no;n;o;o;o;o;o;o;o;o;o;o;o;so;o;o;so;o;no;o;no;o;no;o;n;no;no;o;so;o;no;no;so;o;so;s;so;o;so;o;so;o;no;o;o;o;o;o;o;o;o;o;o;o;o;o}
+
+
+;Origen: Aetia plaza central:
+
+#GTrigger {Aethia: Plaza Grande *[[]*s*,*so*,se,e,*barracon*,*n*,no,o] } {
+FPathDisponible;
+#Var Mapa {
+Drimelan, puerta oeste:FPath;.AetCDriPo
+|
+Thorin, claro:FPath;.AetCThC
+|
+Takome, cruzada:FPath;.AetCTkC
+|
+Anduar, plaza:FPath;.AetCAndC
+}
+} {} AnyCase
+
+#GAlias {.AetCDriPo} {
+no;ne;e;ne;ne;ne;e;se;s;s;s;so;e;ne;n;ne;se;se;se;se;s;se;se;s;so;se;e;ne;e;e;se;e;ne;e;s;se;e;s;ne;ne;e;ne;e;se;s;so;e;se;e;e;e;ne;e;ne;se;e;ne;e;se;e;se;e;n;ne;se;se;e;se;se;se;e;e}
+
+#GAlias {.AetCThC} {
+o;o;n;no;no;no;so;no;o;n;so;o;so;so;no;o;no;so;s;so;no;no;o;o;no;o;o;so;so;so;s;so;so;s;se;ne;se;s;so;se;s;se;s;se;s;se;s;s;s;se;e;se;o;so;so;se;se;n;se;s;so;s;s;se;se;e;ne;e;se;e;e;se;e;se;so;e;e;se;ne;ne;e;ne;e;ar;se;s;s;se;e;ar;se;e;s;s;e;se;e;e;ar;se;s;se;e;s;so;s;se;s;s;so;s;so;s;se;se;s;se;n;ne;ne;se;so;se;ne;se;se;e;s;se;so;se;se;se;s;so;o;s}
+
+#GAlias {.AetCTkC} {
+o;o;n;no;no;no;so;no;o;n;so;o;so;so;no;o;no;so;s;so;no;no;o;o;no;o;o;so;so;so;s;so;so;s;se;ne;se;s;so;se;s;se;s;se;s;se;s;s;s;se;e;se;o;so;so;se;se;n;se;s;so;s;s;se;se;e;ne;e;se;e;e;se;e;se;so;e;e;se;ne;ne;e;ne;e;ar;se;s;s;se;e;ar;se;e;s;s;e;se;e;e;ar;se;s;se;e;s;so;s;se;s;s;so;s;so;s;se;se;s;se;n;ne;ne;se;so;se;ne;se;se;e;s;se;so;se;se;e;e;se;se;se;e;e;e;e;se;se;se;s;s;se;se;e;e;se;se;se;s;ne;se;se;e;se;e;e;e;e;e;e;e;e;e;e;e;e;s;se;s;so;se;so;s;s;se;so;e;se;e;se;se;e;ne;e;ne;e;se;e;n;n;n;n;n;n;n;n;n;n;n;n}
+
+#GAlias {.AetCAndC} {
+o;o;n;no;no;no;so;no;o;n;so;o;so;so;no;o;no;so;s;so;no;no;o;o;no;o;o;so;so;so;s;so;so;s;se;ne;se;s;so;se;s;se;s;se;s;se;s;s;s;se;e;se;o;so;so;se;se;n;se;s;so;s;s;se;se;e;ne;e;se;e;e;se;e;se;so;e;e;se;ne;ne;e;ne;e;ar;se;s;s;se;e;ar;se;e;s;s;e;se;e;e;ar;se;s;se;e;s;so;s;se;s;s;so;s;so;s;se;se;s;se;n;ne;ne;se;so;se;ne;se;se;e;s;se;so;se;se;e;e;se;se;se;e;e;e;e;se;se;se;s;s;se;se;e;e;se;se;se;s;ne;se;se;e;se;e;s;se;s;s;s;se;s;s;so;s;se;se;s;se;e;se;se;s;se;e;se;e;e;se;e;e;e;se;e;se;se;se;e;e;s;s;so;o;so;so;o;o;o;o;so;so;so;so;s;so;s;so;so;o;no;o;so;o;so;o;so;s;so;o;so;so;so;o;no;o;so;o;o;so;o;no;no;n;no;no;no;n;no;no;n;n;no;no;n;o;o;o;o;o;o;o;o;o;o;o;so;o;o;so;o;no;o;no;o;no;o;n;no;no;o;so;o;no;no;so;o;so;s;so;o;so;o;so;o;no;o;o;o;o;o;o;o;o;o;o;o;o;o}
+
+
+;Origen: Aetia cruce cultivos:
+
+#GTrigger {Aethia: Senda del Roble *[[]ne,s,n] } {
+FPathDisponible;
+#Var Mapa {
+Drimelan, puerta oeste:FPath;.AetPcDriPo
+}
+} {} AnyCase
+
+#GAlias {.AetPcDriPo} {
+s;s;so;e;ne;n;ne;se;se;se;se;s;se;se;s;so;se;e;ne;e;e;se;e;ne;e;s;se;e;s;ne;ne;e;ne;e;se;s;so;e;se;e;e;e;ne;e;ne;se;e;ne;e;se;e;se;e;n;ne;se;se;e;se;se;se;e;e}
+
+
+;Origen: Drimelan puerta sur:
+
+#GTrigger {Drimelan: Camino de la Sal *[[]so,n] } {
+FPathDisponible;
+#Var Mapa {
+Thorin, claro:FPath;.DriPSThC
+}
+} {} AnyCase
+
+#GAlias {.DriPSThC} {
+so;so;so;s;so;so;so;s;e;se;so;so;s;so;o;o;o;se;so;so;s;so;so;s;so;o;o;ne;no;so;so;no;o;s;so;o;o;so;o;so;s;no;o;so;o;no;no;n;n;so;no;o;no;o;no;o;ar;o;s;s;so;no;s;o;o;so;o;s;so;so;no;o;n;so;o;se;s;s;so;s;so;s;se;se;s;se;n;ne;ne;se;so;se;ne}
+
+
+;Origen: Drimelan puerta oeste:
+
+#GTrigger {Drimelan: Entrada a la aldea *[[]se,o] } {
+FPathDisponible;
+#Var Mapa {
+Aetia, Plaza:FPath;.DriPoAetC
+}
+} {} AnyCase
+
+#GAlias {.DriPoAetC} {
+o;o;no;no;no;o;no;no;so;s;o;no;o;no;o;so;o;no;so;o;so;o;o;o;no;o;ne;n;no;o;so;o;so;so;n;o;no;n;o;so;o;no;o;o;so;o;no;ne;n;no;no;n;no;no;no;no;so;s;so;o;ne;n;n;n;no;so;o;so;so;o;so;se}
+
+
+;Origen: camino entre las montañas, entrada al bosque oscuro) (CMeBO):
+
+#GTrigger {Camino entre las Montañas *[[]so,n] } {
+FPathDisponible;
+#Var Mapa {
+Aethia, plaza:FPath;.CMeBOAetC
+|
+Thorin, claro:FPath;.CMeBOThC
+|
+Takome, cruzada:FPath;.CMeBOTkC
+}
+} {} AnyCase
+
+#GAlias {.CMeBOAetC} {
+n;ab;no;o;ne;no;n;ab;ne;e;ab;e;se;s;ne;e;ab;o;no;o;no;ab;o;n;ne;ab;e;ne;ne;no;o;no;o;o;no;o;so;o;no;no;n;n;ne;n;no;n;so;no;ne;ne;e;no;o;no;n;n;n;no;n;no;n;no;n;no;ne;n;no;so;no;n;ne;ne;n;ne;ne;ne;e;e;se;e;e;se;se;ne;n;ne;se;e;se;ne;ne;e;ne;s;e;se;ne;se;se;se;s;e;e}
+
+#GAlias {.CMeBOThC} {
+n;ab;no;o;ne;no;n;ab;ne;e;ab;e;se;s;ne;e;ab;o;no;o;no;ab;o;n;ne;ab;e;ne;e;e;se;ne;ne;e;ne;e;ar;se;s;s;se;e;ar;se;e;s;s;e;se;e;e;ar;se;s;se;e;s;so;s;se;s;s;so;s;so;s;se;se;s;se;n;ne;ne;se;so;se;ne;se;se;e;s;se;so;se;se;se;s;so;o;s}
+
+#GAlias {.CMeBOTkC} {
+n;ab;no;o;ne;no;n;ab;ne;e;ab;e;se;s;ne;e;ab;o;no;o;no;ab;o;n;ne;ab;e;ne;e;e;se;ne;ne;e;ne;e;ar;se;s;s;se;e;ar;se;e;s;s;e;se;e;e;ar;se;s;se;e;s;so;s;se;s;s;so;s;so;s;se;se;s;se;n;ne;ne;se;so;se;ne;se;se;e;s;se;so;se;se;e;e;se;se;se;e;e;e;e;se;se;se;s;s;se;se;e;e;se;se;se;s;ne;se;se;e;se;e;e;e;e;e;e;e;e;e;e;e;e;s;se;s;so;se;so;s;s;se;so;e;se;e;se;se;e;ne;e;ne;e;se;e;n;n;n;n;n;n;n;n;n;n;n;n}
+
+
+;Origen: oeste del Bosque Oscuro, senda litoral (ASL):
+
+#GTrigger {Acantilados de Hiros: Senda Litoral *[[]e,no] } {
+FPathDisponible;
+#Var Mapa {
+Boreal, puertas:FPath;.ASLBp
+}
+} {} AnyCase
+
+#GAlias {.ASLBp} {
+no;so;no;n;o;ab;s;se;se;ab;so;o;ne;ab;no;o;ab;se;so;n;ab;so;so;so;o;o;o;so;o;o;o;so;o;o;o;o;o;o;so;o;o;so;so;o;no;o;no;no;so;o;o;o;no;o}
+

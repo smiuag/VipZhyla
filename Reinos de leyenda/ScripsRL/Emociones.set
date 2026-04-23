@@ -1,0 +1,145 @@
+;Módulo: Emociones.set
+;Versión: 1.0
+;Descripción: Sonidos graciosos y estupidos para los emotes.
+;Autor: Rhomdur.
+
+
+;Función para la reprodución de sonido de las distintas emociones:
+#GAlias FEmociones {
+#If {%NumWords(%1, ) > 1} {#Abort};
+#Play {RL\Emociones\Emocion.wav};
+#Play {RL\Emociones\%2}
+}
+
+
+;Triggers para las emociones:
+
+#GTrigger {* te besa*.} {
+FEmociones %1 {Beso1.wav}
+} {}
+
+#GTrigger {* te da un morreo *.} {
+FEmociones %1 {Beso2.wav}
+} {}
+
+#GTrigger {* te da un profundo y apasionado beso que parece durar eternamente.} {
+FEmociones %1 {Beso2.wav}
+} {}
+
+#GTrigger {* te besa en el cuello sensualmente, rozando sus labios con tu piel y provocandote escalofrios*} {
+FEmociones %1 {Beso1.wav}
+} {}
+
+#GTrigger {* te dice adiós*.} {
+FEmociones %1 {Adios.wav}
+}
+
+#GTrigger {* te saluda*.} {
+FEmociones %1 {Hola.wav}
+} {}
+
+#GTrigger {* te echa mas polvos que un polvero.} {
+FEmociones %1 {Polvazo.wav}
+} {}
+
+#GTrigger {Oyes sonar tu timbre y abres la puerta, solo para ver a * huir a traves de la negra noche... que gente mas rara.} {
+FEmociones %1 {Huir.wav}
+} {} AnyCase
+
+#GTrigger {* te frota por el lado que no es.} {
+FEmociones %1 {Frotar.wav}
+} {}
+
+#GTrigger {* te hace B O N K ! en la cabeza.} {
+FEmociones %1 {Bonk.wav}
+} {}
+
+#GTrigger {* te da un susto de muerte.} {
+FEmociones %1 {Asustar.wav}
+} {}
+
+#GTrigger {* te lame*.} {
+FEmociones %1 {Lamer.wav}
+} {}
+
+#GTrigger {* te espera*.} {
+FEmociones %1 {Esperar.wav}
+} {}
+
+#GTrigger {*  se rie de ti.} {
+FEmociones %1 {Reir.wav}
+} {}
+
+#GTrigger {* se descojona de ti hasta que se le saltan las lágrimas.} {
+FEmociones %1 {Descojonarse.wav}
+} {}
+
+#GTrigger {* te tira de la manga, para llamar tu atenci?n.} {
+FEmociones %1 {Tirar*2.wav}
+} {}
+
+#GTrigger {* te muerde*.} {
+FEmociones %1 {Morder.wav}
+} {}
+
+#GTrigger {* salta encima de ti.} {
+FEmociones %1 {Saltar.wav}
+} {}
+
+#GTrigger {* te escupe.} {
+FEmociones %1 {Escupir.wav}
+} {}
+
+#GTrigger {* te hace ascos.} {
+FEmociones %1 {Asqueado.wav}
+} {}
+
+#GTrigger {* te pincha *.} {
+FEmociones %1 {Pincha.wav}
+} {}
+
+#GTrigger {* te echa encima hasta la primera papilla.} {
+FEmociones %1 {Vomitar.wav}
+} {}
+
+#GTrigger {* te saca la lengua.} {
+FEmociones %1 {Sacalengua.wav}
+} {}
+
+#GTrigger {* te dice que no tiene sociales.} {
+FEmociones %1 {Nosoc.wav}
+} {}
+
+#GTrigger {* niega todo lo que has dicho.} {
+FEmociones %1 {Negar*2.wav}
+} {}
+
+#GTrigger {* te hace mimos.} {
+FEmociones %1 {Mimos.wav}
+} {}
+
+#GTrigger {* te anima*.} {
+FEmociones %1 {Animar*2.wav}
+} {}
+
+#GTrigger {* descarga su furia sobre ti propinandote una soberana bofetada que casi te arranca la cabeza.} {
+FEmociones %1 {Bofetada*2.wav}
+} {}
+
+#GTrigger {* te idolatra.} {
+FEmociones %1 {Idolatra*2.wav}
+} {}
+
+#GTrigger {¡PLAS! ¡Menuda colleja acaba de soltarte *!} {
+FEmociones %1 {Colleja.wav}
+} {}
+
+#GTrigger {* te propina un soberano pu?etazo en la cara.} {
+FEmociones %1 {Puñetazo.wav}
+} {}
+
+#GTrigger {* te patea el culo.} {
+FEmociones %1 {Patada.wav}
+} {}
+
+;Eldhana te gruñe amenazadoramente.

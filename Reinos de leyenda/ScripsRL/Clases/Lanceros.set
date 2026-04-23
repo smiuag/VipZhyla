@@ -1,0 +1,20 @@
+;Módulo: lanceros.set
+Versión: 1.0, 16/12/2020
+Descripción: Soporte para la clase lancero
+Autor: eyrhien.
+
+
+#Load ScripsRL\Clases\Centrar.set
+
+#Key alt-d {    centrar x;remolino x }
+#Key alt-s {    centrar x;ensartar x }
+#Key alt-a {    centrar x;amenazar x }
+#Key alt-f {    centrar x;golpedemastil x }
+#TRIGGER {* ¡Alcanzas a * con tu maniobra de remolino!} {#Play {RL\Habilidades\lancero\remolino 1.wav}} {}
+#TRIGGER {* ¡Alcanzas criticamente a * con tu maniobra de remolino!} {#Play {RL\Habilidades\lancero\remolino 2.wav}} {}
+#TRIGGER {* ¡Alcanzas a * con tu maniobra de ensartar!} {#Play {RL\Habilidades\lancero\ensartar 1.wav}} {}
+#TRIGGER {Adoptas grácilmente una postura erguida cuando la fuerza de tu inercia se para.} {#Play {RL\Habilidades\lancero\inercia acaba.wav}} {}
+#TRIGGER {Continúas dejándote llevar por la inercia que te mueve, si bien ésta comienza a perder fuerza.} {#Play {RL\Habilidades\lancero\pierde inercia.wav}} {}
+#TRIGGER {* ¡Alcanzas a * con tu maniobra de amenazar!} {#Play {RL\Habilidades\lancero\amenazar 1.wav}} {}
+#TRIGGER {* Amenazas a * y paras su ataque.} {#Play {RL\Habilidades\lancero\amenazar 2.wav}} {}
+#TRIGGER {* ¡Alcanzas criticamente a * con tu maniobra de ensartar!} {#Play {RL\Habilidades\lancero\ensartar 2.wav}} {}

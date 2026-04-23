@@ -1,0 +1,193 @@
+;Módulo: Tiradores.set
+;Versión: 1.5, 24/11/2022
+;Descripción: Triggers y keys para la clase tirador.
+;Autor: Rhomdur
+
+
+;Carga de configuraciones heredadas:
+
+#Load ScripsRL\Clases\Cazadores.set
+#Load ScripsRL\Clases\Combate_fisico.set
+
+
+;Declaración de variables:
+
+#Var FlagBloqueosClase 1
+
+;Función para los bloqueos de clase:
+
+#GAlias FBloqueosClase {
+#Var FlagBloqueoV 1;
+#If {%IfWord("disparocerteros",%1, )} {
+ #Play {RL\Bloqueos\Tiradores\Certero.wav};
+ #Abort
+};
+#If {%IfWord("disparoapuntado",%1, )} {
+ #Play {RL\Bloqueos\Tiradores\Apuntado.wav};
+ #Abort
+};
+#If {%IfWord("salva",%1, )} {
+ #Play {RL\Bloqueos\Tiradores\Salva.wav};
+ #Abort
+};
+#If {%IfWord("apuntar",%1, )} {
+ #Play {RL\Bloqueos\Tiradores\Apuntar.wav};
+ #Abort
+};
+#If {%IfWord("disparoincapacitador",%1, )} {
+ #Play {RL\Bloqueos\Tiradores\Incapacitador.wav};
+ #Abort
+};
+#Var FlagBloqueoV 0
+}
+
+
+;Disparo certero:
+
+#GTrigger {*Preparas tu * y te dispones a disparar contra*} {
+#Play {RL\Habilidades\Tirador\Impulso.wav};
+#If {@ModoE = 1} {
+#GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {*¡Lanzas un disparocertero contra *} {
+#Play {RL\Habilidades\Tirador\Disparocertero.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+
+;Disparoapuntado:
+
+#GTrigger {*Tú y tu * os fundís en uno cuando tu concentración se dedica exclusivamente*} {
+#Play {RL\Habilidades\Tirador\Impulso.wav};
+#If {@ModoE = 1} {
+#GagLine voice
+}
+} {} AnyCase
+
+#GTrigger {Continúas preparando tu disparo perfecto contra*} {
+#Play {RL\Habilidades\Tirador\Disparoapuntado preparando.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {*¡Finalmente, liberas contra * el disparo apuntado que tanto habías preparado!} {
+#Play {RL\Habilidades\Tirador\Disparoapuntado.wav};
+#If {@ModoE = 1} {
+ #GagLine voice
+}
+} {} AnyCase
+
+
+;Salva:
+
+#GTrigger {*Colocas un montón de * en el suelo delante de ti y preparas tu * para liberar una salva de*} {
+#Play {RL\Habilidades\Tirador\Impulso.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {*[#] ¡Descargas una salva de * que alcanzan a * con *!} {
+#Play {RL\Habilidades\Tirador\Salva propia.wav};
+#If {@ModoE = 1} {
+ #Say {%4} NoDisplay|Incoming;
+ #GagLine Voice
+}
+} {} AnyCase
+
+
+;Apuntar:
+
+#GTrigger {*Expulsas todo el aire de tus pulmones y mantienes la respiración mientras apuntas tu*} {
+#Play {RL\Habilidades\Tirador\Impulso.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {*¡Disparas tu * contra *!} {
+#Play {RL\Habilidades\Tirador\Apuntar.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+
+;Disparo incapacitador:
+
+#GTrigger {*[#] ¡Impactas a * con un fugaz disparo incapacitador que le atraviesa*} {
+#Play {RL\Habilidades\Tirador\Disparo incapacitador.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+
+;Munición:
+
+#GTrigger {*Cojes * de tu * y l* cargas en *} {
+#Play {RL\Habilidades\Tirador\Municion.wav}
+} {} AnyCase
+
+
+;Keys:
+
+#GKey alt-a {
+#If {@ModoJ = 2} {
+ apuntar xp
+} {
+ #If {@AutoCentrar = 1} {
+  centrar x;apuntar x
+ } {
+  apuntar x
+ }
+}}
+
+#GKey alt-s {
+#If {@ModoJ = 2} {
+ salva xp
+} {
+ #If {@AutoCentrar = 1} {
+  centrar x;salva x
+ } {
+  salva x
+ }
+}}
+
+#GKey alt-d {
+#If {@ModoJ = 2} {
+ disparocertero xp
+} {
+ #If {@AutoCentrar = 1} {
+  centrar x;disparocertero x
+ } {
+  disparocertero x
+ }
+}}
+
+#GKey alt-f {
+#If {@ModoJ = 2} {
+ disparoapuntado xp
+} {
+ #If {@AutoCentrar = 1} {
+  centrar x;disparoapuntado x
+ } {
+  disparoapuntado x
+ }
+}}
+
+#GKey alt-r {
+#If {@ModoJ = 2} {
+ disparoincapacitador xp
+} {
+ #If {@AutoCentrar = 1} {
+  centrar x;disparoincapacitador x
+ } {
+  disparoincapacitador x
+ }
+}}

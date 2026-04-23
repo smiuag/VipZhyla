@@ -1,0 +1,142 @@
+;Módulo: Exploradores.set
+;Versión: 1.3, 24/11/2022
+;Descripción: Triggers y keys para la clase explorador.
+;Autor: Rhomdur
+
+
+#Load ScripsRL\Clases\Cazadores.set
+
+
+;Ataque furtivo:
+
+#GTrigger {* consigue evitar tu ataque furtivo!} {
+#Play {RL\Habilidades\Generales\Habilidad esquivada.wav};
+#Alarm Furtivo 11 {
+ #Play {RL\Bloqueos\Bloqueo.wav};
+ #play {RL\Bloqueos\Exploradores\Furtivo.wav}
+};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {}
+
+#GTrigger {[#] Alcanzas por sorpresa a * con un tremendo ataque de tu *} {
+#Play {RL\Habilidades\Generales\Impacto2.wav};
+#Alarm Furtivo 11 {
+ #Play {RL\Bloqueos\Bloqueo.wav};
+ #play {RL\Bloqueos\Exploradores\Furtivo.wav}
+};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {? [#] Alcanzas por sorpresa a * con un tremendo ataque de tu *} {
+#Play {RL\Habilidades\Generales\Impacto2.wav};
+#Alarm Furtivo 11 {
+ #Play {RL\Bloqueos\Bloqueo.wav};
+ #play {RL\Bloqueos\Exploradores\Furtivo.wav}
+};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {[#] Sorprendes a * con una ráfaga de brutales ataques críticos de tu *} {
+#Alarm Furtivo 11 {
+ #Play {RL\Bloqueos\Bloqueo.wav};
+ #play {RL\Bloqueos\Exploradores\Furtivo.wav}
+};
+#Play {RL\Habilidades\Generales\Impacto2.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {? [#] Sorprendes a * con una ráfaga de brutales ataques críticos de tu *} {
+#Alarm Furtivo 11 {
+ #Play {RL\Bloqueos\Bloqueo.wav};
+ #play {RL\Bloqueos\Exploradores\Furtivo.wav}
+};
+#Play {RL\Habilidades\Generales\Impacto2.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {*haciendo que su armadura se considere*.} {
+#Play {RL\Combate\Armadura enemiga dañada.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {}
+
+#GTrigger {*pero no logras dañar su armadura.} {
+#Play {RL\Combate\Armadura enemiga no dañada.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {}
+
+
+; Frenesí:
+
+#GTrigger {Te situas en posición tras * y sientes como la adrenalina crece en tu interior.} {
+#Play {RL\Habilidades\Generales\impulso.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {Tus nudillos se vuelven blancos de tanto apretar tu * al tiempo que la adrenalina *} {
+#Play {RL\Habilidades\Generales\impulso.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {¡* ha escapado de tu tormenta de golpes!} {
+#Play {RL\Habilidades\Generales\Objetivo perdido.wav};
+#Alarm Frenesi 10 {
+ #Play {RL\Bloqueos\Bloqueo.wav};
+ #play {RL\Bloqueos\Exploradores\Frenesi.wav}
+};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {La magia de tu * no es capaz de seguir tus fugaces movimientos, pero pronto te alcanza, convirtiéndote en un vórtice destructor de éter.} {
+#Play {RL\Habilidades\Exploradores\Frenesi magia.wav}
+} {} AnyCase
+
+
+;Keys:
+
+#Key alt-s {
+seguir @Objetivo
+}
+
+#Key alt-d {
+#If {@ModoJ = 2} {
+ mano;frenesi xp
+} {
+ #If {@AutoCentrar = 1} {
+  mano;centrar x;frenesi x
+ } {
+  mano;frenesi x
+ }
+}}
+
+#Key alt-f {
+#If {@ModoJ = 2} {
+ ataquefurtivo xp
+} {
+ #If {@AutoCentrar = 1} {
+  centrar x;ataquefurtivo x
+ } {
+  ataquefurtivo x
+ }
+}}
+
+

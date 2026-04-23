@@ -1,0 +1,143 @@
+;Módulo: Dendra.set
+;Versión: 1.0, 29/04/2025
+;Descripción: Sonidos puntuales de ambiente para el reino de dendra.
+;Autor: Rhomdur
+
+
+#Class Ambientacion
+
+
+;Triggers de ambiente: dendra y desierto
+
+#GTrigger {La ciudad de Dendra se encuentra, como siempre, cubierta por oscuras nubes de tormenta.} {
+#Play {RL\Ambientacion\Dendra\nubes de tormenta.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {Algo se halla detrás de esa puerta, ya que sientes como trabajan en su interior.} {
+#Play {RL\Ambientacion\Dendra\construyen*3.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {Ruido de albañileria proviene desde dentro de esta enorme puerta.} {
+#Play {RL\Ambientacion\Dendra\construyen*3.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {Un incesante repicar de martillos proviene desde dentro de esta puerta.} {
+#Play {RL\Ambientacion\Dendra\construyen*3.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {En la lejanía, el viento eleva la arena del desierto en el aire, provocando una tormenta.} {
+#Play {RL\Ambientacion\Dendra\tormenta de arena.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {Las hierbas altas bailan al comp?s que les marca el viento del desierto.} {
+#Play {RL\Ambientacion\Dendra\viento1.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {Ves a un buitre sobrevolando en las alturas.} {
+#Play {RL\Ambientacion\Dendra\buitre1.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {Las rocas crepitan ruidosamente al estallar sus grietas por la diferencia de temperatura.} {
+#Play {RL\Ambientacion\Dendra\piedras1.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {Oyes el lejano rugido de un gran mamifero.} {
+#Play {RL\Ambientacion\Dendra\rugido1.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {Un trueno resuena sobre los cielos de Dendra.} {
+#Play {RL\Ambientacion\Dendra\trueno1.wav} @VolAmb1
+} {} AnyCase
+
+
+;Triggers de ambiente: Bosque impenetrable:
+
+#GTrigger {Escuchas el sonido del agua corriendo cerca de tí.} {
+#Play {RL\Ambientacion\Dendra\Bosque impenetrable\río1.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {Árbol extraño.} {
+#Play {RL\Ambientacion\Dendra\Bosque impenetrable\árbol extraño.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {Casi te golpeas en la cabeza con una rama baja.} {
+#Play {RL\Ambientacion\Dendra\Bosque impenetrable\árbol1.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {Pisas una rama y un montón de pájaros huyen espantados del árbol donde reposaban.} {
+#Play {RL\Ambientacion\Dendra\Bosque impenetrable\aves1.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {La maleza te obliga a dar rodeos continuamente para poder avanzar.} {
+#Play {RL\Ambientacion\Dendra\Bosque impenetrable\maleza1.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {Unos ojos brillantes aparecen sobre un árbol para esfumarse cuando te fijas en ellos.} {
+#Play {RL\Ambientacion\Dendra\Bosque impenetrable\ojos.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {Un lamento cruza el bosque allá por donde vas, pero no ves nada.} {
+#Play {RL\Ambientacion\Dendra\Bosque impenetrable\lamento2.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {Crees ver a una alimaña de tamaño considerable pasar cerca de tí.} {
+#Play {RL\Ambientacion\Dendra\Bosque impenetrable\alimaña1.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {Escuchas pisadas a tu alrededor.} {
+#Play {RL\Ambientacion\Dendra\Bosque impenetrable\pasos1.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {Los pájaros cantan felices mientras sobrevuelan los pastos.} {
+#Play {RL\Ambientacion\Dendra\Bosque impenetrable\aves2.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {Una enorme calma te invade escuchando el sonido del agua al fluir.} {
+#Play {RL\Ambientacion\Dendra\Bosque impenetrable\manantial1.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {Un grito agudo y lastimero recorre el bosque.} {
+#Play {RL\Ambientacion\Dendra\Bosque impenetrable\lamento1.wav} @VolAmb1
+} {} AnyCase
+
+
+;Triggers de ambiente: minas:
+
+#GTrigger {Llegan sonidos desde las galerias en las que trabajan los mineros.} {
+#Play {RL\Ambientacion\Denra\Minas\Minas1.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {Te golpeas en la frente con el palo de un contrafuerte mal colocado.} {
+#Play {RL\Ambientacion\Denra\Minas\te golpeas1.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {Las carretas chirrian al ser empujadas por los railes.} {
+#Play {RL\Ambientacion\Denra\Minas\carretas1.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {El sonido de los picos al golpear las paredes inunda las galerias.} {
+#Play {RL\Ambientacion\Denra\Minas\Denra\Minas3.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {Se escuchan los gritos de esfuerzo de los mineros por toda la mina.} {
+#Play {RL\Ambientacion\Denra\Minas\Denra\Minas2.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {Te parecer ver a alguien por el rabillo del ojo.} {
+#Play {RL\Ambientacion\Denra\Minas\vigilan3.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {Sientes como alguien te vigila.} {
+#Play {RL\Ambientacion\Denra\Minas\vigilan4.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {Por algún motivo te sientes inseguro cerca de la mina.} {
+#Play {RL\Ambientacion\Denra\Minas\vigilan2.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {El sonido del viento aumenta la sensación de abandono del lugar.} {
+#Play {RL\Ambientacion\Denra\Minas\viento1.wav} @VolAmb1
+} {} AnyCase
+
+
+#Class 0

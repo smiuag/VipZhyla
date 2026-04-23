@@ -1,0 +1,216 @@
+;Módulo: Funciones.set
+;Versión: 1.0, 06/02/2025
+;Descripción: Funciones y ajustes de uso general para el correcto funcionamiento de los scripts.
+;Autor: Rhomdur
+
+
+;Declaración de variables:
+#Var FlagSalidaValida
+#Var FlagComprobarSujeto
+#Var Contador 0
+#Var PlayPan 0
+#Var PlayFrec
+#Var DireccionCorta
+
+#Var ListaDireccionesValidas {norte|noreste|noroeste|sur|sudeste|sudoeste|este|oeste|dentro|fuera|abajo|arriba|hueco|grieta|cubil|aquí}
+
+
+;Funciones de uso general:
+
+
+;Función en pruebas para un contador de tiempo:
+
+#GAlias FuncTemporizador {
+#Say {iniciando temporizador};
+#If {@FlagTemporizador = 1} {#Abort};
+#Say {Contando};
+#Alarm Temporizador -1 {
+#Math Tiempo {@Tiempo + 1};
+#Play {RL\Tik.wav}
+};
+#Var FlagTemporizador 1
+}
+
+#GAlias FuncContadorDetener {
+#Var FlagTemporizador 0;
+#Unalarm Temporizador;
+#Say {Deteniendo contador}
+}
+
+
+;Función de reproducción de sonidos en función del sexo de la ficha.
+#GAlias FuncSexo {
+#If {%Defined(Sexo) and @Sexo = "f"} {
+ #Play %1
+} {
+ #Play %2
+}
+}
+
+
+;Función multiusos para un contador numérico hablado:
+#GAlias FuncContador {
+#Mat Contador {@Contador+1};
+#If {@Contador = 11} {#Var Contador 1};
+#If {@Contador = 1} {#Play {RL\Contador\1P.wav}};
+#If {@Contador = 2} {#Play {RL\Contador\2P.wav}};
+#If {@Contador = 3} {#Play {RL\Contador\3P.wav}};
+#If {@Contador = 4} {#Play {RL\Contador\4P.wav}};
+#If {@Contador = 5} {#Play {RL\Contador\5P.wav}};
+#If {@Contador = 6} {#Play {RL\Contador\6P.wav}};
+#If {@Contador = 7} {#Play {RL\Contador\7P.wav}};
+#If {@Contador = 8} {#Play {RL\Contador\8P.wav}};
+#If {@Contador = 9} {#Play {RL\Contador\9P.wav}};
+#If {@Contador = 10} {#Play {RL\Contador\10P.wav}}
+}
+
+
+;Función de reproducción de salidas direccionales:
+;%1 sujeto. %2: Dirección. %3: Tipo.
+;%3: 1 entrada en room, 2 salida de room, 3 habilidad.
+#GAlias FuncReproducirDireccion {
+#If {%2 = 0} {#Abort};
+#Var TempRepDir 1;
+#If {%2 = "noreste" or %2 = "sudeste"} {
+ #Var TempRepDir 2500
+};
+#If {%2 = "noroeste" or %2 = "sudoeste"} {
+ #Var TempRepDir -2500
+};
+#If {%2 = "este"} {
+ #Var TempRepDir 5000
+};
+#If {%2 = "oeste"} {
+ #Var TempRepDir -5000
+};
+#If {%3 = 1 and %IfWord(%2,@ListaDireccionesValidas,|)} {
+ FuncComprobarSujeto %1 {RL\Movimiento\Direcciones\Llegada aliados\%2.wav} {RL\Movimiento\Direcciones\Llegada enemigos\%2.wav} @TempRepDir;
+ #Unvar TempRepDir;
+ #Abort
+};
+#If {%3 = 2 and %IfWord(%2,@ListaDireccionesValidas,|)} {
+ FuncComprobarSujeto %1 {RL\Movimiento\Direcciones\Salida aliados\%2.wav} {RL\Movimiento\Direcciones\Salida enemigos\%2.wav} @TempRepDir;
+ #Unvar TempRepDir;
+ #Abort
+};
+#If {%3 = 3 and %IfWord(%2,@ListaDireccionesValidas,|)} {
+ FuncComprobarSujeto %1 {RL\HHOtros\Direcciones\Aliados\%2.wav} {RL\HHOtros\Direcciones\Enemigos\%2.wav} @TempRepDir;
+ #Unvar TempRepDir;
+ #Abort
+};
+#If {%3 = 1} {
+ #Play {RL\Movimiento\Llega desconocido.wav}
+};
+#If {%3 = 2} {
+ #Play {RL\Movimiento\Se va desconocido.wav}
+};
+#If {%3 = 3} {
+ #Play {RL\HHOtros\Direcciones\Direccion desconocida.wav}
+}
+}
+
+;Función para comprobar si sujeto X actua como enemigo:
+;FlagComprobarSujeto 1 es enemigo, 0 no lo es.
+;%1 sujeto, %2 sonido aliado; %3 sonido enemigo, %4 balance del sonido, opcional.
+;Valores de %1: Nombre de jugador, lo comprueba. 0, mantiene la ultima comprobación.
+;Valores de %2 y %3: Ruta del sonido, 0 Suena sonido por defecto, 1 no suena nada.
+#GAlias FuncComprobarSujeto {
+#If {%1 <> 0} { //Hay sujeto a comprobar
+ #Var FlagComprobarSujeto 0;
+ FuncCorrectorPlayers %1;
+ #For @NickX { //Comprueba el nick x
+  #If {%IfWord(%i,@Corregir, )} {
+   #Var FlagComprobarSujeto 1
+  }
+ };
+ #If {@FlagComprobarSujeto = 0} { //Si todavía no localiza enemigo
+  #For @PresentesE { //Comprueba presentes en la room
+   #If {%IfWord(%i,@Corregir, )} {
+    #Var FlagComprobarSujeto 1
+   }
+  }
+ };
+ #If {@FlagComprobarSujeto = 0} { //Si todavía no encontró enemigo
+  #For @Peleas { //Comprueba los personajes en peleas
+   #If {%IfWord(%i,@Corregir, )} {
+    #Var FlagComprobarSujeto 1
+   }
+  }
+ }
+}; //Termina búsqueda de enemigos
+#If {@FlagComprobarSujeto = 0} { //Si no hay enemigos
+ #If {%2 = 0} { //Reproduce sonido de aliado por defecto
+  #Play {RL\Generales\Sujeto aliado.wav}
+ } {
+  #If {%2 <> 1} { //Reproduce sonido aliado indicado
+   FuncPlayPan {%2} %4
+  }
+ }
+} {
+ #If {%3 = 0} { //Reproduce sonidos de enemigos
+  #Play {RL\Generales\Sujeto enemigo.wav}
+ } {
+  #If {%3 <> 1} {
+   FuncPlayPan {%3} %4
+  }
+ }
+};
+#If {%1 = 0} {
+ #Var FlagComprobarSujeto 0
+}
+}
+
+
+;Función de reproducción de sonidos paneados en función del modo estereo:
+;%1 ruta del sonido
+;%2 paneo del sonido. "", centrado. 0, paneo anterior.
+#GAlias FuncPlayPan {
+#If {%2 = "" or @ModoMono = 1} {
+ #Play %1;
+ #Abort
+};
+#If {%2 = 0} {
+ #Play %1;
+ #PC %PlayHandle pan @PlayPan;
+ #Abort
+};
+#Play %1;
+#Pc %PlayHandle pan %2;
+#Var PlayPan %2
+}
+
+
+;Función para cambiar la frecuencia de reproducción de un sonido aleatoriamente:
+;%1: límite inferior. %2: límite superior
+#GAlias FuncPlayFrec {
+#Var PlayFrec %Random(%1,%2);
+#Math PlayFrec {@PlayFrec * 1000};
+#PC %PlayHandle frequency @PlayFrec
+}
+
+
+;Función para acortar direcciones
+;Si la dirección no es acortable la mantiene igual
+#GAlias FuncAcortarDirecciones {
+#Var DireccionCorta;
+#If {%IfWord("norte",%1, )} {#Var DireccionCorta n};
+#If {%IfWord("sur",%1, )} {#Var DireccionCorta s};
+#If {%IfWord("este",%1, )} {#Var DireccionCorta e};
+#If {%IfWord("oeste",%1, )} {#Var DireccionCorta o};
+#If {%IfWord("noreste",%1, )} {#Var DireccionCorta ne};
+#If {%IfWord("noroeste",%1, )} {#Var DireccionCorta no};
+#If {%IfWord("sudeste",%1, )} {#Var DireccionCorta se};
+#If {%IfWord("sudoeste",%1, )} {#Var DireccionCorta so};
+#If {%1 = "arriba"} {#Var DireccionCorta ar};
+#If {%1 = "abajo"} {#Var DireccionCorta ab};
+#If {%1 = "dentro"} {#Var DireccionCorta de};
+#If {%1 = "fuera"} {#Var DireccionCorta fu};
+#If {@DireccionCorta = ""} {#Var DireccionCorta %1}
+}
+
+;Función que se llama cada vez que recibimos daños:
+#GAlias FuncDanoRecibido {
+FuncSexo {RL\Combate\Impactos\F*6.wav} {RL\Combate\Impactos\H*9.wav}
+}
+
+

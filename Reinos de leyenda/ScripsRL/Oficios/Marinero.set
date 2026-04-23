@@ -1,0 +1,221 @@
+;Módulo: Marinero.set
+;Descripción: Triggers para marineros y embarcaciones.
+;Versión: 1.0, 14/02/2025
+;Autor: Rhomdur.
+
+
+;Declaración de variables:
+
+#Var ModoMarinero 0
+#Var SalidasModoMarinero
+#Var VelocidadAjuste 1
+#Var VelocidadMax 6
+
+;Mapa de coordenadas del oceano:
+#Var MapaOceano {
+Muelle de Aldara. (Costa Plateada 56 Oeste, 18 sur):FuncMapaRuta 56 18
+|
+Muelle de Grimoszk. (Costas de Zulk 47 Oeste, 20 sur):FuncMapaRuta 47 20
+|
+proximidades a la desembocadura del Cuivinien. (Costas de Zulk 43 Oeste 21 sur):FuncMapaRuta 43 21
+| 
+Muelle de Alandaen. (Costas de Anduar 36 Oeste, 22 sur):FuncMapaRuta 36 22
+|
+Bahía de Urlom. (Muelle principal 28 Oeste, 20 sur):FuncMapaRuta 28 20
+|
+Muelle de Keel. (Costas de Naggrung 67 Oeste 29 sur):FuncMapaRuta 67 29
+|
+Estrecho de los Vigilantes. (20 Oeste 12 Sur):FuncMapaRuta 20 12
+|
+Puerto de Wigh. (Mar de los Dioses 44 Oeste, 11 sur):FuncMapaRuta 44 11
+|
+Muelle de Avharanna. (Mar de los Dioses 42 Oeste 12 sur):FuncMapaRuta 42 12
+|
+Muelle de Drimelan. (Costas de la Perdición 54 Oeste 12 sur):FuncMapaRuta 54 12
+|
+Muelle de arilven. (Mar de Plata 56 Oeste 13 sur):FuncMapaRuta 56 13
+|
+Islote de Schiphol. (Mar de Plata 59 Oeste 15 sur):FuncMapaRuta 59 15
+|
+Isla Frisia. (Archipiélago de Kamana Kalea 84 Oeste 4 sur):FuncMapaRuta 84 4
+|
+Isla Malie. (Archipiélago de Kamana Kalea 88 Oeste 3 sur):FuncMapaRuta 88 3
+|
+Isla Kalea. (Archipiélago de Kamana Kalea 87 Oeste 2 sur):FuncMapaRuta 87 2
+|
+Arrecife de Velian. (Archipiélago de Kamana Kalea 86 Oeste 5 sur):FuncMapaRuta 86 5
+|
+Arrecife de Argan. (Archipiélago de Kamana Kalea 88 Oeste 5 sur):FuncMapaRuta 88 5
+|
+Arrecife del sol. (Archipiélago de Kamana Kalea 85 Oeste 2 sur):FuncMapaRuta 85 2
+|
+Isla del bucanero. (79 Oeste 13 sur):FuncMapaRuta 79 13
+}
+
+
+
+#GTrigger {*Timón*} {
+#If {@FlagOceanoControl = 1} {
+ #Mat FlagOceanoControl {@FlagOceanoControl + 1};
+ #Class Marinero enable;
+ #Play {RL\Modos\Especial disponible.wav}
+}
+} {Embarcaciones}
+
+
+#Class marinero
+
+;Función que activa el modo marinero:
+#GAlias MMar {
+#If {@FlagOceanoControl <> 2} {#Abort};
+#If {@ModoMarinero = 0} {
+ #Var ModoMarinero 1;
+ #Say {Modo marinero activado} NoDisplay|Output;
+ #Play {RL\Modos\On.wav}
+} {
+ #Var ModoMarinero 0;
+ #Say {Modo marinero desactivado} Nodisplay|Output;
+ #Play {RL\Modos\Off.wav}
+}
+}
+
+;Función que gestiona las keys del modo marinero:
+#GAlias FuncMarineroKeys {
+#If {%1 = "ar"} {
+ #If {@FlagNavegando = 1} {
+  navegar detener
+ } {
+  navegar
+ };
+ #Abort
+};
+#If {%1 = "ab"} {
+ #If {@VelocidadAjuste > 1} {
+  #Math VelocidadAjuste {@VelocidadAjuste - 1};
+  #Say {@VelocidadAjuste} NoDisplay|Output;
+  #Play {RL\Modos\Boton.wav}
+ } {
+  #Say {@VelocidadAjuste} NoDisplay|Output;
+  #Play {RL\Modos\Ajuste limite.wav}
+ };
+ #Abort
+};
+#If {%1 = "fu"} {
+ #If {@VelocidadAjuste < @VelocidadMax} {
+  #Math VelocidadAjuste {@VelocidadAjuste + 1};
+  #Say {@VelocidadAjuste} NoDisplay|Output;
+  #Play {RL\Modos\Boton.wav}
+ } {
+  #Say {@VelocidadAjuste} NoDisplay|Output;
+  #Play {RL\Modos\Ajuste limite.wav}
+ };
+ #Abort
+};
+#If {%1 = "de"} {
+ velocidad @VelocidadAjuste;
+ #Abort
+};
+orientar %1
+}
+
+;Función que carga el mapa del oceano:
+#GAlias FuncMapaOceano {
+#Var temp 0;
+#Play {RL\Oficios\Marinero\Mapa oceano 1.wav};
+#Pick @MapaOceano;
+#If {@Temp = 0} {
+ #Play {RL\Oficios\Marinero\Mapa oceano 2.wav}
+} {
+ #Play {RL\Oficios\Marinero\Mapa oceano 3.wav}
+};
+#Unvar temp
+}
+
+;Función que ejecuta el mapa del oceano:
+#GAlias FuncMapaRuta {
+#Var temp 1;
+ruta %1 %2
+}
+
+;Triggers de movimiento de la embarcación:
+
+#GTrigger {Maniobras con el Tim?n para navegar en direcci?n *.} {
+#Var FlagNavegando 1;
+#Play {RL\Oceano\Vela arriba.wav};
+#Play {RL\Oficios\Marinero\Timon*2.wav};
+#If {@ModoE = 1} {
+ #GagLine voice
+}
+} {} AnyCase
+
+#GTrigger {Agarras con fuerza el Tim?n y empiezas a girar hacia el * mientras la embarcaci?n surca los mares a toda velocidad.} {
+#Play {RL\Oficios\Marinero\Timon*2.wav};
+#Play {RL\Oficios\marinero\orientar 1.wav};
+#If {@ModoE = 1} {
+ #GagLine voice
+}
+} {} AnyCase
+
+#GTrigger {Empiezas a girar el Tim?n para orientar la embarcaci?n hacia el *.} {
+#Play {RL\Oficios\Marinero\Timon*2.wav};
+#Play {RL\Oficios\Marinero\Orientar 2.wav};
+#If {@ModoE = 1} {
+ #GagLine voice
+}
+} {} AnyCase
+
+#GTrigger {Ordenas el aumento de la velocidad de crucero hasta alcanzar * unidades.} {
+#Play {RL\Oficios\marinero\Velocidad aumento.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {Ordenas la disminuci?n de la velocidad de crucero hasta alcanzar * unidades.} {
+#Play {RL\Oficios\marinero\Velocidad disminucion.wav};
+#If {@ModoE = 1} {
+ #GagLine voice
+}} {}
+
+#GTrigger {*Recuerda: esta embarcaci?n puede alcanzar ?nicamente * unidades de velocidad.} {
+#Var VelocidadMax %4;
+#Var VelocidadAjuste %4;
+#Play {RL\Modos\Error.wav}
+} {} AnyCase
+
+#GTrigger {La embarcaci?n ya está orientada en direcci?n *.} {
+#Play {RL\Modos\Error.wav}
+} {} AnyCase
+
+#GTrigger {Est?s maniobrando con el Tim?n para orientar el barco en direcci?n *.} {
+#Play {RL\Generales\Habilidad no disponible.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {No tienes acciones disponibles para navegar.} {
+#Play {RL\Generales\Turno completo.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+
+#GTrigger {Sacas el mapa del océano y comienzas a trazar la ruta hacia la posición * * * *. Cuando ya lo tienes todo claro, agarras el timón y te dispones a surcar las aguas.} {#Play {RL\Oficios\marinero\ruta1.wav}} {}
+#GTrigger {Sacas el mapa del océano y comienzas a trazar la ruta hacia la posición * * * *. Alzas el rostro y vislumbras una ruta digna de los mejores conquistadores.} {#Play {RL\Oficios\marinero\ruta2.wav}} {}
+;¡Realizando una asombrosa demostración del manejo de tu Bichero, enganchas con la punta metálica de tu herramienta varias ;cuerdas que hay alrededor de Restos de un naufragio y
+;haciendo uso de todas tus fuerzas, consigues extraer del agua los restos! 
+
+
+#GTrigger {Posicionas tu sextante y resuelves las siguientes coordenadas: * * ** *.} {#Play {RL\Oficios\marinero\posicionas sextante.wav}} {}
+
+;Detienes el cambio de orientación del barco, causando un fuerte bandazo.
+
+#GTrigger {¡Realizando una asombrosa demostraci?n del manejo de tu Bichero, enganchas con la punta met?lica de tu herramienta*} {
+#Play {RL\Oficios\Marinero\Recuperar restos.wav}
+} {} AnyCase
+
+
+
+#Class 0

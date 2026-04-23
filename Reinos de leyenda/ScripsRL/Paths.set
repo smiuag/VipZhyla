@@ -1,0 +1,163 @@
+;Módulo: Paths.set
+;Versión: 2.1, 26/06/2021
+;Descripción: Manejo y carga de Paths.
+;Autor: Rhomdur.
+
+
+;Declaración de variables:
+
+#Var Mapa 0
+#Var FlagPathDisponible 0
+#Var FlagPathPausado 0
+#Var ControlPath 0
+
+;Carga los diferentes archivos con paths de los reinos:
+
+#Load ScripsRL\Paths\Anduar.set
+#Load ScripsRL\Paths\Dendra.set
+#Load ScripsRL\Paths\Dendra2.set
+#Load ScripsRL\Paths\Eldor.set
+#Load ScripsRL\Paths\eloras.set
+#Load ScripsRL\Paths\Golthur.set
+#Load ScripsRL\Paths\Golthur2.set
+#Load ScripsRL\Paths\Kheleb.set
+#Load ScripsRL\Paths\MG.set
+#Load ScripsRL\Paths\Naggrung.set
+#Load ScripsRL\Paths\Takome.set
+#Load ScripsRL\Paths\Takome2.set
+#Load ScripsRL\Paths\Urlom.set
+#Load ScripsRL\Paths\Veleiron.set
+#Load ScripsRL\Paths\Zulk.set
+
+
+;Función de inicio de Paths:
+#GAlias FPath {
+#Var FlagPathPausado 0;
+#Var ControlPath -1;
+FuncControlPath;
+#Play {RL\Movimiento\Path on.wav}
+}
+
+
+;Función para cuando hay path disponible:
+#GAlias FPathDisponible {
+#Var FlagPathDisponible 2;
+#Play {RL\Movimiento\Path disponible.wav}
+}
+
+;Función para controlar el envío de las direcciones de los paths.
+#GAlias FuncControlPath {
+#If {@ControlPath < -1} {
+ #Var ControlPath 0;
+ #OK
+};
+#If {@ControlPath = 0} {
+ #If {@ModoPath = 0} {
+  #Var ControlPath 2;
+  #Alarm path 2 {#2 {#Ok}}
+ };
+ #If {@ModoPath = 2} {
+  #Var ControlPath 45;
+  #45 {#Ok}
+ }
+}
+}
+
+
+;Alias para capturar las direcciones de los paths:
+#GAlias n {FuncMovPath n} {PlayBack}
+#GAlias s {FuncMovPath s} {PlayBack}
+#GAlias e {FuncMovPath e} {PlayBack}
+#GAlias o {FuncMovPath o} {PlayBack}
+#GAlias ne {FuncMovPath ne} {PlayBack}
+#GAlias no {FuncMovPath no} {PlayBack}
+#GAlias se {FuncMovPath se} {PlayBack}
+#GAlias so {FuncMovPath so} {PlayBack}
+#GAlias ar {FuncMovPath ar} {PlayBack}
+#GAlias ab {FuncMovPath ab} {PlayBack}
+#GAlias de {FuncMovPath de} {PlayBack}
+#GAlias fu {FuncMovPath fu} {PlayBack}
+
+
+;Triggers para detener paths y records cuando la salida es errónea:
+
+#GTrigger {Parece que * no produjo efecto alguno.} {
+#If {%1 = "norte" or %1 = "sur" or %1 = "este" or %1 = "oeste" or %1 = "sudeste" or %1 = "noreste" or %1 = "sudoeste" or %1 = "noroeste" or %1 = "arriba" or %1= "abajo" or %1 = "dentro" or %1 = "fuera"} {
+ #stop;
+ #Var FlagPath 0
+}
+} {playback}
+
+#GTrigger {Parece que * no produjo efecto alguno.} {
+#If {%1 = "norte" or %1 = "sur" or %1 = "este" or %1 = "oeste" or %1 = "sudeste" or %1 = "noreste" or %1 = "sudoeste" or %1 = "noroeste" or %1 = "arriba" or %1= "abajo" or %1 = "dentro" or %1 = "fuera"} {
+#erase}} {Recording}
+
+
+;Triggers para el comando OK:
+
+#GTrigger {* [[]*] } {
+#If {@ModoPath = 0 or @ModoPath = 2} {
+ #Math ControlPath {@ControlPath - 1};
+ FuncControlPath
+};
+#If {@ModoPath = 1} {
+ #Alarm Path 0,9 {#OK}
+}
+} {playback}
+
+;Keys para manejo de paths:
+
+#GKey ctrl-shift-s {
+#If {@ModoPath = 2} {
+ #Var ModoPath 0
+} {
+ #Mat ModoPath {@ModoPath + 1}
+};
+#If {@ModoPath = 0} { #Say {Modo Path 2x2} NoDisplay|Output};
+#IF {@ModoPath = 1} { #Say {Modo path 1x1} NoDisplay|Output};
+#If {@ModoPath = 2} { #Say {Modo path turbo.} NoDisplay|Output};
+#Ok;
+#Play {RL\Modos\Boton.wav}
+}
+
+
+#GKey ctrl-s {
+#If {@ModoPath = 2} {
+ #Say {No se puede pausar un Path en modo turbo} NoDisplay|OutPut;
+ #Abort
+};
+#If {@FlagPathPausado = 0} {
+ #Var FlagPathPausado 1;
+ #Pause;
+ #Say {Path en pausa} NoDisplay|Output
+} {
+ #Var FlagPathPausado 0;
+ #Unpause;
+ #Say {Path en reproducción} NoDisplay|Output;
+ #If {@ModoPath = 0} {
+  #2 {#OK}
+ };
+ #If {@ModoPath = 1} {
+  #OK
+ }
+}
+} {playback}
+
+
+;Despliega la lista de destinos del mapa:
+#GKey ctrl-shift-m {
+#If {@FlagPathDisponible = 1} {
+ stop;
+ #Say {Destinos disponibles} Nodisplay|output;
+ #Pick @Mapa;
+ #Abort
+};
+#If {@FlagOceanoControl = 2} {
+ FuncMapaOceano;
+ #Abort
+};
+#Say {No hay destinos disponibles} Nodisplay|output;
+#Play {RL\Movimiento\Direccion erronea.wav}
+}
+
+

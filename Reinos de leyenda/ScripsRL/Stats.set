@@ -1,0 +1,430 @@
+;Módulo: stats.set
+;Versión: 2.3, 09/12/2024
+;Descripción: Captura y organiza los diferentes puntos de nuestro personaje en distintas variables para consultarlos con pulsaciones de teclas, incluye el contador de PVS y los avisos sonoros de vida.
+;Autor: Rhomdur.
+
+
+;Declaración de variables:
+
+#Var FlagPresentesGa
+#Var FlagPresentesGb
+#Var FlagAvisoEnemigoP 1
+#Var FlagAvisoObjetivoP 1
+#Var UltimoEnemigo
+#Var UltimoAliado
+#Var Peleas
+#Var HistorialCPvs {}
+#Var UltimoCpvS {}
+#Var CPvs
+#Var CPe
+#VAR Pv 0
+#Var PvsMax 0
+#Var Pvs2 0
+#VAR Pe 0
+#Var PeMax 0
+#VAR Xp 0
+#Var Po 0
+#Var Soc 0
+#Var AlertaVida1 0
+#Var AlertaVida2 0
+#Var AlertaVida3 0
+
+
+;Funciones del contador de PVS:
+#GAlias FCPvs {
+#If {@CPvs <= -300 and @ModoJ >= 2} {@ModoJ = 1};
+#If {@Pvs = @PvsMax} {
+ #Var HistorialCPvs;
+ #Var UltimoCPvs
+} {
+ #If {%NumWords(@HistorialCPvs,|) = 10} {#Var HistorialCPvs {%DelNItem(@HistorialCPvs,1)}};
+ #Var UltimoCPvs %0;
+ #AddItem HistorialCPvs {@UltimoCPvs:FCopiar @UltimoCPvs};
+#If {@UltimoCPVS < 0} {
+ #Say {Vida perdida: @UltimoCPVS} NoVoice
+} {
+ #Say {Vida ganada: @UltimoCPVS} NoVoice
+}
+}
+}
+
+;Función para las alertas sonoras cuando la vida baja de x niveles:
+#GAlias FAlertaPVS {
+#If {@AlertaVida = 1} {
+;Vida actual menor o igual que 50% y mayor que 0:
+ #If {@PVS > 0 and @PVS <= (@PVSMax/2)} {
+  #If {@AlertaVida1 = 0} {
+   #PlayLoop {RL\Combate\Alerta vida 50.wav};
+   #Var AlertaVida1 %PlayHandle
+  }
+ } {
+  #If {@AlertaVida1 <> 0} {
+   #PC @AlertaVida1 stop;
+   #Var AlertaVida1 0
+  }
+ };
+;Vida actual menor o igual que 30% y mayor que 10%
+ #If {@PVS <= ((@PVSMax*30)/100) and @PVS > ((@PVSMax*10)/100)} {
+  #If {@AlertaVida2 = 0} {
+   #PlayLoop {RL\Combate\Alerta vida 30.wav};
+  #Var AlertaVida2 %PlayHandle
+  }
+ } {
+  #If {@AlertaVida2 <> 0} {
+   #PC @AlertaVida2 stop;
+   #Var AlertaVida2 0
+  }
+ };
+;Vida actual menor o igual que 10% y mayor o igual que 0:
+ #If {@PVS <= ((@PVSMax*10)/100) and @PVS >= 0} {
+  #If {@AlertaVida3 = 0} {
+   #PlayLoop {RL\Combate\Alerta vida 10.wav};
+   #Var AlertaVida3 %PlayHandle
+  }
+ } {
+  #If {@AlertaVida3 <> 0} {
+   #PC @AlertaVida3 stop;
+   #Var AlertaVida3 0
+  }
+ }
+} {
+ #If {@AlertaVida1 <> 0} {
+  #PC @AlertaVida1 stop;
+  #Var AlertaVida1 0
+ };
+ #If {@AlertaVida2 <> 0} {
+  #PC @AlertaVida2 stop;
+  #Var AlertaVida2 0
+ };
+ #If {@AlertaVida3 <> 0} {
+  #PC @AlertaVida3 stop;
+  #Var AlertaVida3 0
+ }
+}
+}
+
+
+; Triggers Para capturar datos del prompt.
+
+#GTrigger {Pv:*\* Pe:*\* Xp:*} {
+#Var Pvs2 %1;
+#VAR Pvs {%1};
+#Var PvsMax %2;
+#Var Pe %3;
+#Var PeMax %4;
+#Var Xp %5;
+#If {@Pvs = @PvsMax} {
+ #Var HistorialCPvs;
+ #Var UltimoCPvs
+};
+FAlertaPVS;
+#GagLine all
+} {} AnyCase
+
+#GTrigger {SL: [[]*]} {
+#VAR Salidas {%1};
+FCSalidas %1;
+#Var SalidasLista @Corregir;
+#Var SalidasLista {%Replace(@SalidasLista,",","|")};
+#Gagline all} {} AnyCase
+
+#GTrigger {SL: [(]*[)]} {
+#VAR Salidas {%1};
+FCSalidas %1;
+#Var SalidasLista @Corregir;
+#Var SalidasLista {%Replace(@SalidasLista,",","|")};
+#Gagline all} {} AnyCase
+
+#GTrigger {SL:[[]*]} {
+#VAR Salidas {%1};
+FCSalidas %1;
+#Var SalidasLista @Corregir;
+#Var SalidasLista {%Replace(@SalidasLista,",","|")};
+#Gagline all} {} AnyCase
+
+#GTrigger {NM:*} {
+#GagLine all;
+#If {%1 = ""} {#Abort};
+FuncCorrectorPlayers %1;
+#Var Corregir {%Replace(@Corregir," y ","|")};
+#Var PresentesE {%Replace(@Corregir,", ","|")};
+#Var UltimoEnemigo @PresentesE;
+#If {@ModoJ <> 1} {@ModoJ = 1};
+#If {@FlagAvisoEnemigoP = 1} {
+ #Play {RL\Generales\Enemigo.wav}
+} {
+ #Var FlagAvisoEnemigoP 1
+};
+#If {@FlagAvisoObjetivoP = 1} {
+ #If {%IfWord(@Objetivo,@PresentesE,|)} {
+  #Play {RL\Movimiento\Objetivo aqui.wav}
+ }
+} {
+ #Var FlagAvisoObjetivoP 1
+};
+#Var Presentes;
+#Var PresentesE
+} {} AnyCase
+
+#GTrigger {PL:*} {
+#GagLine all;
+#If {%1 = ""} {#Abort};
+FuncCorrectorPlayers %1;
+#Var Corregir {%Replace(@Corregir," y ","|")};
+#Var Peleas {%Replace(@Corregir,", ","|")};
+#Play {RL\Generales\En peleas.wav}
+} {} AnyCase
+
+#GTrigger {LD:*} {
+#GagLine all;
+#If {%1 = ""} {#Abort};
+FuncCorrectorPlayers %1;
+#Var Corregir {%Replace(@Corregir," y ","|")};
+#Var PresentesA {%Replace(@Corregir,", ","|")};
+#For @PresentesA {
+ #If {%IfWord(%i,@Grupo,|)} {
+  #Var FlagPresentesGA 1
+ } {
+  #Var FlagPresentesGb 1
+ }
+};
+#If {@FlagPresentesGa = 1} {
+ #Play {RL\Generales\Agrupados.wav}
+};
+#If {@FlagPresentesGb = 1} {
+ #Play {RL\Generales\Aliado.wav}
+};
+ #Var UltimoAliado @PresentesA;
+#Var FlagPresentesGa;
+#Var FlagPresentesGb
+} {} AnyCase
+
+#GTrigger {Pieles:*} {
+#Var Pieles {%1};
+#GagLine all
+} {} AnyCase
+
+#GTrigger {Imágenes:*} {
+#Var Imagenes {%1};
+#GagLine all
+} {} AnyCase
+
+#GTrigger {Inercia:*} {
+#Var Inercia {%1};
+#GagLine all
+} {} AnyCase
+
+#GTrigger {Astucia:*} {
+#Var Astucia {%1};
+#GagLine all
+} {} AnyCase
+
+#GTrigger {Jgd:*} {
+#GagLine all;
+#If {%1 = ""} {#Abort};
+
+;Crea las listas de aliados y enemigos presentes:
+FuncCorrectorPlayers %1;
+#Var Corregir {%Replace(@Corregir," y ","|")};
+#Var Presentes {%Replace(@Corregir,", ","|")};
+#For @Presentes {
+ #Var Temp2 %i;
+ FuncComprobarSujeto @Temp2 1 1;
+ #If {@FlagComprobarSujeto = 1} {
+  #AddItem PresentesE @Temp2 noduplicates
+ } {
+  #AddItem PresentesA @Temp2 noduplicates
+ }
+};
+#UnVar Temp2;
+#If {@PresentesA <> ""} {
+ #Var UltimoAliado @PresentesA;
+ #Play {RL\Generales\Aliado.wav}
+};
+#If {@PresentesE <> ""} {
+ #Var UltimoEnemigo @PresentesE;
+ #If {@ModoJ >= 2} {@ModoJ = 1};
+ #If {@FlagAvisoEnemigoP = 1} {
+  #Play {RL\Generales\Enemigo.wav}
+ } {
+  #Var FlagAvisoEnemigoP 1
+ };
+ #If {@FlagAvisoObjetivoP = 1} {
+  #If {%IfWord(@Objetivo,@PresentesE,|)} {
+   #Play {RL\Movimiento\Objetivo aqui.wav}
+  }
+ } {
+  #Var FlagAvisoObjetivoP 1
+ }
+};
+#Var PresentesA;
+#Var Presentes;
+#Var PresentesE
+} {} AnyCase
+
+
+;Triggers para capturar datos del monitor de combate:
+
+#GTrigger {Pvs: */* (*) Pe: */* (*)} {
+#Var Pvs %1;
+#Var PvsMax %2;
+#Var CPvs %3;
+#Var Pe %4;
+#Var PeMax %5;
+#Var CPe %6;
+#If {@CPvs <> 0} {FCPvs @CPvs};
+FAlertaPVS;
+#Gagline voice
+} {} AnyCase
+
+#GTrigger {? Pvs: */* (*) Pe: */* (*)} {
+#Var Pvs %2;
+#Var PvsMax %3;
+#Var CPvs %4;
+#Var Pe %5;
+#Var PeMax %6;
+#Var CPe %7;
+#If {@CPvs <> 0} {FCPvs @CPvs};
+FAlertaPVS;
+#Gagline voice
+} {} AnyCase
+
+
+; Trigger para capturar datos del comando SC:
+
+#GTrigger {Pvs: *(*)  Pe: *(*)  Po: *  Xp: *  Psoc: *} {
+#Var Pvs %1;
+#Var PvsMax %2;
+#Var Pe %3;
+#Var PeMax %4;
+#Var Po %5;
+#Var Xp %6;
+#Var Soc %7;
+FAlertaPVS
+} {} AnyCase
+
+#GTrigger {Pvs: *(*)  Pe: *(*)  Fe: *(*)  Po: *  Xp: *  Psoc: *} {
+#Var Pvs %1;
+#Var PvsMax %2;
+#Var Pe %3;
+#Var PeMax %4;
+#Var Fe %5;
+#Var Po %6;
+#Var Xp %7;
+#Var Soc %8;
+FAlertaPVS
+} {} AnyCase
+
+
+
+
+;Keys:
+
+
+; Leer salidas: 
+#GKey alt-\ {
+#If {@SalidasModoMarinero <> "" and @ModoMarinero = 1} {
+ #Say {@SalidasModoMarinero} NoDisplay|Output;
+ #Abort
+};
+#say {@{Salidas}} nodisplay|Output;
+#If {@SalidasEspeciales <> ""} {
+ #Say {@SalidasEspeciales} NoDisplay|Output
+}
+}
+
+;Copiar salidas:
+#GKey alt-shift-\ {
+FCopiar {@Salidas}
+}
+
+
+; Leer vida:
+#GKey alt-1 {
+#say {@{Pvs}(@{PvsMax})} nodisplay|Output}
+
+;Copiar vida:
+#GKey alt-Shift-1 {
+FCopiar {@PVS\@PVSMax}
+}
+
+;Leer PGS, imágenes, pieles y fe en caso de haberla:
+#GKey alt-2 {
+#If {%Defined(Pieles) and %Defined(Imagenes)} {
+ #If {@Pieles = 0 and @Imagenes > 0} {
+  #Say {@Imagenes Imágenes} NoDisplay|Output
+ };
+ #If {@Imagenes = 0 and @Pieles > 0} {
+  #Say {@Pieles Pieles} NoDisplay|output
+ }
+};
+#If {%Defined(Inercia)} {
+ #Say {@Inercia Inercia} NoDisplay|output
+};
+#If {%Defined(Astucia)} {
+ #Say {@Astucia Astucia} NoDisplay|output
+};
+#say {@{Pe}(@{PeMax})} nodisplay|Output;
+#If {%Defined(Fe)} {
+#Say {Fe: @Fe} NoDisplay|Output
+}
+}
+
+;Copiar PGS:
+#GKey alt-Shift-2 {
+FCopiar {@PE\@PEMax}
+}
+
+;Leer la xp acumulada y los puntos de oficio:
+#GKey alt-0 { #say {XP: @Xp. Puntos de oficio: @Po} nodisplay|Output}
+
+
+
+
+; Shift-f6 saca el historial del contador de PVS 
+#GKey shift-F6 {
+#If {@HistorialCPVS = ""} {
+ #Say {Historial de PVS vacío} NoDisplay|Output
+} {
+ #Pick {%ReverseList(@HistorialCPvs)}
+}
+}
+
+;f6 lee el ultimo daño recibido.
+#GKey F6 {
+#If {@UltimoCPvs <> ""} {
+ #Say {@{UltimoCPvs}} NoDisplay|Output
+} {
+ #Say {No has recibido daño por el momento} NoDisplay|Output
+}
+}
+
+
+; Leer y utilizar la variable UltimoEnemigo
+
+#GKey F2 {
+#If {@UltimoEnemigo = ""} {
+ #Say {No has visto a ningún enemigo recientemente} NoDisplay|OutPut
+} {
+#Say {%Replace(@UltimoEnemigo,"|",", ")} NoDisplay|OutPut
+}
+}
+
+#GKey shift-alt-F2 {
+FCopiar {%Replace(@UltimoEnemigo,"|",", ")}
+}
+
+
+;Leer y utilizar la variable UltimoAliado:
+
+#GKey F3 {
+#If {@UltimoAliado = ""} {
+ #Say {No has visto a ningún aliado recientemente} NoDisplay|OutPut
+} {
+#Say {%Replace(@UltimoAliado,"|",", ")} NoDisplay|OutPut
+}
+}
+
+#GKey shift-alt-F2 {
+FCopiar {%Replace(@UltimoAliado,"|",", ")}
+}

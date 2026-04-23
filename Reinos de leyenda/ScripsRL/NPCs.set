@@ -1,0 +1,279 @@
+;Módulo: NPCs.set
+;Versión: 2.3, 16/11/2023
+;Descripción: Configuraciones para monstruos y quests especiales:
+;Autor: Rhomdur
+
+
+; Lessirnak:
+
+#GTrigger {¡Lessirnak, el Gran Wyrm Infernal aterriza en el cráter con sus alas extendidas y llameantes, sacudiendo todo a tu alrededor con su*} {
+#Play {RL\NPCS\Lessirnak\Aterrizaje.wav}
+} {} AnyCase
+
+#GTrigger {*Est?s siendo atacad? por Lessirnak, el Gran Wyrm Infernal.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Class Lessirnak enable;
+#Play {RL\NPCs\Lessirnak\Atacando.wav}
+} {} AnyCase
+
+#Class Lessirnak
+
+#GTrigger {[*] ¡Lessirnak, el Gran Wyrm Infernal salta sobre ti, estrellándose contra tu cuerpo y dejándote a su merced!} {
+#Play {RL\Combate\Stun propio.wav};
+#Play {RL\NPCs\Lessirnak\Llegada.wav}
+} {} AnyCase
+
+#GTrigger {¡Lessirnak, el Gran Wyrm Infernal llega a la sala dando un enorme salto*} {
+#Play {RL\NPCs\Lessirnak\Llegada.wav}
+} {} AnyCase
+
+#GTrigger {Lessirnak, el Gran Wyrm Infernal abre sus fauces y, desde lo más profundo de su interior, docenas de*} {
+#Play {RL\NPCs\Lessirnak\Aliento amenaza.wav}
+} {} AnyCase
+
+#GTrigger {Lessirnak, el Gran Wyrm Infernal abre sus fauces y emite un agudo bramido que impacta*} {
+#Play {RL\NPCs\Lessirnak\Aliento amenaza.wav}
+} {} AnyCase
+
+#GTrigger {Lessirnak, el Gran Wyrm Infernal abre sus fauces y emite un gargantuano bramido*} {
+#Play {RL\NPCs\Lessirnak\Aliento amenaza.wav}
+} {} AnyCase
+
+#GTrigger {Lessirnak, el Gran Wyrm Infernal levanta el vuelo hasta el cielo y comienza a descender en picado*} {
+#Play {RL\NPCS\Lessirnak\Rugido aliento.wav};
+#Play {RL\NPCs\Lessirnak\Vuelo.wav}
+} {} AnyCase
+
+#GTrigger {Lessirnak, el Gran Wyrm Infernal bate sus alas y comienza a volar a poca altura, dando vueltas al cráter mientras observa a los que desafían*} {
+#Play {RL\NPCs\Lessirnak\Vuelo.wav}
+} {} AnyCase
+
+#GTrigger {¡Lessirnak, el Gran Wyrm Infernal pasa en un velocísimo vuelo rasante sobre el cráter, destruyendo todo con su*} {
+#Play {RL\NPCs\Lessirnak\Vuelo rasante.wav}
+} {} AnyCase
+
+#GTrigger {Lessirnak, el Gran Wyrm Infernal aterriza de nuevo en el cráter tras realizar su mortal vuelo rasante.} {
+#Play {RL\NPCS\Lessirnak\Aterrizaje.wav}
+} {} AnyCase
+
+#GTrigger {¡Eres electrocutado por el infierno eléctrice de Lessirnak, el Gran Wyrm Infernal!} {
+FuncDanoRecibido;
+#Play {RL\NPCs\Lessirnak\Impacto aliento electrico.wav}
+} {} AnyCase
+
+#GTrigger {¡Ardes bajo el fuego infernal de Lessirnak, el Gran Wyrm Infernal! ¡Por fin conoces el infierno en vida!} {
+FuncDanoRecibido;
+#Play {RL\NPCs\Lessirnak\Impacto aliento fuego.wav}
+} {} AnyCase
+
+#GTrigger {¡Sucumbes ante el infierno de ácido desencadenado por Lessirnak, el Gran Wyrm Infernal!*} {
+FuncDanoRecibido;
+#Play {RL\NPCs\Lessirnak\Impacto aliento acido *2.wav}
+} {} AnyCase
+
+#GTrigger {*Lessirnak, el Gran Wyrm Infernal se alza sobre sus patas traseras y extiende sus alas majestuosamente. ¡Con gesto despiadado, se lanza*} {
+#Play {RL\NPCS\Lessirnak\Rugido atrapar 1.wav}
+} {} AnyCase
+
+#GTrigger {Lessirnak, el Gran Wyrm Infernal atrapa salvajemente con sus garras a * y *} {
+FEventos %1 atrapado y a volar;
+#Play {RL\NPCS\Lessirnak\Rugido atrapar 2.wav};
+#Play {RL\NPCs\Lessirnak\Vuelo.wav}
+} {} AnyCase
+
+#GTrigger {Ves cómo Lessirnak, el Gran Wyrm Infernal suelta a * en lo alto de los cielos*} {
+#Play {RL\NPCS\Lessirnak\Caida 1.wav}
+} {} AnyCase
+
+#GTrigger {* cae al suelo con un un mórbido crujir de huesos y órganos, quedándo inconsciente del golpe.} {
+FEventos %0;
+#Play {RL\NPCS\Lessirnak\Caida 2.wav}
+} {} AnyCase
+
+#GTrigger {¡Lessirnak, el Gran Wyrm Infernal te atrapa violentamente con sus garras y comienza a levantar el vuelo!*} {
+} {} AnyCase
+
+#GTrigger {¡Lessirnak, el Gran Wyrm Infernal te suelta y te deja caer mientras vuela*} {
+} {} AnyCase
+
+#GTrigger {¡Tu frágil cuerpo cede a la violencia de la gravedad, y chocas contra el suelo, provocándo *} {
+} {} AnyCase
+
+#GTrigger {Lessirnak, el Gran Wyrm Infernal se detiene en seco y se queda embelesado observando *; parece que no se mover? durante unos segundos.} {
+#Play {RL\NPCS\Lessirnak\Embelesado.wav}
+} {} AnyCase
+
+#GTrigger {Lessirnak, el Gran Wyrm Infernal empieza a aburrirse de las joyas que contempla.} {
+#Play {RL\NPCS\Lessirnak\Aburrido*6.wav}
+} {} AnyCase
+
+#GTrigger {Cría de Dragón Infernal abre sus fauces y*} {
+#Play {RL\NPCs\Lessirnak\Cria amenaza.wav}
+} {} AnyCase
+
+#GTrigger {¡Ardes bajo el fuego infernal de Cría de Dragón Infernal! ¡Por fin conoces el infierno en vida!} {
+FuncDanoRecibido;
+#Play {RL\NPCs\Lessirnak\Cria aliento fuego.wav}
+} {} AnyCase
+
+#GTrigger {¡Eres electrocutado por el infierno eléctrice de Cría de Dragón Infernal!} {
+FuncDanoRecibido;
+#Play {RL\NPCs\Lessirnak\Cria aliento electrico.wav}
+} {} AnyCase
+
+#GTrigger {¡Sucumbes ante el infierno de ácido desencadenado por Cría de Dragón Infernal!*} {
+FuncDanoRecibido;
+#Play {RL\NPCs\Lessirnak\Cria aliento acido.wav}
+} {} AnyCase
+
+#GTrigger {¡* crías de dragón infernal emergen de la tierra de debajo del cr?ter!} {
+FEventos %0;
+#Play {RL\NPCs\Lessirnak\Crias spawn.wav}
+} {} AnyCase
+
+#GTrigger {Cría de Dragón Infernal está aquí.} {
+#Play {RL\NPCs\Lessirnak\Cria *2.wav}
+} {} AnyCase
+
+#GTrigger {* crías de Dragón Infernal están aquí.} {
+#Play {RL\NPCs\Lessirnak\Cria *2.wav}
+} {} AnyCase
+
+#GTrigger {Cría de Dragón Infernal cae al suelo sin vida.} {
+#Play {RL\NPCs\Lessirnak\Cria muerte *2.wav}
+} {} AnyCase
+
+#GTrigger {Lessirnak, el Gran Wyrm Infernal cae al suelo sin vida.} {
+#Class Lessirnak disable;
+#Play {RL\NPCs\Lessirnak\Muerte.wav}
+} {} AnyCase
+
+#GTrigger {Paras de perseguir a Lessirnak, el Gran Wyrm Infernal.} {
+#Class Lessirnak disable
+} {} AnyCase
+
+#Class 0
+
+
+;Mergandevinasander:
+
+#GTrigger {*Est?s siendo atacad? por Mergandevinasander, el Venerable Wyrm Negro.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Class Mergan enable;
+#Play {RL\NPCs\Mergan\Atacando.wav}
+} {} AnyCase
+
+#Class Mergan
+
+#GTrigger {Mergandevinasander, el Venerable Wyrm Negro abre sus fauces y emite un gargantuano bramido que azota dolorosamente tu cráneo;*} {
+#Play {RL\NPCS\Mergan\Aliento amenaza.wav}
+} {} AnyCase
+
+;#GTrigger {Mergandevinasander, el Venerable Wyrm Negro escupe una gigantesca bola de ácido que explota en el aire a escasos centímetros*} {} {} AnyCase
+
+#GTrigger {¡Sucumbes ante el infierno de ácido desencadenado por Mergandevinasander, el Venerable Wyrm Negro! ¡Tu piel empieza a arder*} {
+FuncDanoRecibido
+} {} AnyCase
+
+#GTrigger {Mergandevinasander, el Venerable Wyrm Negro cae al suelo sin vida.} {
+#Class Mergan disable;
+#Play {RL\NPCS\Mergan\Muerte.wav}
+} {} AnyCase
+
+#GTrigger {Paras de perseguir a Mergandevinasander, el Venerable Wyrm Negro.} {
+#Class Mergan disable
+} {} AnyCase
+
+#Class 0
+
+
+;Lish:
+
+#GTrigger {*Est?s siendo atacad? por Lish la Aborrecible, el Venerable Dragón Rojo.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Class Lish enable;
+#Play {RL\NPCs\Lish\Atacando.wav}
+} {} AnyCase
+
+#Class Lish
+
+#GTrigger {Lish la Aborrecible, el Venerable Dragón Rojo abre sus fauces y emite un agudo bramido que impacta dolorosamente tus tímpanos;*} {
+#Play {RL\NPCS\Lish\Aliento amenaza.wav}
+} {} AnyCase
+
+#GTrigger {El gutural sonido de una poderosa inspiración hace retumbar las paredes de la cueva.*} {
+#Play {RL\NPCs\Lish\Inspiracion.wav}
+} {} AnyCase
+
+#GTrigger {Lish la Aborrecible, el Venerable Drag?n Rojo os presenta el mism?simo Infierno al expirar con fuerza una violenta r?faga *} {
+#Play {RL\NPCS\Lish\Aliento*2.wav}
+} {} AnyCase
+
+#GTrigger {¡Lish la Aborrecible, el Venerable Dragón Rojo, completamente furiosa y asustada, golpea las paredes*} {
+#Play {RL\NPCs\Lish\Ataque final.wav}
+} {} AnyCase
+
+#GTrigger {Lish la Aborrecible, el Venerable Dragón Rojo cae al suelo sin vida.} {
+#Class Lish disable;
+#Play {RL\NPCS\Lish\Muerte.wav}
+} {} AnyCase
+
+#GTrigger {Paras de perseguir a Lish la Aborrecible, el Venerable Dragón Rojo.} {
+#Class Lish disable
+} {} AnyCase
+
+#Class 0
+
+
+;Anarcam:
+
+#GTrigger {Un escalofriante gemido proveniente del norte comienza a ganar volumen.} {
+#Play {RL\NPCs\Anarcam alerta cacofonia.wav}
+} {} AnyCase
+
+#GTrigger {¡Un torrente de almas condenadas llega furibunda desde norte y envuelve a los presentes en una escalofriante*} {
+#Play {RL\NPCs\Anarcam impacto cacofonia.wav}
+} {} AnyCase
+
+
+;Hidras:
+
+#GTrigger {[¡]Huevo de Hidra Marina se rompe en pedazos cuando Cr?a de Hidra eclosiona!} {
+#Play {RL\NPCs\Hidras\Nace cria.wav}
+} {} AnyCase
+
+#GTrigger {El lugar por donde la cabeza ha quedado separada del cuerpo se mueve burbujeante y sutura de golpe evitando que la sangre siga verti?ndose.} {#Play {RL\NPCs\Hidras\Sutura herida.wav}
+} {} AnyCase
+
+#GTrigger {Rebanas una de las cabezas de la hidra.} {
+#Play {RL\NPCs\Hidras\Rebanas cabeza.wav}
+} {} AnyCase
+
+#GTrigger {La hidra cae abatida cuando le es sesgada la ?ltima cabeza.} {
+#Play {RL\NPCs\Hidras\Muerte.wav}
+} {} AnyCase
+
+#GTrigger {[*] La hidra te golpea brutalmente con su cola.} {
+#Play {RL\NPCs\Hidras\Coletazo.wav}
+} {} AnyCase
+
+#GTrigger {[*] Das un salto esquivando la cola de la hidra cuando ves que esta iba a golpearte.} {
+#Play {RL\NPCs\Hidras\Coletazo falla.wav}
+} {} AnyCase
+
+
+;Trolls:
+
+#GTrigger {El troll se interpone en tu camino gruñéndote con una mirada amenazadora mientras enseña sus sucios colmillos.} {#Play {RL\NPCs\trolls\troll grunido.wav}} {}
+#GTrigger {Troll está aquí.} {#Play {RL\NPCs\trolls\troll aquí.wav}} {}
+#GTrigger {Troll coge el palo de su espalda y con su último aliento se lo traga.} {#Play {RL\NPCs\trolls\troll coge palo.wav}} {}
+#GTrigger {Ves un par de pedruscos volando por encima de tu cabeza, acompañados por insultos del Troll, que no parece muy alegre al ver que su comida se escapa. Pero claro, a este troll no le gusta la luz del Sol. No esperes que salga a perseguirte.} {#Play {RL\NPCs\trolls\troll voraz grunido.wav}} {}
+#GTrigger {Troll Voraz está aquí.} {#Play {RL\NPCs\trolls\troll voraz aquí.wav}} {}
+#GTrigger {Al ser impactado por la luz del Sol, el Troll se convierte en una estatua de ceniza que es arrastrada hasta la destrucción por la brisa inquietante del Bosque Baldío. Una pequeña bolsa y un taparrabos es lo único que quedan de él.} {#Play {RL\NPCs\trolls\troll voraz muere.wav}} {}
+
+#Class Lessirnak disable
+#Class Mergan disable
+#Class Lish disable

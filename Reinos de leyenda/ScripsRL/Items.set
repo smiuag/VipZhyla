@@ -1,0 +1,310 @@
+;Módulo: Items.set
+;Versión: 2.0, 08/02/2025
+;Descripción: Triggers para todo tipo de ítems.
+;Autor: Rhomdur.
+
+
+;Items generales, coger, recibir:
+
+;Función con todos los sonidos de items generales:
+#GAlias FuncItems {
+
+#If {%IfWord("Diseño",%0, ) or %IfWord("Diseños",%0, )} {
+ #Play {RL\Items\Generales\Diseño.wav}
+};
+#If {%IfWord("Compendio",%0, ) or %IfWord("Compendios",%0, )} {
+ #Play {RL\Items\Generales\Compendio.wav}
+};
+#If {%IfWord("Llave",%0, ) or %IfWord("Llaves",%0, )} {
+ #Play {RL\Items\Generales\Llave.wav}
+};
+#If {%IfWord("Elixir",%0, ) or %IfWord("Elixires",%0, )} {
+ #Play {RL\Items\Generales\Elixir.wav}
+};
+#If {%IfWord("Poción",%0, ) or %IfWord("Pociones",%0, )} {
+ #Play {RL\Items\Generales\Elixir.wav}
+};
+#If {%IfWord("Frasco",%0, ) or %IfWord("Frascos",%0, )} {
+ #Play {RL\Items\Generales\Frasco.wav}
+};
+#If {%IfWord("Pergamino",%0, ) or %IfWord("Pergaminos",%0, )} {
+ #Play {RL\Items\Generales\Pergamino.wav}
+}
+
+}
+
+
+#GTrigger {[[]Recibes *].} {
+FuncItems Recibes %1;
+#Play {RL\Items\Generales\Recibes.wav}
+} {} AnyCase
+
+#GTrigger {Coges * de *.} {
+FuncItems Coges %1;
+#If {%IfWord("mochila",%2, ) or %IfWord("bolsa",%2, )} {
+ #Play {RL\Sucesos\Coger contenedor.wav}
+};
+#If {%IfWord(@Localizacion,%2, )} {
+ #Play {RL\Sucesos\Coger room.wav}
+}
+} {} AnyCase
+
+#GTrigger {Pones * en *} {
+#Play {RL\Sucesos\Poner en mochila.wav}
+} {} AnyCase
+
+#GTrigger {? Pones * en *} {
+#Play {RL\Sucesos\Poner en mochila.wav}
+} {} AnyCase
+
+
+
+
+
+#GTrigger {Cuerpo de *.} {
+#Play {RL\Items\Generales\Cuerpo*2.wav}
+} {} AnyCase
+
+#GTrigger {* cuerpos de *.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#If {%NumWords(%1, ) > 1} {#Abort};
+#Play {RL\Items\Generales\Cuerpos*2.wav}
+} {}
+
+
+#GTrigger {Enciendes tu Antorcha.} {
+#Play {RL\Items\Generales\Encender antorcha.wav}
+} {} AnyCase
+
+#GTrigger {Apagas tu Antorcha.} {
+#Play {RL\Items\Generales\Apagar antorcha.wav}
+} {} AnyCase
+
+#GTrigger {*Disfraz de *.} {
+#Play {RL\Items\Generales\Disfraz.wav}
+} {} AnyCase
+
+
+;Anillo antimágico:
+#GTrigger {Tu Anillo Antimágico comienza a calentarse y chispear en tu mano.} {
+#Play {RL\Items\Anillo antimagico inicio.wav}
+} {} AnyCase
+
+
+;Lucero del sol resplandeciente:
+#GTrigger {*[¡]Un refulgente destello de tu Lucero del Sol Resplandeciente ciega por completo a *!} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Hechizos\Cegar.wav}
+} {} AnyCase
+
+
+;Cinturon robacuraciones:
+#GTrigger {Tocas la aquamarina de tu Cinturón Robacuraciones mientras pronuncias la palabra de poder. Un aura mágica te envuelve durante unos segundos.} {
+#Play {RL\Items\Robacuraciones on.wav}
+} {} AnyCase
+
+#GTrigger {El aura mágica de tu cinturón se desvanece tan rápido como vino.} {
+#Play {RL\Items\Robacuraciones off.wav}
+} {} AnyCase
+
+#GTrigger {* toca la aquamarina de su Cinturón Robacuraciones mientras pronuncia la palabra de mando.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FEventos robacuraciones %1;
+FuncComprobarSujeto %1 0 0;
+#Play {RL\Items\Robacuraciones ajeno.wav}
+} {}
+
+
+;Cinturón del contemplador:
+#GTrigger {El Ojo del cinturón brilla con fuerza dispersando las energías mágicas del hechizo sin lograr devolverlas.} {
+#Play {RL\Items\Contemplador rebotar 1.wav}
+} {} AnyCase
+
+#GTrigger {[¡]El Ojo de tu cinturón brilla y fuerza al hechizo de * a cambiar su objetivo hacia si mism*!} {
+#Play {RL\Items\Contemplador rebotar 2.wav}
+} {} AnyCase
+
+#GTrigger {El Ojo del cinturón brilla enviando el hechizo a su lanzador, pero este es invulnerable y el hechizo*} {
+#Play {RL\Items\Contemplador rebotar 2.wav};
+#Play {RL\Hechizos\Hechizo sin efecto.wav}
+} {} AnyCase
+
+#GTrigger {Un flash de energía blanca surge del Ojo del cinturón que con un sonido agudo parece apagarse *} {
+#Play {RL\Items\Contemplador disipar.wav}
+} {} AnyCase
+
+
+;Martillo del trueno:
+#GTrigger {Señalas a tu objetivo con Martillo del Trueno invocando la cólera ancestral del firmamento, quien responde*} {
+#Play {RL\Items\Martillo trueno.wav}
+} {} AnyCase
+
+#GTrigger {Blandes con fuerza tu Martillo del Trueno y golpeas virulentamente el suelo creando una onda expansiva*} {
+#Play {RL\Items\Martillo trueno.wav}
+} {} AnyCase
+
+
+;Botas de piel de dragón negro:
+
+#GTrigger {Tocas la joya * de tus Botas de Cuero de Dragón Negro y instantáneamente sientes un hormigueo que recorre*} {
+#Play {RL\Items\Botas dragon1.wav}
+} {} AnyCase
+
+#GTrigger {Los efectos de Botas de Cuero de Dragón Negro se terminan.} {
+#Play {RL\Items\Botas dragon2.wav}
+} {} AnyCase
+
+
+;Anillos del heroe:
+
+#GTrigger {*Murmullas unas palabras de poder y acaricias tu Anillo del Héroe *, que responde a tus palabras emitiendo una*} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Items\Anillo heroe1.wav}
+} {} AnyCase
+
+#GTrigger {*El poder de tu Anillo del Héroe * inunda tu cuerpo y te sientes mucho más fuerte.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Items\Anillo heroe2.wav};
+#Alarm 300 {
+ #Play {RL\Items\Anillo heroe3.wav}
+}
+} {} AnyCase
+
+
+;Brazalete de kraken;:
+
+#GTrigger {*Ante la necesidad de alimentarte, muerdes tu Brazalete de Kraken, arrancando un trozo de carne gelatinosa.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Sucesos\Cura recibida.wav}
+} {} AnyCase
+
+#GTrigger {* muerde su Brazalete de Kraken, arrancando un trozo de carne gelatinosa.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FAliadoAfectado %1;
+#Play {RL\Hechizos\Se cura.wav}
+} {}
+
+;Muñequera de servidumbre:
+#GTrigger {[[]Tu Trabajo duro te bonifica con * de oficio]} {
+#Play {RL\Items\Servidumbre.wav}
+} {} AnyCase
+
+;Brazalete del dolor velado:
+#GTrigger {La magia regenerativa de tu Brazalete del dolor velado termina con una de tus heridas.} {
+#Play {RL\Items\Velado.wav}
+} {} AnyCase
+
+;Espada aullante:
+
+#GTrigger {La Espada Aullante comienza a silbar.} {
+#Play {RL\Items\Espada aullante 1.wav}
+} {} AnyCase
+
+#GTrigger {* se alza del cadáver de tu enemigo como un macabro títere de tu voluntad.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Sucesos\Muerto viviente.wav}
+} {} AnyCase
+
+#GTrigger {[¡]Tus ataques liberan un escalofriante aullido que reverbera en la frontera, transmitiendo la destilada esencia del miedo con sus ecos agónicos!} {#Play {RL\Items\Espada aullante 2.wav}
+} {} AnyCase
+
+#GTrigger {*[¡]El viento arrastra un escalofriante aullido nacido de la pesadilla que fulmina tus tímpanos!} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Items\Espada aullante 3.wav}
+} {} AnyCase
+
+#GTrigger {*Una nauseabunda cacofonía de carne y huesos triturados se origina en tu Mochila Carnívora.*} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Items\Carnivora 1.wav}
+} {} AnyCase
+
+
+;Lágrima de sangre:
+
+#GTrigger {Coges la l?grima del collar y te pinchas la yugular con la aguja. La l?grima comienza a llenarse de tu propia sangre.*} {
+#Play {RL\Items\Lagrima llena.wav}
+} {} AnyCase
+
+#GTrigger {*Coges la lágrima del collar y te pinchas la yugular con la aguja. La lágrima comienza a vaciarse y te sientes revitalizado.*} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Items\Lagrima vacia.wav};
+#Play {RL\Sucesos\Cura recibida.wav}
+} {} AnyCase
+
+#GTrigger {Tu Escudo pavés de Obkaeklox emite un intenso destello tras el impacto, que ciega momentáneamente a *.} {
+#Play {RL\Items\Obkaeklox.wav}
+} {} AnyCase
+
+
+;Rubrica de Nyelphax:
+
+#GTrigger {Tu Rúbrica de Nyel'phax responde a las palabras de poder con extraños susurros *} {
+#Play {RL\Items\Rubrica responde.wav}
+} {} AnyCase
+
+#GTrigger {Antes de que puedas comprender los horrores que te rodean en el plano cósmico, un fogonazo de luz te expulsa*} {
+#Play {RL\Items\Rubrica expulsa.wav}
+} {} AnyCase
+
+#GTrigger {La Fisura Cósmica comienza a retorcerse lentamente mientras se extingue, cerrándose poco a poco hasta que *} {
+#Play {RL\Items\Fisura disipada.wav}
+} {} AnyCase
+
+#GTrigger {Tu Rúbrica de Nyel'phax responde a las palabras de poder con un brusco destello mágico que, con violencia*} {
+#Play {RL\Items\Fisura creada.wav}
+} {} AnyCase
+
+#GTrigger {Fisura Cósmica.} {
+#Play {RL\Items\Fisura activa.wav}
+} {} AnyCase
+
+
+;Cuerno del príncipe demonio.
+ #GTrigger {¡El estruendoso sonido del Cuerno de hueso del Pr?ncipe Demonio de * pulveriza tus t?mpanos!} {
+#Play {RL\Items\Cuerno demonio 2.wav}
+} {} AnyCase
+
+#GTrigger {Empu?as con fuerza tu Cuerno de hueso del Pr?ncipe Demonio y lo haces sonar con todo el aire de*} {
+#Play {RL\Items\Cuerno demonio 1.wav}
+} {} AnyCase
+
+
+;Collar de tinta de kraken:
+
+#GTrigger {* aprieta su Collar de Tinta de Kraken y este comienza a borbotear sonoramente.} {
+FuncCorrectorSignos %0;
+#If {%IfWord(%Word(@Corregir, ,1),@Canales,|)} {#Abort};
+#Play {RL\Items\Collar tinta otro 1.wav};
+#If {@ModoE = 1} {
+ #Say {%1} NoDisplay|output;
+ #GagLine Voice
+}
+} {}
+
+#GTrigger {¡Pierdes de vista a *!} {
+FEventos %0;
+#Play {RL\Items\Collar tinta otro 2.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+
+#GTrigger {¡Una nube de tinta vaporizada oscurece todo a tu alrededor!} {
+#Play {RL\Items\Collar tinta.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+

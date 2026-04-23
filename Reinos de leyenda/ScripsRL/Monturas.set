@@ -1,0 +1,104 @@
+;Módulo: Monturas.set
+;Versión: 1.2, 28/09/2021
+;Descripción: Incluye todas las keys y funciones relacionadas con las monturas.
+;Autor: Rhomdur.
+
+
+;Declaración de variables:
+#Var FlagMontado 0
+#Var FlagGalopando 0
+
+
+#GTrigger {*Tiras de las riendas de * haciendo que te siga.} {
+#If {@ModoJ >= 1 or @ModoE = 1} {
+ #GagLine Voice
+};
+#Play {RL\Monturas\Riendas*5.wav}
+} {} AnyCase
+
+#GTrigger {Empiezas a montar en *.} {
+#Play {RL\Monturas\Montar inicio.wav}
+} {} AnyCase
+
+#GTrigger {Montas en *.} {
+#Var FlagMontado 1;
+#Class Monturas enable;
+#Play {RL\Monturas\Montar terminar.wav}
+} {} AnyCase
+
+
+#Class Monturas
+
+;Galopar y detener galope:
+
+#GTrigger {Comienzas a galopar en dirección *.} {
+#Var FlagGalopando 1;
+#Play {RL\Monturas\Espoleas.wav};
+#If {@ModoJ >= 1 or @ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {Te detienes para poder decidir el camino a seguir.} {;
+#Var FlagGalopando 0;
+#Play {RL\Monturas\Galope propio detenido.wav};
+#If {@ModoJ >= 1 or @ModoE = 1} {
+ #GagLine voice;
+ #Say {@Salidas} NoDisplay|Incoming
+}
+} {} AnyCase
+
+#GTrigger {Tu * aterriza para que decidas el camino a seguir.} {;
+#Var FlagGalopando 0;
+#Play {RL\Monturas\Galope propio detenido.wav};
+#If {@ModoJ >= 1 or @ModoE = 1} {
+ #GagLine voice;
+ #Say {@Salidas} NoDisplay|Incoming
+}
+} {} AnyCase
+
+#GTrigger {Se ha acabado el camino es imposible seguir adelante.} {;
+#Var FlagGalopando 0;
+#Play {RL\Monturas\Galope propio detenido.wav};
+#If {@ModoJ >= 1 or @ModoE = 1} {
+ #GagLine voice;
+ #Say {@Salidas} NoDisplay|Incoming
+}
+} {} AnyCase
+
+#GTrigger {Tiras de * obligándole a frenar.} {
+#Var FlagGalopando 0;
+#Play {RL\Monturas\Galope propio detenido.wav};
+#If {@ModoJ >= 1 or @ModoE = 1} {
+ #GagLine voice;
+ #Say {@Salidas} NoDisplay|Incoming
+}
+} {} AnyCase
+
+#GTrigger {Tiras de las riendas a la vez que frenas a *.} {
+#Var FlagGalopando 0;
+#Play {RL\Monturas\Galope propio detenido.wav};
+#If {@ModoJ >= 1 or @ModoE = 1} {
+ #GagLine voice;
+ #Say {@Salidas} NoDisplay|Incoming
+}
+} {} AnyCase
+
+
+;Desmontar:
+
+#GTrigger {Empiezas a desmontar tu *.} {
+#Play {RL\Monturas\Desmontar inicio.wav}
+} {} AnyCase
+
+#GTrigger {Desmontas de tu *.} {
+#Var FlagMontado 0;
+#Var FlagGalopando 0;
+#Class Monturas Disable;
+#Play {RL\Monturas\Desmontar terminar.wav}
+} {} AnyCase
+
+
+#Class 0
+#Class Monturas disable
+

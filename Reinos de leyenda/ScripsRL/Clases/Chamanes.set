@@ -1,0 +1,732 @@
+;Módulo: Chamanes.set
+;Versión: 1.1, 09/10/2018
+;Descripción: Soporte para la clase chaman.
+;Autores: eyrhien y Rhomdur.
+
+;Carga de configuraciones añadidas:
+#Load ScripsRL\Clases\Magia_clerical.set
+#Load ScripsRL\Clases\Centrar.set
+
+
+;Declaración de variables:
+#Var Invocacion 0
+#Var Comunion 0
+
+
+;Triggers generales del chaman:
+
+
+#GTrigger {[[]Guardian sagrado]: *} {
+FEventos %1;
+#Play {RL\Hechizos\Guardian sagrado.wav}
+} {} AnyCase
+
+#GTrigger {Una silueta diabólica se esboza entre el brillante haz de luz. Poco a poco, toma consciencia de su nueva condición, y se dispone para servir a su Amo y Señor. ¡*, Ancestro*} {
+#Var Poque %1
+} {} AnyCase
+
+#GTrigger {*[#] No logras tocar a * perdiendo así el hechizo.} {
+#Play {RL\Habilidades\Habilidad esquivada.wav}
+} {} AnyCase
+
+
+#alias sig {decir @Poque, te ordeno que me sigas}
+#Alias pro {decir @Poque, te ordeno que me protejas}
+#Alias per {decir @Poque, te ordeno que pierdas}
+#Alias dp {decir @Poque, te ordeno %0}
+
+#Alias pp {
+peleas parar;
+#If {@Poque <> ""} {
+decir @Poque, te ordeno que pares peleas
+}
+}
+
+#Alias inf {decir @Poque, te ordeno que me informes}
+#Alias mar {decir @Poque, te ordeno que regreses al abismo}
+#Alias abs {decir @Poque, te ordeno que absorbas mi energia}
+
+;Alias de curación:
+
+#Alias º1 {formular curar heridas criticas:l1}
+#alias 11 {formular curar heridas serias:l1}
+#alias 21 {formular curar heridas moderadas:l1}
+#alias 31 {formular curar heridas ligeras:l1}
+#alias 41 {formular cicatrizar:l1}
+#Alias 51 {formular curacion:l1}
+
+
+#Alias º2 {formular curar heridas criticas:l2}
+#alias 12 {formular curar heridas serias:l2}
+#alias 22 {formular curar heridas moderadas:l2}
+#alias 32 {formular curar heridas ligeras:l2}
+#alias 42 {formular cicatrizar:l2}
+#Alias 52 {formular curacion:l2}
+
+#Alias º3 {formular curar heridas criticas:l3}
+#alias 13 {formular curar heridas serias:l3}
+#alias 23 {formular curar heridas moderadas:l3}
+#alias 33 {formular curar heridas ligeras:l3}
+#alias 43 {formular cicatrizar:l3}
+#Alias 53 {formular curacion:l3}
+
+#Alias ºp {formular curar heridas criticas:@Poque}
+#Alias 1p {formular curar heridas serias:@Poque}
+#Alias 2p {formular curar heridas moderadas:@Poque}
+#Alias 3p {formular curar heridas ligeras:@Poque}
+#Alias 4p {formular cicatrizar:@Poque}
+#Alias 5p {formular curacion:@Poque}
+
+#Alias pº {decir sidonu, te ordeno que me formules curar heridas criticas}
+#Alias p1 {decir sidonu, te ordeno que me formules curar heridas serias}
+#Alias p2 {decir sidonu, te ordeno que me formules curar heridas moderadas}
+#Alias p3 {decir sidonu, te ordeno que me formules curar heridas ligeras}
+#Alias p4 {decir sidonu, te ordeno que me formules cicatrizar}
+#Alias p5 {decir sidonu, te ordeno que me formules curacion}
+#Alias p6 {decir sidonu, te ordeno que me formules regeneracion}
+
+#Alias pºp {decir sidonu, te ordeno que te formules curar heridas criticas}
+#Alias p1p {decir sidonu, te ordeno que te formules curar heridas serias}
+#Alias p2p {decir sidonu, te ordeno que te formules curar heridas moderadas}
+#Alias p3p {decir sidonu, te ordeno que te formules curar heridas ligeras}
+#Alias p4p {decir sidonu, te ordeno que te formules cicatrizar}
+#Alias p5p {decir sidonu, te ordeno que te formules curacion}
+#Alias p6p {decir sidonu, te ordeno que te formules regeneracion}
+
+#Alias pº1 {decir sidonu, te ordeno que formules curar heridas criticas sobre l1}
+#Alias p11 {decir sidonu, te ordeno que formules curar heridas serias sobre l1}
+#Alias p21 {decir sidonu, te ordeno que formules curar heridas moderadas sobre l1}
+#Alias p31 {decir sidonu, te ordeno que formules curar heridas ligeras sobre l1}
+#Alias p41 {decir sidonu, te ordeno que formules cicatrizar sobre l1}
+#Alias p51 {decir sidonu, te ordeno que formules curacion sobre l1}
+#Alias p61 {decir sidonu, te ordeno que formules regeneracion sobre l1}
+
+#Alias pº2 {decir sidonu, te ordeno que formules curar heridas criticas sobre l2}
+#Alias p12 {decir sidonu, te ordeno que formules curar heridas serias sobre l2}
+#Alias p22 {decir sidonu, te ordeno que formules curar heridas moderadas sobre l2}
+#Alias p32 {decir sidonu, te ordeno que formules curar heridas ligeras sobre l2}
+#Alias p42 {decir sidonu, te ordeno que formules cicatrizar sobre l2}
+#Alias p52 {decir sidonu, te ordeno que formules curacion sobre l2}
+#Alias p62 {decir sidonu, te ordeno que formules curacion sobre l2}
+
+#Alias pº3 {decir sidonu, te ordeno que formules curar heridas criticas sobre l3}
+#Alias p13 {decir sidonu, te ordeno que formules curar heridas serias sobre l3}
+#Alias p23 {decir sidonu, te ordeno que formules curar heridas moderadas sobre l3}
+#Alias p33 {decir sidonu, te ordeno que formules curar heridas ligeras sobre l3}
+#Alias p43 {decir sidonu, te ordeno que formules cicatrizar sobre l3}
+#Alias p53 {decir sidonu, te ordeno que formules curacion sobre l3}
+#Alias p63 {decir sidonu, te ordeno que formules regeneracion sobre l3}
+
+
+;Comunión:
+
+#GTrigger {*una sonrisa maliciosa. ¡El espíritu de un sádico torturador habita en tí!} {
+#Var Comunion 1;
+#Class Guardabosques disable;
+#Class Sacerdote disable;
+#Class Centrar enable;
+#Class Soldado enable
+} {} AnyCase
+
+#GTrigger {*una sonrisa maliciosa. ¡El espíritu de un vil asesino habita en tí!} {
+#Var Comunion 2;
+#Class Centrar Disable;
+#Class Soldado disable;
+#Class Sacerdote disable;
+#Class Guardabosques enable
+} {} AnyCase
+
+#GTrigger {*una sonrisa maliciosa. ¡El espíritu de un emisario abismal habita en tí!} {
+#Var Comunion 3;
+#Class Centrar disable;
+#Class Soldado disable;
+#Class Guardabosques disable;
+#Class Sacerdote enable
+} {} AnyCase
+
+#GTrigger {*violentamente mientras Espíritu de *, con el que estabas en comunión, abandona bruscamente tu cuerpo.*} {
+#Var Comunion 0;
+#Class Centrar disable;
+#Class Soldado disable;
+#Class Guardabosques disable;
+#Class Sacerdote disable;
+} {} AnyCase
+
+
+;Triggers para la comunión soldado:
+#Class Soldado
+
+
+;Estilo:
+
+#GTrigger {Pasas a luchar de una forma equilibrada.} {
+#Play {RL\Habilidades\Soldado\Estilo.wav}
+} {} AnyCase
+
+#GTrigger {Cambias tu forma de combatir para ser más efectivo contra tus enemigos.} {
+#Play {RL\Habilidades\Soldado\Estilo.wav}
+} {} AnyCase
+
+
+;Ataque doble:
+
+#GTrigger {Tensas tus músculos preparando un nuevo ataque. ¡Golpeas a * y rápidamente, *} {
+#Play {RL\Habilidades\Generales\Impulso1.wav}
+} {} AnyCase
+
+#GTrigger {+ Te preparas para ejecutar doble golpe.} {
+#Play {RL\Habilidades\Generales\Impulso1.wav};
+#GagLine voice
+} {} AnyCase
+
+#GTrigger {[[]El bloqueo 'doble golpe' termina]} {
+#play {RL\Bloqueos\Soldados\Ataquedoble.wav};
+#GagLine Voice
+} {} AnyCase
+
+#GTrigger {?[[]El bloqueo 'doble golpe' termina]} {
+#play {RL\Bloqueos\Soldados\Ataquedoble.wav};
+#GagLine Voice
+} {} AnyCase
+
+
+;Golpe certero:
+
+#GTrigger {*Examinas la defensa de * en busca de un hueco *} {
+#Play {RL\Habilidades\Generales\Impulso1.wav}
+} {} AnyCase
+
+#GTrigger {*+ Te preparas para ejecutar golpecertero.} {
+#Play {RL\Habilidades\Generales\Impulso1.wav};
+#GagLine Voice
+} {} AnyCase
+
+#GTrigger {*[#] ¡Imbuído por el fragor de la batalla, canalizas toda la ira que habita en ti en tu*} {
+#Play {RL\Habilidades\Soldados\Golpecertero.wav}
+} {} AnyCase
+
+#GTrigger {*¡Tus objetivos ya no están al alcance de tu golpecertero!} {
+#Play {RL\Habilidades\Generales\Objetivo perdido.wav};
+#GagLine Voice
+} {} AnyCase
+
+#GTrigger {*[#] ¡Alcanzas*a * con tu maniobra de golpecertero!} {
+#Play {RL\Habilidades\Soldados\Golpecertero.wav};
+#GagLine Voice
+} {} AnyCase
+
+#GTrigger {*[#] [¡]* logra esquivar*tu maniobra de golpecertero!} {
+#Play {RL\Habilidades\Generales\Habilidad esquivada.wav};
+#GagLine Voice
+} {} AnyCase
+
+#GTrigger {*[#] ¡* logra parar*tu maniobra de golpecertero!} {
+#Play {RL\Habilidades\Generales\Habilidad bloqueada.wav};
+#GagLine Voice
+} {} AnyCase
+
+#GTrigger {[[]El bloqueo 'golpecertero' termina]} {
+#play {RL\Bloqueos\Soldados\Golpecertero.wav};
+#GagLine Voice
+} {} AnyCase
+
+#GTrigger {? [[]El bloqueo 'golpecertero' termina]} {
+#play {RL\Bloqueos\Soldados\Golpecertero.wav};
+#GagLine Voice
+} {} AnyCase
+
+#Class 0
+
+
+;Triggers para la comunión guardabosques:
+#Class Guardabosques
+
+;Cazar:
+
+#GTrigger {Observas los movimientos de * para cazar de forma efectiva.} {
+#Play {RL\Habilidades\Generales\Impulso1.wav};
+#GagLine Voice
+} {} AnyCase
+
+#GTrigger {Observas desde tu escondite los movimientos de * para cazar de forma efectiva.} {
+#Play {RL\Habilidades\Generales\Impulso1.wav};
+#GagLine Voice
+} {} AnyCase
+
+
+#GTrigger {*[#] ¡Cazas a * veces de forma salvaje, alcanzándole * veces!} {
+#If {@ModoE = 1} {
+ FEventos %3 impactos;
+ #Say {%3 impactos} NoDisplay|incoming;
+ #GagLine voice
+};
+#Alarm Cazar 7 {
+ #Play {RL\Bloqueos\Bloqueo.wav};
+ #Play {RL\Bloqueos\Guardabosques\Cazar.wav}
+};
+#Play {RL\Habilidades\Guardabosques\Cazar2.wav}
+} {} AnyCase
+
+#GTrigger {*[#] ¡Cazas a * veces de forma salvaje, alcanzándole 1 vez!} {
+#If {@ModoE = 1} {
+ FEventos un impacto;
+ #Say {un impacto} NoDisplay|incoming;
+ #GagLine voice
+};
+#Alarm Cazar 7 {
+ #Play {RL\Bloqueos\Bloqueo.wav};
+ #Play {RL\Bloqueos\Guardabosques\Cazar.wav}
+};
+#Play {RL\Habilidades\Guardabosques\Cazar1.wav}
+} {} AnyCase
+
+#TRIGGER {#* ¡Cazas a * * veces de forma salvaje, alcanzándole * veces con * golpe crítico!!} {#Play {RL\Habilidades\Guardabosques\Cazar critico.wav}} {}
+#TRIGGER {** ¡Cazas a * * veces de forma salvaje, alcanzándole * veces con * golpes críticos!!} {#Play {RL\Habilidades\Guardabosques\Cazar critico.wav}} {}
+
+
+#GTrigger {*[#] ¡Cazas a * veces de forma salvaje, sin conseguir hacerle daño!} {
+#If {@ModoE = 1} {
+ #GagLine voice
+};
+#Alarm Cazar 7 {
+ #Play {RL\Bloqueos\Bloqueo.wav};
+ #Play {RL\Bloqueos\Guardabosques\Cazar.wav}
+};
+#Play {RL\Habilidades\Generales\Habilidad esquivada.wav}
+} {} AnyCase
+
+
+#GTrigger {*[#] ¡* se ha escapado!} {
+#If {@ModoE = 1} {
+ #GagLine voice
+};
+#Alarm Cazar 7 {
+ #Play {RL\Bloqueos\Bloqueo.wav};
+ #Play {RL\Bloqueos\Guardabosques\Cazar.wav}
+};
+#Play {RL\Habilidades\Generales\Objetivo perdido.wav}
+} {} AnyCase
+
+
+;Doblegolpe:
+
+#GTrigger {*+ Te preparas para ejecutar doble golpe.} {
+#Play {RL\Habilidades\Generales\Impulso1.wav};
+#GagLine Voice
+} {} AnyCase
+
+#GTrigger {[[]El bloqueo 'doble golpe' termina]} {
+#play {RL\Bloqueos\Guardabosques\Doblegolpe.wav};
+#GagLine Voice
+} {} AnyCase
+
+#GTrigger {? [[]El bloqueo 'doble golpe' termina]} {
+#play {RL\Bloqueos\Guardabosques\Doblegolpe.wav};
+#GagLine Voice
+} {} AnyCase
+
+
+;Esconderse:
+
+#GTrigger {*Empiezas a buscar un buen escondite por la zona.} {
+#Play {RL\Habilidades\sigiladores\Esconderse inicio.wav}
+} {} AnyCase
+
+#GTrigger {*Encuentras lo que parece un buen sitio y empiezas a buscar una buena posición para quedar oculto.} {
+#Play {RL\Habilidades\sigiladores\Esconderse buscando.wav}
+} {} AnyCase
+
+#GTrigger {*Finalmente logras colocarte y te escondes perfectamente.} {
+#Play {RL\Habilidades\sigiladores\Esconderse ok.wav}
+} {} AnyCase
+
+#GTrigger {*¡Has quedado al descubierto!} {
+#Play {RL\Sucesos\Descubierto.wav}
+} {} AnyCase
+
+;Concentración:
+
+#GTrigger {*Cierras los ojos y dejas reposar tus músculos para concentrarte en la sublimación de tus técnicas de combate*} {
+#Play {RL\Habilidades\sigiladores\Concentracion on.wav}
+} {} AnyCase
+
+#GTrigger {*Abandonas tu estado de concentración bañado en un sudor frío*} {
+#Play {RL\Habilidades\sigiladores\Concentracion off.wav}
+} {} AnyCase
+
+#GTrigger {[[]El bloqueo 'concentracion' termina]} {
+#Play {RL\Locks\Concentracion.mp3};
+#GagLine Voice
+} {} AnyCase
+
+#GTrigger {? [[]El bloqueo 'concentracion' termina]} {
+#Play {RL\Locks\Concentracion.mp3};
+#GagLine Voice
+} {} AnyCase
+
+#Class 0
+
+
+;Combinaciones de teclas.
+
+#GKey alt-a {
+#If {@Comunion = 0 or @Comunion = 3} {
+ #If {@ModoXP = 1} {
+  formular causar heridas mayores:xp
+ } {
+  formular causar heridas mayores:x
+ }
+};
+#If {@Comunion = 1} {
+ #If {@modoXP = 1} {
+  golpecertero poderoso xp
+ } {
+  #If {@AutoCentrar = 1} {
+   centrar x;golpecertero poderoso x
+  } {
+   golpecertero poderoso x
+  }
+ }
+}
+}
+
+#GKey alt-s {
+#If {@Comunion = 0 or @Comunion = 3} {
+ #If {@ModoXP = 1} {
+  formular causar heridas criticas:xp
+ } {
+  formular causar heridas criticas:x
+ }
+};
+#If {@Comunion = 1} {
+ #If {@ModoXP = 1} {
+  golpecertero normal xp
+ } {
+  #If {@AutoCentrar = 1} {
+   centrar x;golpecertero normal x
+  } {
+   golpecertero normal x
+  }
+ }
+};
+#If {@Comunion = 2} {
+ #If {@ModoXP = 1} {
+  doblegolpe xp
+ } {
+  doblegolpe x
+ }
+}
+}
+
+#GKey alt-d {
+#If {@ModoXP = 1} {
+ formular mordisco de la vibora:xp
+} {
+ formular mordisco de la vibora:x
+}
+}
+
+#GKey alt-f {
+#If {@Comunion = 0 or @Comunion = 3} {
+ #If {@ModoXP = 1} {
+  formular retener animal:xp
+ } {
+  formular retener persona:x
+ }
+};
+#If {@Comunion = 1} {
+ #If {@ModoXP = 1} {
+  doblegolpe xp
+ } {
+  #If {@AutoCentrar = 1} {
+   centrar x;doblegolpe x
+  } {
+   doblegolpe x
+  }
+ }
+};
+#If {@Comunion = 2} {
+ #If {@ModoXP = 1} {
+  cazar xp
+ } {
+  cazar x
+ }
+}
+}
+
+#GKey alt-q {
+#If {@ModoXP = 1} {
+ formular causar heridas moderadas:xp
+} {
+ formular causar heridas moderadas:x
+}
+}
+
+#GKey alt-w {
+#If {@ModoXP = 1} {
+ formular herida:xp
+} {
+ formular herida:x
+}
+}
+
+#GKey alt-e {
+#If {@ModoXP = 1} {
+ formular liberacion del espiritu:xp
+} {
+ formular liberacion del espiritu:x
+}
+}
+
+#GKey alt-r {
+#If {@ModoXP = 1} {
+ formular relampago:xp
+} {
+ formular relampago:x
+}
+}
+
+#GKey alt-z {
+#If {@Comunion = 0} {
+ formular carne a piedra:x
+};
+#If {@Comunion = 1} {
+ #If {@ModoXP = 1} {
+  golpecertero rapido xp
+ } {
+  #If {@AutoCentrar = 1} {
+   centrar x;golpecertero rapido x
+  } {
+   golpecertero rapido x
+  }
+ }
+};
+#If {@Comunion = 2} {
+ comunion vinculo merodeador de planos
+};
+#If {@Comunion = 3} {
+ comunion vinculo encarnacion demoniaca
+}
+}
+
+#GKey alt-x {
+#If {@Comunion = 0} {
+ formular tormenta ignea
+};
+#If {@Comunion = 2} {
+ esconderse
+};
+#If {@Comunion = 3} {
+ comunion vinculo canalizacion abismal
+}
+}
+
+#GKey alt-c {
+#If {@Comunion = 0 or @Comunion = 3} {
+ #If {@ModoXP = 1} {
+  formular columna de fuego:xp
+ } {
+  formular columna de fuego:x
+ }
+};
+#If {@Comunion = 2} {
+ concentracion
+}
+}
+
+#GKey alt-v {
+#If {@ModoXP = 1} {
+ formular hervor de la sangre:xp
+} {
+ formular hervor de la sangre:x
+}
+}
+
+#GKey Shift-alt-k {
+#If {@Comunion = 2} {
+ sigilar s
+} {
+ formular terremoto:s
+}
+}
+
+#GKey Shift-alt-l {
+#If {@Comunion = 2} {
+ sigilar se
+} {
+ formular terremoto:se
+}
+}
+
+#GKey Shift-alt-o {
+#If {@Comunion = 2} {
+ sigilar e
+} {
+ formular terremoto:e
+}
+}
+
+#GKey Shift-alt-9 {
+#If {@Comunion = 2} {
+ sigilar ne
+} {
+ formular terremoto:ne
+}
+}
+
+#GKey Shift-alt-8 {
+#If {@Comunion = 2} {
+ sigilar n
+} {
+ formular terremoto:n
+}
+}
+
+#GKey Shift-alt-7 {
+#If {@Comunion = 2} {
+ sigilar no
+} {
+ formular terremoto:no
+}
+}
+
+#GKey Shift-Alt-m {
+#If {@Comunion = 2} {
+ sigilar ab
+} {
+ formular terremoto:ab
+}
+}
+
+#GKey Shift-alt-u {
+#If {@Comunion = 2} {
+ sigilar o
+} {
+ formular terremoto:o
+}
+}
+
+#GKey Shift-Alt-, {
+#If {@Comunion = 2} {
+ sigilar de
+} {
+ formular terremoto:de
+}
+}
+
+#GKey Shift-Alt-. {
+#If {@Comunion = 2} {
+ sigilar fu
+} {
+ formular terremoto:fu
+}
+}
+
+#GKey Shift-alt-j {
+#If {@Comunion = 2} {
+ sigilar so
+} {
+ formular terremoto:so
+}
+}
+
+#GKey Shift-Alt-i {
+#If {@Comunion = 2} {
+ sigilar ar
+} {
+ formular terremoto:ar
+}
+}
+
+
+;Combinaciones de teclas para los poques:
+
+#GKey alt-shift-f {
+#If {@Poque = "Golvag"} {
+ #If {@ModoXP = 1} {
+  decir @Poque, te ordeno que ejecutes jugarreta sobre xp
+ } {
+  decir @Poque, te ordeno que ejecutes jugarreta sobre x
+ }
+};
+#If {@Poque = "Sidonu"} {
+decir @Poque, te ordeno que formules afligir sobre x
+};
+#If {@Poque = "Essegron"} {
+ decir @Poque, te ordeno que ejecutes mordisco sobre x
+};
+
+#If {@Poque = "Toquul"} {
+ decir @Poque, te ordeno que ejecutes aguantar
+};
+#If {@Poque = "Ghazghkull"} {
+ decir @Poque, te ordeno que ejecutes tajar sobre x
+}
+}
+
+#GKey alt-shift-d {
+#If {@Poque = "Golvag"} {
+ #If {@ModoXP = 1} {
+  decir @Poque, te ordeno que ejecutes golpear sobre xp
+ } {
+  decir @Poque, te ordeno que ejecutes golpear sobre x
+ }
+};
+#If {@Poque = "Sidonu"} {
+ decir @Poque, te ordeno que formules rayo de energia negativa sobre x
+};
+#If {@Poque = "Grahs"} {
+ #If {@ModoXP = 1} {
+  decir @Poque, te ordeno que ejecutes cabezazo sobre xp
+ } {
+  decir @Poque, te ordeno que ejecutes cabezazo sobre x
+ }
+};
+#If {@Poque = "Essegron"} {
+ decir @Poque, te ordeno que ejecutes empalar sobre x
+};
+#If {@Poque = "Toquul"} {
+ decir @Poque, te ordeno que ejecutes regenerar
+};
+#If {@Poque = "Ghazghkull"} {
+ decir @Poque, te ordeno que ejecutes barrido sobre x
+}
+}
+
+#GKey alt-shift-s {
+#If {@Poque = "Essegron"} {
+ decir @Poque, te ordeno que ejecutes desgarrar sobre x
+}
+}
+
+
+#Class centrar disable
+#Class Guardabosques disable
+#Class Soldado disable
+#TRIGGER {Con gran dedicación, inicias una solemne salmodía espíritual venerando a las almás del más allá que hará que empatices con su sufrimiento en un grado inusitado.} {#Play {RL\Habilidades\Chamanes\inicias mantra.wav}} {}
+#TRIGGER {Continúas con tu mantra a los espíritus mientras haces tuyo el dolor de éstos.} {#Play {RL\Habilidades\Chamanes\ejecutando mantra.wav}} {}
+#TRIGGER {Detienes tu mantra a los espíritus liberando a tu alma del dolor pero sintiendo como si hubieras perdido parte de tu ser.} {#Play {RL\Habilidades\Chamanes\finalizar mantra.wav}} {}
+#TRIGGER {Te concentras profundamente para despertar a los espíritus del mal que anidan en cuanto te rodea.} {#Play {RL\Habilidades\Chamanes\formulando grito.wav}} {}
+#TRIGGER {El alma de * es desgarrada por una cacofonía de espíritus malvados.} {#Play {RL\Habilidades\Chamanes\desgarra almas.wav}} {}
+#TRIGGER {Nubes negras de tormenta se ciernen sobre el área.} {#Play {RL\Habilidades\Chamanes\llamar rayos inicia.wav}} {}
+#TRIGGER {Un rayo impacta sobre *} {#Play {RL\Habilidades\Chamanes\rayo impacta.wav}} {}
+#TRIGGER {Falla a alguien:} {#Play {RL\Habilidades\Chamanes\rayo falla.wav}} {}
+#TRIGGER {Ningún rayo parece acudir a tu llamada.} {#Play {RL\Habilidades\Chamanes\no acude rayo.wav}} {}
+#TRIGGER {*una sonrisa maliciosa. ¡El espíritu de un emisario abismal habita en tí!} {#Play {RL\Habilidades\Chamanes\comunion1.wav}} {}
+#TRIGGER {Converges toda tu energía en el punto más profundo de los confines del Abismo, en busca de almas que te protejan.} {#Play {RL\Habilidades\Chamanes\almas mayores.wav}} {}
+#TRIGGER {Converges toda tu energía en los planos ulteriores del Abismo, en busca de almas que te protejan.} {#Play {RL\Habilidades\Chamanes\almas menores.wav}} {}
+#TRIGGER {* acuden a tu convocación, y comienzan a girar en torno a ti para defenderte!} {#Play {RL\Habilidades\Chamanes\acuden almas.wav}} {}
+#TRIGGER {*una sonrisa maliciosa. ¡El espíritu de un vil asesino habita en tí!} {#Play {RL\Habilidades\Chamanes\comunion2.wav}} {}
+#TRIGGER {*una sonrisa maliciosa. ¡El espíritu de un sádico torturador habita en tí!} {#Play {RL\Habilidades\Chamanes\comunion3.wav}} {}
+#TRIGGER {*comienza a aumentar hasta hervir!} {#Play {RL\Habilidades\Chamanes\inicia herbor.wav}} {}
+#TRIGGER {¡Sigues cerrando con fuerza tu puño, provocando que el corazón de * bombee sangre hirviendo por todo su cuerpo!} {#Play {RL\Habilidades\Chamanes\herbor sigue.wav}} {}
+#TRIGGER {*Finalizas, exhausto, el hechizo, con una sádica sonrisa en tu cara.} {#Play {RL\Habilidades\Chamanes\finaliza herbor.wav}} {}
+#TRIGGER {Formulas el hechizo 'Mordisco de la Vibora' y tu mano se convierte en una letal víbora que, obedeciendo tus órdenes, muerde a * provocándole un agudo dolor.} {#Play {RL\Habilidades\Chamanes\mordedura acierta.wav}} {}
+#TRIGGER {*Efectúas los complicados pasos del ritual, moviendo tus brazos de forma hipnótica, visualizando el débil cordón de plata que une el cuerpo y el espíritu de *.} {#Play {RL\Habilidades\Chamanes\liverar iniciar.wav}} {}
+#TRIGGER {¡Tiras con fuerza del cordón espiritual de *, provocándole un dolor ultraterrenal!} {#Play {RL\Habilidades\Chamanes\liverar acierta.wav}} {}
+#TRIGGER {Tu escudo de almas gira frenéticamente aumentando su velocidad mientras * parte de la energía del ataque *} {#Play {RL\Habilidades\Chamanes\alma protege.wav}} {}
+#TRIGGER {* Te estremeces cuando uno de los espectros descarga sobre tí una ráfaga de odio y sufrimiento.} {#Play {RL\Habilidades\Chamanes\alma protege.wav}} {}
+#TRIGGER {*El espíritu del ancestro Oso se introduce en tu cuerpo, originando en él una dolorosa transformación.} {#Play {RL\Habilidades\Chamanes\oso on.wav}} {}
+#TRIGGER {Cuando el espíritu del ancestro Oso abandona tu cuerpo, sientes que el mundo resulta mucho más pesado de lo que era, y la debilidad embarga tu cuerpo y tu       mente.} {#Play {RL\Habilidades\Chamanes\oso off.wav}} {}
+#TRIGGER {El espíritu del ancestro Guepardo se introduce en tu cuerpo. ¡Sientes que tu mirada se agudiza y tus reflejos responden a una velocidad sin parangón!} {#Play {RL\Habilidades\Chamanes\guepardo on.wav}} {}
+#TRIGGER {Notas el espíritu del ancestro Guepardo revolviéndose dentro de tu cuerpo. Antes de que te des cuenta, fluye hacia el más allá, y sientes que tus reflejos vuelven a ser igual de lentos que antes.} {#Play {RL\Habilidades\Chamanes\guepardo off.wav}} {}

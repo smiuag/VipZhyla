@@ -1,0 +1,202 @@
+;Módulo: Grupos.set
+;Versión: 1.6, 11/02/2025
+;Descripción: Gestión de grupos de jugadores:
+;Autor: Rhomdur
+
+
+;Declaración de variables
+#Var Grupo ""
+#Var FlagComprobarGrupo 0
+#Var GrupoLider 0
+
+
+;Función para comprobar si el nombre pasado como parámetro está en el grupo:
+;%1, nombre a comprobar.
+#GAlias FuncComprobarGrupo {
+#Var FlagComprobarGrupo 0;
+#For @Grupo {
+ #If {@FlagComprobarGrupo = 0} {
+  #If {%IfWord(%i,%1, )} {
+   #Var FlagComprobarGrupo 1
+  }
+ }
+}
+}
+
+
+;Eventos de gruppo generales:
+
+#GTrigger {*[[]Grupo] Eres invitado al grupo liderado por *} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FEventos %0;
+#Play {RL\Generales\Grupo invitacion.wav}
+} {} AnyCase
+
+#GTrigger {*[[]Grupo] * te reinvita al grupo liderado por *.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FEventos %0;
+#Play {RL\Generales\Grupo invitacion.wav}
+} {} AnyCase
+
+#GTrigger {*[[]Grupo] * invita a * al grupo.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FEventos %0;
+#Play {RL\Generales\Grupo invitacion.wav}
+} {} AnyCase
+
+#GTrigger {*[[]Grupo] Invitas a * a tu grupo.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FEventos %0;
+#Play {RL\Generales\Grupo invitacion.wav}
+} {} AnyCase
+
+#GTrigger {*Has creado tu propio grupo.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FEventos %0;
+#Var Grupo %char;
+#Var GrupoLider %char
+} {} AnyCase
+
+#GTrigger {[[]Grupo] Te unes al grupo liderado por *.} {
+FEventos %0;
+#Var Grupo %1;
+#Var GrupoLider %1;
+#Play {RL\Generales\Grupo evento.wav}
+} {} AnyCase
+
+#GTrigger {? [[]Grupo] Te unes al grupo liderado por *.} {
+FEventos %0;
+#Var Grupo %2;
+#Var GrupoLider %2;
+#Play {RL\Generales\Grupo evento.wav}
+} {} AnyCase
+
+#GTrigger {[[]Grupo] * se une al grupo.} {
+FEventos %0;
+#If {@Grupo = 0} {
+ #Var Grupo %1
+} {
+ #Var Grupo {@Grupo|%1}
+};
+#Play {RL\Generales\Grupo evento.wav}
+} {} AnyCase
+
+#GTrigger {[[]Grupo] Unes al grupo a *.} {
+FEventos %0;
+#If {@Grupo = 0} {
+ #Var Grupo %1
+} {
+ #Var Grupo {@Grupo|%1}
+};
+#Play {RL\Generales\Grupo evento.wav}
+} {} AnyCase
+
+#GTrigger {[[]Grupo] * abandona el grupo.} {
+FEventos %0;
+#Var Grupo {%DelItem(@Grupo,%1)};
+#Play {RL\Generales\Grupo evento.wav}
+} {} AnyCase
+
+#GTrigger {[[]Grupo] Expulsas del grupo a *.} {
+FEventos %0;
+#Var Grupo {%DelItem(@Grupo,%1)};
+#Play {RL\Generales\Grupo evento.wav}
+} {} AnyCase
+
+#GTrigger {? [[]Grupo] Expulsas del grupo a *.} {
+FEventos %0;
+#Var Grupo {%DelItem(@Grupo,%2)};
+#Play {RL\Generales\Grupo evento.wav}
+} {} AnyCase
+
+#GTrigger {[[]Grupo] * es expulsad* del grupo.} {
+FEventos %0;
+#Var Grupo {%DelItem(@Grupo,%1)};
+#Play {RL\Generales\Grupo evento.wav}
+} {} AnyCase
+
+#GTrigger {[[]Grupo] Eres expulsado del grupo liderado por *.} {
+FEventos %0;
+#Var Grupo 0;
+#Var GrupoLider 0;
+#Play {RL\Generales\Grupo disolucion.wav}} {} AnyCase
+
+#GTrigger {[[]Grupo] * disuelve el grupo.} {
+FEventos %0;
+#Var Grupo 0;
+#Var GrupoLider 0;
+#Play {RL\Generales\Grupo disolucion.wav}} {} AnyCase
+
+#GTrigger {*[[]Grupo] Disuelves tu grupo.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FEventos %0;
+#Var Grupo 0;
+#Var GrupoLider 0;
+#Play {RL\Generales\Grupo disolucion.wav}} {} AnyCase
+
+#GTrigger {*[[]Grupo] Abandonas el grupo liderado por *} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FEventos %0;
+#Var Grupo 0;
+#Var GrupoLider 0;
+#Play {RL\Generales\Grupo disolucion.wav}} {} AnyCase
+
+#GTrigger {[[]Grupo] Cedes el liderazgo del grupo a *.} {
+FEventos %0;
+#Var GrupoLider %1;
+#Play {RL\Generales\Grupo evento.wav}} {} AnyCase
+
+#GTrigger {? [[]Grupo] Cedes el liderazgo del grupo a *.} {
+FEventos %0;
+#Var GrupoLider %1;
+#Play {RL\Generales\Grupo evento.wav}} {} AnyCase
+
+#GTrigger {[[]Grupo] * cede el liderazgo del grupo a *.} {
+FEventos %0;
+#Var GrupoLider %2;
+#Play {RL\Generales\Grupo evento.wav}} {}
+
+#GTrigger {[[]Grupo] * te entrega el liderazgo del grupo.} {
+FEventos %0;
+#Var GrupoLider %char;
+#Play {RL\Generales\Grupo evento.wav}} {}
+
+
+;Triggers de actualización del grupo:
+
+#GTrigger {Grupo liderado por: *} {
+#Var GrupoLider %1;
+#Var grupo;
+#Class GestionGrupos enable
+} {} AnyCase
+
+#GTrigger {  - *} {
+#AddItem Grupo %1
+} {GestionGrupos}
+
+#GTrigger {> } {
+#Play {RL\Generales\Grupo actualizado.wav};
+#Class GestionGrupos disable
+} {GestionGrupos}
+
+
+
+;Keys:
+
+;Despliega la lista de miembros de un grupo:
+#GKey ctrl-shift-g {
+#If {@Grupo = ""} {
+ #Say {No perteneces a ningún grupo} NoDisplay|Output
+} {
+ #Pick {@Grupo}
+}
+} {}
+
+#Class 0

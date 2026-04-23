@@ -1,0 +1,39 @@
+;Módulo: cazadores.set
+;Versión: 1.0, 24/11/2022
+;Descripción: Configs generales que deben heredar todas las clases de tipo cazador.
+;Autor: Rhomdur.
+
+;Herencias:
+#Load ScripsRL\Clases\Sigiladores.set
+#Load ScripsRL\Clases\Centrar.set
+
+
+;Triggers de sonido generales.
+
+;Concentración:
+
+#GTrigger {*Cierras los ojos y dejas reposar tus músculos para concentrarte en la sublimación de tus técnicas de combate*} {
+#Play {RL\Habilidades\sigiladores\Concentracion on.wav}
+} {} AnyCase
+
+#GTrigger {*Abandonas tu estado de concentración bañado en un sudor frío*} {
+#Play {RL\Habilidades\sigiladores\Concentracion off.wav}
+} {} AnyCase
+
+
+;Acechar:
+
+#GTrigger {*Comienzas a prestar una mayor atenci?n a los movimientos y a los sonidos de la zona.} {
+#Play {RL\Habilidades\sigiladores\Acechar on.wav}
+} {} AnyCase
+
+#GTrigger {*Terminas tu maniobra de acecho.} {
+#Play {RL\Habilidades\sigiladores\Acechar off.wav}
+} {} AnyCase
+
+
+;Keys:
+
+#GKey Alt-c {concentracion}
+#GKey alt-v {acechar}
+#GKey alt-a {  apuntar x }

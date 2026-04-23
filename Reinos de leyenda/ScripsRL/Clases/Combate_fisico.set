@@ -1,0 +1,85 @@
+;Módulo: Combate_Fisico.set
+;Versión: 1.1, 12/03/2021
+;Descripción: Configs que deben heredar todas las clases basadas en combate físico.
+;Autor: Rhomdur.
+
+
+;Declaración de variables:
+#Var FlagImpactosClase 0
+
+
+#GAlias FImpactoHabilidad {
+#If {@FlagImpactosClase = 1} {
+ FImpactoHabilidadC %1
+} {
+ #Play {RL\Habilidades\Generales\Impacto*4.wav}
+};
+
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+}
+
+
+#GTrigger {[#] [¡]Alcanzas*a * con tu maniobra de *!} {
+#If {%IfWord("críticamente",%0, )} {
+ FPlay {RL\Combate\Kills\Propios\Critico.wav}
+};
+FImpactoHabilidad %4
+} {} AnyCase
+
+#GTrigger {? [#] [¡]Alcanzas*a * con tu maniobra de *!} {
+#If {%IfWord("críticamente",%0, )} {
+ FPlay {RL\Combate\Kills\Propios\Critico.wav}
+};
+FImpactoHabilidad %5
+} {} AnyCase
+
+#GTrigger {*[¡]Tus objetivos ya no est?n al alcance de tu *!} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Habilidades\Generales\Objetivo perdido.wav};
+#If {@ModoE = 1} {#GagLine Voice}
+} {} AnyCase
+
+#GTrigger {*[#] [¡]* logra esquivar*tu maniobra de *!} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#If {%IfWord("críticamente",%0, )} {
+ FPlay {RL\Combate\Kills\Enemigos\Critico.wav}
+};
+#Play {RL\Habilidades\Generales\Habilidad esquivada.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {*[#] [¡]* logra parar*tu maniobra de *!} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#If {%IfWord("críticamente",%0, )} {
+ FPlay {RL\Combate\Kills\Enemigos\Critico.wav}
+};
+#Play {RL\Habilidades\Generales\Habilidad bloqueada.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {*Toda la preparaci?n para tu descomunal golpe se ha echado a perder*} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Combate\Pierdes concentracion.wav}
+} {} AnyCase
+
+#GTrigger {*Tu maniobra de * se ve interrumpida!} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Combate\Pierdes concentracion.wav}
+} {} AnyCase
+
+#GTrigger {*[#] ¡No logras dañar a * con tu maniobra de *!.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Habilidades\Generales\Habilidad no daña.wav}
+} {} AnyCase

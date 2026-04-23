@@ -1,0 +1,11 @@
+;Origen: Cultivos Pantanosos, entrada sur, (CPS):
+
+#GTrigger {Cultivos Pantanosos *[[]no,so,e] } {
+FPathDisponible;
+#Var Mapa {
+Veleiron, plaza:FPath;.CPSVelC
+}
+} {} AnyCase
+
+#GAlias {.CPSVelC} {
+so;o;s;so;s;so;s;se;e;s;se;s;se;so;se;so;so;s;o;no;so;o;no;so;o;o;so;s;so;o;o;no;o;o;so;no;o;o;so;no;o;so;o;no;o;so;o;ar;o;ar;so;ab;o;so;o;ab;no;so;so;no;no;n;no;no;n;n;ne;n;n;n;ne;n;n;n;n;no;no;ne;e;e;ne;e;e;e;ne;e;ne;n;n;n;n;n;n;n}

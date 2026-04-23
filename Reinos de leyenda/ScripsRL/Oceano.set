@@ -1,0 +1,174 @@
+;Módulo: Oceano.set
+;Versión: 1.0, 16/02/2025
+;Descripción: Sucesos en el oceano y puertos cuando no estamos en ninguna embarcación.
+;Autor: Rhomdur.
+
+
+;Movimientos:
+
+#GTrigger {* surca las aguas en direcci?n *.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Var SujetoMovimiento2;
+#Var TipoMovimientoSalida;
+FuncAcortarDirecciones %3;
+FuncReproducirMovimientos 2 %1 %3;
+FuncHistorialMovimientos 1 %0;
+FuncVerbalizarMovimientos;
+FuncPlayPan {RL\Oceano\Embarcacion se va.wav} 0;
+#GagLine Voice
+} {}
+
+#GTrigger {* leva anclas y parte a sucar los mares en direcci?n *.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Var SujetoMovimiento2;
+#Var TipoMovimientoSalida;
+FuncAcortarDirecciones %3;
+FuncReproducirMovimientos 2 %1 %3;
+FuncHistorialMovimientos 1 %0;
+FuncVerbalizarMovimientos;
+FuncPlayPan {RL\Oceano\Embarcacion se va.wav} 0;
+#GagLine Voice
+} {}
+
+#GTrigger {* acaba de atracar en el muelle.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Oceano\Atraca.wav}
+} {}
+
+#GTrigger {* da un salto y se zambulle en el agua.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FuncComprobarSujeto %1 0 0;
+FEventos %0;
+#Play {RL\Movimiento\Se va saltando.wav};
+#Play {RL\Oceano\Zambullirse otro.wav}
+} {}
+
+#GTrigger {[¡]* se zambulle en el agua repentinamente saltando por la borda de *!} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FEventos %0;
+FuncComprobarSujeto %1 0 0;
+#Play {RL\Oceano\Zambullirse otro.wav}
+} {}
+
+#GTrigger {[¡]* aparece repentinamente saltando por la borda *!} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FEventos %0;
+FuncComprobarSujeto %1 0 0;
+#Play {RL\Movimiento\Llega saltando.wav}
+} {}
+
+
+
+
+;Recuperar y atracar:
+
+#GTrigger {Realizas un gesto a uno de los miembros de las Autoridades Portuarias y acto seguido sueltan las amarras de *} {
+#Play {RL\Oceano\Recuperar embarcacion.wav}
+} {} AnyCase
+
+#GTrigger {* realiza un gesto a uno de los miembros de las Autoridades Portuarias y acto seguido sueltan las amarras *} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Oceano\Recuperar embarcacion.wav}
+} {}
+
+#GTrigger {Agarras con fuerza un cabo libre del muelle y amarras *} {
+#Play {RL\Oceano\Amarrar embarcacion.wav}
+} {} AnyCase
+
+#GTrigger {* agarra con fuerza un cabo libre del muelle y amarra *} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Oceano\Amarrar embarcacion.wav}
+} {}
+
+
+;Embarcar y desembarcar:
+
+#GTrigger {* se embarca en *.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FEventos %0;
+FuncComprobarSujeto %1 0 0;
+#Play {RL\Oceano\Embarcar otro.wav};
+#If {%IfWord(%Word(%1, ,1),%2, )} {
+ #Play {RL\Oceano\Bienvenida tripulacion otro.wav}
+}
+} {} 
+
+
+;Escaleras y anclas:
+
+#GTrigger {* desenrolla la Escalera de Embarque de*} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Oceano\Suelta escalera.wav}
+} {}
+
+#GTrigger {* recoge la Escalera de Embarque de*.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Oceano\Recoge escalera.wav}
+} {}
+
+#GTrigger {* suelta el ancla de*} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Oceano\Suelta ancla.wav}
+} {}
+
+#GTrigger {* leva el ancla de*} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Oceano\Recoge ancla.wav}
+} {}
+
+
+;Efectos meteorológicos en el oceano:
+
+#GTrigger {El viento cambia de direcci?n y empieza a soplar del *, * su intensidad.} {
+#If {%3 = "manteniéndo"} {
+ #Play {RL\Oceano\Viento mantiene*2.wav};
+ #Abort
+};
+#If {%3 = "aumentando"} {
+ #Play {RL\Oceano\Viento aumenta*3.wav};
+ #Abort
+};
+#If {%3 = "disminuyendo"} {
+ #Play {RL\Oceano\Viento disminuye.wav}
+}
+} {} AnyCase
+
+#GTrigger {El viento sigue soplando del *, * su intensidad.} {
+#If {%IfWord("manteniendo",%2, )} {
+ #Play {RL\Oceano\Viento mantiene*2.wav};
+ #Abort
+};
+#If {%IfWord("aumentando",%2, )} {
+ #Play {RL\Oceano\Viento aumenta*3.wav};
+ #Abort
+};
+#If {%IfWord("disminuyendo",%2, )} {
+ #Play {RL\Oceano\Viento disminuye.wav}
+}
+} {} AnyCase
+
+#GTrigger {Empieza a soplar viento de direcci?n *.} {
+#Play {RL\Oceano\Viento aumenta*3.wav}
+} {} AnyCase
+
+
+;Restos de naufragios:
+
+#GTrigger {*Resto* de un* naufragio*.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Oceano\Restos.wav}
+} {} AnyCase

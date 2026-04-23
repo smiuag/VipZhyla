@@ -1,0 +1,192 @@
+;Módulo: Crear.set
+;Versión: 1.1, 24/09/2025
+;Descripción: Textos de crear:
+;Autor: Rhomdur
+
+
+;Textos de inicio de la clase:
+
+#GTrigger {*Colocas el mineral en la fragua junto al carbón y le das fuego para que comience a arder y derretirse.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Var ContadorTurnos 0;
+#Var AmbOficio {rl\oficios\herrero\ambiente.wav};
+#Class Crear enable;
+#If {@ModoAmbientacion = 1} {
+ FuncAmbienteOficio
+} {
+ #Play {RL\Oficios\Turno.wav}
+}
+} {} AnyCase
+
+#GTrigger {Te aislas de lo que te rodea, preparándote para concentrarte en tu proceso de creación.} {
+#Var ContadorTurnos 0;
+#Class Crear enable
+} {} AnyCase
+
+
+#Class Crear
+
+
+;Crear lingotes:
+
+#GTrigger {*Sonríes al sentir el ya conocido y tranquilizador calor de la fragua en tu cara y te deleitas viendo*} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Mat ContadorTurnos {@ContadorTurnos+1};
+#If {@ModoAmbientacion = 1} {
+ #Play {RL\Oficios\Herrero\Manipulando*9.wav} @VolAmbOficio
+} {
+ #Play {RL\Oficios\Turno.wav}
+};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {*Agarrando un cubo de hierro con tus tenazas te encargas de coger el mineral puro y separarlo de la fragua.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Mat ContadorTurnos {@ContadorTurnos+1};
+#If {@ModoAmbientacion = 1} {
+ #Play {RL\Oficios\Herrero\Manipulando*9.wav} @VolAmbOficio
+} {
+ #Play {RL\Oficios\Turno.wav}
+};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {*Con sumo cuidado, derramas el metal líquido en un molde frio y ves como este comienza a soltar bocanadas*} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Mat ContadorTurnos {@ContadorTurnos+1};
+#If {@ModoAmbientacion = 1} {
+ #Play {RL\Oficios\Herrero\Enfriar*7.wav} @VolAmbOficio
+} {
+ #Play {RL\Oficios\Turno.wav}
+};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {*Sueltas el cubo con las tenazas y agarras la parte superior del molde para colocarla sobre el lingote.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Mat ContadorTurnos {@ContadorTurnos+1};
+#If {@ModoAmbientacion = 1} {
+ #Play {RL\Oficios\Herrero\Manipulando*9.wav} @VolAmbOficio
+} {
+ #Play {RL\Oficios\Turno.wav}
+};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {*Retiras el molde y contemplas el lingote perfectamente liso y pulido que has creado; casi se te cae*} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Mat ContadorTurnos {@ContadorTurnos+1};
+#If {@ModoAmbientacion = 1} {
+ #Play {RL\Oficios\Herrero\Manipulando*9.wav} @VolAmbOficio
+} {
+ #Play {RL\Oficios\Turno.wav}
+};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+
+;Textos de creaciones de herrero:
+
+#GTrigger {*Colocas tus herramientas y calientas unos cuantos fragmentos de metal*.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Mat ContadorTurnos {@ContadorTurnos+1};
+#If {@ModoAmbientacion = 1} {
+ #Play {RL\Oficios\Herrero\Manipulando*11.wav} @VolAmbOficio
+} {
+ #Play {RL\Oficios\Turno.wav}
+};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {*Observas como el metal se calienta y, con habilidad la ayuda de unas tenazas,*} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Mat ContadorTurnos {@ContadorTurnos+1};
+#If {@ModoAmbientacion = 1} {
+ #Play {RL\Oficios\Herrero\Manipulando*11.wav} @VolAmbOficio
+} {
+ #Play {RL\Oficios\Turno.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+}
+} {} AnyCase
+
+#GTrigger {*Recoges tu creación con las tenazas y lo observas detenidamente: quieres asegurarte de que lo que*.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Mat ContadorTurnos {@ContadorTurnos+1};
+#If {@ModoAmbientacion = 1} {
+ #Play {RL\Oficios\Herrero\Manipulando*11.wav} @VolAmbOficio
+} {
+ #Play {RL\Oficios\Turno.wav}
+};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {*Sumerges tu incandescente obra en agua para que el metal gane consistencia*.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Mat ContadorTurnos {@ContadorTurnos+1};
+#If {@ModoAmbientacion = 1} {
+ #Play {RL\Oficios\Herrero\Enfriar*7.wav} @VolAmbOficio
+} {
+ #Play {RL\Oficios\Turno.wav}
+};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {*Comienzas a golpear los fragmentos de metal dándoles la forma que deseas*.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Mat ContadorTurnos {@ContadorTurnos+1};
+#If {@ModoAmbientacion = 1} {
+ #Var Random {%Random(1,2)};
+ #If {@Random = 1} {
+  #Play {RL\Oficios\Herrero\Golpes fuertes *13.wav} @VolAmbOficio
+ } {
+  #Play {RL\Oficios\Herrero\Golpes suaves *12.wav} @VolAmbOficio
+ }
+} {
+ #Play {RL\Oficios\Turno.wav}
+};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+
+;Texto de final de crear:
+#GTrigger {*Satisfecho finalizas tu obra obteniendo *} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Mat ContadorTurnos {@ContadorTurnos+1};
+#Class Crear disable;
+FuncStopAmbienteOficio
+} {} AnyCase
+
+
+#Class 0

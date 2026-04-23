@@ -1,0 +1,243 @@
+;Módulo: magia_clerical.set
+;Versión: 1.4, 09/11/2021
+;Descripción: Configs que deben heredar todas las clases que utilicen magia clerical.
+;Autor: Rhomdur.
+
+#Var FlagMov2 1
+
+;Función para el formular terremoto como movimiento secundario:
+
+#GAlias FuncMov2Clase {
+#If {@ModoJ <> 2} {
+ formular terremoto %1:x
+} {
+ formular terremoto %1:xp
+}
+}
+
+
+
+
+#GTrigger {*Paralizas a * mediante una fuerza divina que le rodea.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Hechizos\Retener.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice;
+ #Say {%2} NoDisplay|Incoming
+}
+} {} AnyCase
+
+#GTrigger {Curas algunas de tus heridas m?s *.} {
+#Play {RL\Sucesos\Cura recibida.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {Curas algunas de las heridas m?s * de *.} {
+FuncComprobarSujeto %3 0 0;
+#Play {RL\Hechizos\Cura otro.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice;
+ #Say {%2 %3} NoDisplay|Incoming
+}
+} {} AnyCase
+
+#GTrigger {[¡]* resiste los efectos de tu hechizo!} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Hechizos\Resiste hechizo.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice;
+ #Say {%1} NoDisplay|Incoming
+}
+} {}
+
+#GTrigger {*Te estremeces y pierdes la concentraci?n!} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Combate\Pierdes concentracion.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {Comienzas a formular el hechizo *} {
+#Play {RL\Hechizos\Hechizo propio.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {Pronuncias el c?ntico: *} {
+#Play {RL\Hechizos\Pronuncias.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {[[]Guardian sagrado]: *} {
+FEventos %1;
+#Play {RL\Hechizos\Guardian sagrado.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice;
+ #Say {%1} NoDisplay|Incoming
+}
+} {} AnyCase
+
+#GTrigger {[¡]El objetivo de tu hechizo cambia a *!} {
+#Play {RL\Hechizos\Objetivo cambiado.wav}
+} {}
+
+#GTrigger {Tu hechizo cubre a * con un aura * brillante.} {
+#Play {RL\Hechizos\Proteas.wav}
+} {} AnyCase
+
+#GTrigger {* grita cuando su sangre empieza a transformarse en un ácido que le acabará devorando el cuerpo por dentro.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Hechizos\sangre a acido.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {}
+
+#GTrigger {*[¡]Invocas una columna de fuego sobre * que le alcanza parcialmente!} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Hechizos\columna parcial.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {*[¡]Invocas una columna de fuego sobre *!} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Hechizos\columna de fuego.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {*Un rayo surge de tus manos impactando sobre * electrocut?ndol?.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Hechizos\golpe de rayo.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {Nubes negras de tormenta se ciernen sobre el área.} {
+#Play {RL\Hechizos\llamar rayos 1.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {Alzas el puño hacia el cielo, y este retumba y relampaguea como respuesta.} {
+#Play {RL\Hechizos\llamar rayos 2.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+
+#GKey alt-a {
+#If {@ModoJ = 2} {
+ f4 xp
+} {
+ f4 x
+}
+}
+
+#GKey alt-s {
+#If {@ModoJ = 2} {
+ f3 xp
+} {
+ f3 x
+}
+}
+
+#GKey alt-d {
+#If {@ModoJ = 2} {
+ f2 xp
+} {
+ f2 x
+}
+}
+
+#GKey alt-f {
+#If {@ModoJ = 2} {
+ f1 xp
+} {
+ f1 x
+}
+}
+
+#GKey alt-q {
+#If {@ModoJ = 2} {
+ f12 xp
+} {
+ f12 x
+}
+}
+
+#GKey alt-w {
+#If {@ModoJ = 2} {
+ f11 xp
+} {
+ f11 x
+}
+}
+
+#GKey alt-e {
+#If {@ModoJ = 2} {
+ f10 xp
+} {
+ f10 x
+}
+}
+
+#GKey alt-r {
+#If {@ModoJ = 2} {
+ f9 xp
+} {
+ f9 x
+}
+}
+
+#GKey alt-z {
+#If {@ModoJ = 2} {
+ f8 xp
+} {
+ f8 x
+}
+}
+
+#GKey alt-x {
+#If {@ModoJ = 2} {
+ f7 xp
+} {
+ f7 x
+ }
+}
+
+#GKey alt-c {
+#If {@ModoJ = 2} {
+ f6 xp
+} {
+ f6 x
+}
+}
+
+#GKey alt-v {
+#If {@ModoJ = 2} {
+ f5 xp
+} {
+ f5 x
+}
+}
+

@@ -1,0 +1,18 @@
+#Load ScripsRL\Clases\Centrar.set
+#Load ScripsRL\Clases\Magia_arcana.set
+#Key alt-f {   centrar x;giro x }
+#Key alt-d {   ;giro medio x }
+#Key alt-s {   centrar x;doblegolpe x }
+
+#TRIGGER {Comienzas a realizar una lenta danza en una perfecta coordinación de movimientos.} {#Play {RL\Habilidades\danzantes\danza inicia.wav}} {}
+#TRIGGER {Estás malgastando tus energías danzando al aire.} {#Play {RL\Habilidades\danzantes\danza al aire.wav}} {}
+#TRIGGER {Detienes tu danza ante el cansancio.} {#Play {RL\Habilidades\danzantes\danza termina.wav}} {}
+#TRIGGER {Detienes tu danza al guardar tu arma.} {#Play {RL\Habilidades\danzantes\termina danza al desempuñar.wav}} {}
+#TRIGGER {Dejas a tus instintos tomar el control mientras tu cuerpo danza con la viveza de una llama.} {#Play {RL\Habilidades\danzantes\danza fuego.wav}} {}
+#TRIGGER {Comienzas a danzar a ras del suelo intentando obtener todo el poder de la naturaleza que te rodea.} {#Play {RL\Habilidades\danzantes\danza gaia.wav}} {}
+#TRIGGER {Aceleras tus movimientos haciendo silbar tu espada como un feroz huracán, al tiempo que lanzas estocadas velocísimas como el relámpago.} {#Play {RL\Habilidades\danzantes\danza tormenta.wav}} {}
+#TRIGGER {Comienzas una vertiginosa danza mientras tu espada comienza a emitir cegadores destellos de luz.} {#Play {RL\Habilidades\danzantes\danza luz.wav}} {}
+#TRIGGER {* Con un rápido y magnífico giro cortas a * con tu *.} {#Play {RL\Habilidades\danzantes\acierta giro.wav}} {}
+#TRIGGER {Al compás de tus movimientos tu espada comienza a engullir la luz de la zona, sumiéndolo todo en una tenebrosa oscuridad.} {#Play {RL\Habilidades\danzantes\danza oscuridad.wav}} {}
+#TRIGGER {* No logras alcanzar a * con tu *.} {#Play {RL\Habilidades\danzantes\giro falla.wav}} {}
+#TRIGGER {Con una espectacular sincronización y belleza de movimientos comienzas a trazar los símbolos de los astros imbuyéndote de su poder.} {#Play {RL\Habilidades\danzantes\danza estrellas.wav}} {}

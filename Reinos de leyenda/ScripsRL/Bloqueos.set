@@ -1,0 +1,43 @@
+;Módulo: Bloqueos.set
+;Versión: 1.1, 29/04/2020
+;Descripción: Triggers y funciones de aviso de bloqueos.
+;Autor: Rhomdur
+
+;Declaración de variables:
+#Var FlagBloqueosClase 0
+#Var FlagBloqueoV 0
+
+
+;Función para bloqueos:
+#GAlias FBloqueos {
+
+#Var FlagBloqueoV 0;
+#Play {RL\Bloqueos\Bloqueo.wav};
+
+;Comprobaciones para bloqueos hablados:
+#If {%1 = "concentracion"} {
+ #Play {RL\Bloqueos\Concentracion.wav};
+ #Var FlagBloqueoV 1
+};
+#If {@FlagBloqueosClase = 1 and @FlagBloqueoV = 0} {
+ FBloqueosClase %1
+};
+
+#If {@FlagBloqueoV = 0} {
+ FEventos Bloqueo %1;
+ #If {@ModoE = 1} {
+  #Say {%1} NoDisplay|Incoming;
+  #GagLine Voice
+ }
+} {
+ #GagLine Voice
+}
+}
+
+#GTrigger {[[]El bloqueo '*' termina]} {
+FBloqueos %1
+}
+
+#GTrigger {? [[]El bloqueo '*' termina]} {
+FBloqueos %2
+}

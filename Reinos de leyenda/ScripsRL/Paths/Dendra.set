@@ -1,0 +1,250 @@
+;Módulo: Dendra.set
+;Versión: 1.9, 07/07/2024
+;Descripción: Paths que se originan en las ciudades del reino de Dendra.
+;Autor: Rhomdur y Enorthus.
+
+
+;Origen:  Ryniver, (Ryn):
+
+#GTrigger {Ryniver: puesto fronterizo destruido *[[]o,e] } {
+FPathDisponible;
+#Var Mapa {
+Eloras, Plaza:FPath;.RynEloC
+|
+Mor Groddur, puertas:FPath;.RynMGP
+|
+Anduar, Plaza:FPath;.RynAndC
+|
+Galador, Puerta sur:FPath;.RynGalPs
+|
+Ancarak, centro (Por puerta sur):FPath;.RynAncC
+|
+Golthur, puerta oeste:FPath;.RynGolPo
+}
+} {} AnyCase
+
+#GAlias {.RynGolPo} {
+o;o;o;o;so;o;o;o;o;no;o;o;o;o;so;no;o;o;o;so;o;o;so;o;o;o;o;so;o;o;no;o;so;no;so;so;o;n;no;n;n;ne;n;n;ne;ne;no;no;n;ne;ne;no;n;n;ne;n;ne;n;n;n;n;n;n;n;no;no;n;n;n;e;se;se;ne;ne;e;e;e;se;se;ne;ne;e;e;e;se;e;se;e;n;no;n;no;n;n;n;ne;ne;no;no;n;n;n;ne;n;n;no;n;n;n;ne;ne;no;no;n;n;n;ne;n;ne;n;o;so;o;so;o;o;o;no;no;so;so;o;o;o;no;no;so;so;o;n;n;ne;n;n;n;n;n;ne;n;n;ne;n;n;ne;n;n;ne;n;ne;ne;e;ne;ne;n;ne;ne;no;ne;n;e;n;ne;n;ne;n;e;se;e;e;n;e;ne;e;se;e;ar;ne;ne;no;no;n;no;o;o;no;no;n;no;n;ne;n;ne;n;ne;ne;ne;n;e;ne;ne;e;e;se;e;ne;ne;n;no;n;n;ne;ne;e;se;s;s;se;se;e;ne;n;n;no;n;ne;ne;n;no;n;ne;ne;ne;e;e;e;ne;ne;ne;n;n;ne;n;n;no;n;ne;n;n;no;no;n;no;no;o;no;n;ne;n;no;no;o;no;n;n;ne;n;ne;n;no;o;so;o;o;so;o;no;no;n;n;ne;no;n;ne;n;no;n;n;ne;ne;e;se;ne;e;e;e}
+
+#GAlias {.RynAndC} {
+e;e;se;e;se;se;e;e;ne;e;e;ne;e;ar;e;se;e;se;se;e;ne;e;e;se;e;e;ar;ne;e;e;se;e;se;e;se;e;ar;s;se;s;e;se;se;ne;ar;s;se;so;se;e;s;se;so;se;s;se;s;ab;s;so;s;so;s;o;s;so;o;se;se;ne;se;e;se;ab;so;o;so;se;ab;se;e;ab;se;s;se;e;se;o;so;s;se;e;se;se;s;s;s;se;e;e;se;s;so;so;s;se;s;so;se;e;se;se;so;so;s;e;se;s;s;s;so;s;so;s;se;e;se;s;s;so;s;so;s;se;se;s;s;se;s;s;s;s;s;s;s;s;s;s;s;s;s}
+
+#GAlias {.RynGalPs} {
+o;o;o;o;so;o;o;o;o;no;o;o;o;o;so;no;o;o;o;so;o;o;so;o;o;o;o;so;o;o;no;o;so;no;so;so;o;n;no;n;n;ne;n;n;ne;ne;no;no;n;ne;ne;no;n;n;ne;n;ne;n;n;n;n;n;n;n;no;no;n;n;n;e;se;se;ne;ne;e;e;e;se;se;ne;ne;e;e;e;se;e;se;e;n;no;n;no;n;n;n;ne;ne;no;no;n;n;n;ne;n;e;e;e;se;se;e;e;e;e;e;e;e;ne;n;ne;s;s;ne;s;so;s;s;ne;n;ne;e;se;e;e;se;se;se;se;se;e;ne;n;ne;e;se;so;s;se;ne;se;ne;ne;no;ne;n;ne;se;s;se;so;se;e;ne;e;ne;ne;e;ne;se;e;se;e;ne;ne;se;e;ne;e;e;se;e;e;ne;e;ne;n;n;n;ne;n;no;n;n;no;n;no;n}
+
+#GAlias {.RynEloC} {
+e;e;se;e;se;se;e;e;ne;e;e;ne;e;ar;e;se;e;se;se;e;ne;e;e;se;e;e;ar;ne;e;e;se;e;se;e;se;e;ar;s;se;s;e;se;se;ne;ar;s;se;so;se;e;s;se;so;se;s;se;s;ab;s;so;s;so;s;o;s;so;o;no;ab;so;s;se;s;so;s;o;so;ab;o;n;no;ne;no;n;no;no;no;ne;n;n;n}
+
+#GAlias {.RynMGP} {
+e;e;se;e;se;se;e;e;ne;e;e;ne;e;ar;e;se;e;se;se;e;ne;e;e;se;e;e;ar;ne;e;e;se;e;se;e;se;e;ar;s;se;s;e;se;se;ne;ar;s;se;so;se;e;s;se;so;se;s;se;s;ab;s;so;s;so;s;o;s;so;o;no;ab;so;s;se;s;so;s;o;so;ab;o;o;no;o;n;no;o;ar;no;o;no;o;o;o;ab;o;o;so;so;o;o;no;o;so;o;ar;ar;ar;ar;o;o;so;so;o;no;o;so;so;o;no;no;o;no;ar;ar;e;n;no;ab;ab;ab}
+
+#GAlias {.RynAncC} {
+o;o;o;o;so;o;o;o;o;no;o;o;o;o;so;no;o;o;o;so;o;o;so;o;o;o;o;so;o;o;no;o;so;no;so;so;o;n;no;n;n;ne;n;n;ne;ne;no;no;n;ne;ne;no;n;n;ne;n;ne;n;n;n;n;n;n;n;no;no;n;n;n;e;se;se;ne;ne;e;e;e;se;se;ne;ne;e;e;e;se;e;se;e;n;no;n;no;n;n;n;ne;ne;no;no;n;n;n;ne;n;n;no;n;n;n;ne;ne;no;no;n;n;n;ne;n;ne;n;o;so;o;so;o;o;o;no;no;so;so;o;o;o;no;no;so;so;o;n;n;ne;n;n;n;n;n;ne;n;n;ne;n;n;ne;n;n;ne;n;ne;ne;e;ne;ne;n;ne;ne;no;ne;n;e;n;ne;n;ne;n;e;se;e;e;n;e;ne;e;se;e;ar;ne;ne;no;no;n;no;o;o;no;no;n;no;n;ne;n;ne;n;ne;ne;ne;n;e;ne;ne;e;e;se;e;ne;ne;n;no;n;n;ne;ne;e;se;s;s;se;se;e;ne;n;n;no;n;ne;ne;n;no;n;ne;ne;ne;e;e;e;ne;ne;ne;n;n;ne;n;n;no;n;ne;n;e;ab;se;e;ne;e;ne;ne;e;ab;se;ne;e;ne;e;ne;e;ab;e;se;s;so;so;ab;so;s;se;e;ne;e;se;s;e;ab;n;no;no;o;o;no;o;no;no;n;ne}
+
+
+;Origen: Cruce Ysalonna, (CFY):
+
+#GTrigger {Feudo de Ysalonna: Cerca del camino a Dendra *[[]s,n,o,e] } {
+FPathDisponible;
+#Var Mapa {
+Galador, Puerta oeste:FPath;.CFYGalPo
+|
+Ancarak, centro (por puerta sur):FPath;.CFYAncC
+|
+Golthur, puerta oeste:FPath;.CFYGolPo
+|
+Eloras, plaza (Por Dendra):FPath;.CFYEloC
+|
+Mor Groddur, puertas (Por Dendra):FPath;.CFYMGP
+|
+Anduar, Plaza (Por Dendra):FPath;.CFYAndC
+}
+} {} AnyCase
+
+#GAlias {.CFYGolPo} {
+e;n;ne;n;ne;n;e;se;e;e;n;e;ne;e;se;e;ar;ne;ne;no;no;n;no;o;o;no;no;n;no;n;ne;n;ne;n;ne;ne;ne;n;e;ne;ne;e;e;se;e;ne;ne;n;no;n;n;ne;ne;e;se;s;s;se;se;e;ne;n;n;no;n;ne;ne;n;no;n;ne;ne;ne;e;e;e;ne;ne;ne;n;n;ne;n;n;no;n;ne;n;n;no;no;n;no;no;o;no;n;ne;n;no;no;o;no;n;n;ne;n;ne;n;no;o;so;o;o;so;o;no;no;n;n;ne;no;n;ne;n;no;n;n;ne;ne;e;se;ne;e;e;e}
+
+#GAlias {.CFYAndC} {
+s;so;se;so;so;s;so;so;o;so;so;s;so;s;s;so;s;s;so;s;s;so;s;s;s;s;s;so;s;s;e;ne;ne;se;se;e;e;e;ne;ne;se;se;e;e;e;ne;e;ne;e;s;so;s;so;s;s;s;se;se;so;so;s;s;s;se;s;s;so;s;s;s;se;se;so;so;s;s;s;se;s;se;s;o;no;o;no;o;o;o;so;so;no;no;o;o;o;so;so;no;no;o;s;s;s;se;se;s;s;s;s;s;s;s;so;s;so;s;s;se;so;so;s;se;se;so;so;s;s;so;s;s;se;s;e;ne;ne;se;ne;e;se;e;e;ne;e;e;e;e;ne;e;e;ne;e;e;e;se;ne;e;e;e;e;se;e;e;e;e;ne;e;e;e;e;e;e;se;e;se;se;e;e;ne;e;e;ne;e;ar;e;se;e;se;se;e;ne;e;e;se;e;e;ar;ne;e;e;se;e;se;e;se;e;ar;s;se;s;e;se;se;ne;ar;s;se;so;se;e;s;se;so;se;s;se;s;ab;s;so;s;so;s;o;s;so;o;se;se;ne;se;e;se;ab;so;o;so;se;ab;se;e;ab;se;s;se;e;se;o;so;s;se;e;se;se;s;s;s;se;e;e;se;s;so;so;s;se;s;so;se;e;se;se;so;so;s;e;se;s;s;s;so;s;so;s;se;e;se;s;s;so;s;so;s;se;se;s;s;se;s;s;s;s;s;s;s;s;s;s;s;s;s}
+
+#GAlias {.CFYGalPo} {
+e;n;ne;n;ne;n;e;se;e;e;n;e;ne;e;se;e;ar;ne;ne;ne;e;ab;se;e;e;ne;se;se;se;e;e;e;ne;e;e;se;se;e;e;e;se;e;se;s;se;se;s;s;e;se;se;se;se;so;s;s;s;so;s;s;s;e;se;se;e;se;se;e;se;se;e;e}
+
+#GAlias {.CFYEloC} {
+s;so;se;so;so;s;so;so;o;so;so;s;so;s;s;so;s;s;so;s;s;so;s;s;s;s;s;so;s;s;e;ne;ne;se;se;e;e;e;ne;ne;se;se;e;e;e;ne;e;ne;e;s;so;s;so;s;s;s;se;se;so;so;s;s;s;se;s;s;so;s;s;s;se;se;so;so;s;s;s;se;s;se;s;o;no;o;no;o;o;o;so;so;no;no;o;o;o;so;so;no;no;o;s;s;s;se;se;s;s;s;s;s;s;s;so;s;so;s;s;se;so;so;s;se;se;so;so;s;s;so;s;s;se;s;e;ne;ne;se;ne;e;se;e;e;ne;e;e;e;e;ne;e;e;ne;e;e;e;se;ne;e;e;e;e;se;e;e;e;e;ne;e;e;e;e;e;e;se;e;se;se;e;e;ne;e;e;ne;e;ar;e;se;e;se;se;e;ne;e;e;se;e;e;ar;ne;e;e;se;e;se;e;se;e;ar;s;se;s;e;se;se;ne;ar;s;se;so;se;e;s;se;so;se;s;se;s;ab;s;so;s;so;s;o;s;so;o;no;ab;so;s;se;s;so;s;o;so;ab;o;n;no;ne;no;n;no;no;no;ne;n;n;n}
+
+#GAlias {.CFYMGP} {
+s;so;se;so;so;s;so;so;o;so;so;s;so;s;s;so;s;s;so;s;s;so;s;s;s;s;s;so;s;s;e;ne;ne;se;se;e;e;e;ne;ne;se;se;e;e;e;ne;e;ne;e;s;so;s;so;s;s;s;se;se;so;so;s;s;s;se;s;s;so;s;s;s;se;se;so;so;s;s;s;se;s;se;s;o;no;o;no;o;o;o;so;so;no;no;o;o;o;so;so;no;no;o;s;s;s;se;se;s;s;s;s;s;s;s;so;s;so;s;s;se;so;so;s;se;se;so;so;s;s;so;s;s;se;s;e;ne;ne;se;ne;e;se;e;e;ne;e;e;e;e;ne;e;e;ne;e;e;e;se;ne;e;e;e;e;se;e;e;e;e;ne;e;e;e;e;e;e;se;e;se;se;e;e;ne;e;e;ne;e;ar;e;se;e;se;se;e;ne;e;e;se;e;e;ar;ne;e;e;se;e;se;e;se;e;ar;s;se;s;e;se;se;ne;ar;s;se;so;se;e;s;se;so;se;s;se;s;ab;s;so;s;so;s;o;s;so;o;no;ab;so;s;se;s;so;s;o;so;ab;o;o;no;o;n;no;o;ar;no;o;no;o;o;o;ab;o;o;so;so;o;o;no;o;so;o;ar;ar;ar;ar;o;o;so;so;o;no;o;so;so;o;no;no;o;no;ar;ar;e;n;no;ab;ab;ab}
+
+#GAlias {.CFYAncC} {
+e;n;ne;n;ne;n;e;se;e;e;n;e;ne;e;se;e;ar;ne;ne;no;no;n;no;o;o;no;no;n;no;n;ne;n;ne;n;ne;ne;ne;n;e;ne;ne;e;e;se;e;ne;ne;n;no;n;n;ne;ne;e;se;s;s;se;se;e;ne;n;n;no;n;ne;ne;n;no;n;ne;ne;ne;e;e;e;ne;ne;ne;n;n;ne;n;n;no;n;ne;n;e;ab;se;e;ne;e;ne;ne;e;ab;se;ne;e;ne;e;ne;e;ab;e;se;s;so;so;ab;so;s;se;e;ne;e;se;s;e;ab;n;no;no;o;o;no;o;no;no;n;ne}
+
+
+;Origen: feudo de brenoik Plaza, (FBP):
+
+#GTrigger {Feudo de Brenoic: Plaza *[[]?empleo?,?casa?,?de?,e,n,so] } {
+FPathDisponible;
+#Var Mapa {
+Galador, puerta este:FPath;.FBPGalPo
+|
+Ancarak, centro (Por puerta sur):FPath;.FBPAncC
+|
+Golthur, puerta oeste:FPath;.FBPGolPo
+|
+Mor Groddur, puertas (Por Dendra):FPath;.FBPMGP
+|
+Anduar, plaza (Por Dendra):FPath;.FBPAndC
+}
+} {} AnyCase
+
+#GAlias {.FBPAndC} {
+n;no;no;o;no;so;o;o;o;no;no;o;o;so;o;o;o;no;no;no;so;o;o;no;ar;o;so;so;so;ab;o;no;o;so;o;s;o;o;no;o;s;so;s;so;s;o;s;so;se;so;so;s;so;so;o;so;so;s;so;s;s;so;s;s;so;s;s;so;s;s;s;s;s;so;s;s;e;ne;ne;se;se;e;e;e;ne;ne;se;se;e;e;e;ne;e;ne;e;s;so;s;so;s;s;s;se;se;so;so;s;s;s;se;s;s;so;s;s;s;se;se;so;so;s;s;s;se;s;se;s;o;no;o;no;o;o;o;so;so;no;no;o;o;o;so;so;no;no;o;s;s;s;se;se;s;s;s;s;s;s;s;so;s;so;s;s;se;so;so;s;se;se;so;so;s;s;so;s;s;se;s;e;ne;ne;se;ne;e;se;e;e;ne;e;e;e;e;ne;e;e;ne;e;e;e;se;ne;e;e;e;e;se;e;e;e;e;ne;e;e;e;e;e;e;se;e;se;se;e;e;ne;e;e;ne;e;ar;e;se;e;se;se;e;ne;e;e;se;e;e;ar;ne;e;e;se;e;se;e;se;e;ar;s;se;s;e;se;se;ne;ar;s;se;so;se;e;s;se;so;se;s;se;s;ab;s;so;s;so;s;o;s;so;o;se;se;ne;se;e;se;ab;so;o;so;se;ab;se;e;ab;se;s;se;e;se;o;so;s;se;e;se;se;s;s;s;se;e;e;se;s;so;so;s;se;s;so;se;e;se;se;so;so;s;e;se;s;s;s;so;s;so;s;se;e;se;s;s;so;s;so;s;se;se;s;s;se;s;s;s;s;s;s;s;s;s;s;s;s;s}
+
+#GAlias {.FBPGalPo} {
+so;se;s;s;e;se;se;se;se;so;s;s;s;so;s;s;s;e;se;se;e;se;se;e;se;se;e;e}
+
+#GAlias {.FBPMGP} {
+n;no;no;o;no;so;o;o;o;no;no;o;o;so;o;o;o;no;no;no;so;o;o;no;ar;o;so;so;so;ab;o;no;o;so;o;s;o;o;no;o;s;so;s;so;s;o;s;so;se;so;so;s;so;so;o;so;so;s;so;s;s;so;s;s;so;s;s;so;s;s;s;s;s;so;s;s;e;ne;ne;se;se;e;e;e;ne;ne;se;se;e;e;e;ne;e;ne;e;s;so;s;so;s;s;s;se;se;so;so;s;s;s;se;s;s;so;s;s;s;se;se;so;so;s;s;s;se;s;se;s;o;no;o;no;o;o;o;so;so;no;no;o;o;o;so;so;no;no;o;s;s;s;se;se;s;s;s;s;s;s;s;so;s;so;s;s;se;so;so;s;se;se;so;so;s;s;so;s;s;se;s;e;ne;ne;se;ne;e;se;e;e;ne;e;e;e;e;ne;e;e;ne;e;e;e;se;ne;e;e;e;e;se;e;e;e;e;ne;e;e;e;e;e;e;se;e;se;se;e;e;ne;e;e;ne;e;ar;e;se;e;se;se;e;ne;e;e;se;e;e;ar;ne;e;e;se;e;se;e;se;e;ar;s;se;s;e;se;se;ne;ar;s;se;so;se;e;s;se;so;se;s;se;s;ab;s;so;s;so;s;o;s;so;o;no;ab;so;s;se;s;so;s;o;so;ab;o;o;no;o;n;no;o;ar;no;o;no;o;o;o;ab;o;o;so;so;o;o;no;o;so;o;ar;ar;ar;ar;o;o;so;so;o;no;o;so;so;o;no;no;o;no;ar;ar;e;n;no;ab;ab;ab}
+
+#GAlias {.FBPGolPo} {
+n;no;no;o;no;so;o;o;o;no;no;o;o;so;o;o;o;no;no;no;so;o;o;no;ar;o;so;no;no;n;no;o;o;no;no;n;no;n;ne;n;ne;n;ne;ne;ne;n;e;ne;ne;e;e;se;e;ne;ne;n;no;n;n;ne;ne;e;se;s;s;se;se;e;ne;n;n;no;n;ne;ne;n;no;n;ne;ne;ne;e;e;e;ne;ne;ne;n;n;ne;n;n;no;n;ne;n;n;no;no;n;no;no;o;no;n;ne;n;no;no;o;no;n;n;ne;n;ne;n;no;o;so;o;o;so;o;no;no;n;n;ne;no;n;ne;n;no;n;n;ne;ne;e;se;ne;e;e;e}
+
+#GAlias {.FBPAncC} {
+n;no;no;o;no;so;o;o;o;no;no;o;o;so;o;o;o;no;no;no;so;o;o;no;ar;o;so;ne;n;ne;n;ne;ne;ne;n;e;ne;ne;e;e;se;e;ne;ne;n;no;n;n;ne;ne;e;se;s;s;se;se;e;ne;n;n;no;n;ne;ne;n;no;n;ne;ne;ne;e;e;e;ne;ne;ne;n;n;ne;n;n;no;n;ne;n;e;ab;se;e;ne;e;ne;ne;e;ab;se;ne;e;ne;e;ne;e;ab;e;se;s;so;so;ab;so;s;se;e;ne;e;se;s;e;ab;n;no;no;o;o;no;o;no;no;n;ne}
+
+
+;Origen:  Galador puerta sur, (GalPs):
+
+#GTrigger {Galador: Exterior de la Puerta sur *[[]de,o,s,e] } {
+FPathDisponible;
+#Var Mapa {
+Fortaleza de Dara, puertas:FPath;.GalPsDarP
+|
+Ancarak, centro (Por puerta sur):FPath;.GalPsAncC
+|
+Golthur, puerta oeste:FPath;.GalPsGolPo
+|
+Mor Groddur, puertas:FPath;.GalPsMGP
+|
+Anduar, plaza:FPath;.GalPsAndC
+}
+} {} AnyCase
+
+#GAlias {.GalPsAndC} {
+s;se;s;se;s;s;se;s;so;s;s;s;so;o;so;o;o;no;o;o;so;o;no;so;so;o;no;o;no;so;o;so;so;o;so;o;no;ne;no;n;no;so;s;so;se;so;so;no;so;no;n;ne;no;o;so;s;so;o;no;no;no;no;no;o;o;no;o;so;s;so;n;n;ne;n;so;n;n;so;s;so;o;o;o;o;o;o;o;no;no;o;o;o;s;so;s;s;s;se;se;so;so;s;s;s;se;s;se;s;o;no;o;no;o;o;o;so;so;no;no;o;o;o;so;so;no;no;o;s;s;s;se;se;s;s;s;s;s;s;s;so;s;so;s;s;se;so;so;s;se;se;so;so;s;s;so;s;s;se;s;e;ne;ne;se;ne;e;se;e;e;ne;e;e;e;e;ne;e;e;ne;e;e;e;se;ne;e;e;e;e;se;e;e;e;e;ne;e;e;e;e;e;e;se;e;se;se;e;e;ne;e;e;ne;e;ar;e;se;e;se;se;e;ne;e;e;se;e;e;ar;ne;e;e;se;e;se;e;se;e;ar;s;se;s;e;se;se;ne;ar;s;se;so;se;e;s;se;so;se;s;se;s;ab;s;so;s;so;s;o;s;so;o;se;se;ne;se;e;se;ab;so;o;so;se;ab;se;e;ab;se;s;se;e;se;o;so;s;se;e;se;se;s;s;s;se;e;e;se;s;so;so;s;se;s;so;se;e;se;se;so;so;s;e;se;s;s;s;so;s;so;s;se;e;se;s;s;so;s;so;s;se;se;s;s;se;s;s;s;s;s;s;s;s;s;s;s;s;s}
+
+#GAlias {.GalPsGolPo} {
+o;no;no;no;no;o;o;n;n;no;no;no;no;n;o;o;no;no;o;no;no;o;no;no;o;n;n;n;ne;n;n;n;ne;no;no;no;no;o;n;n;no;no;n;no;o;no;o;o;o;no;no;o;o;so;o;o;o;no;no;no;so;o;o;no;ar;o;so;no;no;n;no;o;o;no;no;n;no;n;ne;n;ne;n;ne;ne;ne;n;e;ne;ne;e;e;se;e;ne;ne;n;no;n;n;ne;ne;e;se;s;s;se;se;e;ne;n;n;no;n;ne;ne;n;no;n;ne;ne;ne;e;e;e;ne;ne;ne;n;n;ne;n;n;no;n;ne;n;n;no;no;n;no;no;o;no;n;ne;n;no;no;o;no;n;n;ne;n;ne;n;no;o;so;o;o;so;o;no;no;n;n;ne;no;n;ne;n;no;n;n;ne;ne;e;se;ne;e;e;e}
+
+#GAlias {.GalPsMGP} {
+s;se;s;se;s;s;se;s;so;s;s;s;so;o;so;o;o;no;o;o;so;o;no;so;so;o;no;o;no;so;o;so;so;o;so;o;no;ne;no;n;no;so;s;so;se;so;so;no;so;no;n;ne;no;o;so;s;so;o;no;no;no;no;no;o;o;no;o;so;s;so;n;n;ne;n;so;n;n;so;s;so;o;o;o;o;o;o;o;no;no;o;o;o;s;so;s;s;s;se;se;so;so;s;s;s;se;s;se;s;o;no;o;no;o;o;o;so;so;no;no;o;o;o;so;so;no;no;o;s;s;s;se;se;s;s;s;s;s;s;s;so;s;so;s;s;se;so;so;s;se;se;so;so;s;s;so;s;s;se;s;e;ne;ne;se;ne;e;se;e;e;ne;e;e;e;e;ne;e;e;ne;e;e;e;se;ne;e;e;e;e;se;e;e;e;e;ne;e;e;e;e;e;e;se;e;se;se;e;e;ne;e;e;ne;e;ar;e;se;e;se;se;e;ne;e;e;se;e;e;ar;ne;e;e;se;e;se;e;se;e;ar;s;se;s;e;se;se;ne;ar;s;se;so;se;e;s;se;so;se;s;se;s;ab;s;so;s;so;s;o;s;so;o;no;ab;so;s;se;s;so;s;o;so;ab;o;o;no;o;n;no;o;ar;no;o;no;o;o;o;ab;o;o;so;so;o;o;no;o;so;o;ar;ar;ar;ar;o;o;so;so;o;no;o;so;so;o;no;no;o;no;ar;ar;e;n;no;ab;ab;ab}
+
+#GAlias {.GalPsAncC} {
+o;no;no;no;no;o;o;n;n;no;no;no;no;n;o;o;no;no;o;no;no;o;no;no;o;n;n;n;ne;n;n;n;ne;no;no;no;no;o;n;n;no;no;n;no;o;no;o;o;o;no;no;o;o;so;o;o;o;no;no;no;so;o;o;no;ar;o;so;ne;n;ne;n;ne;ne;ne;n;e;ne;ne;e;e;se;e;ne;ne;n;no;n;n;ne;ne;e;se;s;s;se;se;e;ne;n;n;no;n;ne;ne;n;no;n;ne;ne;ne;e;e;e;ne;ne;ne;n;n;ne;n;n;no;n;ne;n;e;ab;se;e;ne;e;ne;ne;e;ab;se;ne;e;ne;e;ne;e;ab;e;se;s;so;so;ab;so;s;se;e;ne;e;se;s;e;ab;n;no;no;o;o;no;o;no;no;n;ne}
+
+#GAlias {.GalPsDarP} {
+o;no;no;no;no;o;o;n;n;no;no;no;no;n;o;o;no;no;o;no;no;o;no;no;o;n;n;n;ne;n;n;n;ne;no;no;no;no;o;n;n;no;no;n;no;o;no;o;o;o;no;no;o;o;so;o;o;o;no;no;no;so;o;o;no;ar;o;so;no;no;n;no;o;o;no;no;n;no;n;n;n;o;no;ne;n}
+
+
+;Origen:  Galador puerta oeste, (GalPo):
+
+#GTrigger {Galador: Exterior de la Puerta Oeste *[[]de,s,o,n] } {
+FPathDisponible;
+#Var Mapa {
+Fortaleza de Dara, puertas:FPath;.GalPoDarP
+|
+Ancarak, centro (Por puerta sur):FPath;.GalPoAncC
+|
+Golthur, puerta oeste:FPath;.GalPoGolPo
+|
+Mor Groddur, puertas (Por Dendra):FPath;.GalPoMGP
+|
+Anduar, plaza (Por Dendra):FPath;.GalPoAndC
+}
+} {} AnyCase
+
+#GAlias {.GalPoGolPo} {
+o;o;no;no;o;no;no;o;no;no;o;n;n;n;ne;n;n;n;ne;no;no;no;no;o;n;n;no;no;n;no;o;no;o;o;o;no;no;o;o;so;o;o;o;no;no;no;so;o;o;no;ar;o;so;no;no;n;no;o;o;no;no;n;no;n;ne;n;ne;n;ne;ne;ne;n;e;ne;ne;e;e;se;e;ne;ne;n;no;n;n;ne;ne;e;se;s;s;se;se;e;ne;n;n;no;n;ne;ne;n;no;n;ne;ne;ne;e;e;e;ne;ne;ne;n;n;ne;n;n;no;n;ne;n;n;no;no;n;no;no;o;no;n;ne;n;no;no;o;no;n;n;ne;n;ne;n;no;o;so;o;o;so;o;no;no;n;n;ne;no;n;ne;n;no;n;n;ne;ne;e;se;ne;e;e;e}
+
+#GAlias {.GalPoAncC} {
+o;o;no;no;o;no;no;o;no;no;o;n;n;n;ne;n;n;n;ne;no;no;no;no;o;n;n;no;no;n;no;o;no;o;o;o;no;no;o;o;so;o;o;o;no;no;no;so;o;o;no;ar;o;so;ne;n;ne;n;ne;ne;ne;n;e;ne;ne;e;e;se;e;ne;ne;n;no;n;n;ne;ne;e;se;s;s;se;se;e;ne;n;n;no;n;ne;ne;n;no;n;ne;ne;ne;e;e;e;ne;ne;ne;n;n;ne;n;n;no;n;ne;n;e;ab;se;e;ne;e;ne;ne;e;ab;se;ne;e;ne;e;ne;e;ab;e;se;s;so;so;ab;so;s;se;e;ne;e;se;s;e;ab;n;no;no;o;o;no;o;no;no;n;ne}
+
+#GAlias {.GalPoAndC} {
+o;o;no;no;o;no;no;o;no;no;o;n;n;n;ne;n;n;n;ne;no;no;no;no;o;n;n;no;no;n;no;o;no;o;o;o;no;no;o;o;so;o;o;o;no;no;no;so;o;o;no;ar;o;so;so;so;ab;o;no;o;so;o;s;o;o;no;o;s;so;s;so;s;o;s;so;se;so;so;s;so;so;o;so;so;s;so;s;s;so;s;s;so;s;s;so;s;s;s;s;s;so;s;s;e;ne;ne;se;se;e;e;e;ne;ne;se;se;e;e;e;ne;e;ne;e;s;so;s;so;s;s;s;se;se;so;so;s;s;s;se;s;s;so;s;s;s;se;se;so;so;s;s;s;se;s;se;s;o;no;o;no;o;o;o;so;so;no;no;o;o;o;so;so;no;no;o;s;s;s;se;se;s;s;s;s;s;s;s;so;s;so;s;s;se;so;so;s;se;se;so;so;s;s;so;s;s;se;s;e;ne;ne;se;ne;e;se;e;e;ne;e;e;e;e;ne;e;e;ne;e;e;e;se;ne;e;e;e;e;se;e;e;e;e;ne;e;e;e;e;e;e;se;e;se;se;e;e;ne;e;e;ne;e;ar;e;se;e;se;se;e;ne;e;e;se;e;e;ar;ne;e;e;se;e;se;e;se;e;ar;s;se;s;e;se;se;ne;ar;s;se;so;se;e;s;se;so;se;s;se;s;ab;s;so;s;so;s;o;s;so;o;se;se;ne;se;e;se;ab;so;o;so;se;ab;se;e;ab;se;s;se;e;se;o;so;s;se;e;se;se;s;s;s;se;e;e;se;s;so;so;s;se;s;so;se;e;se;se;so;so;s;e;se;s;s;s;so;s;so;s;se;e;se;s;s;so;s;so;s;se;se;s;s;se;s;s;s;s;s;s;s;s;s;s;s;s;s}
+
+#GAlias {.GalPoMGP} {
+o;o;no;no;o;no;no;o;no;no;o;n;n;n;ne;n;n;n;ne;no;no;no;no;o;n;n;no;no;n;no;o;no;o;o;o;no;no;o;o;so;o;o;o;no;no;no;so;o;o;no;ar;o;so;so;so;ab;o;no;o;so;o;s;o;o;no;o;s;so;s;so;s;o;s;so;se;so;so;s;so;so;o;so;so;s;so;s;s;so;s;s;so;s;s;so;s;s;s;s;s;so;s;s;e;ne;ne;se;se;e;e;e;ne;ne;se;se;e;e;e;ne;e;ne;e;s;so;s;so;s;s;s;se;se;so;so;s;s;s;se;s;s;so;s;s;s;se;se;so;so;s;s;s;se;s;se;s;o;no;o;no;o;o;o;so;so;no;no;o;o;o;so;so;no;no;o;s;s;s;se;se;s;s;s;s;s;s;s;so;s;so;s;s;se;so;so;s;se;se;so;so;s;s;so;s;s;se;s;e;ne;ne;se;ne;e;se;e;e;ne;e;e;e;e;ne;e;e;ne;e;e;e;se;ne;e;e;e;e;se;e;e;e;e;ne;e;e;e;e;e;e;se;e;se;se;e;e;ne;e;e;ne;e;ar;e;se;e;se;se;e;ne;e;e;se;e;e;ar;ne;e;e;se;e;se;e;se;e;ar;s;se;s;e;se;se;ne;ar;s;se;so;se;e;s;se;so;se;s;se;s;ab;s;so;s;so;s;o;s;so;o;no;ab;so;s;se;s;so;s;o;so;ab;o;o;no;o;n;no;o;ar;no;o;no;o;o;o;ab;o;o;so;so;o;o;no;o;so;o;ar;ar;ar;ar;o;o;so;so;o;no;o;so;so;o;no;no;o;no;ar;ar;e;n;no;ab;ab;ab}
+
+#GAlias {.GalPoDarP} {
+o;o;no;no;o;no;no;o;no;no;o;n;n;n;ne;n;n;n;ne;no;no;no;no;o;n;n;no;no;n;no;o;no;o;o;o;no;no;o;o;so;o;o;o;no;no;no;so;o;o;no;ar;o;so;no;no;n;no;o;o;no;no;n;no;n;n;n;o;no;ne;n}
+
+
+;Origen: Fortaleza de dara, puertas: (DarP)
+
+#GTrigger {Fortaleza de D'hara: Rastrillo *[[]s,e,o,?de?] } {
+FPathDisponible;
+#Var Mapa {
+Galador, puerta oeste:FPath;.DarPGalPo
+|
+Ancarak, centro (Por puerta sur):FPath;.DarPAncC
+|
+Golthur, puerta oeste:FPath;.DarPGolPo
+|
+Mor Groddur, puertas (Por Dendra):FPath;.DarPMGP
+|
+Anduar, Plaza (Por Dendra):FPath;.DarPAndC
+}
+} {} AnyCase
+
+#GAlias {.DarPGolPo} {
+s;so;se;e;s;s;ne;n;ne;n;ne;ne;ne;n;e;ne;ne;e;e;se;e;ne;ne;n;no;n;n;ne;ne;e;se;s;s;se;se;e;ne;n;n;no;n;ne;ne;n;no;n;ne;ne;ne;e;e;e;ne;ne;ne;n;n;ne;n;n;no;n;ne;n;n;no;no;n;no;no;o;no;n;ne;n;no;no;o;no;n;n;ne;n;ne;n;no;o;so;o;o;so;o;no;no;n;n;ne;no;n;ne;n;no;n;n;ne;ne;e;se;ne;e;e;e}
+
+#GAlias {.DarPAndC} {
+s;so;se;e;s;s;s;se;s;se;se;e;e;se;s;se;se;so;so;ab;o;no;o;so;o;s;o;o;no;o;s;so;s;so;s;o;s;so;se;so;so;s;so;so;o;so;so;s;so;s;s;so;s;s;so;s;s;so;s;s;s;s;s;so;s;s;e;ne;ne;se;se;e;e;e;ne;ne;se;se;e;e;e;ne;e;ne;e;s;so;s;so;s;s;s;se;se;so;so;s;s;s;se;s;s;so;s;s;s;se;se;so;so;s;s;s;se;s;se;s;o;no;o;no;o;o;o;so;so;no;no;o;o;o;so;so;no;no;o;s;s;s;se;se;s;s;s;s;s;s;s;so;s;so;s;s;se;so;so;s;se;se;so;so;s;s;so;s;s;se;s;e;ne;ne;se;ne;e;se;e;e;ne;e;e;e;e;ne;e;e;ne;e;e;e;se;ne;e;e;e;e;se;e;e;e;e;ne;e;e;e;e;e;e;se;e;se;se;e;e;ne;e;e;ne;e;ar;e;se;e;se;se;e;ne;e;e;se;e;e;ar;ne;e;e;se;e;se;e;se;e;ar;s;se;s;e;se;se;ne;ar;s;se;so;se;e;s;se;so;se;s;se;s;ab;s;so;s;so;s;o;s;so;o;se;se;ne;se;e;se;ab;so;o;so;se;ab;se;e;ab;se;s;se;e;se;o;so;s;se;e;se;se;s;s;s;se;e;e;se;s;so;so;s;se;s;so;se;e;se;se;so;so;s;e;se;s;s;s;so;s;so;s;se;e;se;s;s;so;s;so;s;se;se;s;s;se;s;s;s;s;s;s;s;s;s;s;s;s;s}
+
+#GAlias {.DarPGalPo} {
+s;so;se;e;s;s;s;so;se;e;s;s;s;so;se;e;s;s;s;se;s;se;se;e;e;se;s;se;se;ne;e;ab;se;e;e;ne;se;se;se;e;e;e;ne;e;e;se;se;e;e;e;se;e;se;s;se;se;s;s;e;se;se;se;se;so;s;s;s;so;s;s;s;e;se;se;e;se;se;e;se;se;e;e}
+
+#GAlias {.DarPMGP} {
+s;so;se;e;s;s;s;so;se;e;s;s;s;se;s;se;se;e;e;se;s;se;se;so;so;ab;o;no;o;so;o;s;o;o;no;o;s;so;s;so;s;o;s;so;se;so;so;s;so;so;o;so;so;s;so;s;s;so;s;s;so;s;s;so;s;s;s;s;s;so;s;s;e;ne;ne;se;se;e;e;e;ne;ne;se;se;e;e;e;ne;e;ne;e;s;so;s;so;s;s;s;se;se;so;so;s;s;s;se;s;s;so;s;s;s;se;se;so;so;s;s;s;se;s;se;s;o;no;o;no;o;o;o;so;so;no;no;o;o;o;so;so;no;no;o;s;s;s;se;se;s;s;s;s;s;s;s;so;s;so;s;s;se;so;so;s;se;se;so;so;s;s;so;s;s;se;s;e;ne;ne;se;ne;e;se;e;e;ne;e;e;e;e;ne;e;e;ne;e;e;e;se;ne;e;e;e;e;se;e;e;e;e;ne;e;e;e;e;e;e;se;e;se;se;e;e;ne;e;e;ne;e;ar;e;se;e;se;se;e;ne;e;e;se;e;e;ar;ne;e;e;se;e;se;e;se;e;ar;s;se;s;e;se;se;ne;ar;s;se;so;se;e;s;se;so;se;s;se;s;ab;s;so;s;so;s;o;s;so;o;no;ab;so;s;se;s;so;s;o;so;ab;o;o;no;o;n;no;o;ar;no;o;no;o;o;o;ab;o;o;so;so;o;o;no;o;so;o;ar;ar;ar;ar;o;o;so;so;o;no;o;so;so;o;no;no;o;no;ar;ar;e;n;no;ab;ab;ab}
+
+#GAlias {.DarPAncC} {
+s;so;se;e;s;s;ne;n;ne;n;ne;ne;ne;n;e;ne;ne;e;e;se;e;ne;ne;n;no;n;n;ne;ne;e;se;s;s;se;se;e;ne;n;n;no;n;ne;ne;n;no;n;ne;ne;ne;e;e;e;ne;ne;ne;n;n;ne;n;n;no;n;ne;n;e;ab;se;e;ne;e;ne;ne;e;ab;se;ne;e;ne;e;ne;e;ab;e;se;s;so;so;ab;so;s;se;e;ne;e;se;s;e;ab;n;no;no;o;o;no;o;no;no;n;ne}
+
+
+;Origen: bosque de waret, altar (BWA):
+
+#GTrigger {Bosque de Wareth: Cráter *[[]e,n,o] } {
+FPathDisponible;
+#Var Mapa {
+Galador, Puerta oeste:FPath;.BWAGalPo
+|
+Ancarak, centro (por puerta sur):FPath;.BWAAncC
+|
+Golthur, puerta oeste:FPath;.BWAGolPo
+|
+Eloras, plaza (Por Dendra):FPath;.BWAEloC
+|
+Mor Groddur, puertas (Por Dendra):FPath;.BWAMGP
+|
+Anduar, Plaza (Por Dendra):FPath;.BWAAndC
+}
+} {} AnyCase
+
+#GAlias {.BWAGalPo} {
+e;se;e;ne;ne;e;ne;e;ne;e;ne;e;e;e;e;se;e;e;e;se;e;e;se;se;se;se;e;se;se;se;e;e;se;e;se;e;se;se;e;e;se;e;e;s;se;se;se;e;e;n;ne;n;ne;n;e;se;e;e;n;e;ne;e;se;e;ar;ne;ne;ne;e;ab;se;e;e;ne;se;se;se;e;e;e;ne;e;e;se;se;e;e;e;se;e;se;s;se;se;s;s;e;se;se;se;se;so;s;s;s;so;s;s;s;e;se;se;e;se;se;e;se;se;e;e}
+
+#GAlias {.BWAAncC} {
+e;se;e;ne;ne;e;ne;e;ne;e;ne;e;e;e;e;se;e;e;e;se;e;e;se;se;se;se;e;se;se;se;e;e;se;e;se;e;se;se;e;e;se;e;e;s;se;se;se;e;e;n;ne;n;ne;n;e;se;e;e;n;e;ne;e;se;e;ar;ne;ne;no;no;n;no;o;o;no;no;n;no;n;ne;n;ne;n;ne;ne;ne;n;e;ne;ne;e;e;se;e;ne;ne;n;no;n;n;ne;ne;e;se;s;s;se;se;e;ne;n;n;no;n;ne;ne;n;no;n;ne;ne;ne;e;e;e;ne;ne;ne;n;n;ne;n;n;no;n;ne;n;e;ab;se;e;ne;e;ne;ne;e;ab;se;ne;e;ne;e;ne;e;ab;e;se;s;so;so;ab;so;s;se;e;ne;e;se;s;e;ab;n;no;no;o;o;no;o;no;no;n;ne}
+
+#GAlias {.BWAGolPo} {
+e;se;e;ne;ne;e;ne;e;ne;e;ne;e;e;e;e;se;e;e;e;se;e;e;se;se;se;se;e;se;se;se;e;e;se;e;se;e;se;se;e;e;se;e;e;s;se;se;se;e;e;n;ne;n;ne;n;e;se;e;e;n;e;ne;e;se;e;ar;ne;ne;no;no;n;no;o;o;no;no;n;no;n;ne;n;ne;n;ne;ne;ne;n;e;ne;ne;e;e;se;e;ne;ne;n;no;n;n;ne;ne;e;se;s;s;se;se;e;ne;n;n;no;n;ne;ne;n;no;n;ne;ne;ne;e;e;e;ne;ne;ne;n;n;ne;n;n;no;n;ne;n;n;no;no;n;no;no;o;no;n;ne;n;no;no;o;no;n;n;ne;n;ne;n;no;o;so;o;o;so;o;no;no;n;n;ne;no;n;ne;n;no;n;n;ne;ne;e;se;ne;e;e;e}
+
+#GAlias {.BWAEloC} {
+e;se;e;ne;ne;e;ne;e;ne;e;ne;e;e;e;e;se;e;e;e;se;e;e;se;se;se;se;e;se;se;se;e;e;se;e;se;e;se;se;e;e;se;e;e;s;se;se;se;e;s;so;se;so;so;s;so;so;o;so;so;s;so;s;s;so;s;s;so;s;s;so;s;s;s;s;s;so;s;s;e;ne;ne;se;se;e;e;e;ne;ne;se;se;e;e;e;ne;e;ne;e;s;so;s;so;s;s;s;se;se;so;so;s;s;s;se;s;s;so;s;s;s;se;se;so;so;s;s;s;se;s;se;s;o;no;o;no;o;o;o;so;so;no;no;o;o;o;so;so;no;no;o;s;s;s;se;se;s;s;s;s;s;s;s;so;s;so;s;s;se;so;so;s;se;se;so;so;s;s;so;s;s;se;s;e;ne;ne;se;ne;e;se;e;e;ne;e;e;e;e;ne;e;e;ne;e;e;e;se;ne;e;e;e;e;se;e;e;e;e;ne;e;e;e;e;e;e;se;e;se;se;e;e;ne;e;e;ne;e;ar;e;se;e;se;se;e;ne;e;e;se;e;e;ar;ne;e;e;se;e;se;e;se;e;ar;s;se;s;e;se;se;ne;ar;s;se;so;se;e;s;se;so;se;s;se;s;ab;s;so;s;so;s;o;s;so;o;no;ab;so;s;se;s;so;s;o;so;ab;o;n;no;ne;no;n;no;no;no;ne;n;n;n}
+
+#GAlias {.BWAMGP} {
+e;se;e;ne;ne;e;ne;e;ne;e;ne;e;e;e;e;se;e;e;e;se;e;e;se;se;se;se;e;se;se;se;e;e;se;e;se;e;se;se;e;e;se;e;e;s;se;se;se;e;s;so;se;so;so;s;so;so;o;so;so;s;so;s;s;so;s;s;so;s;s;so;s;s;s;s;s;so;s;s;e;ne;ne;se;se;e;e;e;ne;ne;se;se;e;e;e;ne;e;ne;e;s;so;s;so;s;s;s;se;se;so;so;s;s;s;se;s;s;so;s;s;s;se;se;so;so;s;s;s;se;s;se;s;o;no;o;no;o;o;o;so;so;no;no;o;o;o;so;so;no;no;o;s;s;s;se;se;s;s;s;s;s;s;s;so;s;so;s;s;se;so;so;s;se;se;so;so;s;s;so;s;s;se;s;e;ne;ne;se;ne;e;se;e;e;ne;e;e;e;e;ne;e;e;ne;e;e;e;se;ne;e;e;e;e;se;e;e;e;e;ne;e;e;e;e;e;e;se;e;se;se;e;e;ne;e;e;ne;e;ar;e;se;e;se;se;e;ne;e;e;se;e;e;ar;ne;e;e;se;e;se;e;se;e;ar;s;se;s;e;se;se;ne;ar;s;se;so;se;e;s;se;so;se;s;se;s;ab;s;so;s;so;s;o;s;so;o;no;ab;so;s;se;s;so;s;o;so;ab;o;o;no;o;n;no;o;ar;no;o;no;o;o;o;ab;o;o;so;so;o;o;no;o;so;o;ar;ar;ar;ar;o;o;so;so;o;no;o;so;so;o;no;no;o;no;ar;ar;e;n;no;ab;ab;ab}
+
+#GAlias {.BWAAndC} {
+e;se;e;ne;ne;e;ne;e;ne;e;ne;e;e;e;e;se;e;e;e;se;e;e;se;se;se;se;e;se;se;se;e;e;se;e;se;e;se;se;e;e;se;e;e;s;se;se;se;e;s;so;se;so;so;s;so;so;o;so;so;s;so;s;s;so;s;s;so;s;s;so;s;s;s;s;s;so;s;s;e;ne;ne;se;se;e;e;e;ne;ne;se;se;e;e;e;ne;e;ne;e;s;so;s;so;s;s;s;se;se;so;so;s;s;s;se;s;s;so;s;s;s;se;se;so;so;s;s;s;se;s;se;s;o;no;o;no;o;o;o;so;so;no;no;o;o;o;so;so;no;no;o;s;s;s;se;se;s;s;s;s;s;s;s;so;s;so;s;s;se;so;so;s;se;se;so;so;s;s;so;s;s;se;s;e;ne;ne;se;ne;e;se;e;e;ne;e;e;e;e;ne;e;e;ne;e;e;e;se;ne;e;e;e;e;se;e;e;e;e;ne;e;e;e;e;e;e;se;e;se;se;e;e;ne;e;e;ne;e;ar;e;se;e;se;se;e;ne;e;e;se;e;e;ar;ne;e;e;se;e;se;e;se;e;ar;s;se;s;e;se;se;ne;ar;s;se;so;se;e;s;se;so;se;s;se;s;ab;s;so;s;so;s;o;s;so;o;se;se;ne;se;e;se;ab;so;o;so;se;ab;se;e;ab;se;s;se;e;se;o;so;s;se;e;se;se;s;s;s;se;e;e;se;s;so;so;s;se;s;so;se;e;se;se;so;so;s;e;se;s;s;s;so;s;so;s;se;e;se;s;s;so;s;so;s;se;se;s;s;se;s;s;s;s;s;s;s;s;s;s;s;s;s}

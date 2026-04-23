@@ -1,0 +1,142 @@
+Scrips RL V2.6 para VipMud
+Escritos por Rhomdur para reinos de  leyenda.
+
+
+Introducción:
+Estos scrips están escritos para el cliente Vipmud a partir de su versión 2.0, y especialmente configurados para el mud Reinos de leyenda y su uso lo más optimizado posible por jugadores invidentes.
+Sugerencias, dudas o improperios a Rhomdur, Enorthus o Astrion en el mud.
+Los Scrips han sido escritos y probados en VipMud 2.0.16, por lo que no se asegura su corecto funcionamiento en versiones del cliente anteriores a la 2.0
+
+
+Instalación.
+En la página de GitHub de los scripts tenéis un enlace directo a la descarga del cliente. Visitad:
+https://github.com/dprenc/ScriptsRL
+En la parte de arriba, justo debajo del texto:
+Scripts para el mud Reinos de leyenda con el cliente VipMud
+Tenéis el enlace:
+www.gmagames.com/vipmud20016.exe
+Podeis clicar en el, o copiar y pegar la dirección en vuestro navegador, la descarga se iniciara automaticamente.
+La instalación se realiza de forma habitual como con cualquier otra aplicación.
+Este cliente es de pago con un coste de 30 dolares, una vez instalado tendremos la posibilidad de introducir los datos de registro o dejar los datos en blanco para utilizar el cliente en versión demo de 30 días.
+Una vez pasados los 30 días de demostración el cliente continuará funcionando en una versión con características reducidas, para mas información sobre las limitaciones de la versión reducida consultad la página del programa.
+
+
+Creación de personajes:
+Nada mas abrir el mud nos debe aparecer la lista de personajes, character list. Si no es así nos desplazamos a ella con alt, descendemos hasta conect, desplegamos con flecha derecha y pulsamos enter en character setup/conect.
+
+1: Pulsamos en Add
+
+2: Character name: nombre del pj.
+
+3: Select mud: si ya hemos configurado los datos de conexión a nuestro mud, en este campo con las flechas elegimos el mud al que se va a conectar el pj que estamos creando. Si nuestro mud aún no está en la lista damos tab para rellenar los datos.
+
+4: Mud name: Escribimos: "Reinos de leyenda"
+Importante escribirlo tal y como aparece aquí sin las comillas, así nos evitaremos complicaciones a la hora de instalar los scrips.
+
+5: Host Name: rlmud.org
+
+6: Port number: 5001
+
+7: Password: La contraseña de nuestra ficha.
+
+8: Autologin: Verificamos esta casilla para no tener que introducir la contraseña a mano cada vez que queramos conectar.
+
+9: Pulsamos en OK.
+
+10: Nos colocamos nuevamente en la lista de personajes (mud character list). Si lo hemos hecho todo bien aquí debería aparecer nuestro nuevo pj, primero su nombre y luego el mud al que pertenece, en este caso Reinos de leyenda. Pulsamos enter y nos conectamos al mud para que el Cliente cree los archivos de datos necesarios. Si todo a ido bien ya debería estar nuestra ficha conectada a RL
+
+
+Instalación de los scrips.
+
+1: Descomprimimos el contenido del paquete de scrips en cualquier lugar del equipo ya que luego iremos moviendo los contenidos del paquete a mano a sus lugares correspondientes.
+
+2. Ahora hay que averiguar donde guarda el vipmud su carpeta de datos en nuestro equipo, esto depende del sistema operativo.
+Normalmente es una carpeta llamada VipMud que se encuentra dentro de nuestra carpeta de usuario, en documentos.
+De no ser así lo averiguaremos abriendo el vipmud, si aparece la lista de personajes (Mud character list) salimos con escape, nos vamos al menú, bajamos hasta tools and preferences, bajamos hasta view user data folder locations y pulsamos enter.
+Nos fijamos en la primera carpeta que nos dice, data file location, user data.
+Esta será la carpeta donde habrá que instalar los scrips, así que nos desplazamos a ella con el explorador de windows y la abrimos.
+
+3. Sobreescribimos los siguientes archivos dentro de la carpeta VipMud de nuestro equipo con los archivos proporcionados en el paquete de scrips:
+VipMud.set
+start.set
+speech.ini
+
+4. En la carpeta VipMud de nuestro equipo localizamos la carpeta con el nombre del mud que hemos configurado en el paso 4 del apartado creación de personajes, que debería de ser Reinos de leyenda.
+En su interior pegamos la carpeta ScripsRL proporcionada en el paquete, y sobreescribimos el archivo Reinos de leyenda.set existente con el proporcionado en el paquete.
+Si el nombre del archivo proporcionado no coincide con el nombre de la carpeta y del archivo .set que hay en su interior deberemos renombrar el archivo reinos de leyenda.set proporcionado en el paquete para que se llame igual que la carpeta y que el archivo del mud que hay en su interior y seguidamente sobreescribirlo.
+
+5. En la carpeta VipMud de nuestro equipo sobreescribimos la carpeta Sounds existente con la carpeta del mismo nombre proporcionada en el paquete de Scrips.
+
+6. Si encontráis mas archivos en la carpeta comprimida de los scripts podéis ignorarlos, ya que son archivos de gestión para el trabajo colaborativo a través de github.
+Los archivos importantes son:
+Carpeta "Reinos de leyenda"
+Carpeta "Sounds"
+ARchivo "speech.ini"
+Archivo "VipMud.set"
+Archivo "start.set"
+
+
+Configuración de la ficha para que funcione correctamente con los Scrips:
+
+1. En caso de tener el vipmud abierto durante el paso anterior lo reiniciamos.
+
+2. Conectamos con nuestra ficha. Si todo ha ido bien ya deberían empezar a funcionarnos los sonidos, podemos comprobarlo facilmente si tenemos el inform logon on, con el sonido de conexión y desconexión de la ficha o los sonidos de los canales.
+
+3. Configurando la ficha:
+Introducimos en el mud el comando:
+configurarficha
+Este comando establece junto con otras muchas configuraciones el modo accesibilidad on, es importante dejar este modo activado para que los scrips funcionen adecuadamente en los combates, de lo contrario no funcionarán los sonidos y los contadores de bloqueo de algunas habilidades ni los sonidos que informan sobre los kills que realizamos y recibimos.
+
+Ahora configuramos el prompt, no os preocupeis por el por que los scrips lo silenciarán de forma que nunca lo veremos, mas adelante veremos su utilidad.
+Si nuestro PJ no puede matar pjs de su propio bando, como las fichas del bando bueno o del bando malo, escribiremos el comando:
+configurarpromptb
+Por el contrario, si nuestro pj puede matar pjs de su propio bando, como los anárquicos o los renegados, escribiremos el comando
+configurarprompta
+
+Además, si nuestra ficha tiene los hechizos piel de piedra o imágenes, necesitaremos un prompt especial para poder ver las pieles de piedra o las imágenes que nos quedan, en cuyo caso utilizaremos los mismos comandos para configurar el prompt pero añadiendo una m al final, configurarpromptam o configurarpromptbm
+
+Si nuestro pj puede matar a quien quiera, nos basaremos entonces en el nick x, de modo que los avisos de enemigos y aliados comprobarán dicho nick, para pitar como enemigos a los nombres que hallamos incluido.
+El comando en este caso seria:
+configurarpromptx
+configurarpromptxm
+
+
+Configurando la clase de nuestro pj
+Una vez que ya hemos conectado nuestro pj después de crearlo, en VipMud\Reinos de leyenda donde pegamos los scrips anteriormente nos debe de aparecer un archivo con el siguiente nombre:
+NombredelPJ.set, por ejemplo rhomdur.set
+Si no es así conectad y desconectar vuestro pj al mud y aparecerá.
+Editamos este archivo con el block de notas y vemos que por el momento contiene una linea que no es otra cosa que el nombre del pj.
+Debajo de esa línea debemos de añadir otra línea que le indica al vipmud de que otro archivo tiene que heredar configuraciones nuestro pj, escribimos:
+#Load ScripsRL\Clases\Clase.set
+Donde clase.set sería soldados.set, exploradores.set, gragbadur.set etc.
+Por ejemplo:
+#Load ScripsRL\Clases\Soldados.set
+Si la clase de nuestro pj no está soportada por los scrips, podemos utilizar archivos de configuración generales que nos proporcionarán un soporte genérico. De esta forma, si nuestro pj es una clase que se basa en el conbate físico heredaremos del archivo:
+combate_fisico.set
+También en la carpeta clases.
+Además, si nuestra clase tiene la habilidad centrar habrá que heredar del archivo:
+centrar.set
+también en la carpeta clases.
+Guardamos cambios, cerramos el editor, reiniciamos el vipmud y conectamos nuestro personaje.
+Aseguraos a la hora de heredar clases, que la clase de vuestro PJ existe en la carpeta clases, de lo contrario tendréis que utilizar las clases genéricas.
+Si todo se ha hecho bien ya tendremos los scrips funcionando y nuestro pj bien configurado listo para jugar.
+
+
+Nota para lectores de pantalla:
+Si habéis copiado el archivo
+speech.ini
+proporcionado con los scripts este caso no debería ocurrir, pero en caso de que el lector de panatalla no verbalice correctamente el texto entrante y saliente una vez estáis conectados al mud,
+Os vais al menú, bajáis hasta tools and preferences, desplegáis con flecha derecha, bajáis hasta speech, desplegáis, y en caso de que os esté fallando el lector veréis que en las categorías listadas no está definida ninguna voz (no speech).
+Os metéis en cada categoría con enter, seleccionais screen reader, pulsáis enter, y sin cambiar ninguna casilla le dais a OK.
+Deberéis repetir este proceso con todas las categorías de voz en las que esté seleccionado no speech, de modo que al terminar deberá estar seleccionado en todas screen reader.
+Una vez hecho esto y aceptados los cambios el lector os funcionará correctamente.
+Recordar seleccionar screen reader en todos los tipos de voz disponibles:
+Incoming Voice - Screen Reader
+Entry Window Voice - Screen Reader
+Output Window Voice - Screen Reader
+Edit Window Voice - Screen Reader
+System Voice - Screen Reader
+User specifiable Voice - Screen Reader
+Antes de terminar recordad volver a la barra de menú, bajar hasta tools and preferences, speech, y bajar hasta save voice settings y pulsar enter encima para guardar los cambios.
+
+Bienvenidos a Reinos de leyenda.

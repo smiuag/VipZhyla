@@ -1,0 +1,148 @@
+;Módulo: Khazads.set
+;Versión: 1.6, 12/03/2021
+;Descripción: Triggers y keys para la clase Khazad.
+;Autor: Rhomdur.
+
+
+;Carga de configuraciones heredadas:
+
+#Load ScripsRL\Clases\Centrar.set
+#Load ScripsRL\Clases\Combate_fisico.set
+
+;Declaración de variables:
+#Var FlagBloqueosClase 1
+#Var FlagImpactosClase 1
+
+;Función de bloqueos de clase:
+#GAlias FBloqueosClase {
+#Var FlagBloqueoV 1;
+#If {%IfWord("embestir",%1, )} {
+ #Play {RL\Bloqueos\Khazads\Embestir.wav};
+ #Abort
+};
+#If {%IfWord("pulverizar",%1, )} {
+ #Play {RL\Bloqueos\Khazads\Pulverizar.wav};
+ #Abort
+};
+#If {%IfWord("aguantar",%1, )} {
+ #Play {RL\Bloqueos\Khazads\Aguantar.wav};
+ #Abort
+};
+#If {%IfWord("instigar",%1, )} {
+ #Play {RL\Bloqueos\Khazads\Instigar.wav};
+ #Abort
+};
+#Var FlagBloqueoV 0
+}
+
+;Función para los impactos de clase:
+#GAlias FImpactoHabilidadC {
+#If {%IfWord("embestir",%1, )} {
+ #Play {RL\Habilidades\Khazad\Embestir.wav}
+};
+#If {%IfWord("instigar",%1, )} {
+ #Play {RL\Habilidades\Khazad\Instigar.wav}
+};
+#If {%IfWord("pulverizar",%1, )} {
+ #Play {RL\Habilidades\Khazad\Pulverizar*4.wav}
+}
+}
+
+
+;Embestir:
+
+#GTrigger {+ Comienzas a separarte disimuladamente de * para poder embestirle.} {
+#Play {RL\Habilidades\Generales\Impulso1.wav}
+} {} AnyCase
+
+#GTrigger {*[#] ¡Alcanzas*a * con tu maniobra de embestir!} {
+#Play {RL\Habilidades\Khazad\Embestir.wav};
+#If {@ModoE = 1} {
+ #GagLine voice
+}
+} {} AnyCase
+
+#GTrigger {*[#] ¡Te lanzas rudamente sobre *, embistiéndole *} {
+#Play {RL\Habilidades\Khazad\Embestir.wav}
+} {} AnyCase
+
+
+;Pulverizar:
+
+#GTrigger {*+ Tu cara se contrae con la furia cuando te preparas para pulverizar a *} {
+#Play {RL\Habilidades\Generales\Impulso1.wav}
+} {} AnyCase
+
+#GTrigger {*[#] ¡Pulverizas * de * con un * golpe de tu *} {
+#Play {RL\Habilidades\Khazad\Pulverizar*4.wav}
+} {} AnyCase
+
+
+;Aguantar:
+
+#GTrigger {*Tensas rígidamente todos tus músculos dotando a tu cuerpo de una resistencia y tenacidad increíble.*} {
+#Play {RL\Habilidades\Khazad\Aguantar on.wav}
+} {} AnyCase
+
+#GTrigger {Te relajas y dejas de mantener tus músculos en tensión.} {
+#Play {RL\Habilidades\Khazad\Aguantar off.wav}
+} {} AnyCase
+
+
+; Instigar:
+
+#GTrigger {*¡Provocas a * con tus ataques, causando que éste se centre en ti!} {
+#Play {RL\Combate\Centrar recibir.wav};
+} {} AnyCase
+
+#GTrigger {*[#] ¡Alcanzas a * con tu maniobra de instigar!} {
+#Play {RL\Habilidades\Khazad\Instigar.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {*[#] ¡Instigas * a * con un malintencionado golpe de tu *} {
+#Play {RL\Habilidades\Khazad\Instigar.wav}
+} {} AnyCase
+
+
+;Keys:
+
+#GKey alt-a {
+aguantar
+}
+
+#GKey alt-s {
+#If {@ModoJ = 2} {
+ instigar xp
+} {
+ #If {@AutoCentrar = 1} {
+  centrar x;instigar x
+ } {
+  instigar x
+ }
+}}
+
+#GKey alt-d {
+#If {@ModoJ = 2} {
+ pulverizar xp
+} {
+ #If {@AutoCentrar = 1} {
+  centrar x;pulverizar x
+ } {
+  pulverizar x
+ }
+}}
+
+#GKey alt-f {
+#If {@ModoJ = 2} {
+ embestir xp
+} {
+ #If {@AutoCentrar = 1} {
+  centrar x;embestir x
+ } {
+  embestir x
+ }
+}}
+

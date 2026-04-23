@@ -1,0 +1,35 @@
+#Load ScripsRL\Clases\Magia_clerical.set
+
+
+#Key alt-x {  khaldar punyo:x }
+#Key alt-c {  khaldar patada:x }
+#Key alt-z {  khaldar patadatriple:x }
+#Key alt-a {  khaldar voladora:x }
+#Key alt-s {  khaldar maza:x }
+#Key alt-d {  khaldar codazo:x }
+#Key alt-f {  inercia khaldar hacha:x }
+#TRIGGER {* Impactas * tu Khaldar 'ráfaga de puñetazos'.} {#Play {RL\Habilidades\monjes\punyo1.wav}} {}
+#TRIGGER {* ¡Ejecutas a * con tu khaldar 'ráfaga de puñetazos'!} {#Play {RL\Habilidades\monjes\ejecuta punyo.wav}} {}
+#TRIGGER {* Impactas * tu Khaldar 'Patada triple'.} {#Play {RL\Habilidades\monjes\patada2.wav}} {}
+#TRIGGER {* Impactas * tu Khaldar 'Codazo'.} {#Play {RL\Habilidades\monjes\codazo.wav}} {}
+#TRIGGER {* ¡Ejecutas a * con tu khaldar 'Codazo'!} {#Play {RL\Habilidades\monjes\codazo2.wav}} {}
+#TRIGGER {* Impactas * tu Khaldar 'Patada voladora'.} {#Play {RL\Habilidades\monjes\patada voladora1.wav}} {}
+#TRIGGER {* Impactas * tu Khaldar 'Patada'.} {#Play {RL\Habilidades\monjes\patada1.wav}} {}
+#TRIGGER {Adoptas grácilmente una postura erguida cuando la fuerza de tu inercia se para.} {#Play {RL\Habilidades\monjes\inercia acaba.wav}} {}
+#TRIGGER {Continúas dejándote llevar por la inercia que te mueve, si bien ésta comienza a perder fuerza.} {#Play {RL\Habilidades\monjes\pierde inercia.wav}} {}
+#TRIGGER {* ¡Ejecutas a * con tu khaldar 'Patada'!} {#Play {RL\Habilidades\monjes\ejecuta patada.wav}} {}
+#TRIGGER {* ¡Ejecutas a * con tu khaldar 'Patada triple'!} {#Play {RL\Habilidades\monjes\ejecuta patada.wav}} {}
+#TRIGGER {* ¡Ejecutas a * con tu khaldar 'Patada voladora'!} {#Play {RL\Habilidades\monjes\ejecuta patada.wav}} {}
+#TRIGGER {* Golpeas con la palma de la mano *.} {#Play {RL\Habilidades\monjes\kill palma.wav}} {}
+#TRIGGER {* Propinas una precisa patada *.} {#Play {RL\Habilidades\monjes\kill patada.wav}} {}
+#TRIGGER {* Descargas una ráfaga de dolorosos pinchazos con las yemas de los dedos *.} {#Play {RL\Habilidades\monjes\kill descarga.wav}} {}
+#TRIGGER {* Saltas y golpeas con un brutal talonazo descendente *.} {#Play {RL\Habilidades\monjes\kill talonazo.wav}} {}
+#TRIGGER {* Impactas * tu Khaldar 'Palma Cortante'.} {#Play {RL\Habilidades\monjes\palma cortante.wav}} {}
+#TRIGGER {* Impactas * tu Khaldar 'Lanza'.} {#Play {RL\Habilidades\monjes\lanza.wav}} {}
+#TRIGGER {+ Comienzas a realizar los movimientos rituales del Khaldar '*'.} {#Play {RL\Habilidades\monjes\impulso.wav}} {}
+#TRIGGER {Un preciso golpe de tu palma extendida separa limpiamente la cabeza del cuerpo de * sin salpicarte una gota de sangre.} {#Play {RL\Habilidades\monjes\decapita palma.wav}} {}
+#TRIGGER {Comienzas a reunir en tu interior tu propia energía vital para llevar a cabo la curación sobre *.} {#Play {RL\Habilidades\monjes\espiritualismo.wav}} {}
+#TRIGGER {* Impactas * con tu Khaldar 'Patada giratoria'.} {#Play {RL\Habilidades\monjes\patada giratoria.wav}} {}
+#TRIGGER {* Impactas * tu Khaldar 'Salto giratorio'.} {#Play {RL\Habilidades\monjes\salto giratorio.wav}} {}
+#TRIGGER {* Impactas * con tu Khaldar 'Desequilibrar'.} {#Play {RL\Habilidades\monjes\desequilibrar.wav}} {}
+#TRIGGER {* Usando únicamente tus dedos índice y corazón * haciendo que sus órganos internos sangren y su cuerpo comience a convulsionarse.} {#Play {RL\Habilidades\monjes\dagas.wav}} {}

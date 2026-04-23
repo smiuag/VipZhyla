@@ -1,0 +1,828 @@
+;Módulo: Comunicaciones.set
+;Versión: 2.5, 29/03/2026
+;Descripción: Manejo de chats, tels, conversaciones en room, noticias y mails. 
+;Autor: Rhomdur.
+
+
+;Declaración y definición de Variables:
+
+;Variables telepatía:
+#Var HistorialTels
+#Var RemitentesLista
+#Var Remitente
+#Var UltimoTel {No hay mensajes de telepatía}
+#Var SilencioTels 0
+
+;Variables Room:
+#Var HistorialRoom {}
+#Var UltimoRoom {No hay mensajes en la room}
+#Var SilencioRoom 0
+
+;Variables canales:
+#Var HistorialGeneral {}
+#Var UltimoGeneral {No hay mensajes en ningún canal}
+#Var SilencioGeneral 0
+#Var HistorialBando {}
+#Var UltimoBando {No hay mensajes en el canal bando}
+#Var SilencioBando 0
+#Var HistorialCiudadania {}
+#Var UltimoCiudadania {No hay mensajes en el canal ciudadanía}
+#Var SilencioCiudadania 0
+#Var HistorialChat {}
+#Var UltimoChat {No hay mensajes en el canal chat}
+#Var SilencioChat 0
+#Var HistorialGremio {}
+#Var UltimoGremio {No hay mensajes en el canal gremio}
+#Var SilencioGremio 0
+#Var HistorialFamilia {}
+#Var UltimoFamilia {No hay mensajes en el canal familiar}
+#Var SilencioFamilia 0
+#Var HistorialRol {}
+#Var UltimoRol {No hay mensajes en el canal Rol}
+#Var SilencioRol 0
+#Var HistorialVarios
+#Var UltimoVarios {No hay mensajes en los canales variados}
+#Var SilencioVarios 0
+#Var HistorialEspeciales {}
+#Var UltimoEspeciales {No hay mensajes de canales especiales}
+#Var SilencioEspeciales 0
+#Var Bandos {Bueno|Malo|Mercenario|Anarquico|Renegado}
+#Var Ciudadanias {Kheleb|Kattak|Ak'anon|Anduar|Veleiron|Grimoszk|Takome|Thorin|Poldarn|Eloras|Eldor|Ar'kaindia|Dendra|Mor_groddur|Golthur|Ancarak|Keel}
+#Var Gremios {Alianza|Horda_negra|Cruzada_eralie|Ej_dendra|Dhara|Inquisicion|Guante_blanco|las_garzas|colmillos_venenosos|viuda_negra|custodios_del_eter|sombras_del_baltia|sello_carmesí}
+#Var Familias {Girlhim|Ethengard|Throril|Gutjjakar}
+
+;Variables generales:
+#Var Canales {@Bandos|@Ciudadanias|@Gremios|@Familias|Chat|Rol|Gritas|grita.}
+#Var FlagFiltroCanales 0
+
+
+;Función para filtrar los textos pasteados por los diversos canales. Para usarla:
+;FFiltroCanales %0;
+;#If {@FlagFiltroCanales = 1} {#Abort};
+#GAlias FFiltroCanales {
+FuncCorrectorSignos %0;
+#If {%IfWord(%Word(@Corregir, ,1),@Canales,|) or %IfWord(%Word(@Corregir, ,2),@Canales,|) or %IfWord("dice","@corregir"," ") or %IfWord("dice.","@corregir"," ") or %IfWord("dices","@corregir"," ") or %IfWord("emote","@corregir"," ") or %IfWord("exclama.","@corregir"," ") or %IfWord("exclama","@corregir"," ")} {
+ #Var FlagFiltroCanales 1
+} {
+ #Var FlagFiltroCanales 0
+}
+} 
+
+
+;Funciones de comunicación:
+
+
+;Funciones para el uso de la telepatía:
+
+#GAlias FTelepatia {
+FuncCorrectorSignos %1;
+#If {%IfWord(%Word(@Corregir, ,1),@Canales,|)} {#Abort};
+#If {%IfWord("dice","@corregir"," ") or %IfWord("dice.","@corregir"," ") or %IfWord("dices","@corregir"," ")} {#Abort};
+#Var Remitente @Corregir;
+#AddItem RemitentesLista {@Remitente:FCambiarRemitente @Remitente} noduplicates;
+#If {%NumWords(@HistorialTels,|) = 99} {#Var HistorialTels {%DelNItem(@HistorialTels,1)}};
+FuncCorrectorSignos %4;
+#Var UltimoTel {@Remitente. @Corregir};
+#Var HistorialTels {@HistorialTels|@UltimoTel:FCopiar @Remitente %2 %3 @Corregir};
+#If {@SilencioTels = 1} {#GagLine Voice};
+#Play {RL\Comunicaciones\telepatia.wav}}
+
+#GAlias FCambiarRemitente {
+#Var Remitente %0;
+#Say {Telepatía con @{Remitente}} NoDisplay|Output}
+
+
+;Funciones para conversaciones en la room:
+
+#GAlias FRoom {
+FuncCorrectorSignos %0;
+#If {%IfWord(%Word(@Corregir, ,1),@Canales,|)} {#Abort};
+#If {%IfWord("te",%1," ") or %IfWord("grita",%1," ") or %IfWord("gritas",%1," ")} {#Abort};
+#If {%NumWords(@HistorialRoom,|) = 99} {#Var HistorialRoom {%DelNItem(@HistorialRoom,1)}};
+FuncCorrectorSignos {%1. %3 (%2)};
+#Var UltimoRoom @Corregir;
+#AddItem HistorialRoom {@UltimoRoom:FCopiar @Corregir};
+#If {@SilencioRoom = 0} {#Say {@UltimoRoom} NoDisplay|Incoming};
+#Play {RL\Comunicaciones\Room.wav};
+#GagLine voice}
+
+
+;Funciones para el uso de canales:
+
+#GAlias FSeleccionCanal {
+#If {@SeleccionCanal = 0} {
+ #Say {Historial general} NoDisplay|Output;
+ #Play {RL\Comunicaciones\Seleccion canal defecto.wav};
+ #If {@SilencioBando = 1 and @SilencioCiudadania = 1 and @SilencioChat = 1 and @SilencioGremio = 1 and @SilencioFamilia = 1 and @SilencioEspeciales = 1} {
+ #Play {RL\Comunicaciones\Canal muteado.wav}}
+};
+#If {@SeleccionCanal = 1} {
+ #Say {Historial bando} NoDisplay|Output;
+ #If {@SilencioBando = 1} {#Play {RL\Comunicaciones\Canal muteado.wav}}
+};
+#If {@SeleccionCanal = 2} {
+ #Say {Historial ciudadanía} NoDisplay|Output;
+ #If {@SilencioCiudadania = 1} {#Play {RL\Comunicaciones\Canal muteado.wav}}
+};
+#If {@SeleccionCanal = 3} {
+ #Say {Historial chat} NoDisplay|Output;
+ #If {@SilencioChat = 1} {#Play {RL\Comunicaciones\Canal muteado.wav}}
+};
+#If {@SeleccionCanal = 4} {
+ #Say {Historial gremio} NoDisplay|Output;
+ #If {@SilencioGremio = 1} {#Play {RL\Comunicaciones\Canal muteado.wav}}
+};
+#If {@SeleccionCanal = 5} {
+ #Say {Historial familia} NoDisplay|Output;
+ #If {@SilencioFamilia = 1} {#Play {RL\Comunicaciones\Canal muteado.wav}}
+};
+#If {@SeleccionCanal = 6} {
+ #Say {Historial rol} NoDisplay|Output;
+ #If {@SilencioRol = 1} {#Play {RL\Comunicaciones\Canal muteado.wav}}
+};
+#If {@SeleccionCanal = 7} {
+ #Say {Historial Varios} NoDisplay|Output;
+ #If {@SilencioVarios = 1} {#Play {RL\Comunicaciones\Canal muteado.wav}}
+};
+#If {@SeleccionCanal = 8} {
+ #Say {Historial especiales} NoDisplay|Output;
+ #If {@SilencioEspeciales = 1} {#Play {RL\Comunicaciones\Canal muteado.wav}}
+};
+#Play {RL\Comunicaciones\Seleccion canal.wav}
+}
+
+#GAlias FCanalGeneral {
+#If {%NumWords(@HistorialGeneral,|) = 99} {#Var HistorialGeneral {%DelNItem(@HistorialGeneral,1)}};
+FuncCorrectorCanales {%1 %2 %3};
+FuncCorrectorSignos {@Corregir};
+#Var UltimoGeneral {@Corregir};
+#AddItem HistorialGeneral {@UltimoGeneral:FCopiar @UltimoGeneral};
+#If {%IfWord(%char,%3, )} {
+ #Play {RL\Comunicaciones\Mencion.wav}
+};
+#GagLine Voice
+}
+
+#GAlias FCanalBando {
+FCanalGeneral %1 %2 %3;
+#If {%NumWords(@HistorialBando,|) = 99} {#Var HistorialBando {%DelNItem(@HistorialBando,1)}};
+FuncCorrectorCanales {%1 %2 %3};
+FuncCorrectorSignos {@Corregir};
+#Var UltimoBando {@Corregir};
+#AddItem HistorialBando {@UltimoBando:FCopiar @UltimoBando};
+#If {@SilencioBando = 0} {
+ #If {@ModoE = 1} {
+  FuncCorrectorCanales {%2 %3};
+  FuncCorrectorSignos {@Corregir};
+  #Say {@Corregir} NoDisplay|Incoming
+ } {
+  #Say {@UltimoBando} NoDisplay|Incoming
+ }
+}
+}
+
+#GAlias FCanalCiudadania {
+FCanalGeneral %1 %2 %3;
+#If {%NumWords(@HistorialCiudadania,|) = 99} {#Var HistorialCiudadania {%DelNItem(@HistorialCiudadania,1)}};
+FuncCorrectorCanales {%0};
+FuncCorrectorSignos {@Corregir};
+#Var UltimoCiudadania {@Corregir};
+#AddItem HistorialCiudadania {@UltimoCiudadania:FCopiar @UltimoCiudadania};
+#If {@SilencioCiudadania = 0} {
+ #If {@ModoE = 1} {
+  FuncCorrectorCanales {%2 %3};
+  FuncCorrectorSignos {@Corregir};
+  #Say {@Corregir} NoDisplay|Incoming
+ } {
+  #Say {@UltimoCiudadania} NoDisplay|Incoming
+ }
+}
+}
+
+#GAlias FCanalChat {
+FCanalGeneral %0;
+#If {%NumWords(@HistorialChat,|) = 99} {#Var HistorialChat {%DelNItem(@HistorialChat,1)}};
+FuncCorrectorCanales {%0};
+FuncCorrectorSignos {@Corregir};
+#Var UltimoChat {@Corregir};
+#AddItem HistorialChat {@UltimoChat:FCopiar @UltimoChat};
+#If {@SilencioChat = 0} {
+ #If {@ModoE = 1} {
+  FuncCorrectorCanales {%2 %3};
+  FuncCorrectorSignos {@Corregir};
+  #Say {@Corregir} NoDisplay|Incoming
+ } {
+  #Say {@UltimoChat} NoDisplay|Incoming
+ }
+}
+}
+
+#GAlias FCanalGremio {
+FCanalGeneral %1 %2 %3;
+#If {%NumWords(@HistorialGremio,|) = 99} {#Var HistorialGremio {%DelNItem(@HistorialGremio,1)}};
+FuncCorrectorCanales {%0};
+FuncCorrectorSignos {@Corregir};
+#Var UltimoGremio {@Corregir};
+#AddItem HistorialGremio {@UltimoGremio:FCopiar @UltimoGremio};
+#If {@SilencioGremio = 0} {
+ #If {@ModoE = 1} {
+  FuncCorrectorCanales {%2 %3};
+  FuncCorrectorSignos {@Corregir};
+  #Say {@Corregir} NoDisplay|Incoming
+ } {
+  #Say {@UltimoGremio} NoDisplay|Incoming
+ }
+}
+}
+
+#GAlias FCanalFamilia {
+FCanalGeneral %1 %2 %3;
+#If {%NumWords(@HistorialFamilia,|) = 99} {#Var HistorialFamilia {%DelNItem(@HistorialFamilia,1)}};
+FuncCorrectorCanales {%0};
+FuncCorrectorSignos {@Corregir};
+#Var UltimoFamilia {@Corregir};
+#AddItem HistorialFamilia {@UltimoFamilia:FCopiar @UltimoFamilia};
+#If {@SilencioFamilia = 0} {
+ #If {@ModoE = 1} {
+  FuncCorrectorCanales {%2 %3};
+  FuncCorrectorSignos {@Corregir};
+  #Say {@Corregir} NoDisplay|Incoming
+ } {
+  #Say {@UltimoFamilia} NoDisplay|Incoming
+ }
+}
+}
+
+#GAlias FCanalRol {
+FCanalGeneral %1 %2 %3;
+#If {%NumWords(@HistorialRol,|) = 99} {#Var HistorialRol {%DelNItem(@HistorialRol,1)}};
+FuncCorrectorCanales {%0};
+FuncCorrectorSignos {@Corregir};
+#Var UltimoRol {@Corregir};
+#AddItem HistorialRol {@UltimoRol:FCopiar @UltimoRol};
+#If {@SilencioRol = 0} {
+ #If {@ModoE = 1} {
+  FuncCorrectorCanales {%2 %3};
+  FuncCorrectorSignos {@Corregir};
+  #Say {@Corregir} NoDisplay|Incoming
+ } {
+  #Say {@UltimoRol} NoDisplay|Incoming
+ }
+}
+}
+
+#GAlias FCanalVarios {
+FCanalGeneral %1 %2 %3;
+#If {%NumWords(@HistorialVarios,|) = 99} {#Var HistorialVarios {%DelNItem(@HistorialVarios,1)}};
+FuncCorrectorCanales {%0};
+FuncCorrectorSignos {@Corregir};
+#Var UltimoVarios {@Corregir};
+#AddItem HistorialVarios {@UltimoVarios:FCopiar @UltimoVarios};
+#If {@SilencioVarios = 0} {
+ #If {@ModoE = 1} {
+  FuncCorrectorCanales {%2 %3};
+  FuncCorrectorSignos {@Corregir};
+  #Say {@Corregir} NoDisplay|Incoming
+ } {
+  #Say {@UltimoVarios} NoDisplay|Incoming
+ }
+}
+}
+
+#GAlias FCanalEspeciales {
+FCanalGeneral %0;
+#If {%NumWords(@HistorialEspeciales,|) = 99} {#Var HistorialEspeciales {%DelNItem(@HistorialEspeciales,1)}};
+FuncCorrectorCanales {%0};
+FuncCorrectorSignos {@Corregir};
+#Var UltimoEspeciales {@Corregir};
+#AddItem HistorialEspeciales {@UltimoEspeciales:FCopiar @UltimoEspeciales};
+#If {@SilencioEspeciales = 0} {
+ #Say {@UltimoEspeciales} NoDisplay|Incoming
+}
+}
+
+
+;Funciones para comunicaciones enviadas:
+
+#GAlias FComunicacionE {
+#If {%IfWord(%Word(%1, ,1),"a" )} {
+ #Play {RL\Comunicaciones\Telepatia e.wav}
+} {
+ #Play {RL\Comunicaciones\Room e.wav}
+}
+}
+
+
+;Triggers para capturar las comunicaciones:
+
+
+;Triggers para capturar los mensajes de telepatía entrantes.
+
+#GTrigger {* te dice: *} {
+FTelepatia %1 te dice. %2
+} {}
+
+#GTrigger {* te exclama: *} {
+FTelepatia %1 te exclama. %2
+} {}
+
+#GTrigger {* te pregunta: *} {
+FTelepatia %1 te pregunta. %2
+} {}
+
+#GTrigger {*-*-* (*:*) - * te dijo: *} {
+FTelepatia %6 te dijo. %7
+} {}
+
+
+;Triggers para capturar los mensajes en la room
+#GTrigger {* pregunta*: *} {FRoom %1 %2 %3} {}
+#GTrigger {* exclama*: *} {FRoom %1 %2 %3} {}
+#GTrigger {* dice*: *} {FRoom %1 %2 %3} {}
+#GTrigger {* te susurra: *} {FRoom %1 %2 (Susurrando)}
+#GTrigger {* balbucea*: *} {FRoom %1 %2 %3}
+#GTrigger {* ordena: *} {FRoom %1 %2 %3}
+#GTrigger {* responde: *} {FRoom %1 %2 %3}
+#GTrigger {Oyes una voz * de * decir: *} {FRoom {voz %1 de %2: %3}} {} AnyCase
+
+
+;Triggers para capturar los chats.
+
+#GTrigger {[[]*] * *} {
+#If {%IfWord(%1,@Bandos,|)} {
+ FCanalBando %1 %2 %3;
+ #Play {RL\Comunicaciones\Bando.wav}
+};
+#If {%IfWord(%1,"Malvados", ) or %IfWord(%1,"Solitarios", )} {
+ FCanalBando %1 %2 %3;
+ #Play {RL\Comunicaciones\Interbando.wav}
+};
+#If {%IfWord(%1,@Ciudadanias,|)} {
+ FCanalCiudadania %1 %2 %3;
+ #Play {RL\Comunicaciones\Ciudadania.wav}
+};
+#If {%IfWord(%1,"Chat", )} {
+ FCanalChat %1 %2 %3;
+ #Play {RL\Comunicaciones\Chat.wav}
+};
+#If {%IfWord(%1,@Gremios,|)} {
+ FCanalGremio %1 %2 %3;
+ #Play {RL\Comunicaciones\Gremio.wav}
+};
+#If {%IfWord(%1,@Familias,|)} {
+ FCanalFamilia %1 %2 %3;
+ #Play {RL\Comunicaciones\Clan.wav}
+};
+#If {%IfWord(%1,"Rol", )} {
+ FCanalRol %1 %2 %3;
+ #Play {RL\Comunicaciones\Rol.wav}
+};
+#If {%IfWord(%1,"Novato", 	)} {
+ FCanalVarios %1 %2 %3;
+ #Play {RL\Comunicaciones\Novato.wav}
+};
+#If {%IfWord(%1,"Consulta", ) or %IfWord(%1,"Consulta",.)} {
+ FCanalVarios %1 %2 %3;
+ #Play {RL\Comunicaciones\Consulta.wav}
+};
+#If {%IfWord(%1,"Trivial", )} {
+ FCanalVarios %1 %2 %3;
+ #Play {RL\Comunicaciones\Trivial.wav}
+};
+#If {%IfWord(%1,"Taberna", )} {
+ FCanalVarios %1 %2 %3;
+ #Play {RL\Comunicaciones\Taberna.wav}
+};
+#If {%IfWord(%1,"Avatar", )} {
+ FCanalVarios %1 %2 %3;
+ #Play {RL\Comunicaciones\Avatar.wav}
+};
+#If {%IfWord(%1,"Cre", )} {
+ FCanalVarios %1 %2 %3;
+ #Play {RL\Comunicaciones\Creadores.wav}
+}
+} {} AnyCase
+
+#GTrigger {[[]Grupo-*] *} {
+#If {@ModoE = 0} {
+ FCanalVarios %0
+} {
+ FCanalVarios %1 %2
+};
+#Play {RL\Comunicaciones\Grupo.wav}
+} {} AnyCase
+
+#GTrigger {[[]Desafío de *] *: *} {
+#If {@ModoE = 0} {
+ FCanalVarios %0
+} {
+ FCanalVarios %1 %2 %3
+};
+#Play {RL\Comunicaciones\Omiq 1.wav}
+} {} AnyCase
+
+#GTrigger {[[]FlagOmiq] *: *} {
+#If {@ModoE = 0} {
+ FCanalVarios %0
+} {
+ FCanalVarios %1 %2 %3
+};
+#Play {RL\Comunicaciones\Omiq 1.wav}
+} {} AnyCase
+
+#GTrigger {[[]FlagOmiq (*)] *: *} {
+#If {@ModoE = 0} {
+ FCanalVarios %0
+} {
+ FCanalVarios %1 %2 %3
+};
+#Play {RL\Comunicaciones\Omiq 2.wav}
+} {} AnyCase
+
+#GTrigger {* grita*: *} {
+FCanalEspeciales %0;
+#Play {RL\Comunicaciones\Gritar.wav}
+} {} AnyCase
+
+#GTrigger {*[[]Info*]*} {
+FCanalEspeciales %0;
+#Play {RL\Comunicaciones\Info.wav}
+} {} AnyCase
+
+#GTrigger {* (( Info )): *} {
+FCanalEspeciales %0;
+#Play {RL\Comunicaciones\Info.wav}
+} {} AnyCase
+
+#GTrigger {[[]Diplomacia]: *} {
+ FCanalEspeciales %0;
+ #Play {RL\Comunicaciones\Diplomacia.wav}
+} {} AnyCase
+
+#GTrigger {[[]Emoci?n] *} {
+ FCanalEspeciales %0;
+ #Play {RL\Comunicaciones\Emocion.wav}
+} {} AnyCase
+
+
+;Activación y desactivación de canales:
+
+#GTrigger {Ok, activas el canal-*.} {
+#Play {RL\Comunicaciones\Canal on.wav}
+} {} AnyCase
+
+#GTrigger {Ok, apagas el canal-*.} {
+#Play {RL\Comunicaciones\Canal off.wav}
+} {} AnyCase
+
+#GTrigger {Te despides de los parroquianos de todas las tabernas de Eirea.} {
+#Play {RL\Comunicaciones\Canal off.wav}
+} {} AnyCase
+
+#GTrigger {Pierdes conexión con el canal *.} {
+#Play {RL\Comunicaciones\Conexion perdida.wav}
+} {} AnyCase
+
+
+;Triggers para comunicaciones enviadas:
+
+#GTrigger {Dices *: *} {
+FComunicacionE %1
+} {} AnyCase
+
+#GTrigger {Preguntas *: *} {
+FComunicacionE %1
+} {} AnyCase
+
+#GTrigger {Exclamas *: *} {
+FComunicacionE %1
+} {} AnyCase
+
+
+;Sección mail y noticias:
+
+#GTrigger {*Nuevo correo de *} {
+FCanalEspeciales %0;
+#Play {RL\Comunicaciones\Mail.wav}
+} {} AnyCase
+
+#GTrigger {- Tienes * correo* sin leer. Consúltalo* en cualquier oficina de correos.} {
+FCanalEspeciales %0;
+#Play {RL\Comunicaciones\Mail.wav}
+} {} AnyCase
+
+#GTrigger {- Tienes * noticia* sin leer. Consúltala* con el comando 'noticias'.} {
+FCanalEspeciales %0;
+#Play {RL\Comunicaciones\Noticias.wav}
+} {} AnyCase
+
+#GTrigger {Asunto: *} {
+#Play {RL\Comunicaciones\Asunto.wav}
+} {} AnyCase
+
+
+;Algunos Triggers de otros;:
+
+#GTrigger {* contacta telep?ticamente con un infiel.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Comunicaciones\Infiel.wav}
+} {} AnyCase
+
+
+;Keys para las comunicaciones:
+
+
+;Keys para la telepatía:
+
+; Shift-f3 saca el historial de tels.
+#GKey shift-F3 {
+#If {@HistorialTels = ""} {
+ #Say {Historial de telepatía vacío} Nodisplay|output
+} {
+ #Pick {%ReverseList(@HistorialTels)}
+}
+}
+
+;Alt f3 lee el ultimo tel.
+#GKey alt-f3 {
+#Say {@{UltimoTel}} NoDisplay|Output}
+
+;Control f3 silencia la lectura de tels entrantes
+#GKey control-f3 {
+#if {@SilencioTels = 0} {
+ #Var SilencioTels 1;
+ #say {Lectura de Tels desactivada} nodisplay|Output;
+ #Play {RL\Comunicaciones\Canal muteado.wav}
+} {
+ #Var SilencioTels 0;
+ #say {Lectura de Tels activada} nodisplay|Output;
+ #Play {RL\Comunicaciones\Canal desmuteado.wav}
+}
+}
+
+;Alt t dice el nombre del remitente del último tel recibido
+#GKey alt-t {
+#If {@Remitente = ""} {
+ #say {Nadie te ha enviado mensajes de telepatía por el momento} nodisplay|Output
+} {
+ #Say {Telepatía con @Remitente} NoDisplay|Output
+}
+}
+
+;El alias r responde automáticamente al remitente del último tel recibido.
+#GAlias r {t @Remitente %0}
+
+;ctrl-t despliega la lista de remitentes recientes:
+#GKey ctrl-t {
+#If {@RemitentesLista = ""} {
+ #Say {Nadie te ha enviado mensajes de telepatía por el momento} NoDisplay|Output
+} {
+ #Pick {%ReverseList(@RemitentesLista)}
+}
+}
+
+
+;Keys para las conversaciones en la room.
+
+;Shift f2 saca el historial de room.
+#GKey shift-F2 {
+#If {@HistorialRoom = ""} {
+ #Say {Historial de room vacío} Nodisplay|Output
+} {
+ #Pick {%ReverseList(@HistorialRoom)}
+}
+}
+
+;Alt f2 lee el ultimo mensaje de la room.
+#GKey alt-f2 {
+#Say {@{UltimoRoom}} NoDisplay|Output}
+
+;Ctrl f2 Activa y desactiva la lectura de conversaciones en room automática
+#GKey control-f2 {
+#if {@SilencioRoom = 0} {
+ #Var SilencioRoom 1;
+ #say {Lectura de Room desactivada} nodisplay|Output;
+ #Play {RL\Comunicaciones\Canal muteado.wav}
+} {
+ #Var SilencioRoom 0;
+ #say {Lectura de Room activada} nodisplay|Output;
+ #Play {RL\Comunicaciones\Canal desmuteado.wav}
+}
+}
+
+
+;Keys para manejo de  canales:
+
+;Shift f1 saca el historial de Chats.
+#GKey shift-F1 {
+#If {@SeleccionCanal = 0} {
+ #If {@HistorialGeneral = ""} {
+  #Say {Historial general de canales vacío} NoDisplay|Output
+ } {
+  #Pick {%ReverseList(@HistorialGeneral)}
+ }
+};
+#If {@SeleccionCanal = 1} {
+ #If {@HistorialBando = ""} {
+  #Say {Historial del canal bando vacío} NoDisplay|Output
+ } {
+  #Pick {%ReverseList(@HistorialBando)}
+ }
+};
+#If {@SeleccionCanal = 2} {
+ #If {@HistorialCiudadania = ""} {
+  #Say {Historial del canal ciudadanía vacío} NoDisplay|Output
+ } {
+  #Pick {%ReverseList(@HistorialCiudadania)}
+ }
+};
+#If {@SeleccionCanal = 3} {
+ #If {@HistorialChat = ""} {
+  #Say {Historial del canal chat vacío} NoDisplay|Output
+ } {
+  #Pick {%ReverseList(@HistorialChat)}
+ }
+};
+#If {@SeleccionCanal = 4} {
+ #If {@HistorialGremio = ""} {
+  #Say {Historial del canal gremio vacío} NoDisplay|Output
+ } {
+  #Pick {%ReverseList(@HistorialGremio)}
+ }
+};
+#If {@SeleccionCanal = 5} {
+ #If {@HistorialFamilia = ""} {
+  #Say {Historial del canal familiar vacío} NoDisplay|Output
+ } {
+  #Pick {%ReverseList(@HistorialFamilia)}
+ }
+};
+#If {@SeleccionCanal = 6} {
+ #If {@HistorialRol = ""} {
+  #Say {Historial del canal rol vacío} NoDisplay|Output
+ } {
+  #Pick {%ReverseList(@HistorialRol)}
+ }
+};
+#If {@SeleccionCanal = 7} {
+ #If {@HistorialVarios = ""} {
+  #Say {Historial de canales variados vacío} NoDisplay|Output
+ } {
+  #Pick {%ReverseList(@HistorialVarios)}
+ }
+};
+#If {@SeleccionCanal = 8} {
+ #If {@HistorialEspeciales = ""} {
+  #Say {Historial de canales especiales vacío} NoDisplay|Output
+ } {
+  #Pick {%ReverseList(@HistorialEspeciales)}
+ }
+}
+}
+
+;Alt f1 lee el ultimo mensaje del canal seleccionado:
+#GKey alt-f1 {
+#If {@SeleccionCanal = 0} {#Say {@UltimoGeneral} NoDisplay|Output};
+#If {@SeleccionCanal = 1} {#Say {@UltimoBando} NoDisplay|Output};
+#If {@SeleccionCanal = 2} {#Say {@UltimoCiudadania} NoDisplay|Output};
+#If {@SeleccionCanal = 3} {#Say {@UltimoChat} NoDisplay|Output};
+#If {@SeleccionCanal = 4} {#Say {@UltimoGremio} NoDisplay|Output};
+#If {@SeleccionCanal = 5} {#Say {@UltimoFamilia} NoDisplay|Output};
+#If {@SeleccionCanal = 6} {#Say {@UltimoRol} NoDisplay|Output};
+#If {@SeleccionCanal = 7} {#Say {@UltimoVarios} NoDisplay|Output};
+#If {@SeleccionCanal = 8} {#Say {@UltimoEspeciales} NoDisplay|Output}
+}
+
+;Control f1 silencia la lectura automática del canal seleccionado:
+#GKey control-f1 {
+#If {@SeleccionCanal = 0} {
+ #If {@SilencioBando = 1 or @SilencioCiudadania = 1 or @SilencioChat = 1 or @SilencioGremio = 1 or @SilencioFamilia = 1 or @SilencioRol = 1 or @SilencioEspeciales = 1} {
+  #Var SilencioGeneral 0;
+  #Var SilencioBando 0;
+  #Var SilencioCiudadania 0;
+  #Var SilencioChat 0;
+  #Var SilencioGremio 0;
+  #Var SilencioFamilia 0;
+  #Var SilencioRol 0;
+  #Var SilencioEspeciales 0;
+  #Say {Todos los canales activados} NoDisplay|Output;
+  #Play {RL\Comunicaciones\Canal desmuteado.wav}
+ } {  #Var SilencioGeneral 1;
+  #Var SilencioBando 1;
+  #Var SilencioCiudadania 1;
+  #Var SilencioChat 1;
+  #Var SilencioGremio 1;
+  #Var SilencioFamilia 1;
+  #Var SilencioRol 1;
+  #Var SilencioEspeciales 1;
+  #Say {Todos los canales silenciados} NoDisplay|Output;
+  #Play {RL\Comunicaciones\Canal muteado.wav}
+ }
+};
+#If {@SeleccionCanal = 1} {
+ #If {@SilencioBando = 0} {
+  #Var SilencioBando 1;
+  #Say {Canal bando silenciado} NoDisplay|Output;
+  #Play {RL\Comunicaciones\Canal muteado.wav}
+ } {
+  #Var SilencioBando 0;
+  #Say {Canal bando activado} NoDisplay|Output;
+  #Play {RL\Comunicaciones\Canal desmuteado.wav}
+ }
+};
+#If {@SeleccionCanal = 2} {
+ #If {@SilencioCiudadania = 0} {
+  #Var SilencioCiudadania 1;
+  #Say {Canal Ciudadanía silenciado} NoDisplay|Output;
+  #Play {RL\Comunicaciones\Canal muteado.wav}
+ } {
+  #Var SilencioCiudadania 0;
+  #Say {Canal Ciudadanía activado} NoDisplay|Output;
+  #Play {RL\Comunicaciones\Canal desmuteado.wav}
+ }
+};
+#If {@SeleccionCanal = 3} {
+ #If {@SilencioChat = 0} {
+  #Var SilencioChat 1;
+  #Say {Canal Chat silenciado} NoDisplay|Output;
+  #Play {RL\Comunicaciones\Canal muteado.wav}
+ } {
+  #Var SilencioChat 0;
+  #Say {Canal Chat activado} NoDisplay|Output;
+  #Play {RL\Comunicaciones\Canal desmuteado.wav}
+ }
+};
+#If {@SeleccionCanal = 4} {
+ #If {@SilencioGremio = 0} {
+  #Var SilencioGremio 1;
+  #Say {Canal Gremio silenciado} NoDisplay|Output;
+  #Play {RL\Comunicaciones\Canal muteado.wav}
+ } {
+  #Var SilencioGremio 0;
+  #Say {Canal Gremio activado} NoDisplay|Output;
+  #Play {RL\Comunicaciones\Canal desmuteado.wav}
+ }
+};
+#If {@SeleccionCanal = 5} {
+ #If {@SilencioFamilia = 0} {
+  #Var SilencioFamilia 1;
+  #Say {Canal Familia silenciado} NoDisplay|Output;
+  #Play {RL\Comunicaciones\Canal muteado.wav}
+ } {
+  #Var SilencioFamilia 0;
+  #Say {Canal Familia activado} NoDisplay|Output;
+  #Play {RL\Comunicaciones\Canal desmuteado.wav}
+ }
+};
+#If {@SeleccionCanal = 6} {
+ #If {@SilencioRol = 0} {
+  #Var SilencioRol 1;
+  #Say {Canal rol silenciado} NoDisplay|Output;
+  #Play {RL\Comunicaciones\Canal muteado.wav}
+ } {
+  #Var SilencioRol 0;
+  #Say {Canal rol activado} NoDisplay|Output;
+  #Play {RL\Comunicaciones\Canal desmuteado.wav}
+ }
+};
+#If {@SeleccionCanal = 7} {
+ #If {@SilencioVarios = 0} {
+  #Var SilencioVarios 1;
+  #Say {Canales variados silenciados} NoDisplay|Output;
+  #Play {RL\Comunicaciones\Canal muteado.wav}
+ } {
+  #Var SilencioVarios 0;
+  #Say {Canales variados activados} NoDisplay|Output;
+  #Play {RL\Comunicaciones\Canal desmuteado.wav}
+ }
+};
+#If {@SeleccionCanal = 8} {
+ #If {@SilencioEspeciales = 0} {
+  #Var SilencioEspeciales 1;
+  #Say {Canales Especiales silenciados} NoDisplay|Output;
+  #Play {RL\Comunicaciones\Canal muteado.wav}
+ } {
+  #Var SilencioEspeciales 0;
+  #Say {Canales Especiales activados} NoDisplay|Output;
+  #Play {RL\Comunicaciones\Canal desmuteado.wav}
+ }
+}
+}
+
+;Cambia la selección de canal para el historial:
+#GKey ctrl-. {
+#Mat SeleccionCanal {@SeleccionCanal+1};
+#If {@SeleccionCanal > 8} {
+ #Var SeleccionCanal 0
+};
+FSeleccionCanal
+}
+
+#GKey ctrl-, {
+#Mat SeleccionCanal {@SeleccionCanal-1};
+#If {@SeleccionCanal < 0} {
+ #Var SeleccionCanal 8
+};
+FSeleccionCanal
+}

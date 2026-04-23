@@ -1,0 +1,212 @@
+;Módulo: Paths_Kattak.set
+;Versión: 2.0, 10/11/2018
+;Descripción: Paths que se originan o transcurren en el reino de Kattak.
+;Autor: Rhomdur.
+
+
+;Origen:  cruce del desfiladero leernavel, (CDL):
+
+#GTrigger {Desfiladero Leherdavel: Bifurcación de caminos *[[]o,s,e] } {
+FPathDisponible;
+#Var Mapa {
+Kattak, Plaza:FPath;.CDLKtC
+|
+Akanon, puertas:FPath;.CDLAkaP
+|
+Anduar, Plaza:FPath;.CDLAndC
+|
+Vahía de Urlom:FPath;.CDLVU
+}
+} {} AnyCase
+
+#GAlias {.CDLAkaP} {
+s;s;so;so;s;se;e;s;se;s;so;ar;s;s;se;s;s;s;s;se;s;so;s;so;so;so;s;o;s;se;se;se;so;ar;o;o;so;no;o;no;o;so;so;o;so;o;se;o;so;o;so;s;ab;so;se;s;so;s;so;no;so;so;s;so;so;so;s;so;o;so;o;no;o;so;o;so;o;so;o;no;no;o;s;so;o;so;s;so;o;ab;o;so;o;so;so;no;so;o;so;so;se;s;so;s;so;se;s;so;ar;s;s;so;o;o;so;so;s;so;so;o;so;ar;so;so;o;so;o;no;so;so;s;ar;o;so;o;so;o;so;no;o;so;o;so;ar;o;o;no;s;so;s;so;o;no;o;n;n;no;no;no;no;o;o;n;no;no;o;o;o;o;o;ar;no;ne;no;n;n;n;o;ab;o;o}
+
+#GAlias {.CDLVU} {
+s;s;so;so;s;se;e;s;se;s;so;ar;s;s;se;s;s;s;s;se;s;so;s;so;so;so;s;o;s;se;se;se;so;ar;o;o;so;no;o;no;o;so;so;o;so;o;se;o;so;o;so;s;ab;so;se;s;so;s;so;no;so;so;s;so;so;so;s;so;o;so;o;no;o;so;o;so;o;so;o;no;no;o;s;so;o;so;s;so;o;ab;o;so;o;so;so;no;so;o;so;so;se;s;so;s;so;se;s;so;ar;s;s;so;o;o;so;so;s;so;so;o;so;ar;so;so;o;so;o;no;so;so;s;ar;o;s;s;e;se;ab;so;o;n;no;so;se;ab;se;e;ne;e;ab;so;so;o;so;so;so;o;so;s;so}
+
+#GAlias {.CDLKtC} {
+o;so;no;o;o;o;so;o;o;so;s;so;o;no;o;so;so;o;so;o;so;so;o;o;n;no;o;so;o;o;o;so;s;so;o;no;o;no;o;o;o;o;o;o;o;o;o;o;o}
+
+#GAlias {.CDLAndC} {
+e;se;ne;e;ne;se;ne;se;e;e;se;ne;e;ne;se;ne;ne;se;e;e;e;e;e;e;se;s;se;e;n;ne;ne;n;n;n;ne;ne;n;n;no;ne;e;ne;e;se;se;e;ne;e;e;se;e;ne;ne;ne;e;e;e;e;e;e;e;se;e;e;ne;e;e;ne;n;ne;e;e;se;e;e;ne;ne;ne;e;se;e;ne;e;ne;n;ne;e;se;ne;e;ne;e;se;e;ne;ne;e;e;e;e;e;e;e;e;e;e;e;e}
+
+
+;Origen: Kattak plaza, (KtC):
+
+#GTrigger {Kattak: Plaza de la Alianza *[[]so,s,e,ne,n,no,o] } {
+FPathDisponible;
+#Var Mapa {
+Kheleb, Puertas:FPath;.KtCKdP
+|
+Anduar, Plaza:FPath;.KtCAndC
+|
+Akanon, puertas:FPath;.KtCAkaP
+|
+Vahía de Urlom:FPath;.KtCVU
+|
+Eloras, Plaza:FPath;.KtCEloC
+|
+Takome, plaza:FPath;.KtCTkC
+|
+Takome, plaza (Por muralla s de Anduar):FPath;.KtCTkCM
+|
+Veleiron, centro:FPath;.KtCVeleC
+|
+Veleiron, centro (Por muralla s de Anduar):FPath;.KtCVeleCM
+}
+} {} AnyCase
+
+#GAlias {.KtCEloC} {
+e;e;e;e;e;e;e;e;e;e;e;se;e;se;e;ne;n;ne;e;e;e;ne;e;se;s;e;e;ne;ne;e;ne;e;ne;ne;e;se;e;ne;n;ne;e;e;ne;e;e;e;se;ne;e;e;se;ne;e;ne;se;ne;se;e;e;se;ne;e;ne;se;ne;ne;se;e;e;e;e;e;e;se;s;se;e;n;ne;ne;n;n;n;ne;ne;n;n;no;ne;e;ne;e;se;se;e;ne;e;e;se;e;ne;ne;ne;e;e;e;e;e;e;e;se;e;e;ne;e;e;ne;n;ne;e;e;se;e;e;ne;ne;ne;e;se;e;ne;e;ne;n;ne;e;se;ne;e;ne;e;se;e;ne;ne;e;n;n;n;n;n;n;n;n;n;n;n;e;e;e;e;e;e;e;e;e;e;e;n;n;no;n;n;no;no;n;ne;n;ne;n;n;no;o;no;n;ne;n;ne;n;n;n;no;o;n;ne;ne;no;no;o;no;ne;n;no;n;ne;ne;n;no;o;o;no;n;n;n;no;no;o;no;n;ne;e;no;o;no;n;no;ar;o;no;ar;no;ne;e;ne;ar;no;o;no;so;no;no;no;ab;so;s;se;s;so;s;o;so;ab;o;n;no;ne;no;n;no;no;no;ne;n;n;n}
+
+#GAlias {.KtCAndC} {
+e;e;e;e;e;e;e;e;e;e;e;se;e;se;e;ne;n;ne;e;e;e;ne;e;se;s;e;e;ne;ne;e;ne;e;ne;ne;e;se;e;ne;n;ne;e;e;ne;e;e;e;se;ne;e;e;se;ne;e;ne;se;ne;se;e;e;se;ne;e;ne;se;ne;ne;se;e;e;e;e;e;e;se;s;se;e;n;ne;ne;n;n;n;ne;ne;n;n;no;ne;e;ne;e;se;se;e;ne;e;e;se;e;ne;ne;ne;e;e;e;e;e;e;e;se;e;e;ne;e;e;ne;n;ne;e;e;se;e;e;ne;ne;ne;e;se;e;ne;e;ne;n;ne;e;se;ne;e;ne;e;se;e;ne;ne;e;e;e;e;e;e;e;e;e;e;e;e}
+
+#GAlias {.KtCTkC} {
+e;e;e;e;e;e;e;e;e;e;e;se;e;se;e;ne;n;ne;e;e;e;ne;e;se;s;e;e;ne;ne;e;ne;e;ne;ne;e;se;e;ne;n;ne;e;e;ne;e;e;e;se;ne;e;e;se;ne;e;ne;se;ne;se;e;e;se;ne;e;ne;se;ne;ne;se;e;e;e;e;e;e;se;s;se;e;n;ne;ne;n;n;n;ne;ne;n;n;no;ne;e;ne;e;se;se;e;ne;e;e;se;e;ne;ne;ne;e;e;e;e;e;e;e;se;e;e;ne;e;e;ne;n;ne;e;e;se;e;e;ne;ne;ne;e;se;e;ne;e;ne;n;ne;e;se;ne;e;ne;e;se;e;ne;ne;e;e;e;e;e;e;e;e;e;e;e;se;ne;e;e;e;e;e;e;e;e;e;e;e;e;ne;e;se;e;ne;e;ne;n;ne;e;ne;se;se;e;ne;e;se;se;s;e;se;e;se;e;se;e;ne;e;e;ne;e;e;e;e;e;e;e;e;e;e;e;s;se;se;s;s;se;se;s;se;se;se;s;se;se;e;ne;e;e;ne;e;se;e;ne;ne;ne;e;ne;n;ne;e;ne;e;ne;e;se;e;ne;ne;n;ne;n;ne;ne;ne;ne;e;e;e;e;ne;ne;e;ne;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n}
+
+#GAlias {.KtCTkCM} {
+e;e;e;e;e;e;e;e;e;e;e;se;e;se;e;ne;n;ne;e;e;e;ne;e;se;s;e;e;ne;ne;e;ne;e;ne;ne;e;se;e;ne;n;ne;e;e;ne;e;e;e;se;ne;e;e;se;ne;e;ne;se;ne;se;e;e;se;ne;e;ne;se;ne;ne;se;e;e;e;e;e;e;se;s;se;e;n;ne;ne;n;n;n;ne;ne;n;n;no;ne;e;ne;e;se;se;e;ne;e;e;se;e;ne;ne;ne;e;e;e;e;e;e;e;se;e;e;ne;e;e;ne;n;ne;e;e;se;e;e;ne;ne;ne;e;se;e;ne;e;ne;n;ne;e;se;ne;e;ne;e;se;e;ne;ne;e;s;s;s;s;s;s;s;s;s;s;s;e;e;e;e;e;e;e;e;e;e;e;e;e;e;e;e;e;e;e;e;e;e;n;n;n;n;n;n;n;n;n;n;n;e;e;ne;e;se;e;ne;e;ne;n;ne;e;ne;se;se;e;ne;e;se;se;s;e;se;e;se;e;se;e;ne;e;e;ne;e;e;e;e;e;e;e;e;e;e;e;s;se;se;s;s;se;se;s;se;se;se;s;se;se;e;ne;e;e;ne;e;se;e;ne;ne;ne;e;ne;n;ne;e;ne;e;ne;e;se;e;ne;ne;n;ne;n;ne;ne;ne;ne;e;e;e;e;ne;ne;e;ne;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n}
+
+#GAlias {.KtCVeleC} {
+e;e;e;e;e;e;e;e;e;e;e;se;e;se;e;ne;n;ne;e;e;e;ne;e;se;s;e;e;ne;ne;e;ne;e;ne;ne;e;se;e;ne;n;ne;e;e;ne;e;e;e;se;ne;e;e;se;ne;e;ne;se;ne;se;e;e;se;ne;e;ne;se;ne;ne;se;e;e;e;e;e;e;se;s;se;e;n;ne;ne;n;n;n;ne;ne;n;n;no;ne;e;ne;e;se;se;e;ne;e;e;se;e;ne;ne;ne;e;e;e;e;e;e;e;se;e;e;ne;e;e;ne;n;ne;e;e;se;e;e;ne;ne;ne;e;se;e;ne;e;ne;n;ne;e;se;ne;e;ne;e;se;e;ne;ne;e;e;e;e;e;e;e;e;e;e;e;se;ne;e;e;e;e;e;e;e;e;e;e;e;e;ne;e;se;e;ne;e;ne;n;ne;e;ne;se;se;e;ne;e;se;se;s;e;se;e;se;e;se;e;ne;e;e;ne;e;e;e;e;e;e;e;e;e;e;e;s;se;se;s;s;se;se;s;se;se;se;s;se;se;e;s;s;o;o;so;o;so;o;so;o;so;so;s;so;s;s;so;s;s;s;so;s;s;s;s;se;s;s;s;se;s;s;se;s;s;s;se;e;e;e;ne;e;ne;n;n;n;n;n;n;n}
+
+#GAlias {.KtCVeleCM} {
+e;e;e;e;e;e;e;e;e;e;e;se;e;se;e;ne;n;ne;e;e;e;ne;e;se;s;e;e;ne;ne;e;ne;e;ne;ne;e;se;e;ne;n;ne;e;e;ne;e;e;e;se;ne;e;e;se;ne;e;ne;se;ne;se;e;e;se;ne;e;ne;se;ne;ne;se;e;e;e;e;e;e;se;s;se;e;n;ne;ne;n;n;n;ne;ne;n;n;no;ne;e;ne;e;se;se;e;ne;e;e;se;e;ne;ne;ne;e;e;e;e;e;e;e;se;e;e;ne;e;e;ne;n;ne;e;e;se;e;e;ne;ne;ne;e;se;e;ne;e;ne;n;ne;e;se;ne;e;ne;e;se;e;ne;ne;e;s;s;s;s;s;s;s;s;s;s;s;e;e;e;e;e;e;e;e;e;e;e;e;e;e;e;e;e;e;e;e;e;e;n;n;n;n;n;n;n;n;n;n;n;e;e;ne;e;se;e;ne;e;ne;n;ne;e;ne;se;se;e;ne;e;se;se;s;e;se;e;se;e;se;e;ne;e;e;ne;e;e;e;e;e;e;e;e;e;e;e;s;se;se;s;s;se;se;s;se;se;se;s;se;se;e;s;s;o;o;so;o;so;o;so;o;so;so;s;so;s;s;so;s;s;s;so;s;s;s;s;se;s;s;s;se;s;s;se;s;s;s;se;e;e;e;ne;e;ne;n;n;n;n;n;n;n}
+
+#GAlias {.KtCKdP} {
+o;o;o;o;o;o;o;o;o;o;o;no;n;no;o;so;ar;s;so;s;o;no;n;no;n;no;n;ne;ar;e;ne;n;no;so;o;o}
+
+#GAlias {.KtCAkaP} {
+e;e;e;e;e;e;e;e;e;e;e;se;e;se;e;ne;n;ne;e;e;e;ne;e;se;s;e;e;ne;ne;e;ne;e;ne;ne;e;se;e;ne;n;ne;e;e;ne;e;e;e;se;ne;e;s;s;so;so;s;se;e;s;se;s;so;ar;s;s;se;s;s;s;s;se;s;so;s;so;so;so;s;o;s;se;se;se;so;ar;o;o;so;no;o;no;o;so;so;o;so;o;se;o;so;o;so;s;ab;so;se;s;so;s;so;no;so;so;s;so;so;so;s;so;o;so;o;no;o;so;o;so;o;so;o;no;no;o;s;so;o;so;s;so;o;ab;o;so;o;so;so;no;so;o;so;so;se;s;so;s;so;se;s;so;ar;s;s;so;o;o;so;so;s;so;so;o;so;ar;so;so;o;so;o;no;so;so;s;ar;o;so;o;so;o;so;no;o;so;o;so;ar;o;o;no;s;so;s;so;o;no;o;n;n;no;no;no;no;o;o;n;no;no;o;o;o;o;o;ar;no;ne;no;n;n;n;o;ab;o;o}
+
+#GAlias {.KtCVU} {
+e;e;e;e;e;e;e;e;e;e;e;se;e;se;e;ne;n;ne;e;e;e;ne;e;se;s;e;e;ne;ne;e;ne;e;ne;ne;e;se;e;ne;n;ne;e;e;ne;e;e;e;se;ne;e;s;s;so;so;s;se;e;s;se;s;so;ar;s;s;se;s;s;s;s;se;s;so;s;so;so;so;s;o;s;se;se;se;so;ar;o;o;so;no;o;no;o;so;so;o;so;o;se;o;so;o;so;s;ab;so;se;s;so;s;so;no;so;so;s;so;so;so;s;so;o;so;o;no;o;so;o;so;o;so;o;no;no;o;s;so;o;so;s;so;o;ab;o;so;o;so;so;no;so;o;so;so;se;s;so;s;so;se;s;so;ar;s;s;so;o;o;so;so;s;so;so;o;so;ar;so;so;o;so;o;no;so;so;s;ar;o;s;s;e;se;ab;so;o;n;no;so;se;ab;se;e;ne;e;ab;so;so;o;so;so;so;o;so;s;so}
+
+#GAlias {.KtCEloC} {
+e;e;e;e;e;e;e;e;e;e;e;se;e;se;e;ne;n;ne;e;e;e;ne;e;se;s;e;e;ne;ne;e;ne;e;ne;ne;e;se;e;ne;n;ne;e;e;ne;e;e;e;se;ne;e;e;se;ne;e;ne;se;ne;se;e;e;se;ne;e;ne;se;ne;ne;se;e;e;e;e;e;e;se;s;se;e;n;ne;ne;n;n;n;ne;ne;n;n;no;ne;e;ne;e;se;se;e;ne;e;e;se;e;ne;ne;ne;e;e;e;e;e;e;e;se;e;e;ne;e;e;ne;n;ne;e;e;se;e;e;ne;ne;ne;e;se;e;ne;e;ne;n;ne;e;se;ne;e;ne;e;se;e;ne;ne;e;n;n;n;n;n;n;n;n;n;n;n;e;e;e;e;e;e;e;e;e;e;e;n;n;no;n;n;no;no;n;ne;n;ne;n;n;no;o;no;n;ne;n;ne;n;n;n;no;o;n;ne;ne;no;o;o;so;so;o;no;n;ne;e;n;no;o;o;no;n;n;n;no;no;o;no;n;ne;e;no;o;no;n;no;ar;o;o;ar;no;ne;e;ne;ar;o;o;no;so;no;no;no;ab;o;n;ne;e;ne;n;no;n;no;ne;n;n;n}
+
+
+;Origen, Kattak puerta o, (KtPo):
+
+#GTrigger {Puertas de Kattak *[[]o,s,e,n] } {
+FPathDisponible;
+#Var Mapa {
+Kheleb, Puertas:FPath;.KtPoKdP
+}
+} {} AnyCase
+
+#GAlias {.KtPoKdP} {
+o;o;no;n;no;o;so;ar;s;so;s;o;no;n;no;n;no;n;ne;ar;e;ne;n;no;so;o;o}
+
+
+;Origen, Kattak puerta e, (KtPe):
+
+#GTrigger {Puertas de Kattak *[[]e,s,n,o] } {
+FPathDisponible;
+#Var Mapa {
+Akanon, puertas:FPath;.KtPeAkaP
+|
+Anduar, Plaza:FPath;.KtPeAndC
+|
+Eloras, plaza:FPath;.KtPeEloC
+|
+Takome, plaza:FPath;.KtPeTkC
+|
+Takome, plaza (Por muralla s de Anduar):FPath;.KtPeTkCM
+|
+Veleiron, centro:FPath;.KtPeVeleC
+|
+Veleiron, centro (Por muralla s de Anduar):FPath;.KtPeVeleCM
+}
+} {} AnyCase
+
+#GAlias {.KtPeAndC} {
+e;e;se;e;se;e;ne;n;ne;e;e;e;ne;e;se;s;e;e;ne;ne;e;ne;e;ne;ne;e;se;e;ne;n;ne;e;e;ne;e;e;e;se;ne;e;e;se;ne;e;ne;se;ne;se;e;e;se;ne;e;ne;se;ne;ne;se;e;e;e;e;e;e;se;s;se;e;n;ne;ne;n;n;n;ne;ne;n;n;no;ne;e;ne;e;se;se;e;ne;e;e;se;e;ne;ne;ne;e;e;e;e;e;e;e;se;e;e;ne;e;e;ne;n;ne;e;e;se;e;e;ne;ne;ne;e;se;e;ne;e;ne;n;ne;e;se;ne;e;ne;e;se;e;ne;ne;e;e;e;e;e;e;e;e;e;e;e;e}
+
+#GAlias {.KtPeTkC} {
+e;e;se;e;se;e;ne;n;ne;e;e;e;ne;e;se;s;e;e;ne;ne;e;ne;e;ne;ne;e;se;e;ne;n;ne;e;e;ne;e;e;e;se;ne;e;e;se;ne;e;ne;se;ne;se;e;e;se;ne;e;ne;se;ne;ne;se;e;e;e;e;e;e;se;s;se;e;n;ne;ne;n;n;n;ne;ne;n;n;no;ne;e;ne;e;se;se;e;ne;e;e;se;e;ne;ne;ne;e;e;e;e;e;e;e;se;e;e;ne;e;e;ne;n;ne;e;e;se;e;e;ne;ne;ne;e;se;e;ne;e;ne;n;ne;e;se;ne;e;ne;e;se;e;ne;ne;e;e;e;e;e;e;e;e;e;e;e;se;ne;e;e;e;e;e;e;e;e;e;e;e;e;ne;e;se;e;ne;e;ne;n;ne;e;ne;se;se;e;ne;e;se;se;s;e;se;e;se;e;se;e;ne;e;e;ne;e;e;e;e;e;e;e;e;e;e;e;s;se;se;s;s;se;se;s;se;se;se;s;se;se;e;ne;e;e;ne;e;se;e;ne;ne;ne;e;ne;n;ne;e;ne;e;ne;e;se;e;ne;ne;n;ne;n;ne;ne;ne;ne;e;e;e;e;ne;ne;e;ne;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n}
+
+#GAlias {.KtPeTkCM} {
+e;e;se;e;se;e;ne;n;ne;e;e;e;ne;e;se;s;e;e;ne;ne;e;ne;e;ne;ne;e;se;e;ne;n;ne;e;e;ne;e;e;e;se;ne;e;e;se;ne;e;ne;se;ne;se;e;e;se;ne;e;ne;se;ne;ne;se;e;e;e;e;e;e;se;s;se;e;n;ne;ne;n;n;n;ne;ne;n;n;no;ne;e;ne;e;se;se;e;ne;e;e;se;e;ne;ne;ne;e;e;e;e;e;e;e;se;e;e;ne;e;e;ne;n;ne;e;e;se;e;e;ne;ne;ne;e;se;e;ne;e;ne;n;ne;e;se;ne;e;ne;e;se;e;ne;ne;e;s;s;s;s;s;s;s;s;s;s;s;e;e;e;e;e;e;e;e;e;e;e;e;e;e;e;e;e;e;e;e;e;e;n;n;n;n;n;n;n;n;n;n;n;e;e;ne;e;se;e;ne;e;ne;n;ne;e;ne;se;se;e;ne;e;se;se;s;e;se;e;se;e;se;e;ne;e;e;ne;e;e;e;e;e;e;e;e;e;e;e;s;se;se;s;s;se;se;s;se;se;se;s;se;se;e;ne;e;e;ne;e;se;e;ne;ne;ne;e;ne;n;ne;e;ne;e;ne;e;se;e;ne;ne;n;ne;n;ne;ne;ne;ne;e;e;e;e;ne;ne;e;ne;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n}
+
+#GAlias {.KtPeVeleC} {
+e;e;se;e;se;e;ne;n;ne;e;e;e;ne;e;se;s;e;e;ne;ne;e;ne;e;ne;ne;e;se;e;ne;n;ne;e;e;ne;e;e;e;se;ne;e;e;se;ne;e;ne;se;ne;se;e;e;se;ne;e;ne;se;ne;ne;se;e;e;e;e;e;e;se;s;se;e;n;ne;ne;n;n;n;ne;ne;n;n;no;ne;e;ne;e;se;se;e;ne;e;e;se;e;ne;ne;ne;e;e;e;e;e;e;e;se;e;e;ne;e;e;ne;n;ne;e;e;se;e;e;ne;ne;ne;e;se;e;ne;e;ne;n;ne;e;se;ne;e;ne;e;se;e;ne;ne;e;e;e;e;e;e;e;e;e;e;e;se;ne;e;e;e;e;e;e;e;e;e;e;e;e;ne;e;se;e;ne;e;ne;n;ne;e;ne;se;se;e;ne;e;se;se;s;e;se;e;se;e;se;e;ne;e;e;ne;e;e;e;e;e;e;e;e;e;e;e;s;se;se;s;s;se;se;s;se;se;se;s;se;se;e;s;s;o;o;so;o;so;o;so;o;so;so;s;so;s;s;so;s;s;s;so;s;s;s;s;se;s;s;s;se;s;s;se;s;s;s;se;e;e;e;ne;e;ne;n;n;n;n;n;n;n}
+
+#GAlias {.KtPeVeleCM} {
+e;e;se;e;se;e;ne;n;ne;e;e;e;ne;e;se;s;e;e;ne;ne;e;ne;e;ne;ne;e;se;e;ne;n;ne;e;e;ne;e;e;e;se;ne;e;e;se;ne;e;ne;se;ne;se;e;e;se;ne;e;ne;se;ne;ne;se;e;e;e;e;e;e;se;s;se;e;n;ne;ne;n;n;n;ne;ne;n;n;no;ne;e;ne;e;se;se;e;ne;e;e;se;e;ne;ne;ne;e;e;e;e;e;e;e;se;e;e;ne;e;e;ne;n;ne;e;e;se;e;e;ne;ne;ne;e;se;e;ne;e;ne;n;ne;e;se;ne;e;ne;e;se;e;ne;ne;e;s;s;s;s;s;s;s;s;s;s;s;e;e;e;e;e;e;e;e;e;e;e;e;e;e;e;e;e;e;e;e;e;e;n;n;n;n;n;n;n;n;n;n;n;e;e;ne;e;se;e;ne;e;ne;n;ne;e;ne;se;se;e;ne;e;se;se;s;e;se;e;se;e;se;e;ne;e;e;ne;e;e;e;e;e;e;e;e;e;e;e;s;se;se;s;s;se;se;s;se;se;se;s;se;se;e;s;s;o;o;so;o;so;o;so;o;so;so;s;so;s;s;so;s;s;s;so;s;s;s;s;se;s;s;s;se;s;s;se;s;s;s;se;e;e;e;ne;e;ne;n;n;n;n;n;n;n}
+
+#GAlias {.KtPeAkaP} {
+e;e;se;e;se;e;ne;n;ne;e;e;e;ne;e;se;s;e;e;ne;ne;e;ne;e;ne;ne;e;se;e;ne;n;ne;e;e;ne;e;e;e;se;ne;e;s;s;so;so;s;se;e;s;se;s;so;ar;s;s;se;s;s;s;s;se;s;so;s;so;so;so;s;o;s;se;se;se;so;ar;o;o;so;no;o;no;o;so;so;o;so;o;se;o;so;o;so;s;ab;so;se;s;so;s;so;no;so;so;s;so;so;so;s;so;o;so;o;no;o;so;o;so;o;so;o;no;no;o;s;so;o;so;s;so;o;ab;o;so;o;so;so;no;so;o;so;so;se;s;so;s;so;se;s;so;ar;s;s;so;o;o;so;so;s;so;so;o;so;ar;so;so;o;so;o;no;so;so;s;ar;o;so;o;so;o;so;no;o;so;o;so;ar;o;o;no;s;so;s;so;o;no;o;n;n;no;no;no;no;o;o;n;no;no;o;o;o;o;o;ar;no;ne;no;n;n;n;o;ab;o;o}
+
+#GAlias {.KtPeVU} {
+e;e;se;e;se;e;ne;n;ne;e;e;e;ne;e;se;s;e;e;ne;ne;e;ne;e;ne;ne;e;se;e;ne;n;ne;e;e;ne;e;e;e;se;ne;e;s;s;so;so;s;se;e;s;se;s;so;ar;s;s;se;s;s;s;s;se;s;so;s;so;so;so;s;o;s;se;se;se;so;ar;o;o;so;no;o;no;o;so;so;o;so;o;se;o;so;o;so;s;ab;so;se;s;so;s;so;no;so;so;s;so;so;so;s;so;o;so;o;no;o;so;o;so;o;so;o;no;no;o;s;so;o;so;s;so;o;ab;o;so;o;so;so;no;so;o;so;so;se;s;so;s;so;se;s;so;ar;s;s;so;o;o;so;so;s;so;so;o;so;ar;so;so;o;so;o;no;so;so;s;ar;o;s;s;e;se;ab;so;o;n;no;so;se;ab;se;e;ne;e;ab;so;so;o;so;so;so;o;so;s;so}
+
+
+;Origen: Kheleb Dum, dintel, (KdC):
+
+#GTrigger {Kheleb Dum: Gran Dintel de Piedra *[[]s,o,e] } {
+FPathDisponible;
+#Var Mapa {
+Kheleb, Puerta inferior:FPath;.KDCKDP2
+|
+Kattak, Plaza:FPath;.KdCKtC
+}
+} {} AnyCase
+
+#GAlias {.KdCKtC} {
+e;e;e;e;e;e;e;e;e;e;e;e;e;e;e;e;e;fu;e;e;ne;se;s;so;o;ab;so;s;se;s;se;s;se;e;n;ne;n;ab;ne;e;se;s;se;e;e;e;e;e;e;e;e;e;e;e}
+
+#GAlias {.KDCKDP2} {
+s;o;so;s;ab;s;so;se;e;se;ab;o;no;o;s;s;so;o;so;s;e;so;ab;no;so;so;o;so;se;se;so;no;ab;se;s;ab}
+
+
+;Origen: Kheleb Dum, roca, (KdP):
+
+#GTrigger {Roca de Kheleb-Dum *[[]*] } {
+FPathDisponible;
+#Var Mapa {
+Kheleb, dintel:FPath;.KdPKdC
+|
+Kattak, Plaza:FPath;.KdPKtC
+}
+} {} AnyCase
+
+#GAlias {.KdPKtC} {
+e;e;ne;se;s;so;o;ab;so;s;se;s;se;s;se;e;n;ne;n;ab;ne;e;se;s;se;e;e;e;e;e;e;e;e;e;e;e}
+
+#GAlias {.KdPKdC} {
+de;o;o;o;o;o;o;o;o;o;o;o;o;o;o;o;o;o}
+
+
+;Origen: Puertas de Kheleb hacia cavernas de Adhûl Epheren, (KdP2):
+
+#GTrigger {Pasaje de Adhûl Epheren *[[]o,ab,ar] } {
+FPathDisponible;
+#Var Mapa {
+Kheleb, dintel:FPath;.KDP2KDC
+|
+Pasadizo del lago:FPath;.KdP2PDL
+}
+} {} AnyCase
+
+#GAlias {.KDP2KDC} {
+ar;n;no;ar;se;ne;n;no;n;n;ne;o;ar;se;e;n;ne;e;n;n;ne;ne;e;no;ar;e;ne;n;ar;n;ne;e;n}
+
+#GAlias {.KdP2PDL} {
+ab;ne;n;no;so;no;ab;se;se;e;e;e;ne;e;e;ne;e;se;e;e;n;ab;ne}
+
+
+;Origen: Profundidades de Kheleb, pasadizo del lago, (PDL):
+
+#GTrigger {Pasadizo del Lago *[[]so,se,no] } {
+FPathDisponible;
+#Var Mapa {
+Kheleb, dintel:FPath;.PDLKdC
+}
+} {} AnyCase
+
+#GAlias {.PDLKdC} {
+so;ar;s;o;o;no;o;so;o;o;so;o;no;no;o;o;ar;ne;se;se;s;so;ar;ar;n;no;ar;se;ne;n;no;n;n;ne;o;ar;se;e;n;ne;e;n;n;ne;ne;e;no;ar;e;ne;n;ar;n;ne;e;n}
+

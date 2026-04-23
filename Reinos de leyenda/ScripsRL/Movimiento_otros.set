@@ -1,0 +1,553 @@
+;Módulo: Movimiento_otros.set
+;Versión: 2.4, 17/02/2025
+;Descripción: Funcionalidades relacionadas con el movimiento de otros pjs y pnjs.
+;Autor: Rhomdur.
+
+
+;Declaración de variables:
+#Var FlagEnemigoRoom 0
+#Var Presentes
+#Var PresentesE
+#Var PresentesA
+#Var SujetoMovimiento1
+#Var SujetoMovimiento2
+#Var TipoMovimientoSalida
+#Var TipoMovimientoEntrada
+#Var HistorialMovimientosA
+#Var HistorialMovimientosE
+#Var UltimoMovimientoA
+#Var UltimoMovimientoE
+#Var ObjetivoSeVa
+#Var ObjetivoLlega
+#Var FlagDireccionConocida
+#Var TextoMovimiento;
+
+
+;Función que organiza en una lista los pj y pnjs presentes en la room y realiza acciones.
+;Arg %1 pjs y pnjs presentes
+#GAlias FuncPresentes {
+;Reinicia variables:
+#Var Peleas;
+
+;Crea la lista de presentes:
+FuncCorrectorPlayers %1;
+#Var Corregir {%Replace(@Corregir," y ","|")};
+#Var Corregir {%Replace(@Corregir,", ","|")};
+#If {@Presentes = ""} {
+ #Var Presentes {@Corregir}
+} {
+ #Var Presentes {@Presentes|@Corregir}
+};
+
+;Elimina de la variable Presentes al lider y los miembros del grupo:
+;Cada enemigo presente lo apunta en PresentesE y si hay enemigos activa el flag.
+#Var Presentes {%DelItem(@Presentes,@GrupoLider)};
+#For @Presentes {
+ #If {%IfWord(%i,@Grupo,"|")} {
+  #Var Presentes {%DelItem(@Presentes,%i)}
+ } {
+  #Var Temp1 %i;
+  FuncComprobarSujeto @Temp1 1 1;
+  #If {@FlagComprobarSujeto = 1} {
+   #AddItem PresentesE @Temp1 noduplicates
+  }
+ }
+};
+#UnVar Temp1;
+
+;Acciones si hay enemigos en la room:
+#If {@PresentesE <> ""} {
+ #Math FlagAvisoEnemigo {@FlagAvisoEnemigo + 1};
+ #If {@ModoJ <> 1} {@ModoJ = 1};
+ #Var UltimoEnemigo @PresentesE;
+ #If {@FlagAvisoEnemigo = 1} {
+  #Play {RL\Generales\Enemigo.wav}
+ }
+};
+
+;Si el objetivo principal está presente reproduce el sonido:
+#If {%IfWord(@Objetivo,@Presentes,|)} {
+ #Math FlagAvisoObjetivo {@FlagAvisoObjetivo + 1};
+ #If {@FlagAvisoObjetivo = 1} {
+  #Play {RL\Movimiento\Objetivo aqui.wav}
+ }
+};
+
+;Silencia o pronuncia los presentes según las condiciones:
+#If {@FlagNavegando = 1 and @ModoE = 1} {
+ #Say {%1} NoDisplay|Incoming;
+ #GagLine Voice;
+ #Abort
+};
+
+#If {@ModoE = 1} {
+ #GagLine voice
+}
+
+}
+
+
+;Función de reproducción de movimiento de enemigos o aliados
+;Organiza variables de último movimiento para consulta
+;Arg %1: entrada 1, salida 2
+;Arg %2: Sujeto.
+;Arg %3: Dirección
+#GAlias FuncReproducirMovimientos {
+FuncReproducirDireccion %2 {%Replace(%3,"el ",)} %1;
+;Sonido de movimiento del objetivo:
+#If {%2 = @Objetivo and %1 = 0} {
+ FuncPlayPan {RL\Movimiento\Objetivo llega.wav} 0;
+ #Var ObjetivoSeVa;
+ #Var ObjetivoLlega %3
+};
+#If {%2 = @Objetivo and %1 = 1} {
+ FuncPlayPan {RL\Movimiento\Objetivo se va.wav} 0;
+ #Var ObjetivoLlega;
+ #Var ObjetivoSeVa %3
+}
+}
+
+;Función que almacena un historial de movimientos:
+;También asigna las variables para consultar últimos movimientos.
+;Arg %1: entrada 0, salida 1
+;Arg %2: Texto del movimiento.
+#GAlias FuncHistorialMovimientos {
+#Var SujetoMovimiento1 @Corregir;
+FuncCorrectorPlayers %2;
+#Var TextoMovimiento @Corregir;
+#If {@FlagComprobarSujeto = 0} {
+ #If {%1 = 0} {
+  #Var UltimoMovimientoA {@DireccionCorta. @SujetoMovimiento1 (@SujetoMovimiento2) llega @TipoMovimientoEntrada}
+ } {
+  #Var UltimoMovimientoA {@DireccionCorta. @SujetoMovimiento1 (@SujetoMovimiento2) se va @TipoMovimientoSalida}
+ };
+ #AddItem HistorialMovimientosA {%2:FCopiar %2};
+ #If {%NumWords(@HistorialMovimientosA,|) = 10} {#Var HistorialMovimientosA {%DelNItem(@HistorialMovimientosA,1)}}
+} {
+ #If {%1 = 0} {
+  #Var UltimoMovimientoE {@DireccionCorta. @SujetoMovimiento1 (@SujetoMovimiento2) llega @TipoMovimientoEntrada}
+ } {
+  #Var UltimoMovimientoE {@DireccionCorta. @SujetoMovimiento1 (@SujetoMovimiento2) se va @TipoMovimientoSalida}
+ };
+ #AddItem HistorialMovimientosE {%2:FCopiar %2};
+ #If {%NumWords(@HistorialMovimientosE,|) = 10} {#Var HistorialMovimientosE {%DelNItem(@HistorialMovimientosE,1)}}
+}
+}
+
+
+;Función que verbaliza el movimiento
+;Si la salida es desconocida reproduce un sonido
+#GAlias FuncVerbalizarMovimientos {
+#If {@DireccionCorta = "n" or @DireccionCorta = "s" or @DireccionCorta = "e" or @DireccionCorta = "o" or @DireccionCorta = "ne" or @DireccionCorta = "no" or @DireccionCorta = "se" or @DireccionCorta = "so" or @DireccionCorta = "ar" or @DireccionCorta = "ab" or @DireccionCorta = "de" or @DireccionCorta = "fu"} {
+ #If {@ModoE = 1} {
+  #Say {@SujetoMovimiento1 @SujetoMovimiento2} NoDisplay|incoming
+ } {
+  #Say {@TextoMovimiento} NoDisplay|Incoming
+ }
+} {
+ #Say {@TextoMovimiento} NoDisplay|Incoming;
+ #Play {RL\Movimiento\Se va desconocido.wav}
+}
+}
+
+
+;Triggers que capturan los pjs y npcs presentes en la room:
+
+#GTrigger {* est?n aqu?.} {
+;Si se utiliza el comando ojear o es un pasteo de canales aborta el trigger:
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#If {@Ojear = 1 or @Mirar = 1} {#Abort};
+FuncPresentes %1
+} {}
+
+#GTrigger {* est? aqu?.} {
+;Aborta el trigger si se utiliza el comando ojear, si es un comando equivocado o si es un pasteo de canales:
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#If {%IfWord("Nada con el nombre",%0," ")} {#Abort};
+#If {@Ojear = 1 or @Mirar = 1} {#Abort};
+FuncPresentes %1
+} {}
+
+
+;Triggers de salida de la room:
+
+#GTrigger {* se va en direcci?n * seguid* de *.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FuncCorrectorPlayers %5;
+#Var SujetoMovimiento2 @Corregir;
+FuncAcortarDirecciones %3;
+FuncReproducirMovimientos 2 %1 %3;
+FuncHistorialMovimientos 1 %0;
+FuncVerbalizarMovimientos;
+FuncComprobarSujeto %5 {RL\Movimiento\Sigue aliado se va.wav} {RL\Movimiento\Sigue enemigo se va.wav} 0;
+#GagLine Voice
+} {}
+
+#GTrigger {* se va*hacia *.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Var TipoMovimientoSalida %2;
+#Var TipoMovimientoSalida {%Trim(@TipoMovimientoSalida)};
+#Var SujetoMovimiento2;
+FuncAcortarDirecciones %3;
+FuncReproducirMovimientos 2 %1 %3;
+FuncHistorialMovimientos 1 %0;
+FuncVerbalizarMovimientos;
+#If {%IfWord("Nadando",@TipoMovimientoSalida, )} {
+ #Play {RL\Oceano\Nadando*3.wav}
+};
+#GagLine Voice
+} {}
+
+#GTrigger {* sale galopando en su * en direcci?n *.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Var TipoMovimientoSalida {%2};
+#Var SujetoMovimiento2;
+FuncAcortarDirecciones %4;
+FuncReproducirMovimientos 2 %1 %3;
+FuncHistorialMovimientos 1 %0;
+FuncVerbalizarMovimientos;
+FuncPlayPan {RL\Monturas\Galope*5.wav} 0;
+#GagLine Voice
+} {}
+
+#GTrigger {* se va, desliz?ndose velozmente, en direcci?n *.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Var TipoMovimientoSalida {deslizándose velozmente};
+#Var SujetoMovimiento2;
+FuncAcortarDirecciones %4;
+FuncReproducirMovimientos 2 %1 %3;
+FuncHistorialMovimientos 1 %0;
+FuncVerbalizarMovimientos;
+FuncPlayPan {RL\Monturas\Montura magica salida.wav} 0;
+#GagLine Voice
+} {}
+
+#GTrigger {* se va galopando en direccion *, levitando a escasos cent?metros del suelo.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Var TipoMovimientoSalida {levitándo a escasos centímetros del suelo};
+#Var SujetoMovimiento2;
+FuncAcortarDirecciones %2;
+FuncReproducirMovimientos 2 %1 %3;
+FuncHistorialMovimientos 1 %0;
+FuncVerbalizarMovimientos;
+FuncPlayPan {RL\Monturas\Montura magica salida.wav} 0;
+#GagLine Voice
+} {}
+
+#GTrigger {Ves a * irse en direcci?n * alej?ndose del ?rbol.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Var TipoMovimientoSalida {Alejándose del árbol};
+#Var SujetoMovimiento2;
+FuncAcortarDirecciones %3;
+FuncReproducirMovimientos 2 %1 %3;
+FuncHistorialMovimientos 1 %0;
+FuncVerbalizarMovimientos;
+FuncPlayPan {RL\Movimiento\Arbol*5.wav} 0;
+#GagLine Voice
+} {} AnyCase
+
+#GTrigger {* salta hacia *.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Var TipoMovimientoSalida Saltando;
+#Var SujetoMovimiento2;
+FuncAcortarDirecciones %2;
+FuncReproducirMovimientos 2 %1 %3;
+FuncHistorialMovimientos 1 %0;
+FuncVerbalizarMovimientos;
+FuncPlayPan {RL\Movimiento\Se va saltando.wav} 0;
+#GagLine Voice
+} {}
+
+#GTrigger {Notas marcharse a alguien que estaba aqu?.} {
+#Play {RL\Movimiento\Se va desconocido.wav}
+} {} AnyCase
+
+
+;Triggers para textos de entrada en la room:
+
+#GTrigger {* llega*desde * seguid? de *.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FuncComprobarSujeto %5 {RL\Movimiento\Sigue aliado llega.wav} {RL\Movimiento\Sigue enemigo llega.wav};
+#Var SujetoMovimiento2 @Corregir;
+FuncAcortarDirecciones %3;
+FuncReproducirMovimientos 1 %1 %3;
+FuncHistorialMovimientos 0 %0;
+FuncVerbalizarMovimientos;
+#GagLine Voice
+} {}
+
+#GTrigger {* llega*desde *.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#If {%IfWord("seguido de",%3, ) or %IfWord("seguida de",%3, ) or %IfWord("levitando a escasos",%3, ) or %IfWord("dejando un rastro",%3, )} {#Abort};
+FuncAcortarDirecciones %3;
+FuncReproducirMovimientos 1 %1 %3;
+FuncHistorialMovimientos 0 %0;
+FuncVerbalizarMovimientos;
+#If {%IfWord("seguido de",%3, ) or %IfWord("seguida de",%3, ) or %IfWord("levitando a escasos",%3, ) or %IfWord("dejando un rastro",%3, )} {#Abort};
+#Var SujetoMovimiento2;
+#Var TipoMovimientoEntrada %2;
+#If {%IfWord("galopando en su",@TipoMovimientoEntrada," ")} {
+ FuncPlayPan {RL\Monturas\Galope*5.wav} 0
+};
+#If {%IfWord("saltando",@TipoMovimientoEntrada," ")} {
+ FuncPlayPan {RL\Movimiento\Llega saltando.wav} 0
+};
+#If {%IfWord("desplomándose",@TipoMovimientoEntrada," ")} {
+ FuncPlayPan {RL\Movimiento\Desplomandose*3.wav} 0
+};
+#If {%IfWord("surcando las aguas",@TipoMovimientoEntrada," ")} {
+ FuncPlayPan {RL\Oceano\Embarcacion llega.wav} 0
+};
+#If {%IfWord("nadando",@TipoMovimientoEntrada," ")} {
+ FuncPlayPan {RL\Oceano\Nadando*3.wav} 0
+};
+#GagLine Voice
+} {}
+
+#GTrigger {* llega de * seguid* de *.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FuncCorrectorPlayers %0;
+#Var TextoMovimiento @Corregir;
+FuncComprobarSujeto %4 {RL\Movimiento\Sigue aliado llega.wav} {RL\Movimiento\Sigue enemigo llega.wav};
+#Var SujetoMovimiento2 @Corregir;
+FuncAcortarDirecciones %2;
+FuncReproducirMovimientos 1 %1 %3;
+FuncHistorialMovimientos 0 @TextoMovimiento;
+FuncVerbalizarMovimientos;
+#GagLine Voice
+} {}
+
+#GTrigger {* llega de *.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#If {%IfWord("seguido de",%2, ) or %IfWord("seguida de",%2, )} {#Abort};
+#Var SujetoMovimiento2;
+#Var TipoMovimientoEntrada;
+FuncAcortarDirecciones %2;
+FuncReproducirMovimientos 1 %1 %3;
+FuncHistorialMovimientos 0 %0;
+FuncVerbalizarMovimientos;
+#GagLine Voice
+} {}
+
+#GTrigger {* llega galopando desde *, levitando a escasos cent?metros del suelo.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Var SujetoMovimiento2;
+#Var TipoMovimientoEntrada {levitándo a escasos centímetros del suelo};
+#Play {RL\Monturas\Montura magica llegada.wav};
+FuncAcortarDirecciones %2;
+FuncReproducirMovimientos 1 %1 %3;
+FuncHistorialMovimientos 0 %0;
+FuncVerbalizarMovimientos;
+#GagLine Voice
+} {}
+
+#GTrigger {* llega desde el *, dejando un rastro de agua en su camino.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Var SujetoMovimiento2;
+#Var TipoMovimientoEntrada {dejando un rastro de agua en su camino};
+#Play {RL\Monturas\Montura magica llegada.wav};
+FuncAcortarDirecciones %2;
+FuncReproducirMovimientos 1 %1 %3;
+FuncHistorialMovimientos 0 %0;
+FuncVerbalizarMovimientos;
+#GagLine Voice
+} {}
+
+#GTrigger {Ves a * llegar al pie del ?rbol.} {
+FuncComprobarSujeto %1 0 0;
+FuncHistorialMovimientos 0 %0;
+#If {@ModoE = 1} {
+ #Say {@Corregir} NoDisplay|Incoming;
+ #GagLine Voice
+};
+#Play {RL\Movimiento\Arbol*5.wav}
+} {} AnyCase
+
+#GTrigger {Notas que alguien llega a tu posici?n.} {
+FEventos %0;
+#Play {RL\Movimiento\Llega desconocido.wav}
+} {} AnyCase
+
+#GTrigger {De repente y sin saber c?mo * aparece en un lugar cercano.} {
+FuncComprobarSujeto %2 0 0;
+#Var TipoMovimientoEntrada {de repente y sin saber como};
+FuncHistorialMovimientos 0 %0;
+#Play {RL\Movimiento\Llega desconocido.wav}
+} {} AnyCase
+
+#GTrigger {* aparece de la nada.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Var TipoMovimientoEntrada {de la nada};
+FuncComprobarSujeto %1 0 0;
+FuncHistorialMovimientos 0 %0;
+#Play {RL\Movimiento\Llega desconocido.wav}
+} {}
+
+
+;Triggers para textos de cabalgar:
+
+#GTrigger {* detiene su montura para decidir el camino a seguir.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FuncComprobarSujeto %1 0 0;
+#Play {RL\Monturas\Galope ageno detenido.wav};
+#If {@ModoE = 1} {
+ #Say {%1} NoDisplay|incoming;
+ #GagLine Voice
+}
+} {}
+
+#GTrigger {* espolea su montura y galopa raudo en dirección *.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Monturas\Espolea.wav}
+} {}
+
+
+;Triggers para seguir:
+
+#GTrigger {* comienza a seguirte.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FuncComprobarSujeto %1 {RL\Movimiento\Te sigue aliado inicio.wav} {RL\Movimiento\Te sigue enemigo inicio.wav}
+} {}
+
+#GTrigger {* te da esquinazo.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FEventos %0;
+#Play {RL\Sucesos\No seguir.wav}
+} {}
+
+#GTrigger {* te sigue.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FuncComprobarSujeto %1 {RL\Movimiento\Te sigue aliado.wav} {RL\Movimiento\Te sigue enemigo.wav};
+FuncComprobarGrupo %1;
+#If {@FlagComprobarGrupo = 1 and @FlagComprobarSujeto = 0} {
+ #GagLine Voice;
+ #Abort
+};
+#If {@FlagComprobarSujeto = 1} {
+ FEventos @Corregir te sigue!
+}
+} {}
+
+#GTrigger {* te sigue de un salto.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FuncComprobarSujeto %1 {RL\Movimiento\Te sigue aliado.wav} {RL\Movimiento\Te sigue enemigo.wav};
+FuncComprobarGrupo @Corregir;
+#If {@FlagComprobarGrupo = 1 and @FlagComprobarSujeto = 0} {
+ #GagLine Voice;
+ #Abort
+};
+#If {@FlagComprobarSujeto = 1} {
+ FEventos @Corregir te sigue!
+}
+} {}
+
+#GTrigger {* intenta seguirte pero le das esquinazo.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Sucesos\Das esquinazo.wav}
+} {}
+
+#GTrigger {* sigue a * hacia *.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FuncComprobarSujeto %1 0 0
+} {}
+
+#GTrigger {* sigue a tu *.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FuncComprobarSujeto %1 {RL\Movimiento\Te sigue aliado.wav} {RL\Movimiento\Te sigue enemigo.wav}
+} {}
+
+
+;árboles:
+
+#GTrigger {* cae del ?rbol.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FEventos %0;
+FuncComprobarSujeto %1 0 0;
+#Play {RL\Combate\Caida*4.wav}
+} {}
+
+#GTrigger {* cae al suelo d?ndose un buen porrazo.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FEventos %0;
+FuncComprobarSujeto %1 0 0;
+#Play {RL\Combate\Caida*4.wav}
+}
+
+#GTrigger {* cae desde un ?rbol impactando violentamente con el suelo.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FEventos %0;
+FuncComprobarSujeto %1 0 0;
+#Play {RL\Combate\Caida*4.wav}
+} {}
+
+#GTrigger {* empieza a trepar el árbol perdiéndose entre las ramas.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FEventos %0;
+FuncComprobarSujeto %1 0 0;
+#Play {RL\Movimiento\Trepa empezar.wav}
+} {}
+
+#GTrigger {* desaparece entre las ramas del árbol que estaba trepando.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FEventos %0;
+FuncComprobarSujeto %1 0 0;
+#Play  {RL\Movimiento\Trepa terminar.wav}
+} {}
+
+#GTrigger {Ves moverse las ramas del árbol por encima de ti.} {
+#Play {RL\Movimiento\Movimiento ramas.wav}
+} {} AnyCase
+
+#GTrigger {* aparece trepando por el tronco del ?rbol.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FEventos %0;
+FuncComprobarSujeto %1 0 0;
+#Play  {RL\Movimiento\Trepa terminar.wav}
+} {}
+
+
+;Personajes en otra room:
+
+#GTrigger {* est? all?.} {
+FuncCorrectorSignos %0;
+#If {%IfWord(%Word(@Corregir, ,1),@Canales,|)} {#Abort};
+FEventos @Corregir;
+FuncComprobarSujeto @Corregir {RL\Generales\Aliado alli.wav} {RL\Generales\Enemigo alli.wav};
+#If {@ModoE = 1} {
+ #Say {%1} NoDisplay|Incoming;
+ #GagLine Voice
+}
+} {}
+
+

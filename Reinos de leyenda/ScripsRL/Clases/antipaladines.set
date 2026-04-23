@@ -1,0 +1,36 @@
+;Módulo: Antipaladines.set
+Versión: 1.0, 16/12/2020
+Descripción: Soporte para la clase antipaladín de seldar.
+Autor: eyrhien.
+
+
+#Load ScripsRL\Clases\Magia_clerical.set
+#Load ScripsRL\Clases\Centrar.set
+
+
+#TRIGGER {Concentras toda tu energía en una plegaria para dañar a tu enemigo.} {#Play {RL\Habilidades\antipaladines\herida concentra.wav}} {}
+#TRIGGER {Invocas el poder dañador de seldar sobre *.} {#Play {RL\Habilidades\antipaladines\causa herida.wav}} {}
+#TRIGGER {Comienzas las lúgubres estrofas de tu Loa a Seldar.} {#Play {RL\Habilidades\antipaladines\inicia loa.wav}} {}
+#TRIGGER {Los tentáculos de sombras que te rodeaban desaparecen lentamente, disipándose por completo cuando tu fervorosa letanía alcanza su final.} {#Play {RL\Habilidades\antipaladines\loa finaliza.wav}} {}
+#TRIGGER {¡Envuelves a * en tu estallido de *!} {#Play {RL\Habilidades\antipaladines\redentor area.wav}
+} {}
+#TRIGGER {¡Envuelves a * * en tu estallido de *!} {#Play {RL\Habilidades\antipaladines\redentor area.wav}
+} {}
+#TRIGGER {¡Envuelves a *, * y * * en tu estallido de *!} {#Play {RL\Habilidades\antipaladines\redentor area.wav}
+} {}
+#TRIGGER {* Tu fiero golpe redentor con * alcanza a *, envolviéndolo en en un aura de *.} {#Play {RL\Habilidades\antipaladines\redentor.wav}} {}
+#TRIGGER {* Transmites la energía negativa de tus manos sobre *, causándole heridas *.} {#Play {RL\Habilidades\antipaladines\causar heridas.wav}} {}
+
+
+;Keys:
+
+#Key alt-q {formular causar heridas moderadas:x  }
+#Key alt-w {formular causar heridas serias:x  }
+#Key alt-e {formular causar heridas mayores:x  }
+#Key alt-r {formular causar heridas criticas:x  }
+#Key alt-a {formular  herida:x  }
+#Key alt-s {    centrar x;cargar x }
+#Key alt-d {    centrar x;golperedentor x }
+#Key alt-f {    golperedentor area }
+#Key alt-z {formular disipar magia:x  }
+

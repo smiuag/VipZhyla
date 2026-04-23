@@ -1,0 +1,102 @@
+;Módulo: Jornalero.set
+;Versión: 1.1, 23/09/2025
+;Descripción: Triggers de sonido para el oficio jornalero
+;Autor: Rhomdur.
+
+;Mensajes de comienzo y activación de la clase:
+
+#GTrigger {*Armad? con tu * comienzas a desollar * llen?ndolo todo de sangre y vísceras.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Var ContadorTurnos 0;
+#Var AmbOficio {RL\Oficios\Jornalero\Deshollando*4.wav};
+#Class jornalero enable;
+#If {@ModoAmbientacion = 1} {
+ FuncAmbienteOficio
+} {
+ #Play {RL\Oficios\Turno.wav}
+}
+} {} AnyCase
+
+
+#Class jornalero
+
+
+;Desactivación de la clase:
+
+#GTrigger {*Al acabar tu trabajo, dejas esparcida por el suelo la in?til pulpa de vísceras y sangre que antes formaran un cuerpo.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FuncStopAmbienteOficio;
+#Class jornalero Disable;
+#Play {RL\Oficios\Jornalero\Deshollar terminar.wav} @VolAmbOficio;
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+
+;Turnos de deshollar:
+
+#GTrigger {Contin?as desollando el cad?ver, centrando ahora tus esfuerzos en obtener *} {
+#Mat ContadorTurnos {@ContadorTurnos+1};
+#If {@ModoAmbientacion = 1} {
+ #Play {RL\Oficios\Jornalero\Cambiar*2.wav} @VolAmbOficio
+} {
+ #Play {RL\Oficios\Turno.wav}
+};
+#If {@ModoE = 1} {
+ #Say {%3} NoDisplay|Incoming;
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {Contin?as con tu sucio trabajo con la esperanza de obtener *.} {
+#Mat ContadorTurnos {@ContadorTurnos+1};
+#If {@ModoAmbientacion = 1} {
+ #Play {RL\Oficios\Jornalero\Turno*11.wav} @VolAmbOficio
+} {
+ #Play {RL\Oficios\Turno.wav}
+};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {*Tras dedicar largos minutos desollando * cometes un fallo que echa a perder la pieza.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Mat ContadorTurnos {@ContadorTurnos+1};
+#If {@ModoAmbientacion = 1} {
+ #Play {RL\Oficios\Jornalero\Fallo.wav} @VolAmbOficio
+} {
+ #Play {RL\Oficios\Turno.wav}
+};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {*Tras dedicar largos minutos desollando * obtienes una pieza perfecta.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Mat ContadorTurnos {@ContadorTurnos+1};
+#If {@ModoE = 1} {
+ #GagLine Voice
+};
+#If {@ModoAmbientacion = 1} {
+ #If {%IfWord("Piel",%0, )} {
+  #Play {RL\Oficios\Jornalero\Obtener piel *3.wav} @VolAmbOficio;
+  #Abort
+ };
+ #If {%IfWord("Grasa",%0, )} {
+  #Play {RL\Oficios\Jornalero\Obtener grasa *3.wav} @VolAmbOficio;
+  #Abort
+ };
+ #Play {RL\Oficios\Jornalero\Obtener*9.wav} @VolAmbOficio
+} {
+ #Play {RL\Oficios\Turno.wav}
+};
+} {} AnyCase
+
+#Class 0

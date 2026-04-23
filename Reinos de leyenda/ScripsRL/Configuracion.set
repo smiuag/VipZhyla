@@ -1,0 +1,59 @@
+;Módulo: Configuracion.set
+;Versión: 1.1, 09/11/2021
+;Descripción: Archivo de configuración para los scrips.
+;Autor: Rhomdur.
+
+;Uso: Cambiar solamente los números entre llaves de las líneas que empiezan con #Var
+
+;Consejo:
+;Si os sentís dopaos, y /o hackers poderosos
+;podeis cambiar estas configuraciones al vuelo desde el mud,
+;introduciendo las líneas precedidas por signos de número directamente en la ventana de comandos del cliente.
+;No se pa que os lo cuento por que sois unos torpes todos.
+;Y por que nadie lee estas mierdas.
+
+
+;Historial de canales inicial. Por defecto es 0.
+;0 general, 1 bando, 2 ciudadania, 3 chat, 4 gremio, 5 familia, 6 rol, 7 canales especiales.
+#Var SeleccionCanal {0}
+
+;Modo de juego inicial, por defecto es 1
+;Modo combate 1, Modo xp 2, modo idle 3
+#Var ModoJ {1}
+
+;Modo experto. Por defecto es 1
+;0 desactivado, 1 activado.
+#Var ModoE {1}
+
+;Modos de paths. Por defecto es 0
+;2 rooms cada 2 segundos: 0, 1 room por segundo: 1, Modo turbo, 2
+#Var ModoPath {0}
+
+;Modo silencioso. Por defecto es 0
+;0 desactivado, 1 activado.
+#Var ModoS {0}
+
+;Alertas sonoras de vida baja. Por defecto es 1.
+;1 activado, 0 desactivado.
+#Var AlertaVida {1}
+
+;Sonidos ambiente: Por defecto es 1.
+;1 activados, 0 desactivados.
+#Var ModoAmbientacion 1
+
+;Asignación de sonidos de ambiente.
+;Busca sonidos asignados a cada room al moverse, por defecto es 1.
+;1 activado, 0 desactivado.
+#Var AsignacionAmbienteRoom 0
+
+;Modo de sonido mono, por defecto es 0
+;1 activado, 0 desactivado.
+#Var ModoMono 0
+
+;Filtro de salidas: por defecto es 1:
+;1 activado, 0 desactivado:
+#Var FiltroSalidas 0
+
+;Modo Autocentrar: Por defecto es 1.
+;0 desactivado, 1 activado.
+#Var AutoCentrar 1

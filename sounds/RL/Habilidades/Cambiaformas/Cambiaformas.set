@@ -1,0 +1,361 @@
+;Módulo: Cambiaformas.set
+
+;Descripción: Triggers, keys y configs para la clase Cambiaformas
+;Autor: Astrion.
+
+#Load ScripsRL\Clases\Magia_clerical.set
+#Load ScripsRL\Clases\centrar.set
+
+;Declaración de variables
+#Var Forma 0
+
+
+;Keys
+#Key alt-q {polimorfarse pantera}
+#Key alt-w {polimorfarse oso}
+#Key alt-e {polimorfarse cocodrilo}
+#Key alt-r {polimorfarse hiena}
+#Key alt-a {polimorfarse acabar}
+#Key alt-s {
+#If {@Forma = "Pantera"} {acechar};
+#If {@Forma = "oso"} {centrar x};
+#If {@Forma = "cocodrilo"} {centrar x};
+#If {@Forma = 0} {formular retener persona:x}
+}
+#Key alt-d {
+#If {@Forma = "cocodrilo"} {zarandear x};
+#If {@Forma = "oso"} {pescar};
+#If {@Forma = "pantera"} {esconderse};
+#If {@Forma = "rana"} {desaparicion};
+#If {@Forma = "jabali"} {olfatear x};
+#If {@Forma = 0} {formular columna de fuego:x}
+}
+#Key alt-f {
+#If {@Forma = "cocodrilo"} {mordisco x};
+#If {@Forma = "pantera"} {abalanzarse x};
+#If {@Forma = "oso"} {zarpazo x};
+#If {@Forma = "hiena"} {dentellada x};
+#If {@Forma = "rana"} {engullir x};
+#If {@Forma = "jabali"} {olisquear};
+#If {@Forma = "mono"} {saltopicaro x};
+#If {@Forma = 0} {formular relampago:x}
+}
+#Key alt-z {formular sutileza del metamorfo}
+#Key alt-x {formular armas naturales}
+#Key alt-c {formular vigor natural}
+#Key alt-v {formular regeneracion animal}
+
+
+;Keys de movimiento y hechizos alternativos según la forma actual
+#GKey alt-shift-k {
+#If {@Forma = "jabali"} {ruidos sur};
+#If {@Forma = "Pantera"} {sigilar sur};
+#If {@Forma = "Cocodrilo"} {nadar sur};
+#If {@Forma = "Rana"} {nadar sur};
+#If {@Forma = "Mono"} {saltar sur};
+#If {@Forma = "Hiena"} {envainar todo;carrera sur};
+#If {@Forma = 0} {formular terremoto:sur}
+}
+
+#GKey alt-shift-l {
+#If {@Forma = "jabali"} {ruidos sudeste};
+#If {@Forma = "Pantera"} {sigilar sudeste};
+#If {@Forma = "Cocodrilo"} {nadar sudeste};
+#If {@Forma = "Rana"} {nadar sudeste};
+#If {@Forma = "Mono"} {saltar sudeste};
+#If {@Forma = "Hiena"} {envainar todo;carrera sudeste};
+#If {@Forma = 0} {formular terremoto:sudeste}
+}
+
+#GKey alt-shift-o {
+#If {@Forma = "jabali"} {ruidos este};
+#If {@Forma = "Pantera"} {sigilar este};
+#If {@Forma = "Cocodrilo"} {nadar este};
+#If {@Forma = "Rana"} {nadar este};
+#If {@Forma = "Mono"} {saltar este};
+#If {@Forma = "Hiena"} {envainar todo;carrera este};
+#If {@Forma = 0} {formular terremoto:este}
+}
+
+#GKey alt-shift-9 {
+#If {@Forma = "jabali"} {ruidos noreste};
+#If {@Forma = "Pantera"} {sigilar noreste};
+#If {@Forma = "Cocodrilo"} {nadar noreste};
+#If {@Forma = "Rana"} {nadar noreste};
+#If {@Forma = "Mono"} {saltar noreste};
+#If {@Forma = "Hiena"} {envainar todo;carrera noreste};
+#If {@Forma = 0} {formular terremoto:noreste}
+}
+
+#GKey alt-shift-8 {
+#If {@Forma = "jabali"} {ruidos norte};
+#If {@Forma = "Pantera"} {sigilar norte};
+#If {@Forma = "Cocodrilo"} {nadar norte};
+#If {@Forma = "Rana"} {nadar norte};
+#If {@Forma = "Mono"} {saltar norte};
+#If {@Forma = "Hiena"} {envainar todo;carrera norte};
+#If {@Forma = 0} {formular terremoto:norte}
+}
+
+#GKey alt-shift-7 {
+#If {@Forma = "jabali"} {ruidos noroeste};
+#If {@Forma = "Pantera"} {sigilar noroeste};
+#If {@Forma = "Cocodrilo"} {nadar noroeste};
+#If {@Forma = "Rana"} {nadar noroeste};
+#If {@Forma = "Mono"} {saltar noroeste};
+#If {@Forma = "Hiena"} {envainar todo;carrera noroeste};
+#If {@Forma = 0} {formular terremoto:noroeste}
+}
+
+#GKey alt-shift-u {
+#If {@Forma = "jabali"} {ruidos oeste};
+#If {@Forma = "Pantera"} {sigilar oeste};
+#If {@Forma = "Cocodrilo"} {nadar oeste};
+#If {@Forma = "Rana"} {nadar oeste};
+#If {@Forma = "Mono"} {saltar oeste};
+#If {@Forma = "Hiena"} {envainar todo;carrera oeste};
+#If {@Forma = 0} {formular terremoto:oeste}
+}
+
+#GKey alt-shift-j {
+#If {@Forma = "jabali"} {ruidos sudoeste};
+#If {@Forma = "Pantera"} {sigilar sudoeste};
+#If {@Forma = "Cocodrilo"} {nadar sudoeste};
+#If {@Forma = "Rana"} {nadar sudoeste};
+#If {@Forma = "Mono"} {saltar sudoeste};
+#If {@Forma = "Hiena"} {envainar todo;carrera sudoeste};
+#If {@Forma = 0} {formular terremoto:sudoeste}
+}
+
+#GKey alt-shift-i {
+#If {@Forma = "jabali"} {ruidos arriba};
+#If {@Forma = "Pantera"} {sigilar arriba};
+#If {@Forma = "Cocodrilo"} {nadar arriba};
+#If {@Forma = "Rana"} {nadar arriba};
+#If {@Forma = "Mono"} {envainar todo;trepar arbol};
+#If {@Forma = "Hiena"} {envainar todo;carrera arriba};
+#If {@Forma = 0} {formular terremoto:arriba}
+}
+
+#GKey alt-shift-m {
+#If {@Forma = "jabali"} {ruidos abajo};
+#If {@Forma = "Pantera"} {sigilar abajo};
+#If {@Forma = "Cocodrilo"} {nadar abajo};
+#If {@Forma = "Rana"} {nadar abajo};
+#If {@Forma = "Mono"} {saltar abajo};
+#If {@Forma = "Hiena"} {envainar todo;carrera abajo};
+#If {@Forma = 0} {formular terremoto:abajo}
+}
+
+#GKey alt-shift-, {
+#If {@Forma = "jabali"} {ruidos dentro};
+#If {@Forma = "Pantera"} {sigilar dentro};
+#If {@Forma = "Cocodrilo"} {nadar dentro};
+#If {@Forma = "Rana"} {nadar dentro};
+#If {@Forma = 0} {formular terremoto:dentro}
+}
+
+#GKey alt-shift-. {
+#If {@Forma = "jabali"} {ruidos fuera};
+#If {@Forma = "Pantera"} {sigilar fuera};
+#If {@Forma = "Cocodrilo"} {nadar fuera};
+#If {@Forma = "Rana"} {nadar fuera};
+#If {@Forma = 0} {formular terremoto:fuera}
+}
+
+
+;Triggers de sonido para la habilidad polimorfarse y declaración de variables para las diferentes formas
+#TRIGGER {*atónit*, te das cuenta de que ahora eres un* Pantera.} {
+#Var Forma Pantera;
+#Play {RL\Habilidades\Cambiaformas\pantera.wav}} {}
+
+#TRIGGER {*atónit*, te das cuenta de que ahora eres un* Oso.} {
+#Var Forma Oso;
+#Play {RL\Habilidades\Cambiaformas\oso.wav}} {}
+
+#TRIGGER {*atónit*, te das cuenta de que ahora eres un* Hiena.} {
+#Var Forma Hiena;
+#Play {RL\Habilidades\Cambiaformas\hiena.wav}} {}
+
+#TRIGGER {*atónit*, te das cuenta de que ahora eres un* Rana.} {
+#Var Forma Rana;
+#Play {RL\Habilidades\Cambiaformas\rana.wav}} {}
+
+#TRIGGER {*atónit*, te das cuenta de que ahora eres un* Jabalí.} {
+#Var Forma Jabali;
+#Play {RL\Habilidades\Cambiaformas\Jabali.wav}} {}
+
+#TRIGGER {*atónit*, te das cuenta de que ahora eres un* Mono.} {
+#Var Forma Mono;
+#Play {RL\Habilidades\Cambiaformas\mono.mp3}} {}
+
+#TRIGGER {*atónit*, te das cuenta de que ahora eres un* Cocodrilo.} {
+#Var Forma Cocodrilo;
+#Play {RL\Habilidades\Cambiaformas\cocodrilo.mp3}} {}
+
+#TRIGGER {*Agotad*, eres incapaz de continuar manteniendo tu polimorfismo y vuelves a tu raza original.} {
+#Var Forma 0;
+#Play {RL\Habilidades\Cambiaformas\polimorfarse_acabar.mp3}} {}
+
+
+
+;Triggers de sonido para la habilidad abalanzarse
+#TRIGGER {*+ Te mueves en silencio alrededor de *} {
+#Play {RL\Habilidades\Impulso.wav}} {}
+
+#TRIGGER {*+ Comienzas a moverte tentativamente alrededor de *} {
+#Play {RL\Habilidades\Impulso.wav}} {}
+
+#TRIGGER {*¡Te abalanzas sobre * y * despedazas con * ataque* y * crítico*} {
+#Play {RL\Habilidades\Cambiaformas\abalanzarse_escondido_critico.mp3}} {}
+
+#TRIGGER {*¡Te abalanzas sobre * y * despedazas con * ataques de tus Garras y dientes!} {
+#Play {RL\Habilidades\Cambiaformas\abalanzarse_escondido.wav}} {}
+
+#TRIGGER {*¡Te abalanzas sobre un costado de *, destrozándo* con * ataques de tus Garras y dientes!} {
+#Play {RL\Habilidades\Cambiaformas\abalanzarse.mp3}} {}
+
+#TRIGGER {*¡Te abalanzas sobre un costado de *, destrozándo* con * ataque* y * crítico*} {
+#Play {RL\Habilidades\Cambiaformas\abalanzarse_critico.mp3}} {}
+
+
+
+;Triggers de sonido para la habilidad zarpazo
+#TRIGGER {*Te preparas para ejecutar zarpazo.} {
+#Play {RL\Habilidades\Impulso.wav}} {}
+
+#TRIGGER {*¡Alcanzas a * con tu maniobra de zarpazo!} {
+#Play {RL\Habilidades\Cambiaformas\Zarpazo.wav}} {}
+
+#TRIGGER {*¡Alcanzas criticamente a * con tu maniobra de zarpazo!} {
+#Play {RL\Habilidades\Cambiaformas\zarpazo critico.wav}} {}
+
+
+;Triggers para la habilidad dentellada
+#TRIGGER {*¡Alcanzas a * con tu maniobra de dentellada!} {
+#Play {RL\Habilidades\Cambiaformas\Dentellada.wav}} {}
+
+#TRIGGER {*¡Alcanzas criticamente a * con tu maniobra de dentellada!} {
+#Play {RL\Habilidades\Cambiaformas\dentellada_critica.mp3}} {}
+
+
+
+;Triggers de sonido para mordisco, devorar y zarandear
+#TRIGGER {*Comienzas a serpentear alrededor de *, buscando puntos ciegos por donde puedas agarrarle con tus temibles fauces.} {
+#Play {RL\Habilidades\Impulso.wav}} {}
+
+#TRIGGER {*Te relames ansiando retener entre tus mandíbulas a * y te preparas para tu cometido.} {
+#Play {RL\Habilidades\Impulso.wav}} {}
+
+#TRIGGER {*Muerdes a * en *, destrozándole carne y huesos.} {
+#Play {RL\Habilidades\Cambiaformas\mordisco.wav}} {}
+
+#TRIGGER {*Hundes tus dientes en el débil cuerpo de *, causándole un terrible dolor con tu mordisco crítico.} {
+#Play {RL\Habilidades\Cambiaformas\mordisco_critico.mp3}} {}
+
+#TRIGGER {*Chasqueas los dientes en el aire cuando * escapa al alcance de tus mandíbulas.} {
+#Play {RL\Habilidades\Cambiaformas\mordisco falla.wav}} {}
+
+#TRIGGER {*Arrastras a * con tus fauces en dirección *.} {
+#Play {RL\Habilidades\Cambiaformas\arrastra mordido.wav}} {}
+
+#TRIGGER {Intentas arrastrar a * hacia *, pero tu fuerza es insuficiente.} {
+#Play {RL\Movimiento\Salida bloqueada.wav}} {}
+
+#TRIGGER {*Retienes a * con tu mordisco, haciéndole más daño.} {
+#Play {RL\Habilidades\Cambiaformas\mordisco retiene.wav}} {}
+
+#TRIGGER {*Incapaz de continuar con tu mordisco, sueltas a *.} {
+#Play {RL\Habilidades\Cambiaformas\mordisco_soltar.wav}} {}
+
+#TRIGGER {*¡Alcanzas a * con tu maniobra de zarandear!} {
+#Play {RL\Habilidades\Cambiaformas\zarandear.wav}} {}
+
+#TRIGGER {*¡Alcanzas criticamente a * con tu maniobra de zarandear!} {
+#Play {RL\Habilidades\Cambiaformas\zarandear_critico.mp3}} {}
+
+#TRIGGER {*Te preparas para ejecutar devorar.} {
+#Play {RL\Habilidades\Impulso.wav}} {}
+
+#TRIGGER {*Arrancas con fuerza la carne del cuerpo de * para devorarla vorazmente.} {
+#Play {RL\Habilidades\Cambiaformas\devorar.wav}} {}
+
+#TRIGGER {*Buscas y rebuscas algún manjar en la carcasa que estás devorando, pero parece que * ya no tiene nada de carne aprovechable: ¡solo quedan huesos y pellejos!} {
+#Play {RL\Habilidades\Cambiaformas\devorar acaba.wav}} {}
+
+#TRIGGER {*Saciad*, paras de devorar el * y te levantas enseñando con una estúpida sonrisa toda la sangre y restos de vísceras entre tus dientes.} {
+#Play {RL\Habilidades\Cambiaformas\devorar acaba.wav}} {}
+
+
+
+;Triggers de sonido para engullir
+#TRIGGER {*Sientes como tu boca se hincha cuando tensas tu lengua en su interior con la intención de lanzarla contra * para devorarl*.} {
+#Play {RL\Habilidades\Cambiaformas\engullir_inicio.mp3}} {}
+
+#TRIGGER {*Lanzas tu lengua hacia adelante como una flecha rosada que impacta en * y l* trae de vuelta hacia tu boca abierta para que l* engullas de un único y sonoro trago.} {
+#Play {RL\Habilidades\Cambiaformas\engullir 2.wav}} {}
+
+
+;Triggers para esconderse y acechar en pantera
+;Esconderse:
+
+#GTrigger {*Empiezas a buscar un buen escondite por la zona.} {
+#Play {RL\Habilidades\sigiladores\Esconderse inicio.wav}
+} {} AnyCase
+
+#GTrigger {*Encuentras lo que parece un buen sitio y empiezas a buscar una buena posición para quedar oculto.} {
+#Play {RL\Habilidades\sigiladores\Esconderse buscando.wav}
+} {} AnyCase
+
+#GTrigger {*Finalmente logras colocarte y te escondes perfectamente.} {
+#Play {RL\Habilidades\sigiladores\Esconderse ok.wav}
+} {} AnyCase
+
+#GTrigger {*¡Has quedado al descubierto!} {
+#Play {RL\Sucesos\Descubierto.wav}
+} {} AnyCase
+
+
+;Acechar:
+
+#GTrigger {*Comienzas a prestar una mayor atenci?n a los movimientos y a los sonidos de la zona.} {
+#Play {RL\Habilidades\sigiladores\Acechar on.wav}
+} {} AnyCase
+
+#GTrigger {*Terminas tu maniobra de acecho.} {
+#Play {RL\Habilidades\sigiladores\Acechar off.wav}
+} {} AnyCase
+#TRIGGER {*Con movimientos lentos y cautelosos, consigues apartarte de todo y esconderte tan bien que desapareces.} {#Play {C:\Users\mohau\Documents\VIP Mud\Sounds\RL\Habilidades\Cambiaformas\desaparicion.wav}} {}
+#TRIGGER {Eres incapaz de desenvolverte en silencio por este entorno; si no vuelves pronto a un entorno afín los efectos de tu desaparición estos terminarán.} {#Play {C:\Users\mohau\Documents\VIP Mud\Sounds\RL\Habilidades\Cambiaformas\desaparicion aviso.wav}} {}
+#TRIGGER {Tu hechizo * llega a su fin.} {#Play {C:\Users\mohau\Documents\VIP Mud\Sounds\RL\Habilidades\Cambiaformas\se va hechizo.wav}} {}
+
+
+
+;Triggers para habilidades paradas o esquivadas
+#GTrigger {[#] [¡]* logra esquivar*tu maniobra de *!} {
+#Play {RL\Habilidades\Generales\Habilidad esquivada.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {? [#] [¡]* logra esquivar*tu maniobra de *!} {
+#Play {RL\Habilidades\Generales\Habilidad esquivada.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {[#] [¡]* logra parar*tu maniobra de *!} {
+#Play {RL\Habilidades\Generales\Habilidad bloqueada.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {? [#] [¡]* logra parar*tu maniobra de *!} {
+#Play {RL\Habilidades\Generales\Habilidad bloqueada.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase

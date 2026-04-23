@@ -1,0 +1,29 @@
+;Módulo: Asignacion.set
+;Versión: 1.0, 02/05/2025
+;Descripción: Función de búsqueda de sonidos para cada room.
+;Autor: Rhomdur
+
+
+;Función que asigna sonidos según las palabras que aparecen en el titulo de la room:
+#GAlias FuncBuscarAmbiente {
+
+;Localización 1:
+#If {%IfWord("titulo de room",@Localizacion," ")} {
+ FuncAsignarAmbiente {sonido primario de día o 0} {Sonido primario de noche o 0}
+ {Sonido secundario de día o 0} {Sonido secundario de noche o 0}
+ {Sonido de amanecer o 0} {Sonido de anochecer o 0};
+ #Abort
+};
+
+;Localización 2:
+;Copiar localización 1, pegar aquí y cambiar parámetros.
+;Todas las demás localizaciones van debajo de aquí.
+
+
+;Si no se encontró sonido se ponen todas las variables a 0.
+#Var SAmb1 0;
+#Var SAmb2 0;
+#Var SAmanecer;
+#Var SAnochecer
+}
+

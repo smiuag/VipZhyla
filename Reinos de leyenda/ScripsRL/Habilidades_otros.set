@@ -1,0 +1,839 @@
+;Módulo: Habilidades_otros.set
+;Versión: 1.0,
+;Descripción: Habilidades de otros
+;Autor: Rhomdur
+
+
+#Var ListaAlertasHabilidades {aplastar|apuñalar|arremeter|ataquedoble|ataquefurtivo|atrapar|atravesar|azuneu|azurae|cabezazo|carga|cazar|disparoapuntado|disparoincapacitador|doblegolpe|embestir|empalar|escupitajo|estocada|frenesi|golpear|golpearcano|golpecertero|hender|herir|instigar|lanzar|mordisco|oleada|pulverizar|saltoheroico|salva|tajar|vortice|zarpazo}
+
+#Var ListaImpactosHabilidades {aplastar|apuntar|arrojar|atravesar|cabezazo|disparoapuntado|disparocertero|disparoincapacitador|escupitajo|frenesi|golpecertero|herir|mordisco|saltoheroico|salva|tajar}
+
+
+;Triggers para habilidades actualizadas:
+
+#GTrigger {[!] * se prepara para ejecutar * sobre ti.} {
+FuncHabilidadPreparando %1 %2 0
+} {}
+
+#GTrigger {[*] ¡* te alcanza*con su maniobra de *!} {
+#If {%IfWord("criticamente",%2, )} {
+ FuncHHImpacto %1 %3 0 1 1 0
+} {
+ FuncHHImpacto %1 %3 0 0 1 0
+}
+} {}
+
+#GTrigger {[*] ¡Logras parar*a * y su *!} {
+#If {%IfWord("criticamente",%1, )} {
+ FuncHHImpacto %2 %3 0 1 4 0
+} {
+ FuncHHImpacto %2 %3 0 0 4 0
+}
+} {} AnyCase
+
+#GTrigger {[*] ¡Logras esquivar*a * y su *!} {
+#If {%IfWord("criticamente",%1, )} {
+ FuncHHImpacto %2 %3 0 1 3 0
+} {
+ FuncHHImpacto %2 %3 0 0 3 0
+}
+} {} AnyCase
+
+#GTrigger {* se prepara para ejecutar * sobre *.} {
+FuncCorrectorSignos %0;
+#If {%IfWord(%Word(@Corregir, ,1),@Canales,|) or %IfWord(%3,ti, )} {#Abort};
+FuncHabilidadPreparando %1 %2 %3
+} {}
+
+#GTrigger {¡* alcanza*a * con su maniobra de *!} {
+#If {%IfWord("criticamente",%2, )} {
+ FuncHHImpacto %1 %4 %3 1 1 0
+} {
+ FuncHHImpacto %1 %4 %3 0 1 0
+}
+} {}
+
+#GTrigger {¡* detiene su maniobra de * cuando sus objetivos dejan de estar a su alcance!} {
+FuncHHImpacto %1 %2 1 0 2 0
+} {}
+
+#GTrigger {¡* logra esquivar*a * y su *!} {
+#If {%IfWord("criticamente",%2, )} {
+ FuncHHImpacto %3 %4 %1 1 3 0
+} {
+ FuncHHImpacto %3 %4 %1 0 3 0
+}
+} {}
+
+#GTrigger {¡* logra parar*a * y su *!} {
+#If {%IfWord("criticamente",%2, )} {
+ FuncHHImpacto %3 %4 %1 1 4 0
+} {
+ FuncHHImpacto %3 %4 %1 0 4 0
+}
+} {}
+
+#GTrigger {¡El ataque de * rompe la concentraci?n de *!} {
+FuncComprobarSujeto %2 {RL\HHOtros\Habilidades impacto\Pierde concentracion aliado.wav} {RL\HHOtros\Habilidades impacto\Pierde concentracion enemigo.wav};
+#If {@ModoE = 1} {
+ #Say {%2} NoDisplay|Output
+}
+} {} AnyCase
+
+
+
+
+;Habilidades no actualizadas:
+
+;Habilidad Herir
+
+#GTrigger {* enarbola * y te examina con *.} {
+FuncCorrectorSignos %0;
+#If {%IfWord(%Word(@Corregir, ,1),@Canales,|)} {#Abort};
+FuncHabilidadPreparando %1 herir 0
+} {}
+
+#GTrigger {* enarbola * y examina a * con *.} {
+FuncCorrectorSignos %0;
+#If {%IfWord(%Word(@Corregir, ,1),@Canales,|)} {#Abort};
+FuncHabilidadPreparando %1 herir %3
+} {}
+
+#GTrigger {[*] * te entierra su * en *, ignorando tus defensas.} {
+#Var TempInfoImpacto %3;
+FuncHHImpacto %1 herir 0 0 1 0
+} {}
+
+#GTrigger {* hunde su * en * de *, ignorando sus defensas.} {
+#Var TempInfoImpacto %3;
+FuncCorrectorSignos %0;
+#If {%IfWord(%Word(@Corregir, ,1),@Canales,|)} {#Abort};
+FuncHHImpacto %1 herir %4 0 1 0
+} {}
+
+
+;Habilidad Esgrimir:
+
+#GTrigger {*[#] * interfiere tu ataque mediante un * de su *} {
+FuncCorrectorSignos %0;
+#If {%IfWord(%Word(@Corregir, ,1),@Canales,|)} {#Abort};
+FEventos {%1 te esgrime};
+#Play {RL\HHOtros\Habilidades impacto\Esgrimir enemigo*4.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {}
+
+#GTrigger {*[#] * esgrime tu ataque mediante un * de su *} {
+FuncCorrectorSignos %0;
+#If {%IfWord(%Word(@Corregir, ,1),@Canales,|)} {#Abort};
+FEventos {%1 te esgrime};
+#Play {RL\HHOtros\Habilidades impacto\Esgrimir enemigo*4.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {}
+
+#GTrigger {*[#] * intercepta tu ataque mediante un * de su *} {
+FuncCorrectorSignos %0;
+#If {%IfWord(%Word(@Corregir, ,1),@Canales,|)} {#Abort};
+FEventos {%1 te esgrime};
+#Play {RL\HHOtros\Habilidades impacto\Esgrimir enemigo*4.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {}
+
+#GTrigger {*[#] * bloquea tu ataque mediante un * de su *} {
+FuncCorrectorSignos %0;
+#If {%IfWord(%Word(@Corregir, ,1),@Canales,|)} {#Abort};
+FEventos {%1 te esgrime};
+#Play {RL\HHOtros\Habilidades impacto\Esgrimir enemigo*4.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {}
+
+
+;Habilidad Saltoheroico:
+
+#GTrigger {* se agarra con fuerza a su * mientras contrae sus m?sculos, deseos? de probar la gloria de la batalla que le espera en el *.} {
+FuncCorrectorSignos %0;
+#If {%IfWord(%Word(@Corregir, ,1),@Canales,|)} {#Abort};
+FuncHabilidadPreparando %1 saltoheroico %5
+} {}
+
+#GTrigger {* se agarra con fuerza a su * mientras contrae sus m?sculos, deseos? de probar la gloria de la batalla que le espera aqu?.} {
+FuncCorrectorSignos %0;
+#If {%IfWord(%Word(@Corregir, ,1),@Canales,|)} {#Abort};
+FuncHabilidadPreparando %1 saltoheroico aquí
+} {}
+
+#GTrigger {¡* llega a la sala en un salto heroico desde el *, blandiendo su *!} {
+FuncAcortarDirecciones %2;
+#Var SujetoMovimiento2;
+#Var TipoMovimientoEntrada saltoheroico;
+FuncReproducirMovimientos 1 %1 %2;
+FuncHistorialMovimientos 0 %0;
+FuncVerbalizarMovimientos;
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {}
+
+#GTrigger {*, dominad? por la sed de gloria, salta en direcci?n * con su * en alto.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Var TipoMovimientoSalida saltoheroico;
+#Var SujetoMovimiento2;
+FuncAcortarDirecciones %4;
+FuncReproducirMovimientos 2 %1 %4;
+FuncHistorialMovimientos 1 %0;
+FuncVerbalizarMovimientos;
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {}
+
+#GTrigger {¡* golpea el suelo con su *, sacudiendo todo el entorno a tu alrededor con la fuerza de un dios!} {
+FEventos {Saltoheroico de %1};
+#Play {RL\HHOtros\Habilidades impacto\Saltoheroico golpe.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {}
+
+#GTrigger {[*] ¡La ola s?smica producida por el salto heroico de * te golpea con fuerza furibunda!} {
+FuncHHImpacto %1 saltoheroico 0 0 1 0
+} {} AnyCase
+
+#GTrigger {[*] ¡La onda s?smica te deja momentáneamente confundido!} {
+#Play {RL\Combate\Pierdes concentracion.wav};
+#If {@ModoE = 1} {
+ #GagLine voice
+}
+} {} AnyCase
+
+
+;Habilidad mordisco:
+
+#GTrigger {* comienza a serpentear a tu alrededor mientras se relame*} {
+FuncCorrectorSignos %0;
+#If {%IfWord(%Word(@Corregir, ,1),@Canales,|)} {#Abort};
+FuncHabilidadPreparando %1 mordisco 0
+} {}
+
+#GTrigger {* se abalanza sobre ti y te muerde con sus poderosas fauces.} {
+FuncCorrectorSignos %0;
+#If {%IfWord(%Word(@Corregir, ,1),@Canales,|)} {#Abort};
+FuncHHImpacto %1 mordisco 0 0 1 0
+} {}
+
+#GTrigger {[*] * contin?a mordi?ndote, reteni?ndote junto a *.} {
+FEventos {%1 mordiéndote};
+#Play {RL\HHOtros\Habilidades impacto\Mordiendo.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {}
+
+#GTrigger {* te arrastra con sus poderosas fauces en direcci?n *.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FEventos {%1 te arrastra %3};
+#Var TipoMovimientoSalida arrastrando;
+#Var SujetoMovimiento2;
+FuncAcortarDirecciones %3;
+FuncReproducirMovimientos 2 %1 %3;
+FuncHistorialMovimientos 1 %0;
+FuncVerbalizarMovimientos;
+#Play {RL\Movimiento\Movido.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {}
+
+#GTrigger {[*] * parece demasiad* cansad* para continuar mordi?ndote.} {
+FEventos {Mordisco off};
+#Play {RL\HHOtros\Habilidades impacto\Mordisco off.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {}
+
+#GTrigger {En una proeza de fuerza, te libras del mordisco de *.} {
+FuncSexo {RL\Combate\LuchaF.wav} {RL\Combate\LuchaM.wav};
+#Play {RL\HHOtros\Habilidades impacto\Mordisco romper propio.wav};
+#If {@ModoE = 1} {
+ #GagLine voice
+}
+} {} AnyCase
+
+#GTrigger {* parece encogerse, mientras retrae su cuerpo hacia atr?s, como si fuera a lanzarse sobre alguien.} {
+FuncCorrectorSignos %0;
+#If {%IfWord(%Word(@Corregir, ,1),@Canales,|)} {#Abort};
+FuncHabilidadPreparando %1 mordisco alguien
+} {}
+
+#GTrigger {* serpentea alrededor de *, buscando puntos ciegos por donde *} {
+FuncCorrectorSignos %0;
+#If {%IfWord(%Word(@Corregir, ,1),@Canales,|)} {#Abort};
+FuncHabilidadPreparando %1 mordisco %2
+} {}
+
+#GTrigger {* se abalanza sobre *, destroz?ndole * cuando sus mand?bulas se cierran como una tenaza mortal.} {
+FuncCorrectorSignos %0;
+#If {%IfWord(%Word(@Corregir, ,1),@Canales,|)} {#Abort};
+FuncHHImpacto %1 mordisco %2 0 1 0
+} {}
+
+#GTrigger {* contin?a reteniendo y da?ando a * con su poderoso mordisco.} {
+FuncCorrectorSignos %0;
+#If {%IfWord(%Word(@Corregir, ,1),@Canales,|)} {#Abort};
+FuncComprobarSujeto %2 0 0;
+FEventos {%1 mordiendo %4};
+#Play {RL\HHOtros\Habilidades impacto\Mordiendo otro.wav};
+#If {@ModoE = 1} {
+ #GagLine voice
+}
+} {}
+
+#GTrigger {* arrastra con sus fauces a * en direcci?n *.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FEventos {%1 arrastra %2 %4};
+#Var TipoMovimientoSalida arrastrando;
+#Var SujetoMovimiento2;
+FuncAcortarDirecciones %4;
+FuncReproducirMovimientos 2 %1 %4;
+FuncHistorialMovimientos 1 %0;
+FuncVerbalizarMovimientos;
+#Play {RL\Movimiento\Movido otro.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {}
+
+#GTrigger {* suelta a *, liber?ndol? de su poderoso mordisco.} {
+FuncCorrectorSignos %0;
+#If {%IfWord(%Word(@Corregir, ,1),@Canales,|)} {#Abort};
+FEventos {%1 %2 Mordisco off};
+#Play {RL\HHOtros\Habilidades impacto\Mordisco off.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {}
+
+
+;Habilidad Escupitajo
+
+#GTrigger {Con un burbujeante ulular, * se prepara para lanzar un escupitajo ?cido.} {
+FuncHabilidadPreparando %1 escupitajo 0
+} {}
+
+#GTrigger {* lanza un escupitajo ?cido contra ti desde *.} {
+FuncCorrectorSignos %0;
+#If {%IfWord(%Word(@Corregir, ,1),@Canales,|)} {#Abort};
+FuncHHImpacto %1 escupitajo 0 0 1 %3
+} {}
+
+;marca
+;Habilidad Crestaipnótica:
+;#GTrigger {* retrae su cuerpo y clava sus ojos en ti, siguiéndote con su mirada ambarina.} {} {}
+;#GTrigger {*[*] * no consigue hipnotizarte.} {} {}
+
+
+;Habilidad lanzar
+
+#GTrigger {* te mira mientras comprime toda su musculatura.} {
+FuncCorrectorSignos %0;
+#If {%IfWord(%Word(@Corregir, ,1),@Canales,|)} {#Abort};
+FuncHabilidadPreparando %1 lanzar 0
+} {}
+
+#GTrigger {¡Eres agarrado brutalmente por * y no puedes moverte!} {
+FuncHHImpacto %1 lanzar 0 0 1 0
+} {}
+
+#GTrigger {¡Eres levantado por *, que te lanza por los aires violentamente!} {
+#Play {RL\HHOtros\Habilidades impacto\Lanzar arriba propio.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {¡Chocas contra el suelo!} {
+#Play {RL\HHOtros\Habilidades impacto\Lanzar abajo propio.wav};
+#Play {RL\Combate\Caida*4.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {* observa a * mientras comprime toda su musculatura.} {
+FuncCorrectorSignos %0;
+#If {%IfWord(%Word(@Corregir, ,1),@Canales,|)} {#Abort};
+FuncHabilidadPreparando %1 lanzar %2
+} {}
+
+#GTrigger {¡* agarra con una fuerza brutal a * mientras se debate ag?nico!} {
+FuncHHImpacto %1 lanzar %2 0 1 0
+} {}
+
+#GTrigger {¡* levanta el cuerpo de *, y en un acto de fuerza sobrehumana lo lanza por los aires!} {
+#Play {RL\HHOtros\Habilidades impacto\Lanzar arriba otro.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {}
+
+#GTrigger {¡* asciende unos * metros y comienza a caer en picado!} {
+#Play {RL\HHOtros\Habilidades impacto\Lanzar arriba otro.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {}
+
+#GTrigger {¡* impacta contra el suelo!} {
+#Play {RL\HHOtros\Habilidades impacto\Lanzar abajo otro.wav};
+} {}
+
+
+;Habilidad Frenesí
+
+;Habilidad de control para la reprodución de sonidos del frenesí:
+;%1: 0 si el receptor es uno mismo, 1 si el receptor es otro.
+;Variable TempEjecFrenesi: Almacena el nombre del ejecutor.
+;Variable TempRecepFrenesi: Almacena el nombre del receptor cuando no es uno mismo.
+#GAlias FuncFrenesi {
+#If {%Defined(TempControlFrenesi) = 0} {
+#Var TempControlFrenesi 0
+} {
+ #Mat TempControlFrenesi {@TempControlFrenesi + 1}
+};
+#If {@TempControlFrenesi = 0 and %1 = 0} {
+ FuncHHImpacto @TempEjecFrenesi frenesi 0 0 1 0
+};
+#If {@TempControlFrenesi = 0 and %1 = 1} {
+ FuncHHImpacto @TempEjecFrenesi frenesi @TempRecepFrenesi 0 1 0
+};
+#Alarm UnFrenesi 2 {
+ #Unvar TempControlFrenesi
+};
+#Unvar TempEjecFrenesi;
+#Unvar TempRecepFrenesi
+}
+
+#GTrigger {* prepara un ataque furtivo contra *.} {
+FuncCorrectorSignos %0;
+#If {%IfWord(%Word(@Corregir, ,1),@Canales,|)} {#Abort};
+FuncHabilidadPreparando %1 ataquefurtivo %2
+} {}
+
+#GTrigger {[*] * surge de alguna parte y descarga un tremendo ataque por sorpresa contra * con su *} {
+#If {%2 = "ti"} {
+ FuncHHImpacto %1 ataquefurtivo 0 0 1 0;
+ #Play {RL\HHOtros\Habilidades impacto\Oculto propio.wav}
+} {
+ FuncHHImpacto %1 ataquefurtivo %2 0 1 0;
+ #Play {RL\HHOtros\Habilidades impacto\Oculto otro.wav}
+}
+} {}
+
+#GTrigger {[*] * te sorprende con una r?faga de brutales ataques cr?ticos de su *, pulverizando *} {
+FuncHHImpacto %1 ataquefurtivo 0 0 1 0;
+#Play {RL\HHOtros\Habilidades impacto\Oculto propio.wav}
+} {}
+
+#GTrigger {* intenta realizar un ataque furtivo contra ti, pero falla!} {
+FuncCorrectorSignos %0;
+#If {%IfWord(%Word(@Corregir, ,1),@Canales,|)} {#Abort};
+ FuncHHImpacto %1 ataquefurtivo 0 0 3 0;
+ #Play {RL\HHOtros\Habilidades impacto\Oculto propio.wav}
+} {}
+
+#GTrigger {* agarra con fuerza su *, haciendo que sus nudillos se vuelvan blancos.} {
+FuncCorrectorSignos %0;
+#If {%IfWord(%Word(@Corregir, ,1),@Canales,|)} {#Abort};
+FuncHabilidadPreparando %1 frenesi 0
+} {}
+
+#GTrigger {[*] * te alcanza con varios tajos de su *, hiriéndote superficialmente en *.} {
+#Var TempEjecFrenesi %1;
+FuncFrenesi 0
+} {}
+
+#GTrigger {[*] Te tambaleas cuando * te alcanza con una serie de golpes consecutivos de su *.} {
+#Var TempEjecFrenesi %1;
+FuncFrenesi 0
+} {}
+
+#GTrigger {[*] Cometes un error de principiante y * lo aprovecha para darte un terrible golpe con su * en *.} {
+#Var TempEjecFrenesi %1;
+FuncFrenesi 0
+} {}
+
+#GTrigger {[*] Un brutal golpe de * termina por alcanzarte en *, hundiéndose tres palmos en tu magullado cuerpo.} {
+#Var TempEjecFrenesi %1;
+FuncFrenesi 0
+} {}
+
+#GTrigger {[*] * te propina un buen golpe de su * que te alcanza en *, causándote una pequeña y dolorosa herida.} {
+#Var TempEjecFrenesi %1;
+FuncFrenesi 0
+} {}
+
+#GTrigger {[*] * te alcanza con varios tajos de su *, hiriéndote superficialmente en *.} {
+#Var TempEjecFrenesi %1;
+FuncFrenesi 0
+} {}
+
+#GTrigger {[*] *, entre carcajadas homicidas, te golpea repetidas veces con su * en *} {
+#Var TempEjecFrenesi %1;
+FuncFrenesi 0
+} {}
+
+#GTrigger {[*] ¡Retrocedes, malherid?, cuando * te alcanza con una tajada precisa de su * en * que *} {
+#Var TempEjecFrenesi %1;
+FuncFrenesi 0
+} {} AnyCase
+
+#GTrigger {Oyes una sucesi?n de golpes cortar el aire.} {
+FEventos %0;
+#Play {RL\HHOtros\Habilidades impacto\Oculto otro.wav};
+#Play {RL\HHOtros\Habilidades impacto\Frenesi otro.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {¡* retrocede malherid? cuando * l? alcanza con una tajada precisa de su * que *} {
+#Var TempEjecFrenesi %3;
+#Var TempRecepFrenesi %1;
+FuncFrenesi 1;
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {}
+
+#GTrigger {Un brutal golpe de * termina por alcanzar a * en *, hundiéndose *} {
+#Var TempEjecFrenesi %1;
+#Var TempRecepFrenesi %2;
+FuncFrenesi 1;
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {}
+
+#GTrigger {* destroza pro completo * de * con un mandoble tan fuerte que tus dientes *} {
+FuncCorrectorSignos %0;
+#If {%IfWord(%Word(@Corregir, ,1),@Canales,|)} {#Abort};
+#Var TempEjecFrenesi %1;
+#Var TempRecepFrenesi %3;
+FuncFrenesi 1;
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {}
+
+#GTrigger {* hostiga a *, incansable, hasta que consigue hundir a * en su *} {
+FuncCorrectorSignos %0;
+#If {%IfWord(%Word(@Corregir, ,1),@Canales,|)} {#Abort};
+#Var TempEjecFrenesi %1;
+#Var TempRecepFrenesi %2;
+FuncFrenesi 1;
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {}
+
+#GTrigger {* se tambalea cuando * l? alcanza con una serie de golpes consecutivos de su * en *} {
+FuncCorrectorSignos %0;
+#If {%IfWord(%Word(@Corregir, ,1),@Canales,|)} {#Abort};
+#Var TempEjecFrenesi %2;
+#Var TempRecepFrenesi %1;
+FuncFrenesi 1;
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {}
+
+#GTrigger {* describe con su * un arco que acierta por muy poco a *, caus?ndole *} {
+FuncCorrectorSignos %0;
+#If {%IfWord(%Word(@Corregir, ,1),@Canales,|)} {#Abort};
+#Var TempEjecFrenesi %1;
+#Var TempRecepFrenesi %3;
+FuncFrenesi 1;
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {}
+
+#GTrigger {* lanza un brutal golpe con su * que no alcanza a *.} {
+FuncCorrectorSignos %0;
+#If {%IfWord(%Word(@Corregir, ,1),@Canales,|)} {#Abort};
+#Var TempEjecFrenesi %1;
+#Var TempRecepFrenesi %3;
+FuncFrenesi 1;
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {}
+
+
+
+;Habilidad Carga
+
+#GTrigger {* te insulta muy fervorosamente mientras se lanza a la carga.} {
+FuncCorrectorSignos %0;
+#If {%IfWord(%Word(@Corregir, ,1),@Canales,|)} {#Abort};
+FuncHabilidadPreparando %1 carga 0
+} {}
+
+#GTrigger {* vocifera gritos de guerra, demandando un desaf?o contra ti mientras comienza su brutal carga.} {
+FuncCorrectorSignos %0;
+#If {%IfWord(%Word(@Corregir, ,1),@Canales,|)} {#Abort};
+FuncHabilidadPreparando %1 carga 0
+} {}
+
+#GTrigger {* espolea a su montura y se lanza a la carga contra ti.} {
+FuncCorrectorSignos %0;
+#If {%IfWord(%Word(@Corregir, ,1),@Canales,|)} {#Abort};
+FuncHabilidadPreparando %1 carga 0
+} {}
+
+#GTrigger {* insulta muy fervorosamente a * y se lanza a la carga.} {
+FuncCorrectorSignos %0;
+#If {%IfWord(%Word(@Corregir, ,1),@Canales,|)} {#Abort};
+FuncHabilidadPreparando %1 carga %2
+} {}
+
+#GTrigger {[*] * choca contra ti, culminando su carga con un * que te alcanza en *.} {
+FuncHHImpacto %1 carga 0 0 1 0
+} {}
+
+#GTrigger {[*] ¡* te empala con su * en * cuando su montura te arrolla!} {
+FuncHHImpacto %1 carga 0 0 1 0
+} {}
+
+
+;Runa Azurae:
+
+#GTrigger {De repente * abre los ojos y te mira con una extra?a y maliciosa sonrisa*} {
+FuncHabilidadPreparando %1 azurae 0
+} {}
+
+#GTrigger {[*] De la palma de la mano de * brota una esquirla de hielo arcano que te golpea brutalmente en el pecho.} {
+FuncHHImpacto %1 azurae 0 0 1 0
+} {} AnyCase
+
+
+;Runa azuneu 
+
+#GTrigger {* traza en el aire unos extraños símbolos con ágiles movimientos de sus dedos y clava su mirada en tus ojos.} {
+FuncCorrectorSignos %0;
+#If {%IfWord(%Word(@Corregir, ,1),@Canales,|)} {#Abort};
+FuncHabilidadPreparando %1 azuneu 0
+} {}
+
+#GTrigger {*alza su mano y alrededor de la misma se forman * que lanza contra tí.} {
+FuncCorrectorSignos %0;
+#If {%IfWord(%Word(@Corregir, ,1),@Canales,|)} {#Abort};
+FuncHHImpacto %1 azuneu 0 0 1 0
+} {}
+
+
+;Runa kalfue
+
+#GTrigger {* pronuncia una extra?a palabra mientras alza con fuerza su Espada Arcana y la orienta hacia t?.} {
+FuncCorrectorSignos %0;
+#If {%IfWord(%Word(@Corregir, ,1),@Canales,|)} {#Abort};
+FuncHabilidadPreparando %1 kalfue 0
+} {}
+
+;La Espada Arcana se ilumina con furia.
+;¡Las runas marcadas en la hoja de la Espada Arcana brillan con una cegadora intensidad y recorren el brazo de Genlae!
+
+#GTrigger {* descarga con brutalidad su arma contra ti mientras su Espada Arcana silba cortando el aire.} {
+FuncCorrectorSignos %0;
+#If {%IfWord(%Word(@Corregir, ,1),@Canales,|)} {#Abort};
+FuncHHImpacto %1 kalfue 0 0 1 0
+} {}
+
+
+;Habilidad sorprender
+#GTrigger {¡* te sorprende con * ataques!} {
+FuncHHImpacto %1 sorprender 0 0 1 0;
+#Play {RL\HHOtros\Habilidades impacto\Oculto propio.wav}
+} {}
+
+
+;Zancadilla:
+
+#GTrigger {[*] ¡Un brutal golpe de * te golpea en la parte posterior de la rodilla!, afortunadamente,*} {
+FuncHHImpacto %1 zancadilla 0 0 1 0
+} {} AnyCase
+
+#GTrigger {[*] ¡* te patea s?dicamente el posterior de la rodilla, haciendo que trastabilles*} {
+FuncHHImpacto %1 zancadilla 0 0 1 0;
+#Play {RL\Combate\Stun propio.wav};
+} {}
+
+#GTrigger {[*] ¡* te patea de forma cr?tica la rodilla, haciendo que caigas al suelo para rematarte*} {
+FuncHHImpacto %1 zancadilla 0 1 1 0;
+#Play {RL\Combate\Stun propio.wav};
+} {}
+
+#GTrigger {Consigues sobreponerte al dolor de tus piernas y levantarte.} {
+FEventos Stun off!;
+#Play {RL\Combate\Stun propio off.wav}
+} {} AnyCase
+
+
+;Habilidad Anticipar:
+#GTrigger {[*] * parece estar un paso por delante de tus ataques y te esquiva de forma casual.} {
+FEventos {%1 Se anticipa!};
+#Play {RL\HHOtros\Habilidades impacto\Esquiva otro.wav}
+} {}
+
+
+;Habilidad Torbellino:
+
+#GTrigger {[*] ¡La visión de * de * se convierte en un borrón *} {
+FuncHHImpacto %1 torbellino 0 0 1 0
+} {} AnyCase
+
+#GTrigger {[*] ¡* te alcanza con * golpe* de su torbellino!} {
+FuncHHImpacto %1 torbellino 0 0 1 0
+} {}
+
+
+;Disparos de tirador:
+
+#GTrigger {¡Un * disparo * de * se dirige hacia * desde la salida *!} {
+#If {%4 = "ti"} {
+ FuncHHImpacto %3 disparo%2 0 0 1 %5
+} {
+ FuncHHImpacto %3 disparo%2 %4 0 1 %5
+}
+} {}
+
+#GTrigger {[*] ¡* te impacta en * con un fugaz disparo incapacitador!} {
+FuncHHImpacto %1 disparoincapacitador 0 0 1 0
+} {}
+
+#GTrigger {¡* descarga contra tí un letal disparo apuntado!} {
+FuncHHImpacto %1 disparoapuntado 0 0 1 0
+} {}
+
+#GTrigger {¡* lanza un disparocertero contra ti!} {
+FuncHHImpacto %1 disparocertero 0 0 1 0
+} {}
+
+
+;habilidad Salva:
+
+#GTrigger {* coloca un mont?n de * en el suelo delante de * y preparas su *} {
+FuncCorrectorSignos %0;
+#If {%IfWord(%Word(@Corregir, ,1),@Canales,|)} {#Abort};
+FuncHabilidadPreparando %1 salva 0
+} {}
+
+#GTrigger {¡Una lluvia de * caen en la sala desde la salida *!} {
+#Var FlagComprobarSujeto 0;
+#If {%IfWord("y acribillan",%2, )} {
+ #If {%IfWord(%Char,%2, )} {
+  FuncDanoRecibido
+ };
+ #Var TempSalva {%Word(%2, ,1)};
+ FEventos {Salva desde @TempSalva};
+ FuncReproducirDireccion 0 @tempsalva 3
+} {
+ FEventos {Salva %2};
+ FuncReproducirDireccion 0 %2 3
+};
+#Play {RL\HHOtros\Habilidades impacto\Salva llegada.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {[*] ¡* te acribilla con una salva de * que te alcanza con *} {
+#Var TempInfoImpacto %3;
+#If {%IfWord("crítico",%3, ) or %IfWord("críticos",%3, )} {
+ FuncHHImpacto %1 salva 0 1 1 0
+} {
+ FuncHHImpacto %1 salva 0 0 1 0
+}
+} {}
+
+#GTrigger {¡* envuelve a * en su salva de *!} {
+FuncHHImpacto %1 salva %2 0 1 0
+} {}
+
+
+;Habilidad apuntar:
+
+#GTrigger {* expulsa todo el aire de sus pulmones y mantiene la respiraci?n mientras te apunta con su *} {
+FuncCorrectorSignos %0;
+#If {%IfWord(%Word(@Corregir, ,1),@Canales,|)} {#Abort};
+FuncHabilidadPreparando %1 apuntar 0
+} {}
+
+#GTrigger {¡* te dispara con su * desde el *!} {
+FuncHHImpacto %1 apuntar 0 0 1 %3
+} {}
+
+#GTrigger {¡* dispara contra * desde el *!} {
+FuncHHImpacto %1 apuntar %2 0 1 %3
+} {}
+
+
+;Habilidad arrojar:
+#GTrigger {¡* te lanza su * desde el oeste!} {
+FuncHHImpacto %1 arrojar 0 0 1 %3
+} {}
+
+
+;Habilidad Khaldar:
+
+#GTrigger {* comienza a realizar los movimientos rituales movimientos rituales de una maniobra de Khaldar.} {
+FuncCorrectorSignos %0;
+#If {%IfWord(%Word(@Corregir, ,1),@Canales,|)} {#Abort};
+#Var TempKhaldar {%Replace(%1,"! ",)};
+FuncHabilidadPreparando @TempKhaldar khaldar 0;
+#Unvar TempKhaldar
+} {}
+
+#GTrigger {[*] * te alcanza * en * con su Khaldar '*'.} {
+FuncHHImpacto %1 %4 0 0 1 0
+} {}
+
+#GTrigger {* alcanza * en * a * con su Khaldar '*'.} {
+FuncCorrectorSignos %0;
+#If {%IfWord(%Word(@Corregir, ,1),@Canales,|)} {#Abort};
+FuncHHImpacto %1 %5 %4 0 1 0
+} {}
+
+
+;Habilidad Cazar:
+
+#GTrigger {[*] * te caza * con *} {
+#Var TempInfoImpacto %3;
+#If {%IfWord("crítico",%3, ) or %IfWord("críticos",%3, )} {
+ FuncHHImpacto %1 cazar 0 1 1 0
+} {
+ FuncHHImpacto %1 cazar 0 0 1 0
+}
+} {}
+
+#GTrigger {* caza * a * con *.} {
+FuncCorrectorSignos %0;
+#If {%IfWord(%Word(@Corregir, ,1),@Canales,|)} {#Abort};
+#Var TempInfoImpacto %4;
+#If {%IfWord("crítico",%4, ) or %IfWord("críticos",%4, )} {
+ FuncHHImpacto %1 cazar %3 1 1 0
+} {
+ FuncHHImpacto %1 cazar %3 0 1 0
+}
+} {}

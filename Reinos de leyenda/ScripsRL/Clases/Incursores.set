@@ -1,0 +1,156 @@
+;Módulo: Incursor.set
+;Versión: 1.0
+;Descripción: Triggers y keys para la clase Incursor del pantano.
+;Autores: eyrhien y Rhomdur.
+
+
+;Carga de configuraciones heredadas:
+
+#Load ScripsRL\Clases\Centrar.set
+#Load ScripsRL\Clases\Generica_fisica.set
+
+;Declaración de variables:
+;#Var FlagBloqueosClase 1
+
+;Función de bloqueos de clase:
+#GAlias FBloqueosClase {
+#If {%IfWord("embestir",%1, )} {
+ #Play {RL\Bloqueos\Soldados\Embestir.wav};
+ #Abort
+};
+}
+
+#TRIGGER {# Rajas a *.} {#Play {RL\Habilidades\incursores\garra impacta1.wav}} {}
+#TRIGGER {#* Rajas con fuerza a *.} {#Play {RL\Habilidades\incursores\garra impacta2.wav}} {}
+#TRIGGER {+ Te preparas para ejecutar destripar.} {#Play {RL\Habilidades\incursores\impulso 2.wav}} {}
+#TRIGGER {* ¡Alcanzas a * con tu maniobra de destripar!} {#Play {RL\Habilidades\incursores\destripar 1.wav}} {}
+#TRIGGER {Te relames ansiando retener entre tus mandíbulas a Pobre y te preparas para tu cometido.} {#Play {RL\Habilidades\incursores\impulso 2.wav}} {}
+#TRIGGER {* Muerdes a * en el *, destrozándole carne y huesos.} {#Play {RL\Habilidades\incursores\mordisco 1.wav}} {}
+#TRIGGER {* Retienes a * con tu mordisco, haciéndole más daño.} {#Play {RL\Habilidades\incursores\mordisco retiene.wav}} {}
+#TRIGGER {Arrastras a * con tus fauces en dirección *.} {#Play {RL\Habilidades\incursores\arrastra mordido.wav}} {}
+#TRIGGER {Tus heridas comienzan a cerrarse cuando tu metabolismo acelerado actúa sobre tu cuerpo.} {#Play {RL\Habilidades\incursores\regenerando.wav}} {}
+#TRIGGER {Te calmas, vacías de tu mente todo pensamiento para sumirte en tu interior, en lo mas recondito de tu cuerpo, donde anida el espiritu animal que te permitirá curar los daños que hayas sufrido.} {#Play {RL\Habilidades\incursores\regenerar inicia.wav}} {}
+#TRIGGER {Abandonas su estado de trance, sintiéndote mucho mejor.} {#Play {RL\Habilidades\incursores\regenerar termina.wav.wav}} {}
+#TRIGGER {Chasqueas los dientes en el aire cuando * escapa al alcance de tus mandíbulas.} {#Play {RL\Habilidades\incursores\mordisco falla.wav}} {}
+#TRIGGER {* Hundes tus dientes en el débil cuerpo de *, causándole un terrible dolor con tu mordisco crítico.} {#Play {RL\Habilidades\incursores\mordisco critico.wav}} {}
+
+;Keys:
+
+#GKey alt-f {
+#If {@ModoJ = 2} {
+ mordisco xp
+} {
+ #If {@AutoCentrar = 1} {
+  centrar x;mordisco x
+ } {
+  mordisco x
+ }
+}}
+
+#GKey alt-a {
+#If {@ModoJ = 2} {
+ f4 xp
+} {
+ #If {@AutoCentrar = 1} {
+  centrar x;f4 x
+ } {
+  f4 x
+ }
+}}
+
+#GKey alt-s {
+#If {@ModoJ = 2} {
+ f3 xp
+} {
+ #If {@AutoCentrar = 1} {
+  centrar x;f3 x
+ } {
+  f3 x
+ }
+}}
+
+#GKey alt-d {
+#If {@ModoJ = 2} {
+ f2 xp
+} {
+ #If {@AutoCentrar = 1} {
+  centrar x;f2 x
+ } {
+  f2 x
+ }
+}}
+
+#GKey alt-q {
+#If {@ModoJ = 2} {
+ f12 xp
+} {
+ #If {@AutoCentrar = 1} {
+  centrar x;f12 x
+ } {
+  f12 x
+ }
+}}
+
+#GKey alt-w {
+#If {@ModoJ = 2} {
+ f11 xp
+} {
+ #If {@AutoCentrar = 1} {
+  centrar x;f11 x
+ } {
+  f11 x
+ }
+}}
+
+#GKey alt-e {
+#If {@ModoJ = 2} {
+ f10 xp
+} {
+ #If {@AutoCentrar = 1} {
+  centrar x;f10 x
+ } {
+  f10 x
+ }
+}}
+
+#GKey alt-r {
+regenerar
+}
+
+#GKey alt-z {
+#If {@ModoJ = 2} {
+ f8 xp
+} {
+ #If {@AutoCentrar = 1} {
+  centrar x;f8 x
+ } {
+  f8 x
+ }
+}}
+
+#GKey alt-x {
+#If {@ModoJ = 2} {
+ f7 xp
+} {
+ #If {@AutoCentrar = 1} {
+  centrar x;f7 x
+ } {
+  f7 x
+ }
+}}
+
+#GKey alt-c {
+#If {@ModoJ = 2} {
+ f6 xp
+} {
+ #If {@AutoCentrar = 1} {
+  centrar x;f6 x
+ } {
+  f6 x
+ }
+}}
+
+#GKey alt-v {
+mordisco
+}
+

@@ -1,0 +1,911 @@
+;Módulo: Combate.set
+;Versión: 2.8, 18/02/2025
+;Descripción: Triggers y eventos de combate.
+;Autor: Rhomdur.
+
+
+;Declaración de variables
+
+#Var Heridas
+
+
+;Funciones de combate:
+
+;Función para kills propios:
+#GAlias FuncKillPropio {
+#Var PlayPan 4500;
+#GagLine Voice;
+#If {@ModoE = 0} {
+ #Say {%0} NoDisplay|Incoming
+};
+;Sonido de kill critico:
+#If {%IfWord("críticamente",%1, )} {
+ FuncPlayPan {RL\Combate\Kills\Propios\Critico.wav} 0
+};
+;Sonido en modo XP:
+#If {@ModoJ >= 2} {
+ FuncPlayPan {RL\Combate\Kills\Propios\generico.wav} 0;
+ #Abort
+};
+;Kills sin efecto:
+#If {%IfWord("consigue esquivar",%1, )} {
+ FuncPlayPan {RL\Combate\Kills\Propios\esquivado*4.wav} 0;
+ #Abort
+};
+#If {%IfWord("consigue parar",%1, )} {
+ FuncPlayPan {RL\Combate\Kills\Propios\bloqueado*4.wav} 0;
+ #Abort
+};
+#If {%IfWord("sin producir ningún daño.",%1, )} {
+ FuncPlayPan {RL\Combate\Kills\Propios\sin daño*4.wav} 0;
+ #Abort
+};
+;Kills básicos:
+#If {%IfWord("Aplastas",%1, )} {
+ FuncPlayPan {RL\Combate\Kills\Propios\aplastante*4.wav} 0;
+ #Abort
+};
+#If {%IfWord("Perforas",%1, )} {
+ FuncPlayPan {RL\Combate\Kills\Propios\penetrante*4.wav} 0;
+ #Abort
+};
+#If {%IfWord("Laceras",%1, )} {
+ FuncPlayPan {RL\Combate\Kills\Propios\lacerante*4.wav} 0;
+ #Abort
+};
+#If {%IfWord("Rajas",%1, )} {
+ FuncPlayPan {RL\Combate\Kills\Propios\cortante*4.wav} 0;
+ #Abort
+};
+;Kills de daño especial:
+#If {%IfWord("Electrocutas",%1, )} {
+ FuncPlayPan {RL\Combate\Kills\Propios\electrico*4.wav} 0;
+ #Abort
+};
+#If {%IfWord("Quemas",%1, )} {
+ FuncPlayPan {RL\Combate\Kills\Propios\fuego*4.wav} 0;
+ #Abort
+};
+#If {%IfWord("Mojas",%1, )} {
+ FuncPlayPan {RL\Combate\Kills\Propios\agua*4.wav} 0;
+ #Abort
+};
+#If {%IfWord("Apedreas",%1, )} {
+ FuncPlayPan {RL\Combate\Kills\Propios\tierra*4.wav} 0;
+ #Abort
+};
+#If {%IfWord("Soplas",%1, )} {
+ FuncPlayPan {RL\Combate\Kills\Propios\aire*4.wav} 0;
+ #Abort
+};
+#If {%IfWord("Corroes",%1, )} {
+ FuncPlayPan {RL\Combate\Kills\Propios\Acido*4.wav} 0;
+ #Abort
+};
+#If {%IfWord("Envenenas",%1, )} {
+ FuncPlayPan {RL\Combate\Kills\Propios\Veneno*4.wav} 0;
+ #Abort
+};
+#If {%IfWord("Congelas",%1, )} {
+ FuncPlayPan {RL\Combate\Kills\Propios\Hielo*4.wav} 0;
+ #Abort
+};
+;Kills de cuerpo a cuerpo:
+#If {%IfWord("Muerdes",%1, ) or %IfWord("Pateas",%1, ) or %IfWord("Cabeceas",%1, ) or %IfWord("Golpeas",%1, )} {
+ FuncPlayPan {RL\Combate\Kills\Propios\desarmado*4.wav} 0;
+ #Abort
+};
+;Kill para casos no contemplados:
+ FuncPlayPan {RL\Combate\Kills\Propios\generico.wav} 0
+}
+
+;Función para kills enemigos:
+#GAlias FuncKillAgeno {
+#If {(%IfWord("¡Logras esquivar",%1, ) or %IfWord("¡Logras parar",%1, )) and %IfWord("y su",%1, )} {
+ #Abort
+};
+#Var PlayPan -4500;
+#GagLine Voice;
+#If {@ModoE = 0} {
+ #Say {%0} NoDisplay|Incoming
+};
+;Sonido de kill critico:
+#If {%IfWord("críticamente",%1, )} {
+ FuncPlayPan {RL\Combate\Kills\Enemigos\Critico.wav} 0
+};
+;Sonido en modo XP:
+#If {@ModoJ >= 2} {
+ FuncPlayPan {RL\Combate\Kills\Enemigos\generico.wav} 0;
+ #Abort
+};
+;Kills sin efecto:
+#If {%IfWord("Logras esquivar",%1, )} {
+ FuncPlayPan {RL\Combate\Kills\Enemigos\esquivado*4.wav} 0;
+ #Abort
+};
+#If {%IfWord("Logras parar",%1, )} {
+ FuncPlayPan {RL\Combate\Kills\Enemigos\bloqueado*4.wav} 0;
+ #Abort
+};
+#If {%IfWord("sin producir ningún daño.",%1, )} {
+ FuncPlayPan {RL\Combate\Kills\Enemigos\sin daño*4.wav} 0;
+ #Abort
+};
+
+;Kills básicos:
+#If {%IfWord("te aplasta",%1, )} {
+ FuncPlayPan {RL\Combate\Kills\Enemigos\Aplastante*4.wav} 0;
+ #Abort
+};
+#If {%IfWord("te perfora",%1, )} {
+ FuncPlayPan {RL\Combate\Kills\Enemigos\Penetrante*4.wav} 0;
+ #Abort
+};
+#If {%IfWord("te lacera",%1, )} {
+ FuncPlayPan {RL\Combate\Kills\Enemigos\Lacerante*4.wav} 0;
+ #Abort
+};
+#If {%IfWord("te raja",%1, )} {
+ FuncPlayPan {RL\Combate\Kills\Enemigos\Cortante*4.wav} 0;
+ #Abort
+};
+
+;Kills de daño especial:
+#If {%IfWord("te electrocuta",%1, )} {
+ FuncPlayPan {RL\Combate\Kills\Enemigos\Electrico*4.wav} 0;
+ #Abort
+};
+#If {%IfWord("te quema",%1, )} {
+ FuncPlayPan {RL\Combate\Kills\Enemigos\Fuego*4.wav} 0;
+ #Abort
+};
+#If {%IfWord("te apedrea",%1, )} {
+ FuncPlayPan {RL\Combate\Kills\Enemigos\Tierra*4.wav} 0;
+ #Abort
+};
+#If {%IfWord("te sopla",%1, )} {
+ FuncPlayPan {RL\Combate\Kills\Enemigos\Aire*4.wav} 0;
+ #Abort
+};
+#If {%IfWord("te congela",%1, )} {
+ FuncPlayPan {RL\Combate\Kills\Enemigos\Hielo*4.wav} 0;
+ #Abort
+};
+#If {%IfWord("te envenena",%1, )} {
+ FuncPlayPan {RL\Combate\Kills\Enemigos\Veneno*4.wav} 0;
+ #Abort
+};
+#If {%IfWord("te corroe",%1, )} {
+ FuncPlayPan {RL\Combate\Kills\Enemigos\Acido*4.wav} 0;
+ #Abort
+};
+
+;Kills de cuerpo a cuerpo:
+#If {%IfWord("te muerde",%1, ) or %IfWord("te patea",%1, ) or %IfWord("te cabecea",%1, ) or %IfWord("te golpea",%1, )} {
+ FuncPlayPan {RL\Combate\Kills\Enemigos\desarmado*4.wav} 0;
+ #Abort
+};
+
+;Kill para casos no contemplados:
+FuncPlayPan {RL\Combate\Kills\Enemigos\generico.wav} 0
+}
+
+
+;Muertes:
+
+#GTrigger {* da un grito desgarrador antes de que su espíritu abandone Eirea.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FuncComprobarSujeto %1 {RL\Combate\Muerte aliado.wav} {RL\Combate\Muerte enemigo.wav};
+#If {@ModoE = 1} {
+ #GagLine voice
+}
+} {}
+
+#GTrigger {Propinas el golpe mortal a *} {
+#If {@ModoJ <= 1} {
+ FEventos %0;
+ #Play {RL\Combate\Muerte.wav}
+} {
+ #GagLine Voice;
+ #Play {RL\Combate\MuerteXP.wav}
+};
+#If {%Defined(FlagAtrapando) and @FlagAtrapando = 1} {
+ #Var FlagAtrapando 0
+};
+#If {@ModoE = 1 or @ModoJ <> 2} {
+ #GagLine voice;
+ #Say {%1} NoDisplay|Incoming
+}
+} {} AnyCase
+
+#GTrigger {* cae al suelo sin vida.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#If {@ModoJ = 2 or @ModoE = 1} {
+#GagLine voice}
+} {}
+
+#GTrigger {* propina el golpe mortal a *} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FEventos %0;
+#Play {RL\Combate\Muerte otro.wav}
+} {}
+
+#GTrigger {Tu cuerpo sin vida cae al * Parece que te han matado...} {
+#If {%Defined(Comunion)} {#Var Comunion 0};
+#If {%Defined(Poque)} {#Var Poque 0};
+#If {%Defined(Montura)} {#Var Montura 0};
+#Class Lessirnak disable;
+#Class Lish Disable;
+#Class Mergan Disable;
+#Var FlagAvisoEnemigo 0;#Play {RL\Combate\Muerte propia.wav}
+} {} AnyCase
+
+#GTrigger {Recuperas tu forma s?lida. Notas tu cuerpo algo más estropeado.} {
+#Play {RL\Sucesos\Perder con.wav}
+} {} AnyCase
+
+
+;Generales:
+
+#GTrigger {[[]Obtienes * puntos de gloria[]]} {
+FEventos %0;
+#Play {RL\Combate\Gloria.wav}
+} {} AnyCase
+
+#GTrigger {*Te encaras contra * en posición de combate.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#If {@ModoJ <= 1} {
+ #Play {RL\Combate\Atacar.wav}
+};
+#If {@ModoJ >= 1 or @ModoE = 1} {
+ #GagLine voice
+}
+} {} AnyCase
+
+#GTrigger {* pierde la concentración!} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FuncComprobarSujeto %1 {RL\HHOtros\Generales\Pierde concentracion aliado.wav} {RL\HHOtros\Generales\Pierde concentracion enemigo.wav};
+#If {@ModoE = 1} {
+ #Say {%1} NoDisplay|Incoming;
+ #GagLine Voice
+}
+} {}
+
+#GTrigger {¡Tu golpe causa una profunda hemorragia a * en *!} {
+#Play {RL\Combate\Hemorrajia.wav};
+#If {@ModoJ >= 1 or @ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {*[#] Lo que te pareció ser * desaparece al golpearl*.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Combate\Golpear imagen.wav};
+#If {@ModoE = 1} {
+ #GagLine voice
+}
+} {} AnyCase
+
+
+;Iniciar y parar peleas, persiguiendo etc
+
+#GTrigger {Empiezas a calmarte y reconsiderar a tus enemigos...} {
+#Play {RL\Combate\Peleas parando.wav}
+} {} AnyCase
+
+#GTrigger {Finalmente logras calmarte y olvidas tus peleas con *.} {
+#Play {RL\Combate\Peleas paradas.wav}
+} {} AnyCase
+
+#GTrigger {Est?s en mitad de una lucha, no es momento para calmarse.} {
+#Play {RL\Combate\Peleas no paradas.wav}
+} {} AnyCase
+
+#GTrigger {*Estás persiguiendo a *} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#If {@ModoE = 1 or @ModoJ >= 1} {
+ #Say {%2} NoDisplay|Incoming;
+ #GagLine voice
+};
+#Play {RL\Combate\Persiguiendo.WAV}
+} {} AnyCase
+
+#GTrigger {*Estás siendo atacad* por *} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FEventos %0;
+#If {@ModoJ = 3} {
+ #Var ModoJ = 2;
+ FModoIdleOf;
+ FModoJuego;
+ #Play {RL\Generales\Alarma2.wav}
+};
+#If {@ModoJ >= 1 or @ModoE = 1} {
+ #Say {%2} nodisplay|incoming;
+ #GagLine voice
+};
+#Play {RL\Combate\Siendo atacado.wav}
+} {} AnyCase
+
+#GTrigger {*Paras de perseguir a *.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Combate\Parar perseguir.wav}
+} {} AnyCase
+
+
+;Armadura dañada y recuperada:
+
+#GTrigger {* machaca tu armadura con sus ataques!} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FEventos %0;
+#Play {RL\Combate\Armadura propia dañada.wav};
+#If {@ModoE = 1} {
+ #Say {%1} NoDisplay|Incoming;
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {*Tu armadura recupera su fortaleza tras la carga de *.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FEventos %0;
+#Play {RL\Combate\Armadura propia recuperada.wav}
+} {} AnyCase
+
+#GTrigger {*Tu armadura deja de estar expuesta.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FEventos %0;
+#Play {RL\Combate\Armadura propia recuperada.wav}
+} {} AnyCase
+
+
+;Proteger:
+
+#GTrigger {* consigue escurrirse entre ti y *, protegiéndole.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FEventos %0;
+#Play {RL\Combate\Proteger enemigo.wav};
+#If {@ModoE = 1} {
+ #Say {%1 proteje %2} NoDisplay|Incoming;
+ #GagLine Voice
+}
+} {}
+
+#GTrigger {* te protege.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FEventos %0;
+#Play {RL\Combate\Proteger recibido.wav}
+} {}
+
+#GTrigger {* os protege a * y a ti.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FEventos %0;
+#Play {RL\Combate\Proteger recibido.wav}
+} {}
+
+#GTrigger {* te protege valientemente.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Combate\Proteger recibido.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {}
+
+#GTrigger {*Proteges a *.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Combate\Proteger.wav}
+} {} AnyCase
+
+#GTrigger {*Proteges valientemente a *.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Combate\Proteger.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+
+; Heridas y hemorrágias:
+
+#GTrigger {*Te desangras por culpa de tus heridas múltiples en *} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#VAR Heridas {%Word(%2, ,2) %Word(%2, ,5)}; 
+FuncDanoRecibido;
+#Play {RL\Combate\Desangrar.wav}
+} {} AnyCase
+
+#GTrigger {*Te desangras a causa de tu herida en *!} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#VAR Heridas {%Word(%2, ,2)};
+#Var Heridas {%Replace(@Heridas,"una ","")};
+#Var Heridas {%Replace(@Heridas,"un ","")};
+#Var Heridas {%Replace(@Heridas,"la ","")};
+#Var Heridas {%Replace(@Heridas,"el ","")};
+FuncDanoRecibido;
+#Play {RL\Combate\Desangrar.wav}
+} {} AnyCase
+
+#GTrigger {*Comienzas a sangrar abundantemente por heridas múltiples en *} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#VAR Heridas {%Word(%2, ,2)};
+#Var Heridas {%Replace(@Heridas,"una ","")};
+#Var Heridas {%Replace(@Heridas,"un ","")};
+#Var Heridas {%Replace(@Heridas,"la ","")};
+#Var Heridas {%Replace(@Heridas,"el ","")};
+FuncDanoRecibido;
+#Play {RL\Combate\Desangrar.wav}
+} {} AnyCase
+
+#GTrigger {*Te desangras a causa de tu hemorragia en *} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#VAR Heridas {%Word(%2, ,2)};
+#Var Heridas {%Replace(@Heridas,!,)};
+#Var Heridas {%Replace(@Heridas,"una ","")};
+#Var Heridas {%Replace(@Heridas,"un ","")};
+#Var Heridas {%Replace(@Heridas,"la ","")};
+#Var Heridas {%Replace(@Heridas,"el ","")};
+FuncDanoRecibido;
+#Play {RL\Combate\Desangrar.wav}
+} {} AnyCase
+
+#GTrigger {Tu cuerpo responde y finalmente logra contener tu herida que queda cicatrizada.} {
+#Var Heridas;
+#Play {RL\Combate\Cicatrizar.wav}
+} {} AnyCase
+
+#GTrigger {Tu hemorragia se detiene.} {
+#Var Heridas;
+#Play {RL\Combate\Cicatrizar.wav}
+} {} AnyCase
+
+#GTrigger {Algunas de tus heridas múltiples logran estabilizarse y dejan de sangrar.} {
+#Play {RL\Combate\Cicatrizar.wav}
+} {} AnyCase
+
+#GTrigger {[¡]El golpe de * te causa una profunda herida en *!} {
+#Var Heridas %2;
+#Var Heridas {%Replace(@Heridas,"una ","")};
+#Var Heridas {%Replace(@Heridas,"un ","")};
+#Var Heridas {%Replace(@Heridas,"la ","")};
+#Var Heridas {%Replace(@Heridas,"el ","")};
+FuncDanoRecibido;
+#Play {RL\Combate\Desangrar.wav}
+} {} AnyCase
+
+#GTrigger {Dejas de sangrar por todas tus heridas múltiples.} {
+#Var Heridas;
+#Play {RL\Combate\Cicatrizar.wav}
+} {} AnyCase
+
+#GTrigger {Un enorme boquete se te abre en * y comienza a sangrar de forma incontrolada, *} {
+#VAR Heridas {%1};
+#Var Heridas {%Replace(@Heridas,"una ","")};
+#Var Heridas {%Replace(@Heridas,"un ","")};
+#Var Heridas {%Replace(@Heridas,"la ","")};
+#Var Heridas {%Replace(@Heridas,"el ","")};
+FuncDanoRecibido;
+#Play {RL\Combate\Desangrar.wav}
+} {} AnyCase
+
+#GTrigger {El enorme boquete que tenías se cicatriza y deja de derramar tus vísceras.} {
+#Var Heridas;
+#Play {RL\Combate\Cicatrizar.wav}
+} {} AnyCase
+
+#GTrigger {¡El boquete que tienes en * deja caer un chorro de sangre y carne triturada en el suelo!} {
+#VAR Heridas {%1};
+#Var Heridas {%Replace(@Heridas,"una ","")};
+#Var Heridas {%Replace(@Heridas,"un ","")};
+#Var Heridas {%Replace(@Heridas,"la ","")};
+#Var Heridas {%Replace(@Heridas,"el ","")};
+FuncDanoRecibido;
+#Play {RL\Combate\Desangrar.wav}
+} {} AnyCase
+
+#GTrigger {¡El ataque de * te clava un proyectil en *, causándote una profunda herida!} {
+#VAR Heridas {Proyectil %2};
+FuncDanoRecibido;
+#Play {RL\Combate\Desangrar.wav}
+} {} AnyCase
+
+#GTrigger {Tu movimiento ha movido el proyectil causándote mucho dolor.} {
+FuncDanoRecibido;
+#Play {RL\Combate\Desangrar.wav}
+} {} AnyCase
+
+#GTrigger {Oyes el gotear de la sangre.} {
+#Play {RL\Combate\Gotear sangre.wav}
+} {} AnyCase
+
+
+;Heridas multiples:
+
+#GTrigger {Las heridas m?ltiples de * en * se agravan.} {
+FEventos Agravan %2 en %3;
+FuncComprobarSujeto %1 0 0;
+#Play {RL\Combate\Desangrar.wav};
+#If {@ModoE = 1} {
+ #Say {@UltimoEvento} NoDisplay|Output;
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {[¡]* comienza a sangrar abundantemente por sus heridas m?ltiples en *!} {
+FEventos %1, multiples %3;
+FuncComprobarSujeto %1 0 0;
+#Play {RL\Combate\Hemorrajia.wav};
+#If {@ModoE = 1} {
+ #Say {@UltimoEvento} NoDisplay|Output;
+ #GagLine Voice
+}
+} {} AnyCase
+
+
+;Ataques a ciudades:
+
+#GTrigger {*Vientos nauseabundos y gritos de combate llegan a tu entorno; la guerra ha llegado a *} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FEventos %0;
+#Play {RL\Combate\Vientos de guerra.wav}
+} {} AnyCase
+
+#GTrigger {*[¡]Suena el cuerno de piedra de la guardia de Kheleb Dum!} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Combate\Ciudades\Kheleb.wav}
+} {} AnyCase
+
+#GTrigger {*[¡]La campana de la Torre de la Santa Cruzada resuena por todo el reino, anunciando un ataque al Bastión*} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Combate\Ciudades\Takome.wav}
+} {} AnyCase
+
+#GTrigger {*Escuchas repicar las campanas de la ciudad de Anduar.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Combate\Ciudades\Anduar.wav}
+} {} AnyCase
+
+#GTrigger {*[¡]Un gutural grito de Loredor, el Anciano Ent, advierte de un ataque al Bosque de Thorin!} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Combate\Ciudades\Thorin.wav}
+} {} AnyCase
+
+#GTrigger {*[¡]Una ráfaga de fuegos artificiales estremecen la ciudad!} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Combate\Ciudades\Veleiron.wav}
+} {} AnyCase
+
+#GTrigger {*[¡]Ráfagas de fuegos artificiales advierten de un ataque a Veleiron!} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Combate\Ciudades\Veleiron.wav}
+} {} AnyCase
+
+#GTrigger {*[¡]El estruendo de una salva de cañones avisa del asedio al Castillo de Poldarn!} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Combate\Ciudades\Poldarn.wav}
+} {} AnyCase
+
+#GTrigger {*[¡]Decenas de soldados cogen sus Aceros Dendritas y Tarjas Imperiales de las estanterías y marchan*} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Combate\Ciudades\Galador.wav}
+} {} AnyCase
+
+#GTrigger {*[¡]Las tranquilas oraciones de la catedral se convierten en fanáticas loas a Seldar cuando los sacerdotes*} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Combate\Ciudades\Galador.wav}
+} {} AnyCase
+
+#GTrigger {*[¡]El atronador sonido de los barracones del Ejército vomitando soldados hace evidente la presencia*} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Combate\Ciudades\Galador.wav}
+} {} AnyCase
+
+#GTrigger {*[¡]Decenas de soldados en negras armaduras desfilan hacia la catedral con siniestra eficacia*} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Combate\Ciudades\Galador.wav}
+} {} AnyCase
+
+#GTrigger {*Una turba enfurecida de campesinos de Brenoic sale de sus casas, armados con horcas,*} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Combate\Ciudades\Brenoic.wav}
+} {} AnyCase
+
+#GTrigger {*[¡]El suelo tiembla cuando decenas de jinetes de Injhan D'hara marchan en formación para defender*} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Combate\Ciudades\Dara.wav}
+} {} AnyCase
+
+#GTrigger {*[¡]El Gong de Ozomatli resuena dolorosamente en tus oídos!, ¡la ciudad está bajo ataque!} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Combate\Ciudades\Grimoszk.wav}
+} {} AnyCase
+
+
+;Miedo y efectos:
+
+#GTrigger {La horrenda apariencia de * no consigue remover tus firmes convicciones.} {
+FEventos %0;
+#Play {RL\Combate\Miedo resistir.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {*Dejas de sentir esa sensación de valor que te dió el Akrar.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Play {RL\Combate\Valor fin.wav}
+} {} AnyCase
+
+#GTrigger {[¡]La horrenda apariencia de * hace que un escalofrío recorra tu espalda!} {
+FEventos %0;
+#Play {RL\Combate\Miedo fallar.WAV};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {[¡]Estás muerto de miedo, sólo piensas en salir corriendo de aquí!} {
+#Play {RL\Combate\Huir.WAV}
+} {} AnyCase
+
+;Abrojos:
+
+#GTrigger {Varios abrojos puntiagudos.} {
+	#Play {RL\Combate\Abrojos 1.wav}
+} {} AnyCase
+
+#GTrigger {* pisas sin querer uno de los afilados abrojos que hay en el suelo y gritas *} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FuncDanoRecibido;
+#Play {RL\Combate\Abrojos 1.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {}
+
+#GTrigger {Oyes pequeños ruídos metálicos cayendo por el suelo.} {
+#Play {RL\Combate\Abrojos 2.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+
+;Dormir:
+
+#GTrigger {El ataque de * te emboba hasta el punto de que caes dormido sin remedio*} {
+FEventos %0;
+#Play {RL\Combate\Dormirse.wav}
+} {} AnyCase
+
+#GTrigger {Sientes como un sueño profundo te invade y caes al suelo rendido.} {
+FEventos %0;
+#Play {RL\Combate\Dormirse.wav}
+} {} AnyCase
+
+#GTrigger {La canción de * hace que te adormezcas súbita e irremediablemente.} {
+FEventos %0;
+#Play {RL\Combate\Dormirse.wav}
+} {} AnyCase
+
+#GTrigger {Una inesperada sensación de sopor se apodera lentamente de tus sentidos...} {
+FEventos %0;
+#Play {RL\Combate\Dormirse.wav}
+} {} AnyCase
+
+#GTrigger {[¡]La canción de * adormece a *!} {
+FuncComprobarSujeto %2 0 0;
+#Play {RL\Combate\Dormirse otro.wav};
+#If {@ModoE = 1} {
+ #Say {%2} NoDisplay|Incoming;
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {* cae al suelo dormid?.} {
+FuncComprobarSujeto %1 0 0;
+#Play {RL\Combate\Dormirse otro.wav};
+#If {@ModoE = 1} {
+ #Say {%1} NoDisplay|Incoming;
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {Te despiertas.} {
+#Play {RL\Combate\Despertarse.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {* se despierta.} {
+FuncComprobarSujeto %1 0 0;
+#Play {RL\Combate\Despertarse otro.wav};
+#If {@ModoE = 1} {
+ #Say {%1} NoDisplay|Incoming;
+ #GagLine Voice
+}
+} {} AnyCase
+
+
+;Trampas:
+
+#GTrigger {Sin darte cuenta introduces * en un cepo que había en la sala, produciéndote una grave herida.} {
+FuncDanoRecibido;
+#Play {RL\Combate\Cepo.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {Encuentras una trampa en el suelo. } {
+#Play {RL\Combate\Trampa.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {Ves una trampa semiescondida en el suelo, has tenido suerte de no pisarla.} {
+#Play {RL\Combate\Trampa.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {* se pilla con un cepo.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FEventos %0;
+FuncComprobarSujeto %1 0 0;
+#Play {RL\Combate\Cepo otro.wav}
+} {}
+
+
+;Textos de stunear:
+
+#GTrigger {* se desploma a causa de la pérdida de sangre.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FEventos %0;
+FuncComprobarSujeto %1 0 0;
+#If {@ModoE = 1} {
+ #Say {%1} NoDisplay|Incoming;
+ #GagLine Voice
+};
+#Play {RL\Combate\Stun.wav}
+} {}
+
+
+;Centrar:
+
+#GTrigger {* empieza a centrar sus golpes sobre *} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FEventos %0;
+#If {%IfWord("ti.",%2, )} {
+ #Play {RL\Combate\Centrar recibir.wav}
+} {
+ #Play {RL\Combate\Centrar otros.wav};
+#If {@ModoE = 1} {
+ #Say {%1, %2} NoDisplay|Incoming;
+ #GagLine Voice
+}
+}
+} {}
+
+
+;Triggers para rastros.
+
+#GTrigger {Rastro de Restos de v?sceras. en direcci?n *.} {
+FuncAcortarDirecciones %3;
+FEventos rastro vísceras @DireccionCorta;
+#Play {RL\Combate\Rastro visceras*2.wav};
+#If {@ModoE = 1} {#GagLine Voice}
+} {} AnyCase
+
+#GTrigger {Rastro de Charco de sangre en direcci?n *.} {
+FuncAcortarDirecciones %2;
+FEventos %0;
+#Play {RL\Combate\Rastro sangre*2.wav};
+#If {@ModoE = 1} {#GagLine Voice}
+} {} AnyCase
+
+
+;Triggers para kills enemigos:
+
+#GTrigger {[*] *} {
+FuncKillAgeno %1
+} {}
+
+#GTrigger {> [*] *} {
+FuncKillAgeno %1
+} {}
+
+#GTrigger {] [*] *} {
+FuncKillAgeno %1
+}
+
+
+;Triggers para kills propios:
+
+#GTrigger {[#] *} {
+FuncKillPropio %1
+}
+
+#GTrigger {> [#] *} {
+FuncKillPropio %1
+}
+
+#GTrigger {] [#] *} {
+FuncKillPropio %1
+}
+
+
+;Keys:
+
+
+;Heridas:
+
+#GKey alt-g {
+#If {@Heridas <> ""} {
+ #say {@{Heridas}} nodisplay|Output
+} {
+ #Say {No tienes heridas} NoDisplay|Output
+}
+}
+
+#GKey alt-shift-g {
+#If {@Heridas <> ""} {
+ vendar @{Heridas}
+} {
+ #Say {No tienes heridas} NoDisplay|Output
+}
+}
+
+#GKey alt-enter {
+#If {%Defined(Autocentrar) and @Autocentrar = 1 and @ModoJ <> 2} {
+ matar x;centrar x
+} {
+ #If {@ModoJ = 2} {
+  matar xp
+ } {
+  matar x
+ }
+}
+}

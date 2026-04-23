@@ -1,0 +1,610 @@
+Scrips RL V2.0 para VipMud
+Escritos por Rhomdur para reinos de  leyenda.
+Instrucciones de manejo.
+
+
+
+1. Funcionamiento de los archivos de configuración.
+
+Los scrips se organizan en varios archivos con extensión .set, que no son mas que archivos de texto plano que contienen todos los triggers, alias, combinaciones de teclas etc.
+Estos archivos pueden verse y editarse con el block de notas pero aconsejo no modificar los archivos originales, principalmente por que podrían surgir errores que impidan el correcto funcionamiento de los scrips, pero también por que las futuras actualizaciones sobreescribirán muchos de los archivos actuales, con lo que vuestros cambios se perderían.
+Si quereis añadir vuestras propias funcionalidades, triggers, alias, combinaciones de teclas o desarrollar alguna de las clases que aún no están hechas tendréis que crear un archivo .set en la carpeta ScripsRL\Clases, a continuación editar con el block de notas el archivo Reinos de leyenda.set, y añadir bajo la línea:
+ ;Carga de configuraciones añadidas:
+la instrucción:
+#Load ScripsRL\Clases\Archivo.set
+Donde archivo.set es el archivo que habeis creado con las nuevas configuraciones, por ejemplo chamanes.set
+Recordad que en el proceso de configuracion del cliente utilizabamos la instrucción #Load para configurar la clase de nuestro personaje en el archivo pj.set.
+Cada vez que creéis un nuevo pj se creará en la carpeta de datos del vipmud un archivo .set para ese pj, y para  que las configuraciones de su clase funcionen debéis cargar el archivo clase.set como ya hemos visto.
+Recordar que una vez guardados los archivos editados, la combinación de teclas ctrl-shift-r recarga los scrips para activar los cambios.
+Es importante que cuando editéis archivos .set utilicéis siempre el block de notas, ya sea para archivos nuevos creados por vosotros o para archivos ya existentes, ya que otros editores de texto plano añaden saltos de línea donde no deben y estropean completamente los archivos set.
+Los scrips están en desarrollo constante así que cualquier sugerencia que ayude a mejorarlos será bien recibida, también los jugadores con clases que no están aún implementadas pueden contribuir aportando los triggers de sonido de habilidades o cualquier cosa que consideren util. Siempre estoy a la caza de colaboradores que me ayuden, así que cualquier interesado que se ponga en contacto con mi PJ Rhomdur para organizarnos.
+
+
+
+2. Algunos tips.
+
+
+A- Distribución de la ventana del programa:
+
+VipMud consiste en 2 secciones:
+Entry: Donde escribimos texto para enviar al mud.
+Output: Donde aparece el texto recibido desde el mud.
+Si estamos en entry, la pulsacion ctrl-enter nos lleva directamente a output.
+Si estamos en output, cualquier letra que se escriba se escribirá en una linea nueva en entry y nos posicionaremos sobre ella.
+Ambas secciones pueden explorarse con las flechas y en el caso de entry si pulsamos enter sobre una linea en la que nos coloquemos con las flechas se enviará de nuevo al mud.
+Además la tecla tab cambia de una sección a otra.
+
+
+B- Algunas pulsaciones de teclas importantes:
+
+Escape - Borra automáticamente lo que hallamos escrito en la línea actual cuando estamos en la ventana entry.
+Ctrl-f - Abre el cuadro para buscar hacia adelante en la ventana que estemos.
+ctrl-shift-f - Abre el cuadro para buscar hacia atrás en la ventana que estemos.
+alt-ctrl-f - Busca la siguiente aparición hacia adelante
+alt-ctrl-shift-f - Busca la siguiente aparición hacia atrás.
+ctrl-shift-r - Recarga todos los scrips, esto es util por si hicimos cambios en algún archivo .set para que se reinicien los scrips y se carguen los cambios.
+
+
+C- Lectura de últimas frases recibidas:
+
+Con las combinaciones ctrl y los números del 1 al 9 leemos las ultimas frases recibidas en orden inverso, esto es:
+ctrl-1 - lee la última frase recibida del mud.
+ctrl-2 - Lee la antepenúltima frase recibida del mud.
+ctrl-3 - Lee la tercera última frase recibida del mud empezando por el final.
+Y así sucesivamente hasta ctrl-9
+Además combinando estas pulsaciones con la tecla shift se copiará la frase al portapapeles, por ejemplo:
+ctrl-shift-2 copiará la penúltima frase recibida.
+
+
+D- Manejo de tablas y autocompletado de texto
+
+Las tablas son listas de palabras que podemos guardar para un uso posterior.
+Si nos colocamos sobre una palabra en cualquiera de las ventanas y pulsamos ctrl-alt-espacio, esa palabra se guardará automaticamente en la tabla.
+Cada personaje tiene asociada una tabla que se guarda en la carpeta junto con el resto de los archivos de configuracion, con el nombre PJ.tab
+Aunque salgamos y entremos o cerremos el VipMud esa tabla no se borrará.
+
+ctrl-shift-t - Despliega la tabla donde aparecerán las palabras que hallamos guardado con ctrl-alt-espacio. Si pulsamos enter sobre una palabra aparecerá escrita automáticamente en la ventana entry, y si pulsamos suprimir se eliminará de la tabla.
+
+Si comenzamos a escribir una o varias letras de una palabra que tengamos en la tabla,  y pulsamos alt-espacio, nos irán apareciendo sucesivamente las palabras que tengamos en la tabla y comiencen por esa misma letra. Esto puede ser útil para guardar nombres de pjs, items o npcs y escribirlos rápidamente en la ventana de entrada con un par de pulsaciones.
+
+Del mismo modo, si comenzamos a escribir las primeras letras de una palabra en la ventana enry y pulsamos ctrl-espacio, el pgrograma buscará en todo el texto recibido palabras que comiencen por esa misma letra o letras y nos las irá escribiendo buscando hacia atrás en la ventana output.
+Esto es tremendamente útil si por ejemplo oimos que estamos siendo atacados por un npc que empieza por s pero no sabemos como se escribe, podemos introducir el texto:
+anick x s
+y sin pulsar enter comenzar a pulsar ctrl-espacio hasta oir el nombre del npc, y seguidamente pulsar enter para tenerlo en el nick.
+Esta es una de las funcionalidades mas útiles de este cliente y os recomiendo familiarizaros con ella rapidamente.
+
+
+E- Envío de texto con caracteres especiales:
+
+Algunos signos de puntuación son utilizados por el VipMud como caracteres especiales, esto es, caracteres que se emplean en los comandos de scrips. Estos comandos pueden ser introducidos directamente en el cuadro de edición de la ventana entry, lo cual es muy útil para ejecutar instantáneamente comandos de scrip para la sesión actual, por ejemplo crear un trigger, activar una alarma o modificar una variable.
+El problema de esto es que si queremos enviar al mud uno de estos caracteres, el vipmud lo capturará para su uso interno como si fuera un comando de scrip, y como seguramente la sintaxis de lo que enviamos al mud no tendrá nada que ver con la sintaxis correcta de un comando de scrip, nos saltará un aviso de error.
+
+Algunos de estos signos de puntuación especiales son los siguientes:
+Dos puntos - : - Sirve para cambiar entre PJS cuando tenemos mas de una sesión de mud activa en la misma ventana del programa.
+Punto y coma - ; - Sirve para enviar varios comandos separados al mud en una sola línea.
+Signo de número - # - Es el caracter que inicia todo comando de scrip.
+
+Ejemplo 1:
+Queremos crear un alias en el mud con varios comandos, para lo que necesitaremos separarlos con un punto y coma:
+alias m1 desempuñar todo;empuñar maza;empuñar florete
+El vipmud capturará el punto y coma, y enviará al mud lo siguiente:
+alias m1 desempuñar todo
+empuñar maza
+empuñar florete
+
+Ejemplo 2:
+Queremos pegar un log en un mail, en un reporte, en un tablón etc.
+Si el log incluye combate, incluirá el signo de número - # -, si incluye conversaciones incluirá los dos puntos - : - etc.
+Por lo que no podremos pegarlo correctamente, saltarán errores etc.
+
+Para evitar este problema hay que decirle al cliente que la proxima línea o líneas que vamos a introducir no son comandos de scrips, que los ignore y los envíe al mud tal cual, esto se hace con el símbolo mayor que (>)
+Si colocamos un símbolo mayor que (>) al principio de una linea, dicha línea será enviada al mud tal cual esté escrita, sin que el vipmud filtre los caracteres especiales para su uso interno.
+Si escribimos en la ventana entry dos simbolos mayorque seguidos (>>) y pulsamos enter, todo lo que se escriba o se pegue en entry a continuación será enviado al mud tal cual, sin filtrar los caracteres especiales. Esta segunda opción es la mas útil para pegar grandes cantidades de texto, ya que se mantendrá activa hasta que la desactivemos, escribiendo en la ventana entry dos símbolos menorque (<<) y pulsando enter. Mientras el filtro esté desactivado, cada vez que enviemos una línea se nos avisará con un clic.
+
+
+F- Tips generales sobre la distribución del teclado:
+
+Los scrips se utilizan en la mayoría de los casos con combinaciones de alt, shift y ctrl con otras teclas.
+La tecla alt se utilizará combinada con las teclas de dirección para moverse, con las teclas de información para ver datos sobre nuestro PJ y el entorno y con las teclas de combate para enviar habilidades de nuestra clase al mud.
+La tecla ctrl se utiliza normalmente para enviar comandos generales a todas las clases, del estilo agacharse, enterrar, mano etc.
+La tecla shift se utiliza normalmente como tecla accesoria de todas las anteriores en diversas ocasiones.
+
+Todas las teclas usadas están en el teclado qwerty, para que estén cerca y se puedan combinar facilmente con la escritura de texto, es por ello que se desaconseja el uso del teclado numérico para moverse por el mud, aunque está soportado igualmente por si se necesita en alguna situación.
+
+
+
+3. Chat y comunicaciones.
+
+Según vamos recibiendo comunicaciones por los canales, por telepatía o por conversación en la room se van guardando en listas independientes que podemos consultar en cualquier momento.
+
+Un corrector automático elimina de los mensajes que se verbalizan automáticamente textos molestos como signos de puntuación, o los típicos textos que se ponen los players después del nombre en los canales, que una vez hacen gracia pero cuando tienes que escucharlos constantemente molestan de forma infernal.
+
+Si eres uno de los jugadores cuyos textos se han eliminado y te hace ilusión escucharlos, edita el archivo:
+Corrector.set.
+Busca bajo la línea:
+;Textos de jugadores en canales: 
+La línea que incluye tu nombre y el texto a eliminar, y bórrala, poniendo especial cuidado en no tocar la línea anterior y la siguiente, después guarda los cambios y recarga.
+
+ctrl-. y ctrl-, (control punto y control coma) - Navega entre los distintos historiales de canales disponibles. La posición inicial, llamada historial general, incluye los historiales de todos los canales en la misma lista.
+shift-f1 - Despliega la lista con las ultimas comunicaciones recibidas por el canal seleccionado.
+alt-f1 - Verbaliza la última comunicación recibida por el canal seleccionado.
+ctrl-f1 - Activa y desactiva la verbalización automática de cada lista independiente, o de todas las listas cuando tenemos seleccionado el historial general.
+
+shift-f2 - Despliega una lista con las últimas comunicaciones en la room, decir, preguntar, exclamar etc. Pulsando enter sobre una de ellas se copia al portapapeles.
+alt-f2 - Verbaliza la última comunicación que hemos visto en la room.
+ctrl-f2 - Activa y desactiva la verbalización automática de las conversaciones en la room.
+
+shift-f3 - Despliega una lista con los últimos mensajes telepáticos recibidos. Pulsando enter sobre uno de ellos se copiará al portapapeles.
+Alt-f3 - Verbaliza el último mensaje telepático recibido.
+ctrl-f3 - Activa y desactiva la lectura automática de mensajes de telepatía
+ctrl-t - Despliega una lista con todos los remitentes que nos han enviado tels. Pulsando enter sobre uno de ellos cambiará el destinatario de la función responder que explicaremos mas adelante.
+alt-t - Verbaliza el nombre del destinatario actual de nuestros tels, que por defecto es el del último jugador que nos halla enviado un tel a no ser que lo hallamos cambiado pulsando enter sobre el tel de otra persona en la lista de tels
+
+
+Función responder.
+
+Cuando recibimos un tel su remitente se guarda automáticamente, de modo que pulsando 
+r mensaje
+responderemos automáticamente al remitente del último tel recibido.
+Esto funciona de igual manera que el comando responder del mud, con la diferencia que desplegando la lista de remitentes de telepatía con ctrl-t y pulsando enter sobre uno de ellos cambiaremos con una sola pulsación el destinatario, esto es útil cuando se están manteniendo conversaciones con mas de un destinatario a la vez.
+Además recordad que con la pulsación alt-t - Podemos saber en todo momento a quien irá nuestra respuesta.
+
+para que esto funcione el alias de telepatía tiene que estar configurado en el mud en la tecla t, es decir:
+alias t telepatia ... veremos esto con mas detalle en la sección sobre alias.
+
+
+
+4. Ver información sobre nuestro PJ.
+
+Nuestros pv, pgs, y xp se actualizan en todo momento con el prompt, de ahí que sea tan importante tenerlo bien configurado.
+Las teclas de consulta se utilizan combinadas con la tecla alt, lo que facilita mucho moverse y consultar nuestro estado de forma ágil sin levantar el dedo del alt.
+
+alt-1 - Nos dice nuestros puntos de vida actuales y máximos, por ejemplo: 2235(3221)
+Alt-shift-1 - Copia nuestros puntos de vida actuales y máximos al portapapeles.
+Alt-2 - Lee nuestros puntos de energía actuales y máximos. 
+Alt-Shift-2 - Copia nuestros puntos de energía actuales y máximos al portapapeles.
+Alt-0 - Nos dice los puntos de experiencia acumulados.
+
+Contador de PVS:
+Cuando recibimos daño o curaciones el programa calcula su valor en base a los puntos de vida actuales y  máximos que salen en el prompt y en el monitor de combate.
+Si recibimos mas de 200 puntos de daño y tenemos el modo xp activado este se desactivará automáticamente, ya que se supone que nos ataca un npc mas poderoso.
+
+f6 - Nos dirá los últimos pvs recibidos o ganados, si el número es negativo son puntos de daño, si es positivo puntos que nos hemos curado.
+
+Shift-f6 - Despliega una lista con los últimos 5 cambios en nuestros puntos de vida. Con enter copiaremos un valor al portapapeles para reportarlo con comodidad.
+
+
+
+5. Ver información sobre nuestro entorno:
+
+Alt-3 - Nos dice quien ha sido el ultimo pj o npc enemigo en entrar o salir de nuestra room y en que dirección lo ha hecho.
+
+Alt-shift-3 - Despliega un historial de movimientos de enemigos, esto es, salidas y entradas en nuestra room, los mas recientes al principio. Pulsando enter sobre uno de los eventos lo copiaremos al portapapeles.
+
+Alt-4 - Nos dice quien ha sido el ultimo pj o npc aliado en entrar o salir de nuestra room y en que dirección lo ha hecho.
+
+Alt-shift-4 - Despliega un historial de movimientos de aliados, esto es, salidas y entradas en nuestra room, los mas recientes al principio. Pulsando enter sobre uno de los eventos lo copiaremos al portapapeles.
+
+Si el pj o npc que entra es el mismo que se va, o el que se va es el mismo que entra solo se guardará en memoria su último movimiento para ayudar a clarificar quien viene, quien se va y hacia donde.
+
+Alt-5 - Nos dice quien ha sido el último player en conectar.
+Alt-shift-5 - Copia el nombre del último player en conectar al portapapeles.
+alt-ctrl-shift-5 - Hace diplomacia al último player que halla conectado al mud.
+
+alt-6 - Dice el nombre del último player en desconectar del mud.
+alt-shift-6 - Copia el nombre del último player en desconectar del mud al portapapeles.
+
+F2 - Nos dice el nombre del último enemigo o enemigos con los que nos hemos encontrado.
+
+f3 - Nos dice el nombre del último aliado o aliados con los que nos hemos enconrado.
+
+
+Lista de eventos:
+
+En la lista de eventos se van guardando eventos importantes que van teniendo lugar en nuestro entorno, especialmente durante el PK.
+Esta funcionalidad está pensada para que podamos revisar en todo momento las cosas importantes que hallan pasado sin tener que desplazarnos por la ventana de output, cosas como quien nos ataca, a quien descubrimos con el comando buscar, quien ha propinado a quien o quien ha abandonado el grupo, todos ellos datos que es fácil perderse en la vorágine del combate.
+Esta funcionalidad está en contínuo desarrollo, así que si creeis que falta algo importante que debe de ser incluido en la lista, como siempre vuestras sugerencias serán bienvenidas.
+
+shift-f4 - Despliega la lista de eventos.
+f4 - Verbaliza el último evento que ha tenido lugar.
+Si pulsamos enter sobre un evento este se copia al portapapeles.
+
+
+
+6. Teclas de dirección y movimiento.
+
+Se puede utilizar el teclado numérico para moverse de la forma típica por el mud, aunque en los scrips se ha implementado una forma mas práctica de moverse utilizando el teclado qwerty, recomendamos esta segunda forma ya que podremos escribir y introducir las teclas de dirección sin desplazarnos hasta el teclado numérico, lo que nos dará mucha mas velocidad de reacción al estar todas las teclas mas próximas.
+Durante el combate y el movimiento utilizaremos la tecla alt en combinación con otras pulsaciones de teclas, tanto para movernos, enviar comandos de combate al mud o consultar nuestro estado.
+
+Teclas de movimiento:
+Tienen la forma habitual del teclado numérico, estando el sudoeste situado en la j.
+
+Sudoeste: alt-j
+Sur: alt-k
+Sudeste: alt-l
+Oeste:alt-u
+arriba: alt-i
+Este: Alt-o
+Noroeste: alt-7
+Norte: alt-8
+Noreste: Alt-9
+abajo: alt-m
+Dentro: alt-,
+Fuera: alt-.
+
+Así mismo en el teclado numérico se pueden utilizar las direcciones habituales teniendo en cuenta que en el 5 está el arriba, en el 0 el abajo, en el
++ el fuera y en el . el dentro.
+
+
+ 
+7. Siguiendo a jugadores
+
+Cuando un pj o npc, ya sea enemigo o aliado sale o entra de nuestra room, una voz nos dirá la dirección de la que llega o sale.
+Las voces masculinas indican enemigos, y las femeninas aliados. Voces con un tono mas grave (carlos loquendo y carmen loquendo) indican entrada en la room, y voces con un tono mas agudo (jorge loquendo y leonor Loquendo) indican salida.
+Así mismo con alt-3 y alt-4 podemos escuchar quien ha sido el ultimo en entrar o salir así como la dirección desde la que lo ha hecho.
+
+Objetivos prioritarios:
+Llamamos objetivo prioritario al primer nombre del nick X, que se configura automáticamente cuando nickeamos, aunque podemos cambiarlo fácilmente con el alias
+obj objetivo
+donde objetivo es el nombre que queremos configurar como objetivo prioritario.
+Recordad que cada vez que se modifique el nick x, el primer nombre del nick se configura automáticamente como objetivo prioritario.
+Cuando nos encontramos en una room con el nombre que tenemos configurado como objetivo prioritario, o este entra o sale de la room, un pitido agudo nos avisa de ello para que actuemos en consecuencia si así lo queremos hacer.
+
+ctrl-shift-o - Verbaliza el nombre del objetivo configurado, por defecto será el primer nombre del nick X
+el alias obj configura otro objetivo por si no quisiéramos que fuera el primero del nick X
+Teclead: obj nombre
+ctrl-o - Lanza un seguir al objetivo prioritario.
+
+
+8. Habilidades y comandos de combate.
+
+El espacio en el teclado para las habilidades de combate de cada clase está reservado en las combinaciones de alt con las 4 primeras columnas de letras de la mano izquierda, esto es, alt mas las letras:
+q, w, e, r,
+a, s, d, f,
+z, x, c, v
+De esta manera tenemos 12 macros configurables para realizar habilidades. Si necesitaramos mas, lo que sería vastante inusual, tendriamos que optar por configurar alias en el mud, y dejar estas combinaciones de tteclas para las habilidades mas frecuentes.
+
+Un ejemplo de como configurar esto puede verse claramente en el archivo soldados.set:
+#GKey alt-letra {alias}
+Donde letra sería una de las letras reservadas para alias de combate y alias sería el alias que se quiere enviar al mud.
+Añadid estas líneas al final del archivo de configuración de la clase que estéis usando, y si ya están preconfiguradas podeis cambiarlo fácilmente para ponerlo a vuestro gusto siempre que respetéis la sintaxis de los comandos.
+
+
+También las siguientes macros serán útiles para cualquier clase:
+
+Alt-enter - En el modo xp envía el comando matar xp, donde xp es un nick que tenemos que tener configurado en el mud.
+En cualquier otro modo envía el comando matar x, donde x es un nick que tiene que estar configurado en el mud.
+
+Buscar:
+Alt-b - Envía el comando buscar. Un sonido indicará el principio y el fin de la búsqueda, tanto de la nuestra como de cualquier otro player de la room, eliminando los textos de búsqueda para no floodear el lector.
+Si encontramos a alguien se reproducirá un sonido y se verbalizará únicamente el nombre que hemos encontrado.
+Igualmente si alguien en nuestra room encuentra a alguien sonará un sonido diferente y se verbalizara unicamente el nombre de quien se halla encontrado.
+
+Heridas:
+Alt-g - Nos dice las heridas que tenemos.
+alt-shift-g - Envía el comando vendar x, donde x es una de las heridas que tengamos.
+
+
+Alias accesorios para uso rápido:
+
+Las siguientes pulsaciones de teclas envían al mud palabras clave que deben ser configuradas como alias si se quiere que tengan utilidad.
+Esta funcionalidad ha sido pensada para empuñar y desempuñar armas rápidamente durante el pk al tiempo que se mueve, se envían habilidades y se consultan datos, aunque cada uno puede utilizarlas para lo que considere:
+
+Estas teclas son la columna de teclas que tenemos a la izquierda de las teclas de dirección, es decir, h, n, y
+en combinación con las siguientes:
+
+alt-h - m1
+alt-n - m2
+alt - y - m3
+alt-shift-h - m4
+alt-shift-n - m5
+alt-shift-y - m6
+shift-alt-ctrl-h - m7
+shift-alt-ctrl-n - m8
+shift-alt-ctrl-y - m9
+
+Un posible ejemplo sería escribir en el mud:
+alias m1 desempuñar todo;empuñar tridente;empuñar maza;acomplar potenciador a tridente
+
+De este modo con la simple pulsación de alt-h efectuariamos 4 comandos muy útiles durante un pk para un soldado, por ejemplo.
+Un sonido nos avisa de cuando desempuñamos, cuando empuñamos y cuando equilibramos objetos.
+
+
+
+9. Otras macros útiles:
+
+Comandos del mud habituales que se envían con combinaciones de la tecla control:
+
+ctrl-a - agacharse
+ctrl-l - Levantarse
+ctrl-o - Seguir objetivo, donde objetivo es el primer nombre del nick x o en su defecto el nombre que hallamos configurado con el alias obj
+ctrl-p - perder todo
+ctrl-m - mano
+ctrl-k - matar x
+ctrl-i - enterrar cuerpos
+ctrl-h - estado todos
+ctrl-y - estado x
+
+
+
+10. Uso del mapa.
+
+Una de las funcionalidades mas importantes de estos scrips es la posibilidad de utilizar algo parecido a los mapas que utilizan los jugadores de ZMud, aunque en nuestro caso no podremos llamar al mapa en cualquier momento para que nos lleve a cualquier sitio, si no que tendremos que ceñirnos a rutas preestablecidas, esto es lo que se conoce como Paths.
+
+Los Paths no son mas que listas de direcciones que unen dos puntos determinados.
+Su uso es muy sencillo, cuando nos movamos por el mud nos encontraremos rooms en las que se reproduce un sonido, ver Sounds\RL\Movimiento\Path disponible.wav
+Este sonido significa que desde esta room hay paths disponibles.
+Con la pulsación ctrl-shift-m se nos desplegará una lista con todos los destinos disponibles desde esa room, vastará con pulsar enter sobre uno para empezar a desplazarnos en esa dirección al igual que si fueramos en mapa.
+Durante el movimiento podremos introducir comandos de forma habitual.
+
+Todas las ciudades de los reinos cuentan con rooms con paths disponibles, normalmente desde su centro o desde sus puertas.
+Además todos los cruces importantes cuentan también con Paths disponibles hacia todas las ciudades mas próximas.
+Si hecháis en falta algún path importante desde algún sitio comunicádmelo y lo añadiré.
+
+ctrl-shift-m - Despliega la lista de destinos disponibles desde la room actual.
+ctrl-d - Detiene el path actual, no podrá volver a iniciarse.
+ctrl-s - Pausa el path actual, podrá volver a iniciarse pero tendrá que ser desde la misma room que lo hemos detenido, si no el Path se abortará. Si el path está pausado esta pulsación lo continúa.
+ctrl-shift-s - Cambia el ritmo de reproducción de los paths, de 2 rooms cada 2 segundos aproximadamente (opción por defecto) a 1 room cada segundo aproximadamente.
+
+
+
+11. Modos especiales:
+
+A - Modos de juego:
+
+Existen 3 modos de juego posibles entre los cuales se va rotando con pulsaciones de la tecla f11.
+Los triggers de sonido activos son los mismos para todos los modos, pero el texto que se silencia o se acorta cambia según el modo activo, y algunos sonidos se adaptan al estilo de juego previsto para cada modo.
+Los 4 modos disponibles son los siguientes:
+
+Modo de juego original:
+En este modo de juego se mantiene la esencia del mud inalterada, sin silenciar o modificar texto.
+Está pensado para recién llegados al mud que aún no se han familiarizado con los textos, o por si nos da un momento de melancolía y queremos recordar antiguos tiempos de juego en los que el tito Rhomdur aún no había llegado al rescate con su config xD.
+
+Modo de juego combate:
+Este modo es el idóneo para hacer PK, NPCS o para enfrentarnos a situaciones que ya requieran cierto nivel de juego y de optimización del texto verbalizado.
+En este modo se silencia o acorta todo aquel texto que puede resultar molesto en tales situaciones, buscando evitar flood e información innecesaria pero tratando de mantener verbalizada la mayor cantidad de texto posible.
+También cambian algunos comportamientos, como los textos que se almacenan en el visor de eventos, los nicks destinnatarios de algunos comandos etc.
+Este modo está pensado para participar en situaciones peligrosas pero escuchando la mayor cantidad de texto posible. Es recomendable para quienes aún no estén del todo familiarizados con los textos del mud, o para quienes gusten de tener el máximo apoyo del lector además de los triggers sonoros.
+
+Modo XP:
+Este modo elimina todo el texto molesto a la hora de hacer xp. Kills, textos de habilidades etc, y reduce algunos de los sonidos del combate a leves avisos. Está pensado para xpear mientras prestamos atención a los canales o cuando simplemente no queremos flood del lector.
+
+Modo idle.
+Este modo silencia la mayoría de los textos, reduce el volúmen de todos los sonidos a la mitad, silencia los canales, los mensajes de la room y los tels entrantes y elimina los sonidos ambientales, de oficios y de avisos de vida. 
+Como su propio nombre indica, el objetivo de este modo es simplemente idlear sin sonidos molestos.
+
+
+B - Modo experto.
+
+Este modo afecta principalmente a los textos que se reciben en situaciones peligrosas como el combate o al orden en el que se muestra el texto al desplazarnos, ya que está diseñado para optimizar la agilidad de juego y la rapidez de reacción. Se silencian prácticamente la mayoría de los textos que tienen sonidos asignados, mientras que la información importante  se abrevia todo lo posible acortando los textos por defecto.
+Entre otras cosas, no se verbalizarán los títulos de las rooms cuando nos movemos, en su lugar se leerán las salidas en formato abreviado. Además, los npcs o pjs que halla en la room se verbalizarán también de forma abreviada al final del todo para no interferir con las salidas. Además los títulos de los canales tampoco se verbalizan.
+Este modo está pensado para combinarse con otros modos, por lo que su activación o desactivación es independiente de los demás, pudiendo por ejemplo xpear sin escuchar la xp ganada, o hacer pk sin escuchar los textos de los kills.
+Tened en cuenta que cuando se utiliza el comando ojear, el texto que se nos devuelve es el mismo que el título de la room, por lo que para evitar que el modo experto lo capture y nos distorsione el ojear se ha programado el alias oj en el cliente. Si utilizais el alias oj para ojear podréis ojear normalmente, en cualquier otro caso el modo experto os anulará el ojear.
+Como su propio nombre indica, este modo está pensado para jugadores expertos que ya conocen bien todos los sonidos de la config y en la mayoría de los casos no necesitan feedback del lector.
+Se activa y desactiva con la tecla f10
+
+
+C. Modo autocentrar:
+
+Este modo viene incluido en el archivo set de todas aquellas clases que posean la habilidad centrar.
+Si está activado, cuando utilizamos las macros de combate y no estamos en el modo XP, antes de cada habilidad se enviará el comando centrar al mud.
+Se activa y se desactiva con la tecla f7 o el alias mac.
+
+
+D - Modo silencioso:
+
+La lectura automática de texto entrante se puede desactivar para que el lector deje de leernos automáticamente el texto recibido del mud.
+Se desactiva y se activa con f12
+
+
+
+12. Alias.
+
+Los scrips traen alias predefinidos para facilitar ciertas tareas.
+Estos alias están guardados en alias.set, y muchos de ellos es posible que tengáis que editarlos para adaptarlos a vuestra forma de jugar.
+
+A- Alias para reportar pasteos:
+Estos alias envían instantáneamente cualquier dato almacenado por los canales habituales, ya sea el bando, ciudadania, decir o tel, por ejemplo un evento de la lista de eventos, un chat que hallamos guardado etc.
+
+repb - reporta por el bando.
+Por defecto utiliza el alias del mud ba bando $*$, así que si utilizais otro alias para hablar por el bando deberéis editar la línea:
+ba %clipboard}
+y cambiar ba por el alias que utiliceis normalmente.
+Lo mismo se aplica para los siguientes:
+
+repd - reporta mediante decir.
+Por defecto utiliza el alias en el mud '
+
+rept - reporta mediante telepatía al remitente que tengamos guardado.
+Utiliza la funcion responder de los scrips por lo que no hace falta cambiarlo.
+
+repc - reporta por el canal ciudadania.
+Por defecto utiliza el alias en el mud ciu
+
+
+B- Alias para opciones especiales:
+
+mac - Activa y desactiva el modo autocentrar en fichas que posean la habilidad centrar.
+versionscrips - Ver la versión y la fecha de los scrips:
+
+
+C- Alias de configuración:
+
+Existen algunos alias especiales para ayudarnos a configurar nuestra ficha.
+Estos alias normalmente se utilizan una sola vez cuando configuramos nuestro personaje y no es necesario volver a tocarlos, aunque pueden ser útiles en otras circunstancias, por ejemplo cuando cargamos fichas en el coliseo.
+Estos alias son los siguientes:
+
+configurarficha
+Envía una serie de comandos al mud que realizan varias configuraciones indispensables para que los scrips funcionen correctamente, como activar el modo accesibilidad, configurar las filas y las columnas, establecer el terminal, ajustar varias opciones de información, desactivar los menús, crear alias de telepatía y decir con colores y mas.
+
+canalescolores 
+Crea alias de colores para todos los canales del mud, en los canales saldrá el texto que escribamos en color rojo.
+Los alias de canales que se crean son:
+ba - bando
+ciu - ciudadania
+gre - gremio
+cla - clan
+gru - grupo
+cha - chat
+ro - rol
+int - interbando
+co - consulta
+av - avatar
+
+Si os fijais se intenta mantener un patrón fácil de recordar, los alias de canales son las 3 primeras letras del nombre del canal excepto en el caso del canal rol y del canal consulta que son las 2 primeras.
+Estos mismos alias son los que se utilizan para todos los comandos de reportar. Si no son los alias que queréis utilizar teneis que editar el archivo
+alias_macros.set
+y buscar la línea
+#GAlias canalescolores {
+para editar las líneas que vienen después, recordando respetar los símbolos de llaves.
+
+
+E- Configuración del prompt.
+
+El prompt es indispensable para el correcto funcionamiento de los scrips. Para el que no esté familiarizado con el término, un prompt es una línea de texto que el mud nos envía cada vez que recibe un comando de cualquier tipo, aunque sea una línea en blanco. En este prompt recibiremos datos que el programa utiliza para guardarlos en variables que nosotros podremos consultar después, o que el programa mismo puede utilizar para transmitirnos información. 
+Estos datos son: salidas de la room, vida actual, vida máxima, energía actual, energía máxima, fe actual, fe máxima, experiencia actual, pieles, imágenes, criaturas en peleas, jugadores enemigos y jugadores aliados en la room.
+La fe no sale en el monitor de combate ni en el prompt, por lo que para verla tendréis que ejecutar el comando sc.
+La información de los enemigos y los aliados se utiliza para reproducir un aviso sonoro cuando uno o mas jugadores enemigos, o uno o mas jugadores aliados están en nuestra room.
+Para configurar los prompts de forma rápida existen varios alias disponibles  que podemos utilizar en función del bando al que pertenezca vuestra ficha o de vuestras preferencias personales. Además si vuestra ficha utiliza los hechizos de piel de piedra o imágenes hay prompts disponibles para consultar también cuantas pieles o espejos nos quedan:
+los alias comienzan con la sintaxis
+configurarprompt
+seguida de una m en caso de que nuestra ficha sea un mago con espejos o pieles de piedra, y seguida de una segunda letra que indicará el tipo de prompt que queremos, todo sin espacios y sin letras mayúsculas.
+
+Alias - configurarpromptb
+Enemigos: todos los del quien matar.
+Aliados: Todos los que no salen en el quien matar.
+útil para fichas del bando bueno o del bando malo, cuyas diplomacias son claras y no pueden atacar a gente de su propio bando.
+Para magos: configurarpromptbm
+Para monjes y lanceros: configurarpromptbi
+Para ladrones: configurarpromptba
+Para mago-ladrón: configurarpromptbma
+
+Alias - configurarprompta
+Enemigos: cualquier jugador de otro bando.
+Aliados: Cualquier jugador del mismo bando.
+Util para renegados, anárquicos o mercenarios que van a por gente de cualquier bando pero no a por los de su mismo bando.
+Para magos: configurarpromptam
+Para ladrones: configurarpromptaa
+Para mago-ladrón: configurarpromptama
+
+Alias - configurarpromptx
+Enemigos: cualquier jugador que esté en el nick x en un momento dado.
+Aliados: Cualquier jugador que no esté en el nick X
+útil para renegados o anárquicos que eligen en cada momento a quien quieren atacar y a quien no, o para cualquiera que pueda atacar a miembros de su propio bando o prefiera controlar a mano su nick.
+Para magos: configurarpromptxm
+Para ladrones: configurarpromptxa
+Para mago-ladrón: configurarpromptxma
+
+
+
+13. Grupos de jugadores:
+
+Cuando otros jugadores se unen a un grupo que hemos creado, se guardan sus nombres en una lista que podemos consultar con la pulsación de teclas:
+ctrl-g
+
+Cuando los jugadores que pertenecen a nuestro grupo se mueven siguiéndonos se reproducirá el sonido de que un aliado nos sigue, se silenciarán los mensajes de seguimiento y de llegada, y en caso de que los jugadores agrupados con nosotros vengan seguidos por un poque, se anulará el mensaje de llegada del poque y el sonido indicativo de la dirección desde la que llega.
+Cuando vamos agrupados y el líder del grupo se mueve en una dirección, en lugar de reproducirse el audio de las salidas de aliados, será el lector el que verbalizará la salida de forma abreviada. De esta forma evitamos el flood sonoro.
+
+
+14. Soldados.
+
+El archivo soldados.set incluye todos los triggers de sonido, avisos de bloqueos y macros para la clase soldado y la mayoría de sus habilidades.
+Si estamos en modo XP, cada macro de combate enviará una habilidad al nick xp que tendremos que definir en el mud con los npcs que utilicemos durante la xp.
+En cualquier otro modo, las macros de combate enviarán el comando correspondiente al nick x, que tendremos que tener definido en el mud con las listas de enemigos.
+Esta clase cuenta con la habilidad centrar y el modo autocentrado, descrito en el apartado 11.
+
+Las macros de combate son las siguientes:
+
+alt-f - matar;esgrimir
+alt-d - tajar
+alt-s - golpecertero normal
+alt-a - golpecertero poderoso
+alt-r - atravesar
+alt-e - estocada
+alt-w - herir
+alt-q - oleada
+alt-v - hender
+alt-c - aplastar
+alt-x - ataquedoble
+alt-z - golpecertero rapido
+alt-shift-enter - matar;centrar
+
+Las teclas de movimiento del teclado qwerty junto con la pulsación de la tecla shift enviarán el comando saltoheroico en la dirección indicada, por ejemplo:
+
+alt-shift-j - saltoheroico so
+alt-shift-i - saltoheroico aqui
+
+
+
+15. Khazads:
+
+El archivo Khazads.set incluye todos los triggers de sonido, avisos de bloqueos y macros para la clase Khazad y sus habilidades.
+Si estamos en modo XP, cada macro de combate enviará una habilidad al nick xp que tendremos que definir en el mud con los npcs que utilicemos durante la xp.
+En cualquier otro modo, las macros de combate enviarán su comando correspondiente al nick x, que tendremos que tener definido en el mud con las listas de enemigos.
+Esta clase cuenta con la habilidad centrar y el modo autocentrado, descrito en el apartado 11.
+
+Las macros de combate son las siguientes:
+
+alt-a - Aguantar.
+alt-s - Instigar.
+alt-d - Pulverizar.
+alt-f - Embestir.
+
+
+16. Sigiladores:
+
+Todas las clases de tipo sigilador heredan sus configuraciones compartidas desde el archivo sigiladores.set.
+Las macros son las siguientes:
+
+alt-e - Esconderse
+Alt-c - Concenracion.
+alt-v - Acechar
+
+alt-shift-tecla de dirección - Sigilar en la dirección indicada, por ejemplo:
+alt-shift-8 - Sigilar norte.
+
+
+17. Exploradores.
+
+El archivo exploradores.set incluye todos los triggers de sonido, avisos de bloqueos y macros para la clase explorador y sus habilidades.
+Si estamos en modo XP, cada macro de combate enviará una habilidad al nick xp que tendremos que definir en el mud con los npcs que utilicemos durante la xp.
+En cualquier otro modo, las macros de combate enviarán su comando correspondiente al nick x, que tendremos que tener definido en el mud con las listas de enemigos.
+Esta clase cuenta con la habilidad centrar y el modo autocentrado, descrito en el apartado 11.
+Además esta clase cuenta con los comandos habituales de las clases que sigilan incluidos en sigiladores.set:
+
+Las macros de combate son las siguientes:
+
+alt-f - Ataquefurtivo
+alt-d - Frenesi
+alt-s - Seguir objetivo (el primer nombre del nick x)
+
+
+18. Guardabosques.
+
+El archivo guardabosques.set incluye todos los triggers de sonido, avisos de bloqueos y macros para la clase guardabosques y sus habilidades.
+Si estamos en modo XP, cada macro de combate enviará una habilidad al nick xp que tendremos que definir en el mud con los npcs que utilicemos durante la xp.
+En cualquier otro modo, las macros de combate enviarán su comando correspondiente al nick x, que tendremos que tener definido en el mud con las listas de enemigos.
+Esta clase cuenta con la habilidad centrar y el modo autocentrado, descrito en el apartado 11.
+Además esta clase cuenta con los comandos habituales de las clases que sigilan incluidos en sigiladores.set:
+
+Las macros de combate son las siguientes:
+
+alt-f - cazar
+alt-d - doblegolpe
+alt-s - seguir objetivo (el primer nombre del nick x)
+
+
+19. Tiradores
+
+El archivo tiradores.set incluye todos los triggers de sonido, avisos de bloqueos y macros para la clase tirador y sus habilidades.
+Si estamos en modo XP, cada macro de combate enviará una habilidad al nick xp que tendremos que definir en el mud con los npcs que utilicemos durante la xp.
+En cualquier otro modo, las macros de combate enviarán su comando correspondiente al nick x, que tendremos que tener definido en el mud con las listas de enemigos.
+Esta clase cuenta con la habilidad centrar y el modo autocentrado, descrito en el apartado 11.
+Además esta clase cuenta con los comandos habituales de las clases que sigilan incluidos en sigiladores.set:
+
+Las macros de combate son las siguientes:
+
+alt-f - Disparoapuntado
+alt-d - disparocertero
+alt-s - salva
+alt-a - apuntar

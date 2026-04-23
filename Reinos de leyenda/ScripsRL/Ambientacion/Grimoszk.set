@@ -1,0 +1,25 @@
+;Módulo: Grimoszk.set
+;Versión: 1.0, 26/01/2024
+;Descripción: Triggers de sonidos puntuales de ambientación del reino de Grimoszk.
+;Autor: Rhomdur.
+
+
+#Class Ambientacion
+
+#GTrigger {El viento golpea fuertemente tu cuerpo haciéndote tambalear al andar.} {
+#Play {RL\Ambientacion\Grimoszk\viento1.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {El suave rumor de las olas del mar te relaja profundamente.} {
+#Play {RL\Ambientacion\Grimoszk\olas1.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {Las nubes de mosquitos producen un sonido demasiado desagradable para tus oídos.} {
+#Play {RL\Ambientacion\Grimoszk\pantano1.wav} @VolAmb1
+} {} AnyCase
+
+#GTrigger {Al oler el ambiente, puedes apreciar la gran cantidad de organismos en putrefacción.} {
+#Play {RL\Ambientacion\Grimoszk\pantano2.wav} @VolAmb1
+} {} AnyCase
+
+#Class 0

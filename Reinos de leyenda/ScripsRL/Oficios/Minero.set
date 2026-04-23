@@ -1,0 +1,151 @@
+;Módulo: Minero.set
+;Versión: 1.4, 24/09/2025
+;Descripción: Triggers de sonido para el oficio minero.
+;Autor: Rhomdur.
+
+
+;Mensajes de comienzo y activación de la clase:
+
+#GTrigger {*Comienzas la extracción del mineral.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Var ContadorTurnos 0;
+#Var AmbOficio {RL\Oficios\Minero\Picando*4.wav};
+#Class Minero enable;
+#If {@ModoAmbientacion = 1} {
+ FuncAmbienteOficio
+} {
+ #Play {RL\Oficios\Turno.wav}
+};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+
+#Class Minero
+
+
+;Mensajes de desactivación de la clase:
+
+#GTrigger {*Despu?s de esforzarte durante rato picando te detienes confus? y resignad?. No has logrado encontrar mineral*} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Class Minero Disable;
+FuncStopAmbienteOficio;
+#Play {RL\Oficios\Minero\Picar fallo.wav} @VolAmbOficio;
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {*Consigues extraer *} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FEventos %0;
+FuncStopAmbienteOficio;
+#Class Minero Disable;
+#Play {RL\Oficios\Minero\Extraer*8.wav}
+} {} AnyCase
+
+#GTrigger {*Después de esforzarte un rato comprendes que esta veta está agotada.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FuncStopAmbienteOficio;
+#Class Minero Disable;
+#Play {RL\Oficios\Minero\Veta agotada.wav} @VolAmbOficio
+} {} AnyCase
+
+#GTrigger {*Detienes la extracción del mineral.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+FuncStopAmbienteOficio;
+#Class Minero Disable;
+#Play {RL\Oficios\Minero\Extraccion detenida.wav} @VolAmbOficio
+} {} AnyCase
+
+
+;Turnos de picar:
+
+#GTrigger {*Picas fervientemente sobre la irregular superficie de la *.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Mat ContadorTurnos {@ContadorTurnos+1};
+#If {@ModoAmbientacion = 1} {
+ #Play {RL\Oficios\Minero\Turno*9.wav} @VolAmbOficio
+} {
+ #Play {RL\Oficios\Turno.wav}
+};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {*Con un pequeño grito descargas tu fuerza contra la *.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Mat ContadorTurnos {@ContadorTurnos+1};
+#If {@ModoAmbientacion = 1} {
+ #Play {RL\Oficios\Minero\Turno*9.wav} @VolAmbOficio
+} {
+ #Play {RL\Oficios\Turno.wav}
+};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {*Gotas de sudor corren por tu cara mientras sigues picando enérgicamente.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Mat ContadorTurnos {@ContadorTurnos+1};
+#If {@ModoAmbientacion = 1} {
+ #Play {RL\Oficios\Minero\Turno*9.wav} @VolAmbOficio
+} {
+ #Play {RL\Oficios\Turno.wav}
+};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {*Golpeas la * en afán de conseguir algo valioso.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Mat ContadorTurnos {@ContadorTurnos+1};
+#If {@ModoAmbientacion = 1} {
+ #Play {RL\Oficios\Minero\Turno*9.wav} @VolAmbOficio
+} {
+ #Play {RL\Oficios\Turno.wav}
+};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+
+;Fakes:
+
+#GTrigger {[¡]Se abierto una brecha que comunica con un río subterráneo y el agua inunda esta parte de la mina!} {
+#Play {RL\Oficios\Minero\Inundacion*2.wav}
+} {} AnyCase
+
+#GTrigger {[¡]La fuerza del agua es muy fuerte y te arrastra hacia *!} {
+FEventos %0;
+#Play {RL\Movimiento\Movido.wav}
+} {} AnyCase
+
+#GTrigger {[¡]Los soportes de la mina crujen y se produce un desprendimiento!} {
+#Play {RL\Oficios\Minero\Desprendimiento*3.wav}
+} {} AnyCase
+
+#GTrigger {Las rocas tapan la salida *.} {
+FEventos %0;
+#Play {RL\Oficios\Minero\Salida tapada.wav}
+} {} AnyCase
+
+#GTrigger {[¡]Se ha producido una explosión de gas!} {
+#Play {RL\Oficios\Minero\Explosion.wav}
+} {} AnyCase
+
+#Class 0

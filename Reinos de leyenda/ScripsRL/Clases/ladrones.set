@@ -1,0 +1,83 @@
+;Módulo: ladrones.set
+;Versión: 1.0, 16/12/2020
+;Descripción: Soporte para la clase ladrón.
+;Autor: rhomdur
+
+#Load ScripsRL\Clases\Sigiladores.set
+#Load ScripsRL\Clases\Combate_fisico.set
+
+
+;Declaración de variables:
+#Var FlagBloqueosClase 1
+#Var FlagImpactosClase 1
+
+;Función para los bloqueos de clase.
+#GAlias FBloqueosClase {
+#Var FlagBloqueoV 1;
+#If {%IfWord("oleada",%1, )} {
+ #play {RL\Bloqueos\Soldados\Oleada.wav};
+ #Abort
+};
+#Var FlagBloqueoV 0
+}
+
+;Función para los impactos de clase:
+#GAlias FImpactoHabilidadC {
+#If {%IfWord("apuñalar",%1, )} {
+ #Play {RL\Habilidades\Ladrones\Apuñalar.wav}
+}
+}
+
+;Triggers:
+
+#GTrigger {[¡]Una extraña energía recorre tu cuerpo, haciéndote sentir prest? y fugaz!} {
+#Play {RL\Efectos\Celeridad on.wav}
+} {}
+
+
+;Keys:
+
+#GKey alt-w {
+ejecutar desaparicion maestra
+}
+
+#GKey alt-r {
+escabullirse
+}
+
+#GKey alt-a {
+abrojos
+}
+
+#GKey alt-s {
+#If {@ModoJ = 2} {
+ cegar xp
+} {
+ cegar x
+}
+}
+
+#GKey alt-d {
+#If {@ModoJ = 2} {
+ asaltar xp
+} {
+ asaltar x
+}
+}
+
+#GKey alt-f {
+#If {@ModoJ = 2} {
+ apuñalar xp
+} {
+ apuñalar x
+}
+}
+
+#GKey alt-z {
+#If {@ModoJ = 2} {
+ saltopicaro xp
+} {
+ saltopicaro x
+}
+}
+

@@ -1,0 +1,440 @@
+
+Bueeno bueno, empezamos fuerte el 2026, tan fuerte que cuando ya tenía todo escrito, hasta el historial de cambios, no sé que he hecho que copiando y pegando los archivos desde mi carpeta personal a la carpeta de github lo he perdido, asique me ha tocado de nuevo hacer los prompts para inercia y astucia. Habéis leído bien, si tenemos el prompt adecuado, al pulsar alt 2 tenemos disponible la información. Asique ya sabéis, ¡Configurar vuestra ficha de la mejor forma para ser aún más poderosos, cread ríos de lágrimas y seguid haciendo que los videntes se frustren porque un ciego les ha matado jijijijaa!
+Los nuevos comandos para configurar el prompt son los siguientes (no hace falta escribir las mayúsculas. La letra I referencia a inercia, A a astucia):
+configurarpromptBI, configurarpromptBA, configurarpromptBMA, configurarpromptAA, configurarpromptAMA, configurarpromptXA, configurarpromptXMA
+Quien controle la sintaxis de los comandos para configurar el prompt, lo entenderá sin problemas, y quien no... puees lo siento mucho, que pena, a joderse.
+Yo no cobro por esto. Preguntarle a Rhomdur... o mejor aún, lo teneis detallado en el archivo Instrucciones manejo.txt, en la parte de los prompts. Pero como sois tan vagos quien no lo entienda seguramente termine preguntando, que nos conocemos ¿e? ¡Ya os vale, pensábais que iba a ser tan malo de no dejaros una explicación de la configuración!
+
+Cambios en la versión 2.7, 07/12/2025
+Cambiamos de versión! que las mejoras y arreglos se van acumulando, el año va terminando y siempre queda profesional y satisfactorio ver el nuevo numerito y decir, cuiidao, que hay nueva versión. Recordad que se ve con versionscrips... alguien se ha dao cuenta en todos estos años que scrips se escribe scripts? con una t en medio? pues si, y nosotros aquí, hablando como abuelas... intenté cambiarlo pero no veais la de mierdas que hay que hacer para cambiar una t que no le importa a nadie, así que haí se queda.
+Reparados algunos errores que habían esquivado hábilmente nuestros intentos de eliminación, básicamente haciendonos pasar de arreglarlos por pura pereza: Sonidos de antorchas, sonidos de dia y noche, rehubicación de algunos otros sonidos pensando en un futuro en el que halla mas sonidos, sonidos y sonidos y blablablabla esto no le importa a nadie.
+Añadido un sistema en pruebas para reproducir sonidos de ambiente, esto es, cuando estemos por ejemplo en un bosque, reproducir un sonido de bosque, para sentirnos mas en el papel. Antes de que os emocioneis, no tiene ningún sonido aún, lo subo por si algun voluntario quiere ayudarme a ir añadiéndolos y testeando la historia, por ahora es solo la base del sistema.
+La explicación y la plantilla para ir añadiendo sonidos está en Ambientacion/Asignacion.set, el que no lo entienda que lo deje estar y no me de la turra, o que le de la turra a Enorthus.
+Funciona de la siguiente manera:
+1: Se asigna un sonido principal al titulo de la room, que sonará a un volumen alto, esperemos no molesto.
+2: Se asigna un sonido secundario al titulo de la misma room, que sonará por debajo a un volúmen mas reducido. De esta manera podremos hacer multiples combinaciones ambientales.
+Además se puede asignar un sonido para el día y otro para la noche, tanto primario como secundario, y un sonido de amanecer y otro de anochecer.
+Tened en cuenta que en interiores el amanecer y el anochecer no se actualiza, para que se ponga al día hay que usar el comando hora, o mirar el clima, o estar en un sitio donde salgan los textos de amanecer y anochecer.
+Cada vez que nos movemos de room, el sistema comprueba si hay sonidos asignados a la nueva room. Si los hay detiene los que suenen y reproduce los nuevos. Si no los hay lo detiene todo, si son los mismos que están sonando los deja sonar.
+La función está desactivada por defecto, para no procesar cosas innecesarias ya que no hay sonidos asignados.
+Si queréis activarla para probar a asignar cosas, en configuracion.set, cambiar la variable AsignacionAmbienteRomm a 1.
+Este nuevo e inútil sistema de sonidos sin sonidos, no es tan inútil, algunas ventajas:
+Los sonidos de oficios cuentan como sonidos de ambiente, al igual que los sonidos asociados a las sensaciones, consentir sensacion on.
+Todos ellos se pueden silenciar con F9, el comando "modoa", o dejarlos silenciados perpetuamente en configuracion.set, cambiando la variable ModoAmbientacion a 0.
+Todos los volúmenes de los sonidos ambiente se pueden subir y bajar con ctrl-shift-avance y retroceso de página.
+Todos los oficios existentes hasta el momento se han actualizado para ser compatibles con este nuevo sistema tan bonito y flamante.
+Es vastante posible que si en algún momento llega a haber muchos sonidos de ambiente, este sistema tan bonito y flamante provoque una relentización intolerable del cliente, por toda la carga de comprobaciones de títulos de rooms que tendrá que hacer, pues aunque el sistema es bonito y flamante, el cliente es una castaña y no se le pueden pedir milagros. Si ese momento llega ya veremos que hacer.
+Nota: El de los chistes malos es Enorthus, mis chistes son mucho mejores, desgraciados.
+Reparado el path que va desde puertas D'hara hasta galador ¡Gracias Astrion por avisar!
+Además, se ha añadido un path desde la encrucijada norte de golthur que va hasta la entrada del Puerto de Juggash Bur y otro que va a la inversa, para poder ir a Boreal desde golthur.
+Debido a vuestra vagancia el archivo que contiene los paths de golthur ha llegado al límite, lo que podía derivar en varias opciones: Me enfado y rompo los scripts hackeando vuestro PC, o una opción más sencilla. Crear otro archivo .set, he decidido que era mejor la segunda.
+También se han añadido paths para ir a los Cultivos Pantanosos que se puede activar desde los tres cruces de veleiron. Para la vuelta hay otro en la entrada sur de Cultivos que te lleva hasta el centro de Veleiron.
+Cuidado, que la roca que hay yendo de camino como piseis mal os puede stunear (y posiblemente haceros un esguince). No he puesto path desde la roca, asique espero que no os importe moveros tres rooms para reiniciarlo.
+Arreglado error de ruta con la reproducción de impulso de habilidades en Cambiaformas.
+Os recuerdo que en ctrl-shift-l tenemos un acceso a los objetos que se nos han listado recientemente en baules, tiendas, puertos, mochilas etc. Ahora esta lista se vaciará al movernos, excepto en el caso de las mochilas, así siempre habrá cosas útiles en ella y no objetos de, por ejemplo, una tienda en la que estubimos hace 4 horas.
+Mi nuevo esclavo enorthus es una máquina de matar y está eliminando bugs con la misma facilidad que elimina enemigos, felicitadle!
+Además paths para boreal y correcciones de paths de eldor, seguid felicitandole!
+Nos mudamos a Github! Si, después de añoss de esclavitud solitaria Enorthus se suma como colaborador oficial, así que para gestionar el trabajo en equipo vamos a ponernos serios. Además así cualquiera podrá ir descargando los últimos cambios en tiempo real, sin esperar a las versiones finales, lo que será mas dinámico y eficiente para todos, especialmente para mi que ya no tendré que hacerlo todo yo.
+https://github.com/dprenc/ScriptsRL
+
+Cambios en la versión 2.6, 18/02/2025
+Ahora cuando listamos embarcaciones en puertos hay soporte para listas, esto es que con ctrl-shift-l se ven los ítems listados, y pulsando enter en cada ítem se ejecuta la acción correspondiente, en este caso recuperar número de embarcación. Esto a veces falla por que poneis nombres muy raros a los barcos pero hice lo que pude.
+Ahora si ponemos agruparse estando en un grupo se actualizarán automaticamente los miemros del grupo, lo que servirá para silenciar los seguires, para los sonidos de los prompts y demás. Esto viene a sustituir aquella cosa primigenia y primitiva de añadir miembros del grupo escribiéndolos a mano, que como ya no es útil he eliminado con gran venganza y furiosa cólera por que era horripilante y ofensiva, y funcionaba mal.
+En soldados el altf f ya no esgrime, ahora hace oleada. No hay macro para el esgrimir, por que rhalgrim y yo llegamos a la conclusión de que se utiliza menos, así que haced un alias como toda la vida de dios.
+Disimulados un poco los sonidos de quejidos de ay oy auch ouch que era una infernalidad, a ver si ahora molestan un poco menos.
+Añadida una pantagruélica cantidad de sonidos para el oceano, tanto acciones propias como de otros, movimientos de barcos, acciones de marineros y de no marineros... por ahora van mas de 60 sonidos y subiendo. Dadle las gracias a no se quién que me pasó una configuracion de marineros antigua para inspirarme.
+Fiesta nacional por que como estoy subiendo marinero y solo hago las cosas pa mi ahora hay soporte para el oficio marinero con las siguientes grandiosas maravillas:
+Modo marinero. Cuando estemos en el puente de gobierno de cualquier embarcación, un sonidito nuevo nos avisará de que hay un modo especial disponible, este es el modo marinero y se activa con el alias MMar.
+En este modo, las salidas se leerán de manera mas cómoda para priorizar la hubicación rápida en el ancho mar. Además las teclas de movimiento cambian.
+El movimiento primario, es decir, alt j, alt k etc pasa a enviar orientar sudoeste, orientar sur... y así con todas las direcciones, mientras que alt-i, el arriba habitual, pasa a ser navegar o navegar detener en función de lo que amerite.
+Además podremos cambiar la velocidad de la embarcación de la siguiente manera: con alt m y alt punto (abajo y fuera normalmente)) seleccionamos una velocidad menor o mayor respectivamente, y con alt coma (el abajo habitual) damos la orden de cambiar a la velocidad seleccionada.
+Cuando estamos en el modo marinero, el movimiento secundario, el de alt shift lo que sea,  pasa a ser el movimiento normal que además nos saca del modo marinero, por lo que vasta con moverse una vez para volver al funcionamiento normal, aunque también podemos volver a usar el alias MMar.
+También implementé un mapa, igualmente solo disponible en los puentes de gobierno de las embarcaciones, que con ctrl-shift-m despliega una lista de puntos del oceano conocidos. Si pulsamos enter en uno de esos puntos se ejecutará el comando ruta sobre dicho punto. No están incluidos sitios recónditos, ocultos o spoilers de quests para mantener un poco el encanto y para joderos.
+En corrector.set se habían acumulado una cantidad desorbitada de textos de jugadores en canales, de esos que la gente se pone después del nombre y solo molestan. El corrector los quita para que solo se lea el nombre, pero como la mayoría eran de gente que ya no juega y había decenas he decidido quitarlos todos, así además cada uno que elija lo que quiere leer y lo que no. Si no quereis escuchar alguna cosa meteros en corrector.set y añadir vuestras propias excepciones, y si no sabeis como aprended!
+Ahora hay sonidos y verbalizaciones configuradas para habilidades de terceros, esto es todo lo que otros hacen entre si en nuestra room. (lo que hacen de pegarse, cerdos!).
+Concretamente hay sonidos para: cuando nuestro agrupado prepara habilidad e impacta en enemigo, o aliado. Para cuando un enemigo prepara, e impacta en otro enemigo, un aliado o nuestro agrupado. Para cuando un aliado prepara habilidad, impacta en otro aliado, en un enemigo o en nuestro agrupado... y todas sus respectivas esquivas, paradas, fallos por desaparición del objetivo y críticos.
+Además también organicé los sonidos para que halla distintos avisos cuando una habilidad que se ejecuta sobre nosotros viene de un aliado o de un enemigo.
+Este sistema es complejo, hay muchas habilidades y probablemente muchas falten, así que unas se reproducirán con las típicas voces de loquendo según aliado o enemigo, y otras las hablará el lector.
+Ya que estaba en ello organicé lo mismo para los hechizos de daño que recibimos, la idea es ir poniendo sonidos para todas las habilidades y los hechizos, aunque por ahora solo hay algunos, ayudadme a poner mas, desgraciaos.
+Lleva un tiempo acostumbrarse a esto por la cantidad de sonidos, pero creo que es vastante eficiente, comentadme si veis maneras de mejorarlo.
+Para utilizar esta dopadez hay que activar el consentir ataques a otros, que ahora se activa también en el alias configurarficha. De igual manera, si os molesta tanta orquesta, vasta con desactivar el consentir ataques_a_otros.
+Todos estos sonidos están en la carpeta RL\HHOtros, aprendedlos si no quereis enloquecer.
+Por último agradecedle a Satyr que nos puso los mensajes de accesibilidad para los ataques a otros con gran inmediatez cuando se lo pedí.
+Todo esto implica cambios técnicos de gran complejidad que me llevaron su tiempo y a nadie le interesan así que paso de ponerlos, pero que pueden suponer comportamientos extraños que espero provoquen vuestra muerte, y que me los digáis.
+El modo turbo de los paths se ha configurado para que lance salidas de 45 en 45, por que mira que os dije que no estaba pensado para ir usando comandos durante el viaje, pero estáis como burros y no me haceis caso, y luego las cosas no funcionan bien, y mimimimi esto no va bien, mimimimi mimimimi y os voy a decapitar por ineptos.
+Añadidos sonidos que faltaban en los árboles.
+Cambiado el sonido para retener enemigo y  retener aliado (en la carpeta hechizos), y para libre aliado (en combate). Creo que estos son mas representativos y claros, memorizadlos.
+Trompetas y clarines, por que el señor Enorthus se ha puesto a trabajar como una fucking bestia, y nos trae una buena cantidad de nuevos paths, entre ellos, los paths completos para naggrung, que llevaba yo posponiendo desde el 2020 por lo menos. Además de trabajar, se ha comido un payaso, aquí os dejo con su lista de cambios:
+Enorthus dice con voz de Fucking bestia: Blaaa bla bla bla bla, bla bla bla blaaaa....
+Rhomdur ruge: Calla cojones, ya lo explico yo resumido! malditos druidas.
+Arreglado path desde paramos del viento helado a acantilados del trueno.
+Corregido punto de inicio de paths al oeste de páramos del viento helado.
+Enorthus interviene con voz de Fucking Bestia: ¡Ahora se puede ir al antiguo refugio de piedra! ¡Sí sí, a Soujorn! este path se puede activar desde el centro de keel, páramos del viento helado (sur), páramos del viento helado (oeste) y acantilados del trueno.
+Se ha creado un nuevo origen, antiguo refugio de piedra (ARP), desde el cual también se puede ir a los acantilados del trueno y Keel (centro).
+Rhomdur resume con voz de agotamiento:
+Creado path de altar de los dioses a acantilados del trueno,  a keel, de keel a altar, de keel a refugio de piedra, de altar a templo de Ankalas, de keel a acantilados del trueno.
+Corregido punto de path al sudoeste de bosque de las yanuras y añadido path hasta keel.
+Completados todos los paths incompletos que terminaban en keel, que se interrumpían a la mitad por que A rhomdur no le dió la gana de terminarlo en su momento a saber por que demonios.
+Enorthus añade con voz de asesinar lagartos:
+Se ha creado un path que se localiza en el altar del bosque de Waret, que nos permite ir a galador, anduar, golthur, mor groddur, eloras y ancarak.
+¡Ahora nos vamos a un terreno bastante caliente caliente!
+Se ha creado un nuevo path, para ir a la parte este del puente de lessirnak. Este se puede activar desde...
+Rhomdur interrumpe con voz de profesor repelente: Desde todos los cruces del reino de urlom por que todo lo demás lo quité yo por esto y aquello y lo de mas allá... y porque... y ademas...
+Tres horas después: Enorthus continúa tras asesinar a rhomdur para siempre:
+Una vez llegamos a la parte este del puente, el path se detiene para cruzar el puente nosotros, pero cuando lo cruzamos hay otro path para llegar al teleférico (la parte de abajo) una vez arriba, hay otro path para llegar al cráter de Lessirnak (tranquilos que no salta automático)
+Desde la parte de arriba de Lessirnak, es decir, en la torre de la ilusión, hay un path para ir de nuevo al teleférico, y una vez bajamos en la cabina, hay otro path para ir a la parte oeste del puente, y cruzar a la parte este, que en el caso que no nos caigamos, hay un path para ir a Kattak y a Anduar.
+continuamos con terrenos sofocantes, ¡Nos vamos a Golthur!
+Se ha creado un path, que nos permite ir al infierno de Golthur por Ancarak. Este path se puede activar desde el cruce sendero angosto con devron, y desde el cruce de Ancarak (erial).
+Una vez llegamos al infierno, tenemos varios paths disponibles. Podemos ir a la puerta oeste de Golthur, plaza de Anduar, puerta oeste de galador y mor groddur.
+¡Se ha creado un path muy muy interesante al menos para mi parecer! Este path se llama vuelta infierno, y como su nombre indica, se inicia justo abajo de teovald, el cantor (seguro que no se escribe así) y este nos permite hacer una ronda de salamandras de infierno.
+Correcto, es algo así como si pudiéramos fijarnos en el mapa de un vidente, esta ruta pasa por todas las rooms donde pueden encontrarse salamandras. Esto, ha sido posible gracias a que un vidente ha realizado la ruta conmigo, ¡dadle las gracias como se merece a Krumdain!
+También se ha creado un path para ir al Templo Olvidado del Fuego (Balrog).
+Desde el Templo Olvidado del Fuego, se ha creado otro path para volver a la entrada de infierno.
+A lo lejos se escucha a Rhomdur murmurando entre carcajadas contenidas: Ese path va a matar a algun despistao... tiempo al tiempo.
+Nota: cuando esteis con el path vuelta infierno activo, para ronda de salamandras, lo suyo es ponerlo en modo 1x1, nick x salamandra,salamandras, y estar atento para cuando pite ctrl s, ya que poner un trigger en el que se pare el mapa solo sería automatismo, y no queremos eso, verdad? ¡alt p alt p alt p!
+Bueno, ¡pues hasta aquí han llegado los cambios! Espero que sirva.
+
+Cambios en la versión 2.5, 07/01/2024
+En esta versión hay infinidad de cambios y reparaciones que se han ido haciendo durante estos casi 2 años de silencio actualizativo, además se ha cambiado el funcionamiento de muchas cosas a nivel técnico, aunque aparentemente sigan funcionando igual. Esto puede acarrear sin fin de problemas inesperados y disgustos, y como no tengo betatesters, vosotros sereis mis betatesters os guste o no.
+Que por que he cambiado cosas que funcionaban para que sigan funcionando igual? por que queda mas bonito, y elegante y por que puedo xd. Vamos con los detalles:
+Si quereis hacer vuestros propios scrips, añadí un archivo llamado personales.set que siempre irá vacío en las actualizaciones. Poned ahí vuestras cosas y acordaos de guardarlo y nunca sobreescribirlo cuando actualicéis.
+Bajado notablemente el volúmen de muchos sonidos utiles pero infernalmente molestos, como las moscas de los cuerpos o los cantos de los bardos.
+Reorganizados los modos de juego y el modo experto que estaba todo mezclado y ni yo me aclaraba.
+Con el modo experto activado se silencia la mayor cantidad de texto posible. Con el desactivado se silencia la mínima cantidad de texto posible, únicamente el necesario para limpiar cosas sobrantes y molestas, y ya ta.
+Eliminado el modo de juego estandar que no valía para nada, dejando solo 3 modos, combate, xp e idle.
+Revisado habilidades_enemigas.set para mejoras y correcciones. Faltan muchas habilidades y sonidos así que a ver si me ayudais cabrones que aqui solo curro yo.
+Se han hecho ajustes varios para el correcto funcionamiento con la nueva cola de comandos y cambios asociados por aquí y por allí.
+También se han corregido y mejorado cosas varias en movimiento_propio.set, ahora cuando seguimos a alguien se irá registrando la dirección desde la que llegamos como en otros tipos de movimiento.
+Se ha reescrito completamente movimiento_ageno.set, que era un engendro mutante inconprensible. Ahora es mucho mas eficiente, bonito y tiene otro nombre, Movimiento_otros.set. Esto viene acompañado de varias mejoras que son:
+Ahora las combinaciones de teclas alt-3 y alt-4 mostrarán respectivamente movimientos de enemigos y movimientos de aliados, lo que espero sea mucho mas clarificador que el sistema anterior que creo que nadie utilizaba por que era lamentable.
+Además con alt-shift-3 y alt-shift-4 se despliegan listas con los últimos movimientos de enemigos y aliados respectivamente.
+También y teóricamente se han corregido cosas que no funcionaban bien, como los enemigos que se movían en monturas.
+Regresa el alt-p para regocijo general, pero tranquilos que lo único que hace es decir la dirección por la que ha salido el objetivo principal (primer nombre del nick X). Lo de moverse en dicha dirección os lo dejo a vosotros para que nadie llore, aunque seremos igual de destructivos y los lloros vendrán igualmente.
+Se ha cambiado el modo en el que funcionan los paths. Aprovechando la nueva y flamante cola de comandos y por resumir, ahora el modo en el que los scrips envían las salidas ha cambiado, y gestionará el movimiento mas el propio mud. Esto se traduce en que van algo mas fluidos, y en que suena menos el piii piiii de la cola de comandos, por que no se hace tanto uso de ella.
+Además se ha añadido un tercer modo de paths que se selecciona con ctrl-shift-s, el modo turbo. En este modo se enviarán al mud de golpe las salidas de 50 en 50, llenando la cola y dejando la gestión del movimiento al mud, aunque en este modo no se pueden pausar los paths para continuarlos después.
+He hecho pruebas exhaustivas cronómetro en mano y los 3 modos son exactamente igual de rápidos, lo dejo dicho para que no halla leyendas urbanas.
+Añadido el alias repch para reportar texto copiado en el canal chat. Os recuerdo la existencia de estos alias, rep de reportar, mas la letra o letras del canal, repb para reportar por bando, repc para reportar por ciu, repd por decir etc. Se reporta texto que se halla seleccionado dentro del cliente, lo cual es muy útil y no se si utiliza alguien a parte de mi mismo.
+Creado finalmente para jolgorio internacional el modo sigilar, que funciona de la siguiente manera.
+Cuando está activo, el movimiento principal pasa a ser sigilando, y el movimiento secundario a no sigilar. Recordad que el movimiento primario es el de alt-j, alt-k etc, y el secundario el de alt-shift-j, alt-shift-k etc.
+Además, cuando está activado los pads funcionan también sigilando, reverenciadme!.
+Por otra parte, cuando nos movamos sigilando se reproducirá un sonido diferente al del movimiento normal para ayudarnos a saber en cada momento que es lo que estamos haciendo.
+Recordad que aunque aparentemente vayamos sigilando esto puede no ser tan así, y que si nos atacan, tendremos que tener en cuenta en que modo vamos para movernos sigilando o sin sigilar según corresponda. Además, pueden atacarnos en medio de un path y en ese caso no podremos sigilar y el path se detendrá, y pueden acontecer un sinfín de otras desgracias las cuales no serán para jolgorio internacional pero si para jolgorio de Rhomdur. Utilizad esto con prudencia, tomaos vuestro tiempo para acostumbraros y dadme feedback si creeis que se puede mejorar algo.
+Este modo se activa y se desactiva con el alias msi o la tecla f7
+La config de sigiladores.set se ha dividido en dos configs separadas, sigiladores.set y cazadores.set. Como su propio nombre indica, las clases de tipo cazador deberán heredar de cazadores.set, que a su vez hereda de sigiladores.set, pero hay clases que sigilan y no son cazadores, como cambiaformas, ladrones etc, que deberán heredar de sigiladores.set. Si las configs de clase os dan errores acordaos de arreglar el comando #Load
+Se recuperarán los sonidos de alta calidad, que habían ido siendo sustituidos sibilinamente por sonidos de peor calidad para reducir el tamaño de los scrips. Pensé que no se notaría pero hay buenos audiófilos entre nosotros que se me quejaron, y como aquí lo importante es la calidad nivel dios, si los scrips ocupan mucho, quejas a Enorthus.
+
+Cambios en la versión 2.4, 30/03/2022
+Añadido soporte para el cambiaformas, cortesía del señor Astrion, alabanzas he improperios a el.
+Añadido soporte para atrapar, desplomar y fustigar.
+Ahora cuando alguien llega a nuestra room los sonidos asociados al evento sonarán siempre por el centro, y cuando salen de la room por los laterales como antes, para ayudarnos a distinguir cuando entran o salen. Recordad que  el modo mono hace que todo suene por el centro siempre. Por ejemplo, si un autobús llega a la room desde el este y se va hacia el oeste, el sonido de llegada y la palabra este sonará por el centro, mientras que el de salida y la palabra oeste sonará por la izquierda.
+Se ha cambiado el modo de gestionar el movimiento. Ahora hay 2 tipos de movimiento, el movimiento principal, que se llama con alt + teclas de movimiento, y el movimiento secundario, que se llama con shift + alt + teclas de movimiento. El cliente decidirá, en función de las condiciones, que tipo de movimiento se aplica en cada caso.
+Por ejemplo si estamos montados, el movimiento secundario será galopar, pero si somos un soldado y no estamos montados, será saltoheroico, o si somos un sigilata y no estamos montados será sigilar. Por otra parte, el movimiento principal será el habitual, pero si estamos en una rama será saltar, y si estamos en agua será nadar.
+Esta función es compleja así que es probable que halla comportamientos extraños, en cuyo caso teneis permiso para llorarme, además en la mayoría de lugares nadables no funciona basicamente por que aún está sin terminar.
+Corregido el alias de mirar del cliente para que funcione correctamente cuando intentan mirarse cosas de mas de dos palabras. No quiero saber cuantas blasfemias y maldiciones habrán tenido lugar por culpa de este fallo, mías incluidas. Aprovecho para recordar a la gente que no se lee los manuales que si no utilizais el alias m para mirar las room no me responsabilizo de comportamientos extraños que puedan suceder.
+La comunidad frikil clamaba por  sonidos para las emociones así que se han añadido una buena cantidad de ellos, con el tiempo se irán añadiendo mas, disfrutadlos.
+Eliminado todo aquello de las marcas en el mapa que no servía para nada. Esto era parte de una funcionalidad mayor que se iva a crear y al final se quedó en el aire por el momento.
+Si estais cansados de jugar fichas femeninas y que suenen a macho peludo vuestros días de agonía terminan aquí. Si vuestra ficha es femenina añadid en el archivo del PJ, igual que haceis para configurar la clase, la línea:
+#Var Sexo F
+Esto afectará a los sonidos de impulso de habilidades, a los de recibir daño y todo lo que se me vaya ocurriendo con el tiempo. Si no poneis nada vuestra ficha será siendo un macho o un amago de tal.
+Mejorados los sonidos para el retener, ahora se diferenciará mucho mejor cuando se retiene a aliados o a enemigos en la room y el sonido para cuando uno mismo retiene es mucho mas decente. Agradecer a Astrion y a Yarkray los sonidos ofrecidos a la causa.
+Añadidos muchos sonidos para NPCS variados como trolls o hidras, ambientación con sensaciones, acciones y miles de cosas cortesía del señor colaborador oficial Eyrien.
+Añadidos sonidos que faltaban para lish.
+Añadidos sonidos que faltaban para Lessirnak y mejorados los triggers, que no se cargaban correctamente en algunas ocasiones.
+Lo mismo para Mergan que no se sienta marginado.
+Añadidos infinitos sonidos nuevos como: Cuando hablamos, enviamos tels, abrimos o abren taquillas o cofres, manipular distintos items, contenedores...
+Cambiado el funcionamiento de estados.set: Ahora se reproducirán distintos tonos en función de cual sea el estado que veamos, mas agudo cuanto peor sea el estado, en 4 categorías: entre 90 y 100%, entre 60 y 90, entre 30 y 60 y por debajo de 30, en cuyo caso será un sonido indicativo. Además los sonidos son distintos para aliados y enemigos, y si tenemos el modo estéreo activado, los aliados sonarán por la derecha y los enemigos por la izquierda.
+Además Se han eliminado todos los triggers de estados antiguos que habían caído en desuso. Si alguno los seguía utilizando es hora de que cambie al modo porcentual.
+Y además ahora los estados también tienen en cuenta el nivel de energía del objetivo, en el caso de los bardos, para poder jugarlos comodamente.
+Mejorados los triggers que se disparan al entrar en las rooms para que acepten mas tipos de rooms, como las copas de los árboles o los poblados en los árboles. Ahora las salidas especiales como las ramas se indicarán mas claramente.
+
+Cambios en la versión 2.3, 13/01/2021
+Corregidos paths que fallaban, avisadme si detectais alguno mas.
+Añadido sonido para cuando alguien utiliza el robacuraciones y para cuando nuestras cures cambian a otra persona, de nada.
+Soporte para jornaleros añadido en primera versión.
+Ahora con la pulsación ctrl-alt-shift-3 y ctrl-alt-shift-4 se desplegarán respectivamente historiales con la lista de las ultimas 10 salidas o las ultimas 10 entradas en la room.
+Añadidos un buen montón de nuevos triggers de sonido y soporte para unas cuantas clases nuevas, cortesía de Eyrhien que se ha animado a compartir sus configuraciones, así que alavadlo como se merece con grandes esponjas mullidas y buen jabón perfumado.
+Añadidos otro buen montón de sonidos por mil sitios, cortesía de Rhomdur que se aburre cuando idlea.
+Ahora cuando desconectamos con un aviso de vida baja en funcionamiento este se reiniciará, principalmente para que el vipmud no se quede sonando agobiantemente de forma absurda con el pj desconectado, o siga sonando al conectar con otro.
+ Mejorado el aviso de objetivo, ahora habrá sonidos distintos para cuando el objetivo entra en la room, sale o nos lo encontramos al entrar. Recordad que el objetivo es el primer nombre que tenemos fijado en el nick x.
+Añadido sonido de enemigo o aliado para el que entra agrupado o siguiendo a otro en nuestra room, ya no saltará el sonido de enemigo o aliado genérico, ayudándonos a distinguir mejor los grupos y combinaciones posibles de seguidos seguidores etc.
+Seguimos recopilando y mejorando sonidos, entre ellos el del kill de aplastar que sonaba un poco like a caca.
+Las macros para los alias m4 m5 y m6 pasan de usar la combinación de teclas alt-shift a combinar la h la y y la n con alt-ctrl, para no provocar conflictos con algunas configuraciones de teclado específicas de los lectores de pantalla en los portátiles.
+Corrección de bugs variados, que eso siempre se hace y queda muy profesional ponerlo aunque no aporte nada.
+Creación de bugs involuntarios, que eso siempre se hace también y queda muy estúpido ponerlo aunque no aporte nada.
+
+Cambios en la versión 2.2, 09/05/2020
+Añadidos algunos paths en Naggrung, son pocos pero con el tiempo y si gloignar me da fuerzas para ello se irán añadiendo mas.
+Mejorado el sistema de aviso de bloqueos. Ahora en el visor de eventos solo se registrarán los avisos que no tengan un aviso sonoro asignado.
+Se han actualizado los módulos de clases disponibles para funcionar correctamente con el nuevo sistema de aviso de bloqueos.
+Añadidos triggers de sonidos variados y corregidos muchos bugs localizados, gracias a los que me reportais los fallos.
+Reescrito practicamente en su totalidad los módulos de gestión de movimiento, movimiento_ageno.set y movimiento_propio.set. De esta forma quedan corregidos fallos existentes y se actualiza el funcionamiento para que sea compatible con los cambios recientes en la mudlib. Además ahora los avisos espaciales funcionarán mejor, y en mas situaciones.
+También se han añadido nuevos triggers de movimiento que no estaban contemplados y se ha mejorado el funcionamiento de los existentes.
+Ideada una nueva función mejorada que optimiza la comprobación de enemigo o aliado cuando alguien recibe o ejecuta una acción. También se ha añadido un sonido para cuando es un enemigo quien lo hace. Esto se irá implementando en todas partes a medida que se vaya comprobando su buen funcionamiento.
+Añadido un nuevo sistema para filtrar los canales en los triggers que se irá implementando poco a poco en todas partes, esto lo notaréis en que ya no se activarán los triggers de audio cuando la gente pastea cosas en los canales, ahorrándonos los consavidos sobresaltos y aterrorizamientos.
+
+Cambios en la versión 2.1.3, 25/01/2020
+Corrección de múltiples bugs notificados, avisad si detectais mas.
+Actualización del funcionamiento de los triggers del  monitor de combate y el contador de pvs para su correcto funcionamiento tras los últimos cambios.
+Añadidos algunos sonidos mas como los de la xp doble, coger items y mas.
+
+Cambios en la versión 2.1, 01/12/2019
+Añadido soporte con sonidos y keys para monturas, para galopar utilizad ctrl-shift-alt y las teclas de dirección habituales. Este soporte se activa al montar y se desactiva cuando desmontais de la montura.
+A partir de ahora se prescindirá de archivos de clases sin sonidos. En su defecto se ha creado un archivo genérico para las clases de tipo combate físico, llamado combate_fisico.set. Si vuestra clase no tiene soporte y es de combate fisico, con que heredeis este archivo ya podréis disfrutar de soporte genérico para vuestra clase. Añadiré el funcionamiento al manual en algún momento.
+Por fin y tras mucho sufrimiento se han arreglado y actualizado todos los paths, y se ha añadido alguno que otro nuevo por ahí, avisadme si siguiera existiendo algún error.
+Se han añadido sonidos distintos para todos los tipos de kills y de daños, tanto los que hacemos como los que recibimos. Al menos creo que están casi todos, si falta alguno avisadme para añadirlo.
+Ahora con la pulsación de teclas F8 cambiaremos entre el modo de audio estéreo, por defecto, y el modo de audio mono. Esto sirve para que algunos avisos sonoros direccionales que se irán implementando se reproduzcan por uno u otro canal, en estéreo, o se reproduzcan al igual por ambos canales, en mono. Esto sirve por ejemplo para cuando jugamos con un auricular.
+Para estrenar este nuevo modo de audio, ahora cuando alguien llegue a nuestra room o se vaya, el aviso de la dirección por la que lo hace será direccional, es decir, si se va o llega desde el este el aviso sonará por la derecha, si lo hace por el oeste el aviso sonará a la izquierda, si lo hace al ne o al se sonará al centro derecha, y si lo hace al no o al so al centro izquierda. Si el modo de audio está configurado en mono esto funcionará como siempre, todo por el centro.
+Se han preparado los sonidos de los kills para que funcionen en mono o en estereo según la configuración del nuevo modo de audio.
+Las pulsaciones para crear marcas en el mapa y consultar la posición respecto a las marcas se ha cambiado a ctrl-alt-x y ctrl-shift-x respectivamente
+Se han corregido fallos en el sistema de marcas y avisos de distancias.
+Añadida una nueva categoría al selector de canales llamada canales variados, ahí irán todos los canales con los que se pueden interactuar que antes estaban en especiales, como el novato, el consulta, el grupo, los desafíos etc. Ahora en canales especiales están aquellos con los que no se puede interactuar, tipo los gritos, info, diplomacia, noticias etc.
+Se ha completado el oficio minero con todos los sonidos necesarios, avisadme si falta alguno.
+El nuevo Modo experto eliminará los textos de los oficios.
+Añadida la nueva pulsación de teclas f9 para eliminar los sonidos de ambientación. Por ahora esto solo funciona con los sonidos de los oficios pero mas adelante funcionará con mas cosas. Para simplificar, sonidos de ambientación son todos aquellos que sirven para adornar pero no tienen ninguna utilidad importante mas hallá de la de hacer la experiencia de juego mas inmersiva.
+Eliminado definitivamente el contador de hb que nunca terminó de funcionar bien, y hasta donde se nunca sirvió para nada. Si alguien lo estaba usando que me lo diga que le pongo una mención honorifica xD.
+Se han reorganizado y renombrado los distintos modos para simplificarlos y darles mas coherencia y utilidad.
+Ahora la tecla f11 rotará entre los 4 modos de juego disponibles: modo original, modo combate (antiguo modo PK), modo XP y modo idle.
+El modo Movimiento rápido cambia de nombre, ahora se le conoce con el rimbombante nombre de Modo Experto y recibe muchas nuevas características. Todo esto está explicado detenidamente en la sección 11 del manual, pero resumiendo, el modo original no modifica ni silencia texto, el modo combate silencia lo mínimo posible para hacer pk y npcs de forma ágil, y el modo experto mete tijera por todas partes y deja todo en manos de los triggers de sonido (solo recomendado para dopaos).
+Creado un archivo de configuración  llamado Configuracion.set donde se han reorganizado muchas de las variables que controlan el comportamiento por defecto de los scrips, modos activados por defecto etc, para que cada uno pueda configurar un poco el cliente según sus preferencias. Se añadirá documentación en el manual y el propio archivo configuracion.set para que entendáis su funcionamiento.
+Añadidos mas sonidos y mejorados los existentes y los triggers para el oficio herrero.
+Ahora cuando mencionen nuestro nombre por algún canal una campana nos avisará.
+Ahora cuando alguien llegue o se vaya por una salida que no tiene voz asignada se reproducirá un sonido de aviso.
+Mejorado estados.set con nuevas funcionalidades y corrección de errores: Ahora cuando hagamos estado a alguien que esté al 30% de su vida o menos se reproducirá un sonido, además hay sonido distinto  para aliados o enemigos. También cambia la forma de guardarse en la lista de estados, abreviada si estamos en modo pk.
+Añadido el bloqueo del saltoheroico a la lista de eventos.
+Actualizado eventos.set al nuevo sistema de listas mas eficaz, además ahora se almacenarán hasta 99 eventos en la lista.
+Además ahora la vida ganada o perdida aparecerá en la ventana output para facilitar la revisión de los logs y el recuento de daños, aunque no se verbalizará automaticamente.
+Cambiado el sonido de cuando nos sigue un aliado por otro menos molesto.
+Añadidos mas sonidos para cuando se reciben hechizos de daño.
+Mejorado el funcionamiento de los avisos de entradas y salidas de enemigos y aliados en la room, y añadido soporte para que los avisos funcionen con las monturas de los magos.
+Añadidos diferentes avisos sonoros que se disparan automáticamente cuando la vida baja por debajo del 50%, del 30% y del 10%
+Añadidos como siempre multitud de sonidos varios.
+
+Cambios en la versión 2.0
+Desde esta versión quedan definitivamente eliminados todos los scrips ilegales, dudosos, o mínimamente sospechosos. Se ha trabajado mano  a mano con los inmortales para asegurarnos de que todo está en regla, por lo que no se recomienda utilizar ninguna versión anterior a la 2.0. RIP alt-p.
+Se ha seguido investigando para hacer los paths ligeramente mas rápidos y creo que he dado con la formula ideal, ya me contaréis.
+Solucionado un fallo por el que no sonaban correctamente los sonidos de entrada y salida de enemigos en la room cuando ivan montados.
+Ahora siempre que aparezcan listas de objetos, como en las tiendas o los baules, se reproducirá un sonido indicativo de que la lista se ha guardado. Con ctrl-shift-l podremos ver la lista rapidamente, y pulsando enter sobre un item se realizarán diversas acciones en función de las circunstancias, comprar en tiendas, recuperar en baules etc. Además los objetos salen ordenados y con el formato cambiado para que sea mas rápido revisarlos.
+Añadidos sonidos para Anarcam, primer monarca de takome.
+Ahora al pulsar ctrl-shift y los numeros del 1 al 9 se copiará la frase que corresponda al portapapeles, siendo 1 la ultima recibida, 2 la anterior etc.
+Se ha añadido una nueva funcionalidad para marcar posiciones en el mapa. Pulsando ctrl-shift-x estableceremos una marca en la room actual. Cada vez que regresemos a dicha room se reproducirá un sonido indicativo. Además, pulsando ctrl-shift-c sabremos a cuantas rooms de la marca nos hallamos en cada dirección. Tened en cuenta que esto solo funciona para lugares en los que no nos perdemos, no tiene validez en desiertos, bosque impenetrable etc.
+Se han corregido todos los paths para que funcionen con el nuevo formato de ojear con salidas cortas, y de paso se han arreglado y actualizado muchos paths desactualizados.
+Se han seguido añadiendo innumerables sonidos para infinidad de eventos.
+Se han empezado a añadir sonidos para las habilidades que nos comemos. Sonará un quejido acompañado de un sonido indicativo de la habilidad, normalmente el mismo que cuando la hacemos nosotros aunque mas agudo, o algún sonido intuitivo. Si no hay ningún sonido disponible sonará una voz diciéndo la habilidad que hemos recibido. Esto se irá mejorando con el tiempo, añadiendo soporte para mas habilidades.
+Se ha añadido un alias al configurarficha para configurar adecuadamente el ojear. A partir de ahora el formato es:
+jugadores, linea, npcs, linea, short, espacio, s_cortas, espacio, linea, objetos.
+Podéis cambiar el orden de npcs, jugadores y objetos a vuestro gusto, pero la línea "short espacio s_cortas espacio" ha de respetarse ya que de lo contrario no funcionarán los paths ni el automovimiento entre otras cosas.
+Debido a este cambio ahora todas las salidas de las rooms saldrán en formato abreviado.
+Se han implementado filtros en un gran número de triggers para que no se activen cuando se pastean textos en los canales, esto se continuará mejorando en proximas versiones.
+Se a rehecho casi en su totalidad comunicaciones.set mejorando al completo su funcionamiento y añadiendo algunas nuevas funcionalidades:
+Ahora con ctrl-. y ctrl-, podremos elegir el historial de canales que se revisa con alt-f1 o shift-f1.
+Cuando mantenemos varias conversaciones por tel, con ctrl-t podremos elegir el jugador con el que queramos conversar, aunque tened en cuenta que cada vez que se recibe un tel esto cambia automaticamente al remitente del último tel recibido.
+Añadidos sonidos de enemigos y aliados cuando se ve a gente en otra room, además se guardará la información en el historial de eventos.
+Se ha mejorado el funcionamiento de los triggers de oficios para que solo se activen cuando sean necesarios, lo que será muy útil a medida que se vayan añadiendo mas triggers de oficios.
+Ahora con alt-shift-p mandaremos al mud la salida de retorno a la room desde la que hemos llegado.
+Se han cambiado los sonidos de aviso de entrada y salida de la room para enemigos y aliados, haciéndo mas notable la diferencia entre tonos para entrada y salida. Recordad, mas grave salida, mas agudo entrada, voces masculinas enemigos, voces femeninas aliados.
+La pulsación para desplegar la tabla se ha cambiado de ctrl-t a ctrl-shift-t.
+Ahora el sonido de enemigos en la room se reproducirá también si los PJS o NPCS que aparecen al entrar en una room están en el nick x. Esto es muy util si vamos cabalgando o si vamos en grupo, o cuando nickeamos npcs.
+Debido a este cambio, ya no se actualizará el prompt cada vez que nos movamos agrupados, lo que causaba algo de sobrecarga en conexiones lentas, y encima era un trigger ilegal.
+También se ha mejorado el sistema de actualización de salidas para que se actualice automáticamente cada vez que nos movemos a una room sin falta de utilizar el prompt.
+Añadido un sonido distintivo para diferenciar entre enemigo o aliado cuando un tercero es afectado por otra persona en nuestra room, basándose en el nick x, el prompt enemigos y el prompt peleas.
+Ahora se puede elegir el ritmo al que funcionan los paths, con ctrl-shift-s cambiaremos entre las 2 posibilidades, una room cada segundo o 2 rooms de golpe cada 2 segundos, la opción por defecto es la segunda.
+Se ha cambiado el punto de path desde la entrada a la cruzada de ERALIE HA LA PLAZA DE LA JUSTICIA.
+Los paths desde takome hasta aldara ida y vuelta se han cambiado acortándolos por la puerta este de Takome.
+Se ha corregido un fallo por el que no funcionaba correctamente el alias grup para definir a mano el líder de un grupo al que pertenecemos.
+Se ha añadido al manual la explicación de como enviar al mud caracteres especiales tipo dos puntos, punto y coma o signo de número, esto me lo ha preguntado vastante gente, pues se producían errores al pegar logs en mails, reportes de gestas etc. Sección 2 (Algunos tips), apartado E (Envío de texto con caracteres especiales).
+Añadido un nuevo punto de path al norte de anduar, en el cruce en carretera comercial norte.
+Mejorada la gestión de nicks para corregir algunos fallos que provocaban que los nicks no se almacenaran correctamente en algunas ocasiones.
+Añadidos sonidos para cuando alguien trepa a un arbol, para cuando golpeamos imágenes, cuando nos detienen ataques con la loa, para agacharse y levantarse, para cuando derribamos a alguien y para cuando se reincorpora, y muchos mas.
+Se ha reducido un poco el ritmo al que meten las salidas los paths. A priori puede parecer que van mas lentos, pero de esta forma siempre se meterán las salidas de 2 en 2 sin que de la sensación de que se atascan cada cierto tiempo y empiezan a meter las salidas de 1 en 1. Además con este cambio podremos ejecutar mas comandos durante los paths sin que estos afecten tanto a su velocidad.
+	Ahora cuando vayamos agrupados con otro jugador no se verbalizará su nombre cada vez que nos movamos de room.
+Mejorados los triggers de cuando alguien coge o nos ofrece un objeto para que no salten en cualquier situación que aparece el texto te ofrece o coge.
+Reescrito estados.set con mejoras de funcionamiento y nuevas características:
+Ahora los mensajes de estado se almacenarán en el historial en forma resumida, y en orden inverso al que se verbalizan, de modo que el primer estado almacenado es el último verbalizado.
+Además cada vez que hagamos estado el historial anterior se sobreescribirá para mostrarnos solo la información actualizada.
+Cuando estemos en modoPK los mensajes de estado se verbalizarán también en modo resumido y cuando hagamos estado a un npc con un nombre de mas de una palabra solo se verbalizará y almacenará la primera palabra del nombre, esto nos ayudará mucho a ganar tiempo.
+Se han cambiado los sonidos para cuando salen kills, paradas o esquivas criticas, antes el sonido se parecía demasiado al de los ataques, ahora sonará un pitido discreto para que nos enteremos mejor.
+Se siguen añadiendo sonidos varios.
+Como en todas las versiones se siguen añadiendo textos de jugadores en canales al corrector para eliminarlos.
+Eliminado el autonickear x matar al entrar, ya que es un automatismo ilegal.
+Se ha añadido la pulsación de teclas ctrl-shift-p que nos dirá la dirección por la que hemos llegado.
+
+Cambios en la versión 1.9, 20/05/2018
+Ahora cuando vayamos en el modo movimiento rápido y halla npcs y pjs en la room siempre se verbalizarán primero los pjs.
+Añadido soporte a todos los prompts para almacenar la vida máxima.
+Se ha añadido la pulsación ctrl-y para mencionar los ultimos npcs o pjs que nos hemos encontrado.
+Creado el alias grup para añadir miemros a mano a un grupo, por ejemplo cuando nos unimos a un grupo ya creado o si por alguna razón la lista de miembros del grupo no coincide con la realidad.
+Tambien se ha creado el alias grupd para deshacer un grupo a mano si hiciera falta en algun momento.
+Estos dos alias solo influyen a nivel interno, no tienen efecto real en el mud.
+Añadido un nuevo trigger a nicks.set que captura el nick cuando ponemos nick x. En ocasiones cuando hay muchos enemigos la lista de nombres se divide en 2 líneas y el programa no la captura, con este nuevo trigger nos aseguramos de llevar el nick siempre actualizado, lo que es importante para cosas como el nuevo prompt. Aseguraros de que cuando nickeeis suene el clic indicador de que el nick se ha guardado correctamente, si no teclead nick x para guardarlo.
+Corregido un fallo en herreros.set por el que los sonidos de la forja no se detenían cuando nos quedabamos sin combustible en la fragua.
+A partir de ahora los comandos salvaciones y protecciones no interferirán mas con el historial de estados, antes se registraban los porcentajes por que su sintaxis era similar a la del comando estado.  
+A partir de ahora cuando un evento se registre en el historial de eventos no se copiará automáticamente en el portapapeles.
+Creo que por fin se han arreglado los fallos del contador de pvs, ahora además de vasarse en el monitor de combate se vasa en el prompt, así que en teoría no deberían escapársele mas daños.
+Añadido un nuevo prompt que pita como enemigos a los jugadores que tengamos en el nick x y como aliados a los que no tengamos. Añadida la sección correspondiente al manual explicando este y todos los demás prompts disponibles, sección 12, apartado E- Configuración del prompt.
+Añadido un nuevo alias "canalescolores" que crea automáticamente alias de colores para todos los canales, añadida su correspondiente sección al manual: sección 12, apartado D, alias de configuración.
+Eliminados los alias para manejar la mochila de alias_macros.set ya que es mucho mas eficaz hacerselos en el mud.
+Se ha actualizado el soporte para tiradores con algunas habilidades y macros que faltaban.
+El soporte para chamanes llega a su primera versión 100% funcional, con soporte para poques, comunion y todo lo necesario para jugarlo cómodamente, aún faltan unos buenos sonidos para darle vidilla a la clase pero eso tendrá que esperar por ahora.
+Añadido soporte para la clase druida, cortesía de Dherion. Por ahora solo incluye macros de combate.
+Añadido soporte básico para las clases ilusionista y mago rúnico, por ahora solo incluyen macros de combate.
+Añadidos varios sonidos nuevos, entre otros sonido para informar cuando alguien retiene a un tercero en nuestro entorno y cuando el retener se termina o cuando nos bloquean una salida existente en la room.
+Añadidos sonidos para el anillo antimágico.
+Se ha reescrito prácticamente por completo Movimiento.set para hacerlo mas eficiente y añadir un gran número de mejoras, las mas significativas de las cuales son las siguientes:
+Ya no se verbalizarán mas los signos de puntuación que acompañan a algunos nombres de jugadores, por ejemplo el aura heroica, las espadas guardianas, los ángeles etc, ni cuando dichos jugadores entran o salen de la room ni cuando entramos en su room con el modo movimiento rápido activado.
+Además estos signos ya no interferirán mas en el funcionamiento de los avisos de entrada y salida de enemigos o aliados, ni en el sistema de seguimiento.
+Ahora cuando el líder de nuestro grupo se mueva será cuando no se reproduzca el sonido de salida de la room, si cualquier otro miembro del grupo entra o sale el sonido se reproducirá normalmente.
+También se ha rehecho el sistema de avisos de seguimientos, la principal diferencia es que cuando nos sigue alguien de nuestro grupo no se verbalizará su nomre tras cada movimiento y cuando seguimos al líder del grupo tampoco.
+Se han añadido sonido para todas las entradas y salidas en montura.
+Además, si la persona que entra es la misma que se va, o la que se va es la misma que entra solo se guardará en memoria su último movimiento para ayudar a clarificar quien viene, quien se va y hacia donde.
+Se han añadido varias mejoras en la gestión de grupos contemplando casos que no se tenían en cuenta en versiones anteriores.
+Corregido un fallo por el que no se silenciaban los mensajes cuando las invocaciones de miembros de un grupo al que pertenecemos siguen a su invocador, lo que provocaba vastante flood al moverse.
+Se ha cambiado el funcionamiento de la pulsación alt-p para seguir a los enemigos. Ahora se da prioridad al objetivo, esto es el primer nombre del nick x. Si hay varios enemigos que salen de la room a la vez, la pulsación alt-p nos llevará por la salida que ha seguido el enemigo objetivo. De no haber objetivo, nos llevará por la salida del último enemigo que se halla ido.
+La tecla para el automovimiento de una sola room se ha cambiado de alt-ctrl-p a alt-shift-p por una cuestión de comodidad 
+Añadida una nueva combinación de teclas: ctrl-h verbaliza nuestra localización en todo momento sin mas información innecesaria.
+Además, la pulsación ctrl-shift-h reportará automaticamente nuestra posición por el canal bando.
+También se han realizado varias mejoras de funcionamiento en los paths para optimizar el código, que funcionen algo mas rápido y corregir un fallo por el cual cuando intentabamos salir de una room con paths disponibles y algo nos impedía movernos la lista de paths se vaciaba como si nos hubieramos movido.
+Añadido un nuevo punto de path al oeste de anduar, en el cartel de los campos de Celedan.
+Añadidos mas puntos de paths desde golthur: puerta oeste, puerta norte, al norte de la fortaleza y mas.
+Añadidos paths desde golthur a Ancarak y mor groddur.
+Ahora todos los paths que terminen en golthur acabarán en la puerta oeste de la fortaleza.
+Añadidos paths desde todos los cruces de dendra hasta Mor Groddur y Eloras.
+Añadidos paths desde las puertas de Mor Groddur. Además, todos los paths que llevan a Mor Groddur terminarán en las puertas como en el resto de ciudades.
+Añadidos paths desde ambas puertas de Ancarak y el centro de la ciudad.
+También se han añadido paths hacia Ancarak desde todas las ciudades aliadas, desde todos los cruces entre Anduar y Ancarak, y desde la plaza y la puerta norte de Anduar.
+Se han corregido todos los paths que pasan por el reino de Urlom en consonancia con los últimos cambios en el mapa de la zona.
+
+Cambios en la versión 1.8, 12/03/2018
+Corregido un fallo por el que salía un error al conectar con algunas fichas que no actualizaban automáticamente las variables de puntos de vida. Si os aparece que vuestra vida o vuestros pgs maximos son 0 haced SC
+Añadido soporte para las clases tirador y guardabosques.
+Mejorado sigiladores.set con soporte para acechar.
+Actualizada la habilidad golpear en gragbadur.set y enemigos.set para adaptarla al nuevo sistema.
+Cambiado el nombre de enemigos.set a habilidades_enemigas.set, remodelado el archivo con correcciones de errores, mejoras de funcionamiento y nuevos triggers de sonido para habilidades de enemigos. Básicamente ahora en el historial de eventos se guardará la información de las habilidades que nos impactan, como su nombre, el número de impactos y demás información útil. Poco a poco se irá añadiendo soporte para mas habilidades.
+Añadidos infinidad de sonidos que me habeis ido pidiendo o se me han ido ocurriendo por aquí y por allí.
+Los triggers de las clases que utilizan hechizos se han separado en Hechizos.set dentro de la carpeta clases, todas las clases que utilicen hechizos tienen que heredar de ahí.
+Añadido soporte para el nuevo formato del comando estado que funciona igual que el anterior.
+Añadidas un par de macros para hacer estado en forma porcentual, ctrl-u estado x, y ctrl-j estado todo.
+Ahora los bloqueos del golpecertero solo avisan del bloqueo con la palabra certero, sin especificar el tipo ya que el bloqueo es compartido y no era necesario.
+Los archivos de las clases soldado y khazad han sido adaptados al inform bloqueos, eliminando las alarmas de las habilidades que han sido pasadas al nuevo sistema. De esta forma los avisos son mas precisos que hasta ahora, para que os funcione teneis que configurar el inform bloqueos on.
+Ahora el comando configurarficha activará el inform bloqueos.
+Revisado Khazads.set con mejoras de algunos sonidos y errores.
+Nuevos alias para reportar nuestra posición por los canales, estoyc, estoyg y estoyb. Mas información en el manual, sección 12, alias para reportar.
+Arreglada la música para subir nivel, que no sonaba cuando debía.
+Añadido un nuevo modo que silencia los titulos de las rooms cuando nos movemos y verbaliza las salidas, añadida su sección correspondiente al manual. en la sección 11, el apartado Modo movimiento rápido. Se activa y se desactiva con f8 o el alias mmr
+El modo autocentrado en las clases que lo tengan se ha movido a la tecla f7.
+Mejorada la gestión de grupos en Grupos.set con correcciones de errores varios.
+Ahora cuando recibamos curaciones se fuerza la recepción del prompt para que se actualicen los pv inmediatamente.
+Añadido sonido para cuando nos curan con el cántaro de eralie.
+Nuevos sonidos para eventos mágicos, entre otros cuando nos quedamos sin espejos o pieles de piedra, que la gente lo venía pidiendo, además en estos ultimos caso se almacenará la info en el historial de eventos.
+Añadidos sonidos y ambientación para el oficio herrero.
+Añadido sonido para la cólera del verdugo, además en modo pk o xp el texto se silencia.
+Añadido un sonido para cuando borramos la cola de comandos, además en el modo pk el mensaje se silenciará.
+Nueva funcionalidad AutoMovimiento, pulsando ctrl-alt-shift mas cualquiera de las teclas habituales de dirección nuestro pj empezará a caminar en esa dirección hasta encontrarse una encrucijada, en cuyo caso se detendrá y se reproducirá un sonido.
+La funcion automovimiento también tiene un modo manual, pulsando alt-ctrl-p enviaremos la siguiente salida opuesta al lado por el que vinimos siempre que solo halla 2 salidas en la room.
+Eliminados algunos paths que con el nuevo sistema de automovimiento eran inútiles, como los que unían las puertas de anduar por murallas.
+Mejorado el ritmo de los paths con un pequeño ajuste para encajar mejor con los pulsos del personaje.
+Añadidos paths desde eloras a todas las ciudades buenas, que estaban ahí los pobres marginaos.
+Añadidos paths  desde todas las ciudades buenas hasta eloras, avisadme si falta alguna.
+Añadidos por fin los paths desde el cruce al oeste de veleiron.
+Añadidos paths desde la puerta inferior de kheleb al dintel ida y vuelta.
+Añadidos mas paths desde las profundidades de Kheleb y desde Veleiron.
+
+
+Cambios en la versión 1.7, 02/02/2018
+Mejorada la gestión de grupos en grupos.set
+Añadido soporte para cuando alguien entra o sale de nuestra room galopando, con las caracerísticas habituales del movimiento normal y sonidos para informar del galope.
+Resucitado el contador de HB, estaremos atentos a su funcionamiento por si vuelve a dar problemas.
+Añadido soporte para el canal consulta que desconocía completamente.
+Añadido un prompt especial para fichas con pieles de piedra o imagenes, en alt-2 antes de los pgs saldrá el número de pieles o imagenes que nos quedan. Para configurarlo añadid la letra m a las configuraciones de prompt que ya conoceis, ConfigurarPromptAM o ConfigurarPromptBM.
+Añadido el modo autocentrar a las clases que tengan la habilidad centrar, cuando esté activado y se utilicen las macros de combate se centrará primero antes de ejecutar la habilidad, cuando esté desactivado solo se ejecutará la habilidad sin centrar. También se ha actualizado el manual para reflejar esto.
+Actualizada la habilidad golpecertero en Soldados.set para que funcione con los últimos cambios, tened en cuenta que debido al funcionamiento de la habilidad en el mud, para que funcionen los avisos de bloqueo para el golpecertero tiene que lanzarse la habilidad con las macros de combate, de lo contrario funcionarán los sonidos pero no los avisos.
+Añadido soporte para moverse con el teclado numérico tanto sigilando como moviéndose normalmente.
+Añadidos muchos sonidos para sucesos varios.
+Corregido un fallo por el que en ocasiones al pulsar ctrl-shift-m nos indicaba que no había paths disponibles pese a estar en una room de paths.
+Ahora los paths reproducirán un leve sonido cuando comienzan a ejecutarse.
+Los archivos .set de clases se han reorganizado en la carpeta clases, actualizad las rutas de vuestros archivos de personajes para que carguen bien.
+Actualizado el manual a este respecto.
+El historial de estados se ha sacado del historial de eventos y se ha puesto en la tecla F5.
+El historial de daños que estaba en f5 se ha movido a f6.
+Añadidos varios casos al historial de eventos: Cuando suenan los vientos de guerra, cuando centran o protegen en nuestro entorno y varios mas.
+Añadidos sonidos para cuando se centra en nuestro entorno, ya sea sobre nosotros o sobre otros.
+Añadidos sonidos para cuando nos protegen.
+Añadido soporte para la clase khazads, avisadme de cualquier fallo.
+Añadido soporte muy simple para la clase chamanes, por ahora solo incluye macros de combate pero eshtamosh trabajando en ello.
+Añadido un soporte muy sencillo para ilusionistas gracias a un colaborador espontáneo, por el momento solo incluye macros de combate.
+Añadido un sonido para cuando recibimos curas con winclamit, hechizos, lagrima, enlace vital... si faltan mas avisadme y los incluyo.
+Cambiado el sonido para ataque doble y golpe certero para dar mas importancia a los sonidos de kills.
+Añadidos varios sonidos aleatorios para kills, esquivas y paradas, y cuando salen críticos.
+Añadido un sonido para cuando seguimos con alt-p que nos informa de que seguimos correctamente.
+Matado completamente el modo autoseguimiento por orden de las altas esferas del mud, ya que aunque la intención era buena no deja de ser una ilegalidad y nadie quiere problemas con la justicia. También he eliminado su sección correspondiente del manual.
+Actualizado el manual con la sección para soldados que se me había olvidado y para khazads.
+En cualquier situación que nosotros o alguien descubra la presencia de un sigilador y este esté en el nick x, el modo xp se desactivará automaticamente y se activará el modo pk.
+Mejorado soldados.set, ahora si estamos en modo xp las macros de combate lanzaran habilidades al nick xp, de lo contrario lo harán al nick x, esto se aplicará a partir de ahora a todos los archivos de clases.
+Añadidos en soldados.set algunos triggers que habían pasado desapercibidos para el comando ataquedoble.
+Mejorados algunos triggers en Soldados.set que no funcionaban adecuadamente cuando el objetivo de una habilidad se perdía de vista.
+Añadidos un par de nuevos sonidos para situaciones emocionantes, os animo a descubrirlos!
+Añadidos sonidos y triggers para los canales interbando: malvados y solitarios.
+Añadidos los paths del reino de Urlom largamente esperados, y sus conexiones con las ciudades principales del bando bueno y anduar.
+Añadidos dos cruces entre anduar y orgoth, uno en cartel hacia naduk y otro en desvío hacia grieta de glhoin, con sus respectivos enlaces con anduar y las ciudades del este del mapa.
+Añadidos paths desde naduk hacia anduar y las ciudades del este del mapa.
+Se comienza la remodelación de los archivos de paths para clarificar las nomenclaturas de los cruces.
+Añadidos mas paths desde el salto en montes del destino.
+Añadidos paths que faltaban desde y hacia poldarn.
+Añadidos paths desde Nimbor a las ciudades cercanas y anduar.
+Corregidos fallos encontrados en Paths variados.
+Corregidos los paths de Kattak para reflejar las ultimas actualizaciones de mapeado.
+Añadida la combinación de teclas alt-enter, cuando el modo xp esté activado esta pulsación enviará el comando atacar Xp, donde xp es un nick que tenemos que definir en el mud. Cuando el modo xp esté desactivado esta pulsación enviará el comando atacar x
+Mejorado el funcionamiento general para reducir notablemente los cuelgues inprevistos.
+Mejorado el funcionamiento del contador de pvs y corregidos bugs notificados.
+Seguimos añadiendo textos al corrector de canales.
+
+Cambios en la versión 1.6: 02/12/2017
+Mejorada la eficiencia del corrector y corregido un fallo que se producía cuando alguien escribía el simbolo " por los canales, también se han añadido muchos mas textos y símbolos al filtro.
+Ahora cuando alguien llega o sale de la room o cuando pulsamos las combinaciones de teclas para ver quien ha entrado o salido se dirá solamente el nombre, sin la abreviatura de la raza.
+Actualizado el manual con todos los cambios.
+Ahora cuando vamos agrupados y el líder del grupo se mueve en una dirección, en lugar de reproducirse el audio de las salidas de aliados, será el lector el que verbalizará la salida de forma abreviada. De esta forma evitamos el flood sonoro. Se irá probando en esta versión que tal funciona este sistema y si nos resulta mas cómodo o preferimos volver al método anterior.
+Añadidos Paths para el reino de Eldor y sus correspondientes enlaces con Takome, Thorin y anduar.
+Actualizados los Paths deacuerdo con los últimos cambios de mapeado en kheleb y desfiladero Leherdavel
+Añadidos paths desde la puerta sur de anduar hasta el cruce de Alandaen y biceversa.
+Cambiado el prompt de salidas, enemigos, aliados y peleas, para que os funcione volved a utilizar el comando ConfigurarPromptA o ConfigurarPromptB como se explica en el manual.
+Ahora las salidas de los barcos se almacenan correctamente y el modoPK funciona bien a bordo con las salidas.
+Se han reorganizado, cambiado el nombre y fusionado  muchos archivos .set, lo que mas notaréis de esto es la desaparición del archivo keys.set, ya que ahora las pulsaciones de teclas de cada funcionalidad estarán al final de su archivo correspondiente bajo la línea: ;Keys. Con esto se hace mucho mas fácil el mantenimiento y la organización de los scrips ya que el archivo keys.set se estaba volviendo cada vez mas grande y desorganizado.
+Reajustados los volúmenes y las voces de salida y entrada de room para intentar que destaquen mas sin molestar, ya que en ocasiones pasaban desapercibidas.
+Ahora las voces masculinas indican enemigos, y las femeninas aliados. Voces con un tono mas grave (carlos loquendo y carmen loquendo) indican entrada en la room, y voces con un tono mas agudo (jorge loquendo y leonor Loquendo) indican salida.
+Mejoradas las keys de movimiento en el modo pk para que cuando estamos cegados funcionen las salidas con las teclas de dirección, antes aparecía en salidas "No ves nada" y el programa creía que las salidas que metíamos no existían y las anulaba. Ahora si conocemos las salidas podremos movernos igualmente cuando las salidas visibles sean "No ves nada"
+Se ha corregido un fallo notificado al reproducir el sonido de formular y se ha aprovechado para reorganizar todos los triggers de magia y hechizos en Magia.set.
+De paso se han creado un par de triggers básicos de sonido para clases que formulan, sonido para empezar y terminar de formular hechizos.
+Añadidos sonidos para apertura y cierre de puertas y si intentamos pasar por una salida cerrada.
+Mejorados los triggers de sonido para esgrimir tanto en soldados.set como en enemigos.set
+Ahora cuando entramos y tenemos noticias o mails, el aviso se guarda en la lista de chats, también podemos consultarlo con alt-f1.
+Si recibimos un mail estando conectados también se almacenará el aviso en la lista de chats y escucharemos un sonido.
+Creada nueva funcionalidad en estados.set, que acorta los mensajes de estado cuando hacemos estado x para que sea mas rápido de ver con el lector.
+Ahora al hacer estado se guardará en el historial de eventos los estados que vamos consultando y el porcentaje aproximado de puntos de vida al que equivale, podemos consultarlo y reportarlo con los comandos habituales.
+Añadida nueva funcionalidad: Contador de Pvs, que calcula los pvs ganados o recibidos.
+Añadida al manual la sección 14. Contador de Pvs. Explicando la nueva funcionalidad.
+Ahora en f5 está el historial del contador de PVS.
+Mejorado Soldados.set para corregir un fallo por el que no se activaban los triggers de las habilidades en algunas ocasiones.
+Ahora en el modo xp se reproducirá un sonido de propinar mucho mas discreto.
+
+
+Cambios en la versión 1.5: 29/10/2017
+Añadida al manual la sección 13. Grupos de jugadores. Esta característica estaba disponible desde hace varias versiones pero se me había pasado explicarla en el manual.
+Corregido Movimiento.set para que no diga 2 veces la dirección de salida y de llegada cuando usamos alt-3 y alt-4
+Ahora los triggers de sonido de Lessirnak deberían funcionar bien.
+Añadidos Paths desde el cruce húmedas y el cruce márgenes al sur de takome
+Añadidos triggers de sonido para Lish la aborrecible, el venerable dragón rojo.
+Eliminado del historial de eventos las direcciones en las que se van los enemigos.
+Seguimos añadiendo textos de jugadores al corrector para eliminarlos de los canales.
+Mejorado el funcionamiento de Combate.set para que funcione de forma mas eficiente.
+Mejorado el funcionamiento de Social.set para que no salte el trigger de telepatía cuando se pastean tels en los canales.
+Corregidos algunos paths que tenían fallos.
+
+
+Cambios en la versión 1.4: 25/10/2017
+Inhabilitado temporalmente el contador de HB
+Mejorado y reorganizado en Corrector.set el corrector de texto que elimina texto sobrante.
+Añadidos paths desde las 4 puertas de anduar, en cada una hacia las ciudades de ese lado del mapa, y entre las puertas por las murallas.
+Añadidos paths desde la puerta oeste de Kattak y desde la roca de kheleb.
+Actualizado Combate.set con mejoras de funcionamiento, entre ellas actualizado el modo xp para que se silencien mas mensajes de combate que antes.
+Actualizado y corregido Movimiento.set.
+Corregido aparentemente el fallo que impedía el correcto funcionamiento de las alarmas de bloqueo de habilidades.
+Comienza el registro de los cambios, por fin.

@@ -1,0 +1,178 @@
+;Módulo: Hechizos_otros.set
+;Versión: 1.0, 09/02/2025
+;Descripción: Hechizos de daño de otros sobre nosotros y sobre terceros.
+;Autor: Rhomdur.
+
+#Var ListaImpactosHechizos {cono de frío|defenestrar|desintegrar|flecha ácida|flecha de llamas|golpe de rayo|Relámpago}
+
+
+;Hechizo golpe de rayo:
+
+#GTrigger {[*] Un rayo surge de las manos de * electrocut?ndote al impactar sobre tu pecho.} {
+FuncHHImpacto %1 {Golpe de rayo} 0 0 1 0
+} {} AnyCase
+
+#GTrigger {Un rayo surge de las manos de * e impacta sobre *.} {
+FuncHHImpacto %1 {Golpe de rayo} %2 0 1 0
+} {} AnyCase
+
+
+;Hechizo desintegrar:
+#GTrigger {[*] * extiende las palmas de sus manos, formando un tri?ngulo, hacia ti y un mortal rayo de energ?a te *} {
+FuncHHImpacto %1 desintegrar 0 0 1 0
+} {}
+
+
+;Hechizo defenestrar:
+#GTrigger {¡Sin poder remediarlo, te precipitas violentamente hacia atr?s atravesando una ventana de la que no te hab?as percatado!} {
+FuncHHImpacto 0 defenestrar 0 0 1 0
+} {} AnyCase
+
+#GTrigger {¡* sale disparad? hasta atravesar la ventana y volar varios metros hacia atr?s!} {
+FuncHHImpacto 0 defenestrar %1 0 1 0
+} {}
+
+
+;Hechizo flecha de llamas:
+#GTrigger {[*] ¡* dispara * flecha* de fuego contra ti!} {
+FuncHHImpacto %1 {flecha de fuego} 0 0 1 0
+} {} AnyCase
+
+
+;Hechizo flecha ácida:
+
+#GTrigger {[*] ¡* dispara una flecha ?cida contra ti, impregnando tu cuerpo con un l?quido corrosivo!} {
+FuncHHImpacto %1 {flecha ácida} 0 0 1 0
+} {}
+
+#GTrigger {[*] El ?cido de la flecha de * se extiende por tu cuerpo, caus?ndote un intenso escozor.} {
+FEventos {Daño ácido};
+#Play {RL\HHOtros\Hechizos impacto\Flecha ácida daño 1.wav};
+FuncDanoRecibido;
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {¡Sufres da?o a causa del ?cido de la flecha!} {
+FEventos {Daño ácido};
+#Play {RL\HHOtros\Hechizos impacto\Flecha ácida daño 2.wav};
+FuncDanoRecibido;
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {¡* dispara una flecha ?cida contra *, impregnando su cuerpo con un l?quido corrosivo!} {
+FuncHHImpacto %1 {flecha ácida} %3 0 1 0
+} {}
+
+#GTrigger {El ?cido de la flecha de * parece causar un profundo dolor a *.} {
+FuncHHImpacto %1 {daño ácido} %3 0 1 0
+} {} AnyCase
+
+
+;Hechizo proyectil mágico:
+
+#GTrigger {[*] * misiles m?gicos surgen de los dedos de * e impactan infaliblemente sobre tu pecho.} {
+ #Var TempInfoImpacto %1;
+ FuncHHImpacto %2 {proyectil mágico} 0 0 1 0
+} {} AnyCase
+
+#GTrigger {* misiles m?gicos surgen de los dedos de * e impactan infaliblemente sobre *.} {
+FuncCorrectorSignos %0;
+#If {%IfWord(%Word(@Corregir, ,1),@Canales,|)} {#Abort};
+#If {%IfWord("tu pecho",%4)} {#Abort};
+#Var TempInfoImpacto %1;
+FuncHHImpacto %2 {proyectil mágico} %3 0 1 0
+} {}
+
+
+;Hechizo meteoros de ignis:
+
+#GTrigger {[*] * meteoros diminutos surgen de la mano de * y estallan sobre tu pecho.} {
+FuncCorrectorSignos %0;
+#If {%IfWord(%Word(@Corregir, ,1),@Canales,|)} {#Abort};
+#Var TempInfoImpacto %1;
+FuncHHImpacto %2 {meteoros de ignis} 0 0 1 0
+} {}
+
+#GTrigger {* meteoros diminutos surgen de la mano de * y estallan infaliblemente sobre *.} {
+FuncCorrectorSignos %0;
+#If {%IfWord(%Word(@Corregir, ,1),@Canales,|)} {#Abort};
+#Var TempInfoImpacto %1;
+FuncHHImpacto %2 {meteoros de ignis} %3 0 1 0
+} {}
+
+
+;Hechizo cono de frío:
+
+#GTrigger {[*] El aire se congela como si un chorro en forma de cono helado surgiera de las manos de *, y la parte más ancha *.} {
+FuncHHImpacto %1 {cono de frío} 0 0 1 0
+} {} AnyCase
+
+#GTrigger {El aire se congela como si un chorro en forma de cono helado surgiera de las manos de *, y la parte más ancha * a *.} {
+FuncHHImpacto %1 {cono de frío} %3 0 1 0
+} {} AnyCase
+
+
+;Hechizo lamento de la bansee:
+
+#GTrigger {Sientes una grave cacofon?a brotando de la boca de *, cuyamand?bula se desencaja m?s y m?s por momentos.} {
+FuncCorrectorSignos %0;
+#If {%IfWord(%Word(@Corregir, ,1),@Canales,|)} {#Abort};
+FuncHabilidadPreparando %2 Lamento 0
+} {} AnyCase
+
+#GTrigger {[*] ¡Descubres un nuevo nivel de DOLOR al ser devastad? por el lamento de la banshee!} {
+FuncHHImpacto 0 lamento 0 0 1 0
+} {}
+
+
+;Hechizo aullido infernal:
+
+#GTrigger {Un horrible y enronquecido c?ntico se extiende por el ?rea de la boca de *.} {
+FuncHabilidadPreparando %2 {aullido infernal} 0
+} {} AnyCase
+;Lunara emite un aullido penetrante, demoníaco, infernal, destrozándote los tímpanos.
+
+#GTrigger {¡Te retuerces de dolor cuando el atronador aullido de * penetra en tu cabeza, destroz?ndote los timpanos!} {
+FuncHHImpacto 0 {aullido infernal} 0 0 1 0
+} {} AnyCase
+
+
+;Hechizo columna de fuego:
+#GTrigger {[*] ¡* invoca una columna de fuego sobre ti!} {
+FuncHHImpacto %1 {columna de fuego} 0 0 1 0
+} {}
+
+
+;Hechizo disipar magia:
+#GTrigger {Sientes como un poder mágico sin igual choca contigo y hace añicos la magia que te rodeaba*} {
+FuncCorrectorSignos %0;
+#If {%IfWord(%Word(@Corregir, ,1),@Canales,|)} {#Abort};
+FEventos Impacto disipar magia;
+#Play {RL\Hechizos\Disipar magia recibido.wav}
+} {}
+
+
+;Hechizo terremoto:
+
+#GTrigger {La tierra tiembla y se resquebraja a tu alrededor, [¡]UN TERREMOTO!} {
+#Play {RL\Hechizos\Terremoto.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+#GTrigger {[*] ¡El terremoto te sacude con violencia y te golpea con enormes pedazos de roca!} {
+FuncHHImpacto 0 terremoto 0 0 1 0
+} {} AnyCase
+
+
+;Hechizo relámpago:
+
+#GTrigger {[*] ¡El cielo ruge y un fugaz rel?mpago invocado por * te electrocuta!} {
+FuncHHImpacto 0 relámpago 0 0 1 0
+} {}
+

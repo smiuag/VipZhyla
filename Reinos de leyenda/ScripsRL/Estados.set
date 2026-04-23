@@ -1,0 +1,188 @@
+;Módulo: Estados.set
+;Versión: 1.7, 31/03/2022
+;Descripción: Gestiona los estados, los almacena en el visor y reproduce sonidos.
+;Autor: Rhomdur.
+
+
+;Declaración de variables:
+
+#Var FlagEstados 0
+#Var HistorialEstados
+#Var UltimoEstado
+#Var PorcentajeEstado
+#Var PersonajeEstado
+#Var FlagEA100 0;
+#Var FlagEE100 0;
+#Var FlagEA90 0;
+#Var FlagEE90 0;
+#Var FlagEA60 0;
+#Var FlagEE60 0;
+#Var FlagEA30 0;
+#Var FlagEE30 0;
+
+
+#GAlias FuncEstadoVida {
+FuncComprobarSujeto @PersonajeEstado 1 1;
+
+;Creación de la variable ultimo estado:
+
+#If {%Defined(EnergiaEstado)} {
+ #If {@ModoE = 1} {
+  #Var UltimoEstado {%Word(@PersonajeEstado, ,1) @{PorcentajeEstado}, @{EnergiaEstado}}
+ } {
+  #Var UltimoEstado {@{PersonajeEstado} Vida: @{PorcentajeEstado}%, Energía: @{EnergiaEstado}%}
+ }
+} {
+ #If {@ModoE = 1} {
+  #Var UltimoEstado {%Word(@PersonajeEstado, ,1) @PorcentajeEstado}
+ } {
+  #Var UltimoEstado {@{PersonajeEstado} @{PorcentajeEstado}%}
+ }
+};
+
+;Ordenación de los estados en el visor
+#If {@FlagEstados = 1} {
+ #Var HistorialEstados
+};
+#If {%Defined(EnergiaEstado)} {
+ #Add HistorialEstados {@{UltimoEstado}:FCopiar @{PersonajeEstado} Vida:@{PorcentajeEstado}% Energía:@{EnergiaEstado}%}
+} {
+ #Add HistorialEstados {@{UltimoEstado}:FCopiar @{PersonajeEstado} @{PorcentajeEstado}%}
+};
+#Mat FlagEstados (@FlagEstados+1);
+
+
+;Reproducción de distintos sonidos según el porcentaje de estado:
+
+#If {@PorcentajeEstado >= 90} {
+ #If {@FlagComprobarSujeto = 1} {
+  #If {@FlagEE100 = 0} {
+   FuncPlayPan {RL\Combate\Estado enemigo 100.wav} -4500;
+   #Var FlagEE100 1
+  }
+ } {
+  #If {@FlagEA100 = 0} {
+   FuncPlayPan {RL\Combate\Estado aliado 100.wav} 4500;
+   #Var FlagEA100 1
+  }
+ }
+};
+
+#If {@PorcentajeEstado < 90 and @PorcentajeEstado >= 60} {
+ #If {@FlagComprobarSujeto = 1} {
+  #If {@FlagEE90 = 0} {
+   FuncPlayPan {RL\Combate\Estado enemigo 90.wav} -4500;
+   #Var FlagEE90 1
+  }
+ } {
+  #If {@FlagEA90 = 0} {
+   FuncPlayPan {RL\Combate\Estado aliado 90.wav} 4500;
+   #Var FlagEA90 1
+  }
+ }
+};
+
+#If {@PorcentajeEstado < 60 and @PorcentajeEstado >= 30} {
+ #If {@FlagComprobarSujeto = 1} {
+  #If {@FlagEE60 = 0} {
+   FuncPlayPan {RL\Combate\Estado enemigo 60.wav} -4500;
+   #Var FlagEE60 1
+  }
+ } {
+  #If {@FlagEA60 = 0} {
+   FuncPlayPan {RL\Combate\Estado aliado 60.wav} 4500;
+   #Var FlagEA60 1
+  }
+ }
+};
+
+#If {@PorcentajeEstado < 30} {
+ FEventos @PersonajeEstado @PorcentajeEstado%;
+ #If {@FlagComprobarSujeto = 1} {
+  #If {@FlagEE30 = 0} {
+   FuncPlayPan {RL\Combate\Estado enemigo 30.wav} -4500;
+   #Var FlagEE30 1
+  }
+ } {
+  #If {@FlagEA30 = 0} {
+   FuncPlayPan {RL\Combate\Estado aliado 30.wav} 4500;
+   #Var FlagEA30 1
+  }
+ }
+};
+
+#GagLine Voice;
+#Say {@UltimoEstado} NoDisplay|Incoming
+}
+
+
+#GTrigger {*De un fugaz vistazo, examinas el estado de los que te rodean.} {
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#Var FlagEstados 1;
+#Var FlagEA100 0;
+#Var FlagEE100 0;
+#Var FlagEA90 0;
+#Var FlagEE90 0;
+#Var FlagEA60 0;
+#Var FlagEE60 0;
+#Var FlagEA30 0;
+#Var FlagEE30 0;
+#Var PorcentajeEstado 100;
+#Alarm AlFlagEstados 1 {#Var FlagEstados 0};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+}
+
+
+#GTrigger {*#%} {
+#If {@FlagEstados = 0} {#Abort};
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+#If {%IfWord("Vida:",%1, )} {#Abort};
+
+FuncCorrectorPlayers @corregir;
+
+;Organización de variables de nombre y porcentajes:
+#Var PorcentajeEstado {%Word(@Corregir, ,99)};
+#Var PersonajeEstado {%Replace(@Corregir, @PorcentajeEstado,)};
+#Var PorcentajeEstado {%Replace(@PorcentajeEstado,%,)};
+
+FuncEstadoVida
+} {}
+
+#GTrigger {* Vida: *% Energía: *%} {
+#If {@FlagEstados = 0} {#Abort};
+FFiltroCanales %0;
+#If {@FlagFiltroCanales = 1} {#Abort};
+
+;Organización de variables de nombre y porcentajes:
+#Var PersonajeEstado %1;
+#Var PorcentajeEstado %2;
+#Var EnergiaEstado %3;
+
+FuncEstadoVida
+} {}
+
+
+;Keys:
+
+; Shift-f5 saca el historial de estados.
+#GKey shift-F5 {
+#If {@HistorialEstados = ""} {
+ #Say {Historial de estados vacío} NoDisplay|Output
+} {
+ #Pick @HistorialEstados
+}
+}
+
+;f5 lee el ultimo estado.
+#GKey F5 {
+#If {@UltimoEstado = ""} {
+ #Say {No has comprobado ningún estado por el momento} NoDisplay|Output
+} {
+ #Say {@{UltimoEstado}} NoDisplay|Output
+}
+}
+

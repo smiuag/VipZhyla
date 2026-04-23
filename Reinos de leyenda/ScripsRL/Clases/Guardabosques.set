@@ -1,0 +1,201 @@
+;Módulo: Guardabosques.set
+;Versión: 1.4, 24/11/2022
+;Descripción: Triggers y configs para la clase guardabosque.
+;Autor: Rhomdur.
+
+;Carga de configuraciones generales:
+#Load ScripsRL\Clases\Cazadores.set
+#Load ScripsRL\Clases\Combate_fisico.set
+
+
+;Declaración de variables:
+#Var FlagBloqueosClase 1
+
+
+;Función para los bloqueos de clase.
+#GAlias FBloqueosClase {
+#Var FlagBloqueoV 1;
+#If {%IfWord("doble golpe",%1, )} {
+ #Play {RL\Bloqueos\Guardabosques\Doblegolpe.wav};
+ #Abort
+};
+#Var FlagBloqueoV 0
+}
+
+
+;Cazar:
+
+#GTrigger {Observas los movimientos de * para cazar de forma efectiva.} {
+#Play {RL\Habilidades\Generales\Impulso1.wav};
+#GagLine Voice
+} {} AnyCase
+
+#GTrigger {Observas desde tu escondite los movimientos de * para cazar de forma efectiva.} {
+#Play {RL\Habilidades\Generales\Impulso1.wav};
+#GagLine Voice
+} {} AnyCase
+
+#GTrigger {*[#] ¡Cazas a * veces de forma salvaje, alcanzándole * veces!} {
+#If {@ModoE = 1} {
+ FEventos %3 impactos;
+ #Say {%3 impactos} NoDisplay|incoming;
+ #GagLine voice
+};
+#Alarm Cazar 7 {
+ #Play {RL\Bloqueos\Bloqueo.wav};
+ #Play {RL\Bloqueos\Guardabosques\Cazar.wav}
+};
+#Play {RL\Habilidades\Guardabosques\Cazar2.wav}
+} {} AnyCase
+
+#GTrigger {*[#] ¡Cazas a * veces de forma salvaje, alcanzándole 1 vez!} {
+#If {@ModoE = 1} {
+ FEventos un impacto;
+ #Say {un impacto} NoDisplay|incoming;
+ #GagLine voice
+};
+#Alarm Cazar 7 {
+ #Play {RL\Bloqueos\Bloqueo.wav};
+ #Play {RL\Bloqueos\Guardabosques\Cazar.wav}
+};
+#Play {RL\Habilidades\Guardabosques\Cazar1.wav}
+} {} AnyCase
+
+#GTrigger {*[#] ¡Cazas a * veces de forma salvaje, sin conseguir hacerle daño!} {
+#If {@ModoE = 1} {
+ #GagLine voice
+};
+#Alarm Cazar 7 {
+ #Play {RL\Bloqueos\Bloqueo.wav};
+ #Play {RL\Bloqueos\Guardabosques\Cazar.wav}
+};
+#Play {RL\Habilidades\General\Habilidad esquivada.wav}
+} {} AnyCase
+
+
+#TRIGGER {Ordenas a tus criaturas * *} {#Play {RL\Generales\ordenar a poke.wav}} {}
+#TRIGGER {#* ¡Cazas a * * veces de forma salvaje, alcanzándole * veces con * golpe crítico!!} {#Play {RL\Habilidades\Guardabosques\Cazar critico.wav}} {}
+#TRIGGER {** ¡Cazas a * * veces de forma salvaje, alcanzándole * veces con * golpes críticos!!} {#Play {RL\Habilidades\Guardabosques\Cazar critico.wav}} {}
+
+#GTrigger {*[#] ¡* se ha escapado!} {
+#If {@ModoE = 1} {
+ #GagLine voice
+};
+#Alarm Cazar 7 {
+ #Play {RL\Bloqueos\Bloqueo.wav};
+ #Play {RL\Bloqueos\Guardabosques\Cazar.wav}
+};
+#Play {RL\Habilidades\Generales\Objetivo perdido.wav}
+} {} AnyCase
+
+
+;Habilidad llamada:
+
+#GTrigger {*Te concentras en la penetrante arboleda en la que te encuentras buscando una señal para realizar*} {
+#Play {RL\Habilidades\Guardabosques\Llamada1.wav}
+} {} AnyCase
+
+#GTrigger {*Comienzas a vislumbrar un aura verdosa que rodea el lugar indicandote la señal de beneplácito del animal*} {
+#Play {RL\Habilidades\Guardabosques\Llamada2.wav}
+} {} AnyCase
+
+#GTrigger {*Gritas con toda tu alma hasta sentirte vací*, pero a la vez bendecid* y reconfortad*} {
+#Play {RL\Habilidades\Guardabosques\Llamada3.wav}
+} {} AnyCase
+
+#GTrigger {*Escuchas un gruñido gutural cuando * llega a la sala corriendo pesadamente a cuatro patas,*} {
+#Play {RL\Habilidades\Guardabosques\Llamada oso.wav}
+} {} AnyCase
+
+#GTrigger {*Un rápido movimiento te sobresalta, y entre la maleza aparece una magnífica bestia que te observa*} {
+#Play {RL\Habilidades\Guardabosques\Llamada lobo.wav}
+} {} AnyCase
+
+#GTrigger {*¡¡SCREEEEEEEEECH!! el agudo graznido de un halcón resuena en la sala cuando * llega haciendo un picado.} {
+#Play {RL\Habilidades\Guardabosques\Llamada halcon.wav}
+} {} AnyCase
+
+
+ ;Habilidades de las invocaciones:
+
+#GTrigger {* te sigue en silencio.} {
+#Play {RL\Sucesos\Te sigue silencio.wav};
+#If {@ModoE = 1} {
+ #GagLine voice
+}
+} {} AnyCase
+
+#GTrigger {* se echa hacia * y le propina una dentellada para acto seguido retroceder, en una maniobra de hostigamiento.} {
+#If {@ModoE = 1} {
+ #GagLine voice
+};
+#Play {RL\Habilidades\Guardabosques\Dentellada.wav};
+#Alarm Dentellada 7 {
+ #Play {RL\Bloqueos\Bloqueo.wav};
+ #Play {RL\Bloqueos\Guardabosques\Dentellada.wav}
+}
+} {}
+
+#GTrigger {*[#] ¡Lanzas a * que sale volando contra * acosándole con sus temibles garras!} {
+#If {@ModoE = 1} {
+ #GagLine voice
+};
+#Play {RL\Habilidades\Guardabosques\Acosar.wav};
+#Alarm Acosar 120 {
+ #Play {RL\Bloqueos\Bloqueo.wav};
+ #Play {RL\Bloqueos\Guardabosques\Acosar.wav}
+}
+} {}
+
+#GTrigger {* sale disparado hacia el cielo, comenzando a ganar altitud rápidamente.} {
+#Play {RL\Habilidades\Guardabosques\Picado1.wav}
+} {}
+
+#GTrigger {* continúa ascendiendo a toda velocidad en una trayectoria casi vertical, atravesando las*} {
+#Play {RL\Habilidades\Guardabosques\Picado2.wav}
+} {}
+
+#GTrigger {* desaparece del cielo cuando la altura que gana es demasiada para tu visión mortal.} {
+#Play {RL\Habilidades\Guardabosques\Picado2.wav}
+} {}
+
+#GTrigger {*Vuelves a ver a * esta vez descendiendo a gran velocidad. Su picado ha comenzado.} {
+#Play {RL\Habilidades\Guardabosques\Picado3.wav}
+} {} AnyCase
+
+#GTrigger {* continua su descenso; con la velocidad que ha adquirido calculas que el impacto se dará en escasos segundos.} {
+#Play {RL\Habilidades\Guardabosques\Picado4.wav}
+} {} AnyCase
+
+#GTrigger {*[#] ¡* impacta sobre * con sus afiladas garras, desfigurándole el rostro y desgarrándole carne y músculos!} {
+#Play {RL\Habilidades\Guardabosques\Picado5.wav}
+} {}
+
+
+;Keys:
+
+#GKey alt-s {
+seguir @Objetivo
+}
+
+#GKey alt-d {
+#If {@ModoJ = 2} {
+ doblegolpe xp
+} {
+ #If {@AutoCentrar = 1} {
+  centrar x;doblegolpe x
+ } {
+  doblegolpe x
+ }
+}}
+
+#GKey alt-f {
+#If {@ModoJ = 2} {
+ cazar xp
+} {
+ #If {@AutoCentrar = 1} {
+  centrar x;cazar x
+ } {
+  cazar x
+ }
+}}

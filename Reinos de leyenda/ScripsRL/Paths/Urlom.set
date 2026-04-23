@@ -1,0 +1,296 @@
+;Módulo: Paths_urlom.set
+;Versión: 1.4, 05/05/2018
+;Descripción: Paths que se originan y transcurren en el reino de Urlom.
+;Autor: Rhomdur.
+
+
+;Origen: Primer cruce en el desfiladero al bosque de Urlom, (CBU)
+
+#GTrigger {Desfiladero al Bosque de Urlom *[[]no,so,e] } {
+FPathDisponible;
+#Var Mapa {
+Kattak, plaza:FPath;.CBUKtC
+|
+Anduar, plaza:FPath;.CBUAndC
+|
+Akanon, puerta este:FPath;.CBUAkaP
+|
+Vahía de Urlom:FPath;.CBUBU
+}
+} {} AnyCase
+
+#GAlias {.CBUKtC} {
+no;no;no;n;e;n;ne;ne;ne;n;ne;n;no;n;n;n;n;no;n;n;ab;ne;n;no;n;o;no;n;ne;ne;n;n;o;so;no;o;o;o;so;o;o;so;s;so;o;no;o;so;so;o;so;o;so;so;o;o;n;no;o;so;o;o;o;so;s;so;o;no;o;no;o;o;o;o;o;o;o;o;o;o;o}
+
+#GAlias {.CBUAndC} {
+no;no;no;n;e;n;ne;ne;ne;n;ne;n;no;n;n;n;n;no;n;n;ab;ne;n;no;n;o;no;n;ne;ne;n;n;e;se;ne;e;ne;se;ne;se;e;e;se;ne;e;ne;se;ne;ne;se;e;e;e;e;e;e;se;s;se;e;n;ne;ne;n;n;n;ne;ne;n;n;no;ne;e;ne;e;se;se;e;ne;e;e;se;e;ne;ne;ne;e;e;e;e;e;e;e;se;e;e;ne;e;e;ne;n;ne;e;e;se;e;e;ne;ne;ne;e;se;e;ne;e;ne;n;ne;e;se;ne;e;ne;e;se;e;ne;ne;e;e;e;e;e;e;e;e;e;e;e;e}
+
+#GAlias {.CBUAkaP} {
+so;ar;o;o;so;no;o;no;o;so;so;o;so;o;se;o;so;o;so;s;ab;so;se;s;so;s;so;no;so;so;s;so;so;so;s;so;o;so;o;no;o;so;o;so;o;so;o;no;no;o;s;so;o;so;s;so;o;ab;o;so;o;so;so;no;so;o;so;so;se;s;so;s;so;se;s;so;ar;s;s;so;o;o;so;so;s;so;so;o;so;ar;so;so;o;so;o;no;so;so;s;ar;o;so;o;so;o;so;no;o;so;o;so;ar;o;o;no;s;so;s;so;o;no;o;n;n;no;no;no;no;o;o;n;no;no;o;o;o;o;o;ar;no;ne;no;n;n;n;o;ab;o;o}
+
+#GAlias {.CBUBU} {
+so;ar;o;o;so;no;o;no;o;so;so;o;so;o;se;o;so;o;so;s;ab;so;se;s;so;s;so;no;so;so;s;so;so;so;s;so;o;so;o;no;o;so;o;so;o;so;o;no;no;o;s;so;o;so;s;so;o;ab;o;so;o;so;so;no;so;o;so;so;se;s;so;s;so;se;s;so;ar;s;s;so;o;o;so;so;s;so;so;o;so;ar;so;so;o;so;o;no;so;so;s;ar;o;s;s;e;se;ab;so;o;n;no;so;se;ab;se;e;ne;e;ab;so;so;o;so;so;so;o;so;s;so}
+
+
+;Origen: Cruce en el paso entre las montañas al sur de Ormerak, (CP1):
+
+#GTrigger {Paso entre las Montañas *[[]n,ne,o] } {
+FPathDisponible;
+#Var Mapa {
+Akanon, puerta:FPath;.CP1AkaP
+|
+Kattak, plaza:FPath;.CP1KtC
+|
+Vahía de Urlom:FPath;.CP1BU
+|
+Anduar, plaza:FPath;.CP1AndC
+}
+} {} AnyCase
+
+#GAlias {.CP1AkaP} {
+o;so;o;no;o;so;o;so;o;so;o;no;no;o;s;so;o;so;s;so;o;ab;o;so;o;so;so;no;so;o;so;so;se;s;so;s;so;se;s;so;ar;s;s;so;o;o;so;so;s;so;so;o;so;ar;so;so;o;so;o;no;so;so;s;ar;o;so;o;so;o;so;no;o;so;o;so;ar;o;o;no;s;so;s;so;o;no;o;n;n;no;no;no;no;o;o;n;no;no;o;o;o;o;o;ar;no;ne;no;n;n;n;o;ab;o;o}
+
+
+#GAlias {.CP1KtC} {
+ne;n;ne;ne;ne;n;ne;ne;se;ne;n;ne;n;no;ne;ar;n;ne;e;ne;e;no;e;ne;e;ne;ne;e;se;e;se;ne;e;e;ab;ne;no;no;no;n;e;n;ne;ne;ne;n;ne;n;no;n;n;n;n;no;n;n;ab;ne;n;no;n;o;no;n;ne;ne;n;n;o;so;no;o;o;o;so;o;o;so;s;so;o;no;o;so;so;o;so;o;so;so;o;o;n;no;o;so;o;o;o;so;s;so;o;no;o;no;o;o;o;o;o;o;o;o;o;o;o}
+
+#GAlias {.CP1AndC} {
+ne;n;ne;ne;ne;n;ne;ne;se;ne;n;ne;n;no;ne;ar;n;ne;e;ne;e;no;e;ne;e;ne;ne;e;se;e;se;ne;e;e;ab;ne;no;no;no;n;e;n;ne;ne;ne;n;ne;n;no;n;n;n;n;no;n;n;ab;ne;n;no;n;o;no;n;ne;ne;n;n;e;se;ne;e;ne;se;ne;se;e;e;se;ne;e;ne;se;ne;ne;se;e;e;e;e;e;e;se;s;se;e;n;ne;ne;n;n;n;ne;ne;n;n;no;ne;e;ne;e;se;se;e;ne;e;e;se;e;ne;ne;ne;e;e;e;e;e;e;e;se;e;e;ne;e;e;ne;n;ne;e;e;se;e;e;ne;ne;ne;e;se;e;ne;e;ne;n;ne;e;se;ne;e;ne;e;se;e;ne;ne;e;e;e;e;e;e;e;e;e;e;e;e}
+
+#GAlias {.CP1BU} {
+o;so;o;no;o;so;o;so;o;so;o;no;no;o;s;so;o;so;s;so;o;ab;o;so;o;so;so;no;so;o;so;so;se;s;so;s;so;se;s;so;ar;s;s;so;o;o;so;so;s;so;so;o;so;ar;so;so;o;so;o;no;so;so;s;ar;o;s;s;e;se;ab;so;o;n;no;so;se;ab;se;e;ne;e;ab;so;so;o;so;so;so;o;so;s;so}
+
+
+;Origen: Cruce en paso entre las montañas hacia Ormeyon, (CP2)
+
+#GTrigger {Paso entre las Montañas *[[]s,so,e] } {
+FPathDisponible;
+#Var Mapa {
+Akanon, puertas:FPath;.CP2AkaP
+|
+Vahía de Urlom:FPath;.CP2BU
+|
+Kattak, plaza:FPath;.CP2KtC
+|
+Anduar, plaza:FPath;.CP2AndC
+}
+} {} AnyCase
+
+#GAlias {.CP2AkaP} {
+so;o;so;o;so;no;o;so;o;so;ar;o;o;no;s;so;s;so;o;no;o;n;n;no;no;no;no;o;o;n;no;no;o;o;o;o;o;ar;no;ne;no;n;n;n;o;ab;o;o}
+
+#GAlias {.CP2KtC} {
+e;ab;n;ne;ne;se;e;ne;e;ne;ne;ab;ne;e;ne;ne;n;ne;ne;e;e;ne;n;n;ab;ne;n;no;ne;n;ne;n;no;ne;ne;e;ne;se;ne;ne;e;ne;e;ar;e;ne;n;ne;e;ne;n;e;se;se;e;ne;e;ne;e;ne;e;se;e;ne;e;ne;n;ne;ne;ne;n;ne;ne;se;ne;n;ne;n;no;ne;ar;n;ne;e;ne;e;no;e;ne;e;ne;ne;e;se;e;se;ne;e;e;ab;ne;no;no;no;n;e;n;ne;ne;ne;n;ne;n;no;n;n;n;n;no;n;n;ab;ne;n;no;n;o;no;n;ne;ne;n;n;o;so;no;o;o;o;so;o;o;so;s;so;o;no;o;so;so;o;so;o;so;so;o;o;n;no;o;so;o;o;o;so;s;so;o;no;o;no;o;o;o;o;o;o;o;o;o;o;o}
+
+#GAlias {.CP2AndC} {
+e;ab;n;ne;ne;se;e;ne;e;ne;ne;ab;ne;e;ne;ne;n;ne;ne;e;e;ne;n;n;ab;ne;n;no;ne;n;ne;n;no;ne;ne;e;ne;se;ne;ne;e;ne;e;ar;e;ne;n;ne;e;ne;n;e;se;se;e;ne;e;ne;e;ne;e;se;e;ne;e;ne;n;ne;ne;ne;n;ne;ne;se;ne;n;ne;n;no;ne;ar;n;ne;e;ne;e;no;e;ne;e;ne;ne;e;se;e;se;ne;e;e;ab;ne;no;no;no;n;e;n;ne;ne;ne;n;ne;n;no;n;n;n;n;no;n;n;ab;ne;n;no;n;o;no;n;ne;ne;n;n;e;se;ne;e;ne;se;ne;se;e;e;se;ne;e;ne;se;ne;ne;se;e;e;e;e;e;e;se;s;se;e;n;ne;ne;n;n;n;ne;ne;n;n;no;ne;e;ne;e;se;se;e;ne;e;e;se;e;ne;ne;ne;e;e;e;e;e;e;e;se;e;e;ne;e;e;ne;n;ne;e;e;se;e;e;ne;ne;ne;e;se;e;ne;e;ne;n;ne;e;se;ne;e;ne;e;se;e;ne;ne;e;e;e;e;e;e;e;e;e;e;e;e}
+
+#GAlias {.CP2BU} {
+s;s;e;se;ab;so;o;n;no;so;se;ab;se;e;ne;e;ab;so;so;o;so;so;so;o;so;s;so}
+
+
+;Origen: Bahía de Urlom (BU):
+
+#GTrigger {Bahía de Urlom: Muelle Principal *[[]ne] } {
+FPathDisponible;
+#Var Mapa {
+Akanon, puerta:FPath;.BUAkaP
+|
+Kattak, plaza:FPath;.BuKtC
+|
+Anduar, plaza:FPath;.BUAndC
+}
+} {} AnyCase
+
+#GAlias {.BUAkaP} {
+ne;n;ne;e;ne;ne;ne;e;ne;ne;ar;o;so;o;no;ar;no;ne;se;s;e;ne;ar;no;o;n;n;so;o;so;o;so;no;o;so;o;so;ar;o;o;no;s;so;s;so;o;no;o;n;n;no;no;no;no;o;o;n;no;no;o;o;o;o;o;ar;no;ne;no;n;n;n;o;ab;o;o}
+
+#GAlias {.BUKtC} {
+ne;n;ne;e;ne;ne;ne;e;ne;ne;ar;o;so;o;no;ar;no;ne;se;s;e;ne;ar;no;o;n;n;e;ab;n;ne;ne;se;e;ne;e;ne;ne;ab;ne;e;ne;ne;n;ne;ne;e;e;ne;n;n;ab;ne;n;no;ne;n;ne;n;no;ne;ne;e;ne;se;ne;ne;e;ne;e;ar;e;ne;n;ne;e;ne;n;e;se;se;e;ne;e;ne;e;ne;e;se;e;ne;e;ne;n;ne;ne;ne;n;ne;ne;se;ne;n;ne;n;no;ne;ar;n;ne;e;ne;e;no;e;ne;e;ne;ne;e;se;e;se;ne;e;e;ab;ne;no;no;no;n;e;n;ne;ne;ne;n;ne;n;no;n;n;n;n;no;n;n;ab;ne;n;no;n;o;no;n;ne;ne;n;n;o;so;no;o;o;o;so;o;o;so;s;so;o;no;o;so;so;o;so;o;so;so;o;o;n;no;o;so;o;o;o;so;s;so;o;no;o;no;o;o;o;o;o;o;o;o;o;o;o}
+
+#GAlias {.BUAndC} {
+ne;n;ne;e;ne;ne;ne;e;ne;ne;ar;o;so;o;no;ar;no;ne;se;s;e;ne;ar;no;o;n;n;e;ab;n;ne;ne;se;e;ne;e;ne;ne;ab;ne;e;ne;ne;n;ne;ne;e;e;ne;n;n;ab;ne;n;no;ne;n;ne;n;no;ne;ne;e;ne;se;ne;ne;e;ne;e;ar;e;ne;n;ne;e;ne;n;e;se;se;e;ne;e;ne;e;ne;e;se;e;ne;e;ne;n;ne;ne;ne;n;ne;ne;se;ne;n;ne;n;no;ne;ar;n;ne;e;ne;e;no;e;ne;e;ne;ne;e;se;e;se;ne;e;e;ab;ne;no;no;no;n;e;n;ne;ne;ne;n;ne;n;no;n;n;n;n;no;n;n;ab;ne;n;no;n;o;no;n;ne;ne;n;n;e;se;ne;e;ne;se;ne;se;e;e;se;ne;e;ne;se;ne;ne;se;e;e;e;e;e;e;se;s;se;e;n;ne;ne;n;n;n;ne;ne;n;n;no;ne;e;ne;e;se;se;e;ne;e;e;se;e;ne;ne;ne;e;e;e;e;e;e;e;se;e;e;ne;e;e;ne;n;ne;e;e;se;e;e;ne;ne;ne;e;se;e;ne;e;ne;n;ne;e;se;ne;e;ne;e;se;e;ne;ne;e;e;e;e;e;e;e;e;e;e;e;e}
+
+
+;Origen: Poblado de Ormeyon, puerta este, (OrmPe):
+
+#GTrigger {Poblado de Ormeion: Puerta Este *[[]e,o,s,n] } {
+FPathDisponible;
+#Var Mapa {
+Akanon, puertas:FPath;.OrmPeAkaP
+|
+Bahía de Urlom:FPath;.OrmPeBU
+|
+Kattak, plaza:FPath;.OrmPeKtC
+|
+Anduar, plaza:FPath;.OrmPeAndC
+}
+} {} AnyCase
+
+#GAlias {.OrmPeAkaP} {
+n;n;no;no;no;no;o;o;n;no;no;o;o;o;o;o;ar;no;ne;no;n;n;n;o;ab;o;o}
+
+#GAlias {.OrmPeBU} {
+e;se;e;ne;n;ne;n;se;e;e;ab;ne;e;ne;e;se;ne;e;ne;e;ne;s;s;e;se;ab;so;o;n;no;so;se;ab;se;e;ne;e;ab;so;so;o;so;so;so;o;so;s;so}
+
+#GAlias {.OrmPeKtC} {
+e;se;e;ne;n;ne;n;se;e;e;ab;ne;e;ne;e;se;ne;e;ne;e;ne;e;ab;n;ne;ne;se;e;ne;e;ne;ne;ab;ne;e;ne;ne;n;ne;ne;e;e;ne;n;n;ab;ne;n;no;ne;n;ne;n;no;ne;ne;e;ne;se;ne;ne;e;ne;e;ar;e;ne;n;ne;e;ne;n;e;se;se;e;ne;e;ne;e;ne;e;se;e;ne;e;ne;n;ne;ne;ne;n;ne;ne;se;ne;n;ne;n;no;ne;ar;n;ne;e;ne;e;no;e;ne;e;ne;ne;e;se;e;se;ne;e;e;ab;ne;no;no;no;n;e;n;ne;ne;ne;n;ne;n;no;n;n;n;n;no;n;n;ab;ne;n;no;n;o;no;n;ne;ne;n;n;o;so;no;o;o;o;so;o;o;so;s;so;o;no;o;so;so;o;so;o;so;so;o;o;n;no;o;so;o;o;o;so;s;so;o;no;o;no;o;o;o;o;o;o;o;o;o;o;o}
+
+#GAlias {.OrmPeAndC} {
+e;se;e;ne;n;ne;n;se;e;e;ab;ne;e;ne;e;se;ne;e;ne;e;ne;e;ab;n;ne;ne;se;e;ne;e;ne;ne;ab;ne;e;ne;ne;n;ne;ne;e;e;ne;n;n;ab;ne;n;no;ne;n;ne;n;no;ne;ne;e;ne;se;ne;ne;e;ne;e;ar;e;ne;n;ne;e;ne;n;e;se;se;e;ne;e;ne;e;ne;e;se;e;ne;e;ne;n;ne;ne;ne;n;ne;ne;se;ne;n;ne;n;no;ne;ar;n;ne;e;ne;e;no;e;ne;e;ne;ne;e;se;e;se;ne;e;e;ab;ne;no;no;no;n;e;n;ne;ne;ne;n;ne;n;no;n;n;n;n;no;n;n;ab;ne;n;no;n;o;no;n;ne;ne;n;n;e;se;ne;e;ne;se;ne;se;e;e;se;ne;e;ne;se;ne;ne;se;e;e;e;e;e;e;se;s;se;e;n;ne;ne;n;n;n;ne;ne;n;n;no;ne;e;ne;e;se;se;e;ne;e;e;se;e;ne;ne;ne;e;e;e;e;e;e;e;se;e;e;ne;e;e;ne;n;ne;e;e;se;e;e;ne;ne;ne;e;se;e;ne;e;ne;n;ne;e;se;ne;e;ne;e;se;e;ne;ne;e;e;e;e;e;e;e;e;e;e;e;e}
+
+
+;Origen: Poblado de Ormeyon, puerta norte, (OrmPn):
+
+#GTrigger {Poblado de Ormeion: Puerta Norte *[[]s,e,o,n] } {
+FPathDisponible;
+#Var Mapa {
+Akanon, puertas:FPath;.OrmPnAkaP
+|
+Bahía de Urlom:FPath;.OrmPnBU
+|
+Kattak, plaza:FPath;.OrmPnKtC
+|
+Anduar, plaza:FPath;.OrmPnAndC
+|
+Lessirnak, parte este del puente:FPath;.OrmPnLes
+}
+} {} AnyCase
+
+#GAlias {.OrmPnAkaP} {
+n;no;no;o;o;o;o;o;ar;no;ne;no;n;n;n;o;ab;o;o}
+
+#GAlias {.OrmPnBU} {
+e;e;se;se;se;se;s;s;e;se;e;ne;n;ne;n;se;e;e;ab;ne;e;ne;e;se;ne;e;ne;e;ne;s;s;e;se;ab;so;o;n;no;so;se;ab;se;e;ne;e;ab;so;so;o;so;so;so;o;so;s;so}
+
+#GAlias {.OrmPnKtC} {
+e;e;se;se;se;se;s;s;e;se;e;ne;n;ne;n;se;e;e;ab;ne;e;ne;e;se;ne;e;ne;e;ne;e;ab;n;ne;ne;se;e;ne;e;ne;ne;ab;ne;e;ne;ne;n;ne;ne;e;e;ne;n;n;ab;ne;n;no;ne;n;ne;n;no;ne;ne;e;ne;se;ne;ne;e;ne;e;ar;e;ne;n;ne;e;ne;n;e;se;se;e;ne;e;ne;e;ne;e;se;e;ne;e;ne;n;ne;ne;ne;n;ne;ne;se;ne;n;ne;n;no;ne;ar;n;ne;e;ne;e;no;e;ne;e;ne;ne;e;se;e;se;ne;e;e;ab;ne;no;no;no;n;e;n;ne;ne;ne;n;ne;n;no;n;n;n;n;no;n;n;ab;ne;n;no;n;o;no;n;ne;ne;n;n;o;so;no;o;o;o;so;o;o;so;s;so;o;no;o;so;so;o;so;o;so;so;o;o;n;no;o;so;o;o;o;so;s;so;o;no;o;no;o;o;o;o;o;o;o;o;o;o;o}
+
+#GAlias {.OrmPnAndC} {
+e;e;se;se;se;se;s;s;e;se;e;ne;n;ne;n;se;e;e;ab;ne;e;ne;e;se;ne;e;ne;e;ne;e;ab;n;ne;ne;se;e;ne;e;ne;ne;ab;ne;e;ne;ne;n;ne;ne;e;e;ne;n;n;ab;ne;n;no;ne;n;ne;n;no;ne;ne;e;ne;se;ne;ne;e;ne;e;ar;e;ne;n;ne;e;ne;n;e;se;se;e;ne;e;ne;e;ne;e;se;e;ne;e;ne;n;ne;ne;ne;n;ne;ne;se;ne;n;ne;n;no;ne;ar;n;ne;e;ne;e;no;e;ne;e;ne;ne;e;se;e;se;ne;e;e;ab;ne;no;no;no;n;e;n;ne;ne;ne;n;ne;n;no;n;n;n;n;no;n;n;ab;ne;n;no;n;o;no;n;ne;ne;n;n;e;se;ne;e;ne;se;ne;se;e;e;se;ne;e;ne;se;ne;ne;se;e;e;e;e;e;e;se;s;se;e;n;ne;ne;n;n;n;ne;ne;n;n;no;ne;e;ne;e;se;se;e;ne;e;e;se;e;ne;ne;ne;e;e;e;e;e;e;e;se;e;e;ne;e;e;ne;n;ne;e;e;se;e;e;ne;ne;ne;e;se;e;ne;e;ne;n;ne;e;se;ne;e;ne;e;se;e;ne;ne;e;e;e;e;e;e;e;e;e;e;e;e}
+
+#GAlias {.OrmPnLes} {
+n;no;no;o;o;o;o;o;ar;no;ne;no;n;n;n;n;n;ne;ne;ne;o;o}
+
+
+;Origen: Puertas de Akanon, (AkaP):
+
+#GTrigger {Cueva Gnómica *[[]e] } {
+FPathDisponible;
+#Var Mapa {
+Bahía de Urlom:FPath;.AkaPBU
+|
+Kattak, plaza:FPath;.AkaPKtC
+|
+Anduar, plaza:FPath;.AkaPAndC
+|
+Eloras, plaza:FPath;.AkaPEloC
+|
+Takome, plaza:FPath;.AkaPTkC
+|
+Takome, plaza (por muralla sur de Anduar):FPath;.AkaPTkCM
+|
+Veleiron, plaza:FPath;.AkaPVelC
+|
+Veleiron, plaza (por muralla sur de Anduar):FPath;.AkaPVelCM
+|
+Lessirnak, parte este del puente:FPath;.AkaPLes
+}
+} {} AnyCase
+
+#GAlias {.AkaPBU} {
+e;e;ar;e;s;s;s;se;so;se;ab;e;e;e;e;e;se;se;s;e;e;se;se;se;se;s;s;e;se;e;ne;n;ne;n;se;e;e;ab;ne;e;ne;e;se;ne;e;ne;e;ne;s;s;e;se;ab;so;o;n;no;so;se;ab;se;e;ne;e;ab;so;so;o;so;so;so;o;so;s;so}
+
+#GAlias {.AkaPKtC} {
+e;e;ar;e;s;s;s;se;so;se;ab;e;e;e;e;e;se;se;s;e;e;se;se;se;se;s;s;e;se;e;ne;n;ne;n;se;e;e;ab;ne;e;ne;e;se;ne;e;ne;e;ne;e;ab;n;ne;ne;se;e;ne;e;ne;ne;ab;ne;e;ne;ne;n;ne;ne;e;e;ne;n;n;ab;ne;n;no;ne;n;ne;n;no;ne;ne;e;ne;se;ne;ne;e;ne;e;ar;e;ne;n;ne;e;ne;n;e;se;se;e;ne;e;ne;e;ne;e;se;e;ne;e;ne;n;ne;ne;ne;n;ne;ne;se;ne;n;ne;n;no;ne;ar;n;ne;e;ne;e;no;e;ne;e;ne;ne;e;se;e;se;ne;e;e;ab;ne;no;no;no;n;e;n;ne;ne;ne;n;ne;n;no;n;n;n;n;no;n;n;ab;ne;n;no;n;o;no;n;ne;ne;n;n;o;so;no;o;o;o;so;o;o;so;s;so;o;no;o;so;so;o;so;o;so;so;o;o;n;no;o;so;o;o;o;so;s;so;o;no;o;no;o;o;o;o;o;o;o;o;o;o;o}
+
+#GAlias {.AkaPAndC} {
+e;e;ar;e;s;s;s;se;so;se;ab;e;e;e;e;e;se;se;s;e;e;se;se;se;se;s;s;e;se;e;ne;n;ne;n;se;e;e;ab;ne;e;ne;e;se;ne;e;ne;e;ne;e;ab;n;ne;ne;se;e;ne;e;ne;ne;ab;ne;e;ne;ne;n;ne;ne;e;e;ne;n;n;ab;ne;n;no;ne;n;ne;n;no;ne;ne;e;ne;se;ne;ne;e;ne;e;ar;e;ne;n;ne;e;ne;n;e;se;se;e;ne;e;ne;e;ne;e;se;e;ne;e;ne;n;ne;ne;ne;n;ne;ne;se;ne;n;ne;n;no;ne;ar;n;ne;e;ne;e;no;e;ne;e;ne;ne;e;se;e;se;ne;e;e;ab;ne;no;no;no;n;e;n;ne;ne;ne;n;ne;n;no;n;n;n;n;no;n;n;ab;ne;n;no;n;o;no;n;ne;ne;n;n;e;se;ne;e;ne;se;ne;se;e;e;se;ne;e;ne;se;ne;ne;se;e;e;e;e;e;e;se;s;se;e;n;ne;ne;n;n;n;ne;ne;n;n;no;ne;e;ne;e;se;se;e;ne;e;e;se;e;ne;ne;ne;e;e;e;e;e;e;e;se;e;e;ne;e;e;ne;n;ne;e;e;se;e;e;ne;ne;ne;e;se;e;ne;e;ne;n;ne;e;se;ne;e;ne;e;se;e;ne;ne;e;e;e;e;e;e;e;e;e;e;e;e}
+
+#GAlias {.AkaPTkC} {
+e;e;ar;e;s;s;s;se;so;se;ab;e;e;e;e;e;se;se;s;e;e;se;se;se;se;s;s;e;se;e;ne;n;ne;n;se;e;e;ab;ne;e;ne;e;se;ne;e;ne;e;ne;e;ab;n;ne;ne;se;e;ne;e;ne;ne;ab;ne;e;ne;ne;n;ne;ne;e;e;ne;n;n;ab;ne;n;no;ne;n;ne;n;no;ne;ne;e;ne;se;ne;ne;e;ne;e;ar;e;ne;n;ne;e;ne;n;e;se;se;e;ne;e;ne;e;ne;e;se;e;ne;e;ne;n;ne;ne;ne;n;ne;ne;se;ne;n;ne;n;no;ne;ar;n;ne;e;ne;e;no;e;ne;e;ne;ne;e;se;e;se;ne;e;e;ab;ne;no;no;no;n;e;n;ne;ne;ne;n;ne;n;no;n;n;n;n;no;n;n;ab;ne;n;no;n;o;no;n;ne;ne;n;n;e;se;ne;e;ne;se;ne;se;e;e;se;ne;e;ne;se;ne;ne;se;e;e;e;e;e;e;se;s;se;e;n;ne;ne;n;n;n;ne;ne;n;n;no;ne;e;ne;e;se;se;e;ne;e;e;se;e;ne;ne;ne;e;e;e;e;e;e;e;se;e;e;ne;e;e;ne;n;ne;e;e;se;e;e;ne;ne;ne;e;se;e;ne;e;ne;n;ne;e;se;ne;e;ne;e;se;e;ne;ne;e;e;e;e;e;e;e;e;e;e;e;ne;se;e;e;e;e;e;e;e;e;e;e;e;e;ne;e;se;e;ne;e;ne;n;ne;e;ne;se;se;e;ne;e;se;se;s;e;se;e;se;e;se;e;ne;e;e;ne;e;e;e;e;e;e;e;e;e;e;e;s;se;se;s;s;se;se;s;se;se;se;s;se;se;e;ne;e;e;ne;e;se;e;ne;ne;ne;e;ne;n;ne;e;ne;e;ne;e;se;e;ne;ne;n;ne;n;ne;ne;ne;ne;e;e;e;e;ne;ne;e;ne;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n}
+
+#GAlias {.AkaPTkCm} {
+e;e;ar;e;s;s;s;se;so;se;ab;e;e;e;e;e;se;se;s;e;e;se;se;se;se;s;s;e;se;e;ne;n;ne;n;se;e;e;ab;ne;e;ne;e;se;ne;e;ne;e;ne;e;ab;n;ne;ne;se;e;ne;e;ne;ne;ab;ne;e;ne;ne;n;ne;ne;e;e;ne;n;n;ab;ne;n;no;ne;n;ne;n;no;ne;ne;e;ne;se;ne;ne;e;ne;e;ar;e;ne;n;ne;e;ne;n;e;se;se;e;ne;e;ne;e;ne;e;se;e;ne;e;ne;n;ne;ne;ne;n;ne;ne;se;ne;n;ne;n;no;ne;ar;n;ne;e;ne;e;no;e;ne;e;ne;ne;e;se;e;se;ne;e;e;ab;ne;no;no;no;n;e;n;ne;ne;ne;n;ne;n;no;n;n;n;n;no;n;n;ab;ne;n;no;n;o;no;n;ne;ne;n;n;e;se;ne;e;ne;se;ne;se;e;e;se;ne;e;ne;se;ne;ne;se;e;e;e;e;e;e;se;s;se;e;n;ne;ne;n;n;n;ne;ne;n;n;no;ne;e;ne;e;se;se;e;ne;e;e;se;e;ne;ne;ne;e;e;e;e;e;e;e;se;e;e;ne;e;e;ne;n;ne;e;e;se;e;e;ne;ne;ne;e;se;e;ne;e;ne;n;ne;e;se;ne;e;ne;e;se;e;ne;ne;e;s;s;s;s;s;s;s;s;s;s;s;e;e;e;e;e;e;e;e;e;e;e;e;e;e;e;e;e;e;e;e;e;e;n;n;n;n;n;n;n;n;n;n;n;e;e;ne;e;se;e;ne;e;ne;n;ne;e;ne;se;se;e;ne;e;se;se;s;e;se;e;se;e;se;e;ne;e;e;ne;e;e;e;e;e;e;e;e;e;e;e;s;se;se;s;s;se;se;s;se;se;se;s;se;se;e;ne;e;e;ne;e;se;e;ne;ne;ne;e;ne;n;ne;e;ne;e;ne;e;se;e;ne;ne;n;ne;n;ne;ne;ne;ne;e;e;e;e;ne;ne;e;ne;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;e}
+
+#GAlias {.AkaPVelC} {
+e;e;ar;e;s;s;s;se;so;se;ab;e;e;e;e;e;se;se;s;e;e;se;se;se;se;s;s;e;se;e;ne;n;ne;n;se;e;e;ab;ne;e;ne;e;se;ne;e;ne;e;ne;e;ab;n;ne;ne;se;e;ne;e;ne;ne;ab;ne;e;ne;ne;n;ne;ne;e;e;ne;n;n;ab;ne;n;no;ne;n;ne;n;no;ne;ne;e;ne;se;ne;ne;e;ne;e;ar;e;ne;n;ne;e;ne;n;e;se;se;e;ne;e;ne;e;ne;e;se;e;ne;e;ne;n;ne;ne;ne;n;ne;ne;se;ne;n;ne;n;no;ne;ar;n;ne;e;ne;e;no;e;ne;e;ne;ne;e;se;e;se;ne;e;e;ab;ne;no;no;no;n;e;n;ne;ne;ne;n;ne;n;no;n;n;n;n;no;n;n;ab;ne;n;no;n;o;no;n;ne;ne;n;n;e;se;ne;e;ne;se;ne;se;e;e;se;ne;e;ne;se;ne;ne;se;e;e;e;e;e;e;se;s;se;e;n;ne;ne;n;n;n;ne;ne;n;n;no;ne;e;ne;e;se;se;e;ne;e;e;se;e;ne;ne;ne;e;e;e;e;e;e;e;se;e;e;ne;e;e;ne;n;ne;e;e;se;e;e;ne;ne;ne;e;se;e;ne;e;ne;n;ne;e;se;ne;e;ne;e;se;e;ne;ne;e;e;e;e;e;e;e;e;e;e;e;ne;se;e;e;e;e;e;e;e;e;e;e;e;e;ne;e;se;e;ne;e;ne;n;ne;e;ne;se;se;e;ne;e;se;se;s;e;se;e;se;e;se;e;ne;e;e;ne;e;e;e;e;e;e;e;e;e;e;e;s;se;se;s;s;se;se;s;se;se;se;s;se;se;e;s;s;o;o;so;o;so;o;so;o;so;so;s;so;s;s;so;s;s;s;so;s;s;s;s;se;s;s;s;se;s;s;se;s;s;s;se;e;e;e;ne;e;ne;n;n;n;n;n;n;n}
+
+#GAlias {.AkaPVelCm} {
+e;e;ar;e;s;s;s;se;so;se;ab;e;e;e;e;e;se;se;s;e;e;se;se;se;se;s;s;e;se;e;ne;n;ne;n;se;e;e;ab;ne;e;ne;e;se;ne;e;ne;e;ne;e;ab;n;ne;ne;se;e;ne;e;ne;ne;ab;ne;e;ne;ne;n;ne;ne;e;e;ne;n;n;ab;ne;n;no;ne;n;ne;n;no;ne;ne;e;ne;se;ne;ne;e;ne;e;ar;e;ne;n;ne;e;ne;n;e;se;se;e;ne;e;ne;e;ne;e;se;e;ne;e;ne;n;ne;ne;ne;n;ne;ne;se;ne;n;ne;n;no;ne;ar;n;ne;e;ne;e;no;e;ne;e;ne;ne;e;se;e;se;ne;e;e;ab;ne;no;no;no;n;e;n;ne;ne;ne;n;ne;n;no;n;n;n;n;no;n;n;ab;ne;n;no;n;o;no;n;ne;ne;n;n;e;se;ne;e;ne;se;ne;se;e;e;se;ne;e;ne;se;ne;ne;se;e;e;e;e;e;e;se;s;se;e;n;ne;ne;n;n;n;ne;ne;n;n;no;ne;e;ne;e;se;se;e;ne;e;e;se;e;ne;ne;ne;e;e;e;e;e;e;e;se;e;e;ne;e;e;ne;n;ne;e;e;se;e;e;ne;ne;ne;e;se;e;ne;e;ne;n;ne;e;se;ne;e;ne;e;se;e;ne;ne;e;s;s;s;s;s;s;s;s;s;s;s;e;e;e;e;e;e;e;e;e;e;e;e;e;e;e;e;e;e;e;e;e;e;n;n;n;n;n;n;n;n;n;n;n;e;e;ne;e;se;e;ne;e;ne;n;ne;e;ne;se;se;e;ne;e;se;se;s;e;se;e;se;e;se;e;ne;e;e;ne;e;e;e;e;e;e;e;e;e;e;e;s;se;se;s;s;se;se;s;se;se;se;s;se;se;e;s;s;o;o;so;o;so;o;so;o;so;so;s;so;s;s;so;s;s;s;so;s;s;s;s;se;s;s;s;se;s;s;se;s;s;s;se;e;e;e;ne;e;ne;n;n;n;n;n;n;n}
+
+#GAlias {.AkaPEloC} {
+e;e;ar;e;s;s;s;se;so;se;ab;e;e;e;e;e;se;se;s;e;e;se;se;se;se;s;s;e;se;e;ne;n;ne;n;se;e;e;ab;ne;e;ne;e;se;ne;e;ne;e;ne;e;ab;n;ne;ne;se;e;ne;e;ne;ne;ab;ne;e;ne;ne;n;ne;ne;e;e;ne;n;n;ab;ne;n;no;ne;n;ne;n;no;ne;ne;e;ne;se;ne;ne;e;ne;e;ar;e;ne;n;ne;e;ne;n;e;se;se;e;ne;e;ne;e;ne;e;se;e;ne;e;ne;n;ne;ne;ne;n;ne;ne;se;ne;n;ne;n;no;ne;ar;n;ne;e;ne;e;no;e;ne;e;ne;ne;e;se;e;se;ne;e;e;ab;ne;no;no;no;n;e;n;ne;ne;ne;n;ne;n;no;n;n;n;n;no;n;n;ab;ne;n;no;n;o;no;n;ne;ne;n;n;e;se;ne;e;ne;se;ne;se;e;e;se;ne;e;ne;se;ne;ne;se;e;e;e;e;e;e;se;s;se;e;n;ne;ne;n;n;n;ne;ne;n;n;no;ne;e;ne;e;se;se;e;ne;e;e;se;e;ne;ne;ne;e;e;e;e;e;e;e;se;e;e;ne;e;e;ne;n;ne;e;e;se;e;e;ne;ne;ne;e;se;e;ne;e;ne;n;ne;e;se;ne;e;ne;e;se;e;ne;ne;e;n;n;n;n;n;n;n;n;n;n;n;e;e;e;e;e;e;e;e;e;e;e;n;n;no;n;n;no;no;n;ne;n;ne;n;n;no;o;no;n;ne;n;ne;n;n;n;no;o;n;ne;ne;no;o;o;so;so;o;no;n;ne;e;n;no;o;o;no;n;n;n;no;no;o;no;n;ne;e;no;o;no;n;no;ar;o;o;ar;no;ne;e;ne;ar;o;o;no;so;no;no;no;ab;o;n;ne;e;ne;n;no;n;no;ne;n;n;n;n}
+
+#GAlias {.AkaPLes} {
+e;e;ar;e;n;n;ne;ne;ne;o;o}
+
+
+;Origen: parte este del puente, lessirnak (PepL)
+
+#GTrigger {Volcán de Ormeion: Este del puente *[[]o,e] } {
+FPathDisponible;
+#Var Mapa {
+Kattak, plaza:FPath;.PepLKtC
+|
+Anduar, plaza:FPath;.PepLAndC
+}
+} {} AnyCase
+
+
+#GAlias {.PepLKtC} {
+e;e;so;so;so;s;s;s;s;s;se;so;se;ab;e;e;e;e;e;se;se;s;e;e;se;se;se;se;s;s;e;se;e;ne;n;ne;n;se;e;e;ab;ne;e;ne;e;se;ne;e;ne;e;ne;e;ab;n;ne;ne;se;e;ne;e;ne;ne;ab;ne;e;ne;ne;n;ne;ne;e;e;ne;n;n;ab;ne;n;no;ne;n;ne;n;no;ne;ne;e;ne;se;ne;ne;e;ne;e;ar;e;ne;n;ne;e;ne;n;e;se;se;e;ne;e;ne;e;ne;e;se;e;ne;e;ne;n;ne;ne;ne;n;ne;ne;se;ne;n;ne;n;no;ne;ar;n;ne;e;ne;e;no;e;ne;e;ne;ne;e;se;e;se;ne;e;e;ab;ne;no;no;no;n;e;n;ne;ne;ne;n;ne;n;no;n;n;n;n;no;n;n;ab;ne;n;no;n;o;no;n;ne;ne;n;n;o;so;no;o;o;o;so;o;o;so;s;so;o;no;o;so;so;o;so;o;so;so;o;o;n;no;o;so;o;o;o;so;s;so;o;no;o;no;o;o;o;o;o;o;o;o;o;o;o}
+
+#GAlias {.PepLAndC} {
+e;e;so;so;so;s;s;s;s;s;se;so;se;ab;e;e;e;e;e;se;se;s;e;e;se;se;se;se;s;s;e;se;e;ne;n;ne;n;se;e;e;ab;ne;e;ne;e;se;ne;e;ne;e;ne;e;ab;n;ne;ne;se;e;ne;e;ne;ne;ab;ne;e;ne;ne;n;ne;ne;e;e;ne;n;n;ab;ne;n;no;ne;n;ne;n;no;ne;ne;e;ne;se;ne;ne;e;ne;e;ar;e;ne;n;ne;e;ne;n;e;se;se;e;ne;e;ne;e;ne;e;se;e;ne;e;ne;n;ne;ne;ne;n;ne;ne;se;ne;n;ne;n;no;ne;ar;n;ne;e;ne;e;no;e;ne;e;ne;ne;e;se;e;se;ne;e;e;ab;ne;no;no;no;n;e;n;ne;ne;ne;n;ne;n;no;n;n;n;n;no;n;n;ab;ne;n;no;n;o;no;n;ne;ne;n;n;e;se;ne;e;ne;se;ne;se;e;e;se;ne;e;ne;se;ne;ne;se;e;e;e;e;e;e;se;s;se;e;n;ne;ne;n;n;n;ne;ne;n;n;no;ne;e;ne;e;se;se;e;ne;e;e;se;e;ne;ne;ne;e;e;e;e;e;e;e;se;e;e;ne;e;e;ne;n;ne;e;e;se;e;e;ne;ne;ne;e;se;e;ne;e;ne;n;ne;e;se;ne;e;ne;e;se;e;ne;ne;e;e;e;e;e;e;e;e;e;e;e;e}
+
+;Origen: parte oeste del puente, lessirnak (PopL)
+
+#GTrigger {Volcán de Ormeion: Oeste del puente *[[]e,so] } {
+FPathDisponible;
+#Var Mapa {
+Teleferico, parte baja:FPath;.PopLTB
+}
+} {} AnyCase
+
+#GAlias {.PopLTB} {
+so;so;no;no;n;o;no;so;no;no;ar;ne;e;e;se;e;e;se;n;ne;o;n}
+
+
+;Origen: teleferico, parte baja (TB)
+
+#GTrigger {Puerto del Telef?rico *[[]?cabina?,s] } {
+FPathDisponible;
+#Var Mapa {
+Parte oeste del puente:FPath;.TBPop
+}
+} {} AnyCase
+
+#GAlias {.TBPop} {
+s;e;so;s;no;o;o;no;o;o;so;ab;se;se;ne;se;e;s;se;se;ne;ne}
+
+
+;Origen: Teleferico, parte alta (TA)
+
+#GTrigger {Puerto del Telef?rico *[[]?cabina?,n] } {
+FPathDisponible;
+#Var Mapa {
+Lessirnak, bordes del crater:FPath;.TALC
+}
+} {} AnyCase
+
+#GAlias {.TALC} {
+n;no;ne;n;ne;n;ne;ne;e;ne;e;e;se;se;so;ar;se;so;o;no;no;o;o;so;so;s;s;se;se;ar;se;e;e;ne;n;no;n;so;no}
+
+
+;Origen: bordes del crater, lessirnak (BCL):
+
+#GTrigger {Volcán de Ormeion: Bordes del Cráter *[[]?de?,so,se,ne,no] } {
+FPathDisponible;
+#Var Mapa {
+Teleferico, parte alta:FPath;.BCLTA
+}
+} {} AnyCase
+
+#GAlias {.BCLTA} {
+se;ne;s;se;s;so;o;o;no;ab;no;no;n;n;ne;ne;e;e;se;se;e;ne;no;ab;ne;no;no;o;o;so;o;so;so;s;so;s;so;se;s}

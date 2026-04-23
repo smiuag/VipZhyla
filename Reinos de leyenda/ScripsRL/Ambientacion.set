@@ -1,0 +1,157 @@
+;Módulo: Ambientacion.set
+;Versión: 1.0, 23/09/2025
+;Descripción: Funciones para el funcionamiento de los sonidos de ambientación.
+;Autor: Rhomdur
+
+
+;Carga de los archivos de ambiente de los diferentes reinos:
+#Load ScripsRL\Ambientacion\Asignacion.set
+#Load ScripsRL\Ambientacion\Anduar.set
+#Load ScripsRL\Ambientacion\Dendra.set
+#Load ScripsRL\Ambientacion\Generales.set
+;#Load ScripsRL\Ambientacion\Golthur.set
+#Load ScripsRL\Ambientacion\Grimoszk.set
+;#Load ScripsRL\Ambientacion\Kheleb.set
+;#Load ScripsRL\Ambientacion\Naggrung.set
+#Load ScripsRL\Ambientacion\Takome.set
+;#Load ScripsRL\Ambientacion\Urlom.set
+;#Load ScripsRL\Ambientacion\Veleiron.set
+
+
+;Declaración de variables:
+#Var SAmb1 0
+#Var SAmb2 0
+#Var SAmbAct1 0
+#Var SAmbAct2 0
+#Var HandAmb1 0
+#Var HandAmb2 0
+#Var VolAmb1 100
+#Var VolAmb2 70
+#Var FlagAmbienteAsignado 0
+#Var ControlAsignacionAmbientes 0
+#Var AmbienteActual
+
+#Var ListaAsignacionAmbientes {Anduar|Dendra|Golthur|Grimoszk|Kheleb|Naggrung|Takome|Urlom|Veleiron}
+
+
+
+;Función principal que controla la reproducción y detención de los sonidos ambientales:
+#GAlias FuncAmbiente {
+#If {@ModoAmbientacion = 0 or @AsignacionAmbienteRoom = 0} {#Abort};
+#Var FlagAmbienteAsignado 0;
+FuncBuscarAmbiente;
+;Detiene el sonido primario si corresponde:
+#If {@SAmbAct1 <> 0 and @SAmbAct1 <> @SAmb1} {
+ FuncStopAmbiente 1
+};
+;Reproducir sonido primario:
+#If {@SAmb1 <> 0 and @SambAct1 <> @SAmb1} {
+ #PlayLoop @SAmb1 @VolAmb1;
+ #Var HandAmb1 %PlayHandle;
+ #Var SAmbAct1 @SAmb1
+};
+;Detiene el sonido secundario si corresponde:
+#If {@SAmbAct2 <> 0 and @SAmbAct2 <> @SAmb2} {
+ FuncStopAmbiente 2
+};
+;Reproducir sonido secundario:
+#If {@SAmb2 <> 0 and @SambAct2 <> @SAmb2} {
+ #PlayLoop @SAmb2 @VolAmb2;
+ #Var HandAmb2 %PlayHandle;
+ #Var SAmbAct2 @SAmb2
+}
+}
+
+;Función para detener la reproducción de ambientes:
+;%1: 1, ambiente primario. 2, ambiente secundario.
+#GAlias FuncStopAmbiente {
+#If {%1 = 1} {
+ #PC @HandAmb1 stop;
+ #Var HandAmb1 0;
+ #Var SAmbAct1 0;
+ #Abort
+};
+#If {%1 = 2} {
+ #PC @HandAmb2 stop;
+ #Var HandAmb2 0;
+ #Var SAmbAct2 0
+}
+}
+
+
+;Función que asigna los sonidos de ambiente encontrados:
+;%1: sonido primario de día, 0 si no hay.
+;%2: Sonido primario de noche, 0 si no hay
+;%3: Sonido secundario de día, 0 si no hay.
+;%4: Sonido secundario de noche, 0 si no hay.
+;%5: sonido de amanecer, 0 si no hay.
+;%6: sonido de anochecer, 0 si no hay.
+#GAlias FuncAsignarAmbiente {
+#Var FlagAmbienteAsignado 1;
+#Var SAmanecer %5;
+#Var SAnochecer %6;
+#If {@MomentoDia = "dia"} {
+ #Var SAmb1 %1;
+ #Var SAmb2 %3;
+ #Abort
+};
+#If {@MomentoDia = "noche"} {
+ #Var SAmb1 %2;
+ #Var SAmb2 %4
+}
+}
+
+;Función de bajada de volúmenes de sonidos ambiente:
+#GAlias FuncVolAmbD {
+#If {@VolAmb2 > 0} {
+ #Mat VolAmb1 {@VolAmb1 - 5};
+ #Mat VolAmb2 {@VolAmb2 - 5};
+ #Mat VolAmbOficio {@VolAmbOficio - 5};
+ #Say {@VolAmb1} NoDisplay|Output
+} {
+ #Say {@VolAmb1} NoDisplay|Output;
+ #Play {RL\Modos\Ajuste limite.wav}
+};
+#If {@HandAmb1 <> 0} {
+ #Pc @HandAmb1 volume @VolAmb1
+};
+#If {@HandAmb2 <> 0} {
+ #Pc @HandAmb2 volume @VolAmb2
+};
+#If {@HandAmbOficio <> 0} {
+ #Pc @HandAmbOficio volume @VolAmb1
+}
+}
+
+;Función de subida de volúmenes de sonidos ambiente:
+#GAlias FuncVolAmbU {
+#If {@VolAmb1 < 100} {
+ #Mat VolAmb1 {@VolAmb1 + 5};
+ #Mat VolAmb2 {@VolAmb2 + 5};
+ #Mat VolAmbOficio {@VolAmbOficio + 5};
+ #Say {@VolAmb1} NoDisplay|Output
+} {
+ #Say {@VolAmb1} NoDisplay|Output;
+ #Play {RL\Modos\Ajuste limite.wav}
+};
+#If {@HandAmb1 <> 0} {
+ #Pc @HandAmb1 volume @VolAmb1
+};
+#If {@HandAmb2 <> 0} {
+ #Pc @HandAmb2 volume @VolAmb2
+};
+#If {@HandAmbOficio <> 0} {
+ #Pc @HandAmbOficio volume @VolAmbOficio
+}
+}
+
+
+;Keys de control de volúmen:
+
+#GKey ctrl-shift-PageDown {
+FuncVolAmbD
+}
+
+#GKey ctrl-shift-PageUp {
+FuncVolAmbU
+}

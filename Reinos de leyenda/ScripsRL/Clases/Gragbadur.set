@@ -1,0 +1,197 @@
+;Módulo: Gragbadur.set
+;Versión: 1.4, 09/05/2020
+;Descripción: Triggers y keys para la clase empalador gragbadur
+;Autor: Rhomdur.
+
+;Carga de configuraciones heredadas:
+#Load ScripsRL\Clases\Centrar.set
+#Load ScripsRL\Clases\Combate_fisico.set
+
+;Declaración de variables:
+#Var FlagBloqueosClase 1
+#Var FlagImpactosClase 1
+
+
+;Función para los bloqueos de clase.
+#GAlias FBloqueosClase {
+#Var FlagBloqueoV 1;
+#If {%IfWord("golpear",%1, )} {
+ #Play {RL\Bloqueos\Gragbadur\golpear.wav};
+ #Abort
+};
+#If {%IfWord("vortice",%1, )} {
+ #Play {RL\Bloqueos\Gragbadur\Vortice.wav};
+ #Abort
+};
+#Var FlagBloqueoV 0
+}
+
+
+;Función para los impactos de clase.
+#GAlias FImpactoHabilidadC {
+#If {%IfWord("golpear",%1, )} {
+ #Play {RL\Habilidades\Generales\Impacto*2.wav}
+};
+#If {%IfWord("vortice",%1, )} {
+ #Play {RL\Habilidades\Generales\Impacto*2.wav}
+}
+}
+
+
+;Golpeo:
+
+#GTrigger {[¡]Maldita sea! [¡]Tu víctima ha desaparecido!} {
+#Play {RL\Habilidades\Generales\Objetivo perdido.wav};
+#If {@ModoE = 1} {
+ #GagLine Voice
+}
+} {} AnyCase
+
+
+;Jugarreta:
+
+#GTrigger {*Te burlas muy ofensivamente de *} {
+#Alarm Jugarreta 35 {
+	 #Play {RL\Bloqueos\Bloqueo.wav};
+ #play {RL\Bloqueos\Gragbadur\Jugarreta.wav}
+};
+#Play {RL\Habilidades\Gragbadur\Jugarreta3.wav};
+#If {@ModoE = 1} {
+ #GagLine voice
+}
+} {} AnyCase
+
+#GTrigger {*[#]¡Con una jugada digna de un cerdo, pateas la entrepierna de * dolorido en el suelo!} {
+#Alarm Jugarreta 35 
+ {#Play {RL\Bloqueos\Bloqueo.wav};
+ #play {RL\Bloqueos\Gragbadur\Jugarreta.wav}
+};
+#Play {RL\Habilidades\Gragbadur\Jugarreta2.wav};
+#If {@ModoE = 1} {
+ #GagLine voice
+}
+} {} AnyCase
+
+#GTrigger {*[#] ¡Consigues sorprender a * lanzándole un buen puñado de arena a los ojos!} {
+#Alarm Jugarreta 35 
+ {#Play {RL\Bloqueos\Bloqueo.wav};
+ #play {RL\Bloqueos\Gragbadur\Jugarreta.wav}
+};
+#Play {RL\Habilidades\Gragbadur\Jugarreta1.wav};
+#If {@ModoE = 1} {
+ #GagLine voice
+}
+} {} AnyCase
+
+#GTrigger {[#] [¡]* es más list? de lo que suponías y esquiva tu jugada sucia, encarándose contra ti bastante enervad?!} {
+#Alarm Jugarreta 35 
+ {#Play {RL\Bloqueos\Bloqueo.wav};
+ #play {RL\Bloqueos\Gragbadur\Jugarreta.wav}
+};
+#Play {RL\Habilidades\Generales\Habilidad esquivada.wav};
+#If {@ModoE = 1} {
+ #GagLine voice
+}
+} {} AnyCase
+
+
+;Ansia:
+
+#GTrigger {Comienzas a sonreir mientras deseas beber la sangre de tu rival.} {
+#Play {RL\Habilidades\Gragbadur\Ansia on.wav}
+} {} AnyCase
+
+#GTrigger {Tu boca se hace agua al ver la sangre de tu rival, necesitas bebértela.} {
+#Play {RL\Habilidades\Gragbadur\Ansia on.wav}
+} {} AnyCase
+
+#GTrigger {¡Sangre, sangre, sangre sólo deseas ver más sangre!} {
+#Play {RL\Habilidades\Gragbadur\Ansia on.wav}
+} {} AnyCase
+
+#GTrigger {Abandonas el ansia por la sangre de tus rivales depués de haberte relamido hasta la tuya propia.} {
+#Play {RL\Habilidades\Gragbadur\Ansia off.wav}
+} {} AnyCase
+
+
+;Vórtice:
+
+#GTrigger {Ayudándote de tu fuerte torso y de la propia inercia, continúas girando tu * trazando un vórtice en el aire.} {
+;FContador 1;
+#Play {RL\Habilidades\Gragbadur\Vortice.wav};
+#If {@ModoE = 1} {
+ #GagLine voice
+}
+} {} AnyCase
+
+#GTrigger {La velocidad del vórtice comienza a ser considerable; oyes crujir los músculos de tu espalda y hombros mientras *} {
+;FContador 2;
+#Play {RL\Habilidades\Gragbadur\Vortice.wav};
+#If {@ModoE = 1} {
+ #GagLine voice
+}
+} {} AnyCase
+
+#GTrigger {El aire comienza a arremolinarse a tu alrededor, levantando el polvo del suelo. Tu vórtice empieza a alcanzar una velocidad vertiginosa.} {
+;FContador 3;
+#Play {RL\Habilidades\Gragbadur\Vortice.wav};
+#If {@ModoE = 1} {
+ #GagLine voice
+}
+} {} AnyCase
+
+#GTrigger {Eres incapaz de continuar el brutal ritmo de tu vórtice. Te desplomas inconsciente a causa del enorme mareo, golpeando tu arma contra el suelo.} {
+} {} AnyCase
+
+;¡Tu inexperiencia con el hacha doble provoca que fracases al intentar moverte mientras ejecutas el vórtice!
+
+
+;Combinaciones de teclas:
+
+#GKey alt-a {
+#If {@ModoJ = 2} {
+ abrazar xp
+} {
+ #If {@AutoCentrar = 1} {
+  centrar x;abrazar x
+ } {
+  abrazar x
+ }
+}}
+
+#GKey alt-s {
+#If {@ModoJ = 2} {
+ vortice xp
+} {
+ #If {@AutoCentrar = 1} {
+  centrar x;vortice x
+ } {
+  vortice x
+ }
+}}
+
+#GKey alt-d {
+#If {@ModoJ = 2} {
+ golpear xp
+} {
+ #If {@AutoCentrar = 1} {
+  centrar x;golpear x
+ } {
+  golpear x
+ }
+}}
+
+#GKey alt-f {
+#If {@ModoJ = 2} {
+ jugarreta xp
+} {
+ #If {@AutoCentrar = 1} {
+  centrar x;jugarreta x
+ } {
+  jugarreta x
+ }
+}}
+
+#GKey alt-r {ansia}	
+
+#GKey alt-e {devorar cuerpo}

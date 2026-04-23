@@ -1,0 +1,156 @@
+;Módulo: Paths_Veleiron.set
+;Versión: 1.6, 10/11/2018
+;Descripción: Paths que se originan o transcurren en el reino de Veleiron.
+;Autor: Rhomdur.
+
+
+;Origen:  cruce hacia Veleiron en Camino de Ëarmen, (CV1):
+
+#GTrigger {Camino de Ëarmen *[[]s,o,ne] } {
+FPathDisponible;
+#Var Mapa {
+Anduar, Plaza:FPath;.CV1AndC
+|
+Takome, plaza:FPath;.CV1TkC
+|
+Veleiron, plaza:FPath;.CV1VelC
+|
+Thorin, claro:FPath;.CV1ThC
+|
+Aldara, puertas:FPath;.CV1AldP
+|
+Poldarn, puertas:FPath;.CV1PdP
+|
+Cultivos Pantanosos, entrada sur:FPath;.CV1CPS
+}
+} {} AnyCase
+
+#GAlias {.CV1TkC} {
+ne;e;e;ne;e;se;e;ne;ne;ne;e;ne;n;ne;e;ne;e;ne;e;se;e;ne;ne;n;ne;n;ne;ne;ne;ne;e;e;e;e;ne;ne;e;ne;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n}
+
+#GAlias {.CV1AndC} {
+o;no;no;n;no;no;no;n;no;no;n;n;no;no;n;o;o;o;o;o;o;o;o;o;o;o;so;o;o;so;o;no;o;no;o;no;o;n;no;no;o;so;o;no;no;so;o;so;s;so;o;so;o;so;o;no;o;o;o;o;o;o;o;o;o;o;o;o;o}
+
+#GAlias {.CV1VelC} {
+s;s;o;o;so;o;so;o;so;o;so;so;s;so;s;s;so;s;s;s;so;s;s;s;s;se;s;s;s;se;s;s;se;s;s;s;se;e;e;e;ne;e;ne;n;n;n;n;n;n;n}
+
+#GAlias {.CV1ThC} {
+ne;e;e;ne;e;se;e;ne;ne;ne;e;ne;n;ne;e;ne;e;ne;e;se;e;ne;ne;n;ne;n;ne;ne;ne;ne;e;e;e;e;ne;ne;e;ne;n;n;o;o;no;no;no;o;no;o;o;o;no;o;o;no;o;no;n;no;no;o;no;n;no;no;n;ne;n;n;no;n;n;n;no;n;o;no;o;no;no;so;n;no;no;no;o;o;no;no;n;n;no;no;no;o;o;o;o;no;no;no;o;s;s;so;o;s}
+
+#GAlias {.CV1AldP} {
+ne;e;e;ne;e;se;e;ne;ne;ne;e;ne;n;ne;e;ne;e;ne;e;se;e;ne;ne;n;ne;n;ne;ne;ne;ne;e;e;e;e;ne;ne;e;ne;n;n;n;n;n;n;n;n;n;n;n;n;n;n;e;ne;e;se;ne;ne;e;se;ne;ne;n;no;ne;n;n;ne;ne;n;n;e;e;e;e;e;e;e;e;e;ne;e;se;e;e;se;so;se;se;e;ne;e;e;e;se;e;se;so;s;se;e;e;e;e}
+
+#GAlias {.CV1PdP} {
+ne;e;e;ne;e;se;e;ne;ne;ne;e;ne;n;ne;e;ne;e;ne;e;se;e;ne;ne;n;ne;n;ne;ne;ne;ne;e;e;e;e;ne;ne;e;ne;n;n;o;o;no;no;no;o;no;o;o;o;no;o;o;no;o;no;n;no;no;o;no;n;no;no;n;ne;n;n;no;n;n;n;no;n;o;no;o;no;no;so;n;no;no;no;o;o;no;no;n;n;no;no;no;o;o;o;o;no;no;no;o;o;no;no;ne;no;ne;n;ne;n;n;n;no;n;n;n;n;n;n;ne;ne;e;ne;se;e;n;ne;e;e;ne;n;ne;e;ne;e;se;e;ne;n;ne;e;e;ne}
+
+#GAlias {.CV1CPS} {
+s;s;o;o;so;o;so;o;so;o;so;so;s;so;s;s;so;s;s;s;so;s;s;s;s;se;s;s;s;se;s;s;se;s;s;s;se;so;o;o;so;se;se;s;s;s;s;so;s;s;s;so;s;s;se;se;s;se;se;ne;ne;se;ar;e;ne;e;ar;ne;ab;e;ab;e;ne;e;se;e;ne;e;se;ne;e;e;se;ne;e;e;se;e;e;ne;n;ne;e;e;ne;se;e;ne;se;e;n;ne;ne;no;ne;no;n;no;n;o;no;n;ne;n;ne;n;e;ne}
+
+
+;Origen: Cruce de caminos al oeste de veleiron, (CV2):
+
+#GTrigger {Camino de Ëarmen- Cruce de caminos *[[]so,no,e] } {
+FPathDisponible;
+#Var Mapa {
+Veleiron, plaza:FPath;.CV2VelC
+|
+Anduar, plaza:FPath;.CV2AndC
+|
+Takome, plaza:FPath;.CV2TkC
+|
+Thorin, claro:FPath;.CV2ThC
+|
+Poldarn, puertas:FPath;.CV2PdP
+|
+Cultivos Pantanosos, entrada sur:FPath;.CV2CPS
+}
+} {} AnyCase
+
+#GAlias {.CV2TkC} {
+no;n;n;n;no;n;n;no;n;n;n;no;n;n;n;n;ne;n;n;n;ne;n;n;ne;n;ne;ne;e;ne;e;ne;e;ne;e;e;n;n;ne;e;e;ne;e;se;e;ne;ne;ne;e;ne;n;ne;e;ne;e;ne;e;se;e;ne;ne;n;ne;n;ne;ne;ne;ne;e;e;e;e;ne;ne;e;ne;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n}
+
+#GAlias {.CV2AndC} {
+no;n;n;n;no;n;n;no;n;n;n;no;n;n;n;n;ne;n;n;n;ne;n;n;ne;n;ne;ne;e;ne;e;ne;e;ne;e;e;n;n;o;no;no;n;no;no;no;n;no;no;n;n;no;no;n;o;o;o;o;o;o;o;o;o;o;o;so;o;o;so;o;no;o;no;o;no;o;n;no;no;o;so;o;no;no;so;o;so;s;so;o;so;o;so;o;no;o;o;o;o;o;o;o;o;o;o;o;o;o}
+
+#GAlias {.CV2ThC} {
+no;n;n;n;no;n;n;no;n;n;n;no;n;n;n;n;ne;n;n;n;ne;n;n;ne;n;ne;ne;e;ne;e;ne;e;ne;e;e;n;n;ne;e;e;ne;e;se;e;ne;ne;ne;e;ne;n;ne;e;ne;e;ne;e;se;e;ne;ne;n;ne;n;ne;ne;ne;ne;e;e;e;e;ne;ne;e;ne;n;n;o;o;no;no;no;o;no;o;o;o;no;o;o;no;o;no;n;no;no;o;no;n;no;no;n;ne;n;n;no;n;n;n;no;n;o;no;o;no;no;so;n;no;no;no;o;o;no;no;n;n;no;no;no;o;o;o;o;no;no;no;o;s;s;so;o;s}
+
+#GAlias {.CV2PdP} {
+no;n;n;n;no;n;n;no;n;n;n;no;n;n;n;n;ne;n;n;n;ne;n;n;ne;n;ne;ne;e;ne;e;ne;e;ne;e;e;n;n;ne;e;e;ne;e;se;e;ne;ne;ne;e;ne;n;ne;e;ne;e;ne;e;se;e;ne;ne;n;ne;n;ne;ne;ne;ne;e;e;e;e;ne;ne;e;ne;n;n;o;o;no;no;no;o;no;o;o;o;no;o;o;no;o;no;n;no;no;o;no;n;no;no;n;ne;n;n;no;n;n;n;no;n;o;no;o;no;no;so;n;no;no;no;o;o;no;no;n;n;no;no;no;o;o;o;o;no;no;no;o;o;no;no;ne;no;ne;n;ne;n;n;n;no;n;n;n;n;n;n;ne;ne;e;ne;se;e;n;ne;e;e;ne;n;ne;e;ne;e;se;e;ne;n;ne;e;e;ne}
+
+#GAlias {.CV2VelC} {
+e;e;e;ne;e;ne;n;n;n;n;n;n;n}
+
+#GAlias {.CV2CPS} {
+so;o;o;so;se;se;s;s;s;s;so;s;s;s;so;s;s;se;se;s;se;se;ne;ne;se;ar;e;ne;e;ar;ne;ab;e;ab;e;ne;e;se;e;ne;e;se;ne;e;e;se;ne;e;e;se;e;e;ne;n;ne;e;e;ne;se;e;ne;se;e;n;ne;ne;no;ne;no;n;no;n;o;no;n;ne;n;ne;n;e;ne}
+
+
+;Origen: Cruce en earmen al sur de veleiron, (CV3).
+
+#GTrigger {Camino de Ëarmen- Senda del cauce sur *[[]se,n,so] } {
+FPathDisponible;
+#Var Mapa {
+Cultivos Pantanosos, entrada sur:FPath;.CV3CPS
+}
+} {} AnyCase
+
+#GAlias {.CV3CPS} {
+se;se;ne;ne;se;ar;e;ne;e;ar;ne;ab;e;ab;e;ne;e;se;e;ne;e;se;ne;e;e;se;ne;e;e;se;e;e;ne;n;ne;e;e;ne;se;e;ne;se;e;n;ne;ne;no;ne;no;n;no;n;o;no;n;ne;n;ne;n;e;ne}
+
+
+;Origen: Veleiron, (VelC):
+
+#GTrigger {Via de Dalaensar: Cruce *[[]e,o,s,n] } {
+FPathDisponible;
+#Var Mapa {
+Takome, plaza:FPath;.VelCTkC
+|
+Thorin, claro:FPath;.VelCThC
+|
+Anduar, Plaza:FPath;.VelCAndC
+|
+Poldarn, puertas:FPath;.VelCPdP
+|
+Kattak, Plaza:FPath;.VelCKtC
+|
+Kattak, Plaza (Por muralla norte de anduar):FPath;.VelCKtCM
+|
+Eloras, plaza:FPath;.VelCEloC
+|
+Aethia, plaza:FPath;.VelCAetC
+|
+Akanon, puertas:FPath;.VelCAkaP
+|
+Akanon, puertas (Por muralla norte de Anduar):FPath;.VelCAkaPM
+}
+} {} AnyCase
+
+#GAlias {.VelCTkC} {
+s;s;s;s;s;s;s;so;o;so;o;o;o;no;n;n;n;no;n;n;no;n;n;n;no;n;n;n;n;ne;n;n;n;ne;n;n;ne;n;ne;ne;e;ne;e;ne;e;ne;e;e;n;n;ne;e;e;ne;e;se;e;ne;ne;ne;e;ne;n;ne;e;ne;e;ne;e;se;e;ne;ne;n;ne;n;ne;ne;ne;ne;e;e;e;e;ne;ne;e;ne;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n}
+
+#GAlias {.VelCAndC} {
+s;s;s;s;s;s;s;so;o;so;o;o;o;no;n;n;n;no;n;n;no;n;n;n;no;n;n;n;n;ne;n;n;n;ne;n;n;ne;n;ne;ne;e;ne;e;ne;e;ne;e;e;n;n;o;no;no;n;no;no;no;n;no;no;n;n;no;no;n;o;o;o;o;o;o;o;o;o;o;o;so;o;o;so;o;no;o;no;o;no;o;n;no;no;o;so;o;no;no;so;o;so;s;so;o;so;o;so;o;no;o;o;o;o;o;o;o;o;o;o;o;o;o}
+
+#GAlias {.VelCKtC} {
+s;s;s;s;s;s;s;so;o;so;o;o;o;no;n;n;n;no;n;n;no;n;n;n;no;n;n;n;n;ne;n;n;n;ne;n;n;ne;n;ne;ne;e;ne;e;ne;e;ne;e;e;n;n;o;no;no;n;no;no;no;n;no;no;n;n;no;no;n;o;o;o;o;o;o;o;o;o;o;o;so;o;o;so;o;no;o;no;o;no;o;n;no;no;o;so;o;no;no;so;o;so;s;so;o;so;o;so;o;no;o;o;o;o;o;o;o;o;o;o;o;o;no;so;o;o;o;o;o;o;o;o;o;o;o;so;so;o;no;o;so;o;so;no;o;so;s;so;o;so;o;no;o;so;so;so;o;o;no;o;o;so;s;so;o;o;so;o;o;no;o;o;o;o;o;o;o;so;so;so;o;no;o;o;so;o;no;no;o;so;o;so;so;s;so;s;so;s;se;s;s;so;s;o;no;n;no;o;o;o;o;o;o;no;so;so;no;so;o;so;no;o;o;no;so;no;so;o;so;no;o;o;so;no;o;o;o;so;o;o;so;s;so;o;no;o;so;so;o;so;o;so;so;o;o;n;no;o;so;o;o;o;so;s;so;o;no;o;no;o;o;o;o;o;o;o;o;o;o;o}
+
+#GAlias {.VelCKtCM} {
+s;s;s;s;s;s;s;so;o;so;o;o;o;no;n;n;n;no;n;n;no;n;n;n;no;n;n;n;n;ne;n;n;n;ne;n;n;ne;n;ne;ne;e;ne;e;ne;e;ne;e;e;n;n;o;no;no;n;no;no;no;n;no;no;n;n;no;no;n;o;o;o;o;o;o;o;o;o;o;o;so;o;o;so;o;no;o;no;o;no;o;n;no;no;o;so;o;no;no;so;o;so;s;so;o;so;o;so;o;no;o;o;n;n;n;n;n;n;n;n;n;n;n;o;o;o;o;o;o;o;o;o;o;o;o;o;o;o;o;o;o;o;o;o;o;s;s;s;s;s;s;s;s;s;s;s;o;so;so;o;no;o;so;o;so;no;o;so;s;so;o;so;o;no;o;so;so;so;o;o;no;o;o;so;s;so;o;o;so;o;o;no;o;o;o;o;o;o;o;so;so;so;o;no;o;o;so;o;no;no;o;so;o;so;so;s;so;s;so;s;se;s;s;so;s;o;no;n;no;o;o;o;o;o;o;no;so;so;no;so;o;so;no;o;o;no;so;no;so;o;so;no;o;o;so;no;o;o;o;so;o;o;so;s;so;o;no;o;so;so;o;so;o;so;so;o;o;n;no;o;so;o;o;o;so;s;so;o;no;o;no;o;o;o;o;o;o;o;o;o;o}
+
+#GAlias {.VelCThC} {
+s;s;s;s;s;s;s;so;o;so;o;o;o;no;n;n;n;no;n;n;no;n;n;n;no;n;n;n;n;ne;n;n;n;ne;n;n;ne;n;ne;ne;e;ne;e;ne;e;ne;e;e;n;n;ne;e;e;ne;e;se;e;ne;ne;ne;e;ne;n;ne;e;ne;e;ne;e;se;e;ne;ne;n;ne;n;ne;ne;ne;ne;e;e;e;e;ne;ne;e;ne;n;n;o;o;no;no;no;o;no;o;o;o;no;o;o;no;o;no;n;no;no;o;no;n;no;no;n;ne;n;n;no;n;n;n;no;n;o;no;o;no;no;so;n;no;no;no;o;o;no;no;n;n;no;no;no;o;o;o;o;no;no;no;o;s;s;so;o;s}
+
+#GAlias {.VelCPdP} {
+s;s;s;s;s;s;s;so;o;so;o;o;o;no;n;n;n;no;n;n;no;n;n;n;no;n;n;n;n;ne;n;n;n;ne;n;n;ne;n;ne;ne;e;ne;e;ne;e;ne;e;e;n;n;ne;e;e;ne;e;se;e;ne;ne;ne;e;ne;n;ne;e;ne;e;ne;e;se;e;ne;ne;n;ne;n;ne;ne;ne;ne;e;e;e;e;ne;ne;e;ne;n;n;o;o;no;no;no;o;no;o;o;o;no;o;o;no;o;no;n;no;no;o;no;n;no;no;n;ne;n;n;no;n;n;n;no;n;o;no;o;no;no;so;n;no;no;no;o;o;no;no;n;n;no;no;no;o;o;o;o;no;no;no;o;o;no;no;ne;no;ne;n;ne;n;n;n;no;n;n;n;n;n;n;ne;ne;e;ne;se;e;n;ne;e;e;ne;n;ne;e;ne;e;se;e;ne;n;ne;e;e;ne}
+
+#GAlias {.VelCEloC} {
+s;s;s;s;s;s;s;so;o;so;o;o;o;no;n;n;n;no;n;n;no;n;n;n;no;n;n;n;n;ne;n;n;n;ne;n;n;ne;n;ne;ne;e;ne;e;ne;e;ne;e;e;n;n;o;no;no;n;no;no;no;n;no;no;n;n;no;no;n;o;o;o;o;o;o;o;o;o;o;o;so;o;o;so;o;no;o;no;o;no;o;n;no;no;o;so;o;no;no;so;o;so;s;so;o;so;o;so;o;no;o;o;n;n;n;n;n;n;n;n;n;n;n;o;o;o;o;o;o;o;o;o;o;o;n;n;no;n;n;no;no;n;ne;n;ne;n;n;no;o;no;n;ne;n;ne;n;n;n;no;o;n;ne;ne;no;o;o;so;so;o;no;n;ne;e;n;no;o;o;no;n;n;n;no;no;o;no;n;ne;e;no;o;no;n;no;ar;o;o;ar;no;ne;e;ne;ar;o;o;no;so;no;no;no;ab;o;n;ne;e;ne;n;no;n;no;ne;n;n;n;n}
+
+#GAlias {.VelCAkaP} {
+s;s;s;s;s;s;s;so;o;so;o;o;o;no;n;n;n;no;n;n;no;n;n;n;no;n;n;n;n;ne;n;n;n;ne;n;n;ne;n;ne;ne;e;ne;e;ne;e;ne;e;e;n;n;o;no;no;n;no;no;no;n;no;no;n;n;no;no;n;o;o;o;o;o;o;o;o;o;o;o;so;o;o;so;o;no;o;no;o;no;o;n;no;no;o;so;o;no;no;so;o;so;s;so;o;so;o;so;o;no;o;o;o;o;o;o;o;o;o;o;o;o;no;so;o;o;o;o;o;o;o;o;o;o;o;so;so;o;no;o;so;o;so;no;o;so;s;so;o;so;o;no;o;so;so;so;o;o;no;o;o;so;s;so;o;o;so;o;o;no;o;o;o;o;o;o;o;so;so;so;o;no;o;o;so;o;no;no;o;so;o;so;so;s;so;s;so;s;se;s;s;so;s;o;no;n;no;o;o;o;o;o;o;no;so;so;no;so;o;so;no;o;o;no;so;no;so;o;so;no;o;s;s;so;so;s;se;e;s;se;s;so;ar;s;s;se;s;s;s;s;se;s;so;s;so;so;so;s;o;s;se;se;se;so;ar;o;o;so;no;o;no;o;so;so;o;so;o;se;o;so;o;so;s;ab;so;se;s;so;s;so;no;so;so;s;so;so;so;s;so;o;so;o;no;o;so;o;so;o;so;o;no;no;o;s;so;o;so;s;so;o;ab;o;so;o;so;so;no;so;o;so;so;se;s;so;s;so;se;s;so;ar;s;s;so;o;o;so;so;s;so;so;o;so;ar;so;so;o;so;o;no;so;so;s;ar;o;so;o;so;o;so;no;o;so;o;so;ar;o;o;no;s;so;s;so;o;no;o;n;n;no;no;no;no;o;o;n;no;no;o;o;o;o;o;ar;no;ne;no;n;n;n;o;ab;o;o}
+
+#GAlias {.VelCAkaPM} {
+s;s;s;s;s;s;s;so;o;so;o;o;o;no;n;n;n;no;n;n;no;n;n;n;no;n;n;n;n;ne;n;n;n;ne;n;n;ne;n;ne;ne;e;ne;e;ne;e;ne;e;e;n;n;o;no;no;n;no;no;no;n;no;no;n;n;no;no;n;o;o;o;o;o;o;o;o;o;o;o;so;o;o;so;o;no;o;no;o;no;o;n;no;no;o;so;o;no;no;so;o;so;s;so;o;so;o;so;o;no;o;o;n;n;n;n;n;n;n;n;n;n;n;o;o;o;o;o;o;o;o;o;o;o;o;o;o;o;o;o;o;o;o;o;o;s;s;s;s;s;s;s;s;s;s;s;o;so;so;o;no;o;so;o;so;no;o;so;s;so;o;so;o;no;o;so;so;so;o;o;no;o;o;so;s;so;o;o;so;o;o;no;o;o;o;o;o;o;o;so;so;so;o;no;o;o;so;o;no;no;o;so;o;so;so;s;so;s;so;s;se;s;s;so;s;o;no;n;no;o;o;o;o;o;o;no;so;so;no;so;o;so;no;o;o;no;so;no;so;o;so;no;o;s;s;so;so;s;se;e;s;se;s;so;ar;s;s;se;s;s;s;s;se;s;so;s;so;so;so;s;o;s;se;se;se;so;ar;o;o;so;no;o;no;o;so;so;o;so;o;se;o;so;o;so;s;ab;so;se;s;so;s;so;no;so;so;s;so;so;so;s;so;o;so;o;no;o;so;o;so;o;so;o;no;no;o;s;so;o;so;s;so;o;ab;o;so;o;so;so;no;so;o;so;so;se;s;so;s;so;se;s;so;ar;s;s;so;o;o;so;so;s;so;so;o;so;ar;so;so;o;so;o;no;so;so;s;ar;o;so;o;so;o;so;no;o;so;o;so;ar;o;o;no;s;so;s;so;o;no;o;n;n;no;no;no;no;o;o;n;no;no;o;o;o;o;o;ar;no;ne;no;n;n;n;o;ab;o;o}
+
+#GAlias {.VelCAetC} {
+s;s;s;s;s;s;s;so;o;so;o;o;o;no;n;n;n;no;n;n;no;n;n;n;no;n;n;n;n;ne;n;n;n;ne;n;n;ne;n;ne;ne;e;ne;e;ne;e;ne;e;e;n;n;ne;e;e;ne;e;se;e;ne;ne;ne;e;ne;n;ne;e;ne;e;ne;e;se;e;ne;ne;n;ne;n;ne;ne;ne;ne;e;e;e;e;ne;ne;e;ne;n;n;o;o;no;no;no;o;no;o;o;o;no;o;o;no;o;no;n;no;no;o;no;n;no;no;n;ne;n;n;no;n;n;n;no;n;o;no;o;no;no;so;n;no;no;no;o;o;no;no;n;n;no;no;no;o;o;o;o;no;no;no;o;o;no;no;ne;no;n;o;no;no;so;no;ne;no;so;so;s;no;n;no;no;n;ne;n;ne;n;n;no;n;ne;n;o;no;n;no;ab;o;o;no;o;n;n;o;no;ab;o;no;n;n;no;ab;o;so;o;o;no;n;so;no;n;so;n;o;so;o;o;no;no;so;n;o;so;no;n;n;ne;n;no;n;so;no;ne;ne;e;no;o;no;n;n;n;no;n;no;n;no;n;no;ne;n;no;so;no;n;ne;ne;n;ne;ne;ne;e;e;se;e;e;se;se;ne;n;ne;se;e;se;ne;ne;e;ne;s;e;se;ne;se;se;se;s;e;e}

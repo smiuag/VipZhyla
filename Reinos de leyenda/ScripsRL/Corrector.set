@@ -1,0 +1,72 @@
+;Módulo: Corrector.set
+;Versión: 2.0, 17/04/2020
+;Descripción: Funciones para eliminar signos de puntuación molestos, indicadores de razas y textos sobrantes en canales.
+;Autor: Rhomdur
+
+;Declaración de variables:
+
+#Var Corregir
+#Var Comillas {"}
+
+;Textos de jugadores en canales: 
+#GAlias FuncCorrectorCanales {
+#Var Corregir %0
+}
+
+;Signos de puntuación molestos:
+#GAlias FuncCorrectorSignos {
+#Var Corregir {%0};
+#Var Corregir {%Replace(@Corregir,":",".")};
+#Var Corregir {%Replace(@Corregir,"[","")};
+#Var Corregir {%Replace(@Corregir,"]","")};
+#Var Corregir {%Replace(@Corregir,"¨","")};
+#Var Corregir {%Replace(@Corregir,"|","")};
+#Var Corregir {%Replace(@Corregir,"^","")};
+#Var Corregir {%Replace(@Corregir,"_","-")};
+#Var Corregir {%Replace(@Corregir,"·","")};
+#Var Corregir {%Replace(@Corregir,"*","")};
+#Var Corregir {%Replace(@Corregir,"-=(","")};
+#Var Corregir {%Replace(@Corregir,")=-","")};
+#Var Corregir {%Replace(@Corregir,@Comillas,)};
+#Var Corregir {%Trim(@Corregir)}
+}
+
+
+;Corrector de nombres de jugadores:
+#GAlias FuncCorrectorPlayers {
+#Var Corregir {%0};
+#Var Corregir {%Replace(@Corregir,"]","")};
+#Var Corregir {%Replace(@Corregir,"[","")};
+#Var Corregir {%Replace(@Corregir,"> ","")};
+#Var Corregir {%Replace(@Corregir,"\","")};
+#Var Corregir {%Replace(@Corregir,"|","")};
+#Var Corregir {%Replace(@Corregir,"-","")};
+#Var Corregir {%Replace(@Corregir,"/","")};
+#Var Corregir {%Replace(@Corregir,"+","")};
+#Var Corregir {%Replace(@Corregir,"*","")};
+#Var Corregir {%Replace(@Corregir," (Hum","")};
+#Var Corregir {%Replace(@Corregir," (Ena","")};
+#Var Corregir {%Replace(@Corregir," (Mdro","")};
+#Var Corregir {%Replace(@Corregir," (Melf","")};
+#Var Corregir {%Replace(@Corregir," (Hal","")};
+#Var Corregir {%Replace(@Corregir," (Gno","")};
+#Var Corregir {%Replace(@Corregir," (Orc","")};
+#Var Corregir {%Replace(@Corregir," (Sem","")};
+#Var Corregir {%Replace(@Corregir," (Gob","")};
+#Var Corregir {%Replace(@Corregir," (Kob","")};
+#Var Corregir {%Replace(@Corregir," (Org","")};
+#Var Corregir {%Replace(@Corregir," (Hlag","")};
+#Var Corregir {%Replace(@Corregir,"(","")};
+#Var Corregir {%Replace(@Corregir,")es","")};
+#Var Corregir {%Replace(@Corregir,")","")};
+#Var Corregir {%Replace(@Corregir,"  "," ")};
+#Var Corregir {%Trim(@Corregir)}
+}
+
+;Corector para eliminar signos de las salidas:
+#GAlias FCSalidas {
+#Var Corregir %0;
+#Var Corregir {%Replace(@Corregir,-,)};
+#Var Corregir {%Replace(@Corregir,|,)};
+#Var Corregir {%Trim(@Corregir)}
+}
