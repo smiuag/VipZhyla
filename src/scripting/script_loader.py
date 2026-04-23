@@ -39,6 +39,9 @@ class ScriptLoader:
         self.on_announce: Optional[Callable[[str], None]] = None
         self.on_get_room_data: Optional[Callable[[], Dict[str, Any]]] = None
         self.on_get_character: Optional[Callable[[], Dict[str, Any]]] = None
+        self.on_play_directional_sound: Optional[Callable[[str, str, float, int, str], None]] = None
+        self.on_update_sound_position: Optional[Callable[[str, str, float], None]] = None
+        self.on_stop_sound: Optional[Callable[[str], None]] = None
 
     def load_scripts(self) -> bool:
         """
@@ -79,6 +82,9 @@ class ScriptLoader:
             'announce': self._callback_announce,
             'get_room_data': self._callback_get_room_data,
             'get_character': self._callback_get_character,
+            'play_directional_sound': self._callback_play_directional_sound,
+            'update_sound_position': self._callback_update_sound_position,
+            'stop_sound': self._callback_stop_sound,
         }
 
         # Register each callback
@@ -137,6 +143,29 @@ class ScriptLoader:
         if self.on_get_character:
             return self.on_get_character()
         return {}
+
+    def _callback_play_directional_sound(
+        self, sound_path: str, direction: str, distance: float, loop_count: int, sound_id: str
+    ):
+        """Handle vipzhyla.play_directional_sound() from Lua."""
+        if self.on_play_directional_sound:
+            self.on_play_directional_sound(sound_path, direction, distance, loop_count, sound_id)
+        else:
+            logger.info(f"[Lua Directional Sound] {sound_path} dir={direction} dist={distance} id={sound_id}")
+
+    def _callback_update_sound_position(self, sound_id: str, direction: str, distance: float):
+        """Handle vipzhyla.update_sound_position() from Lua."""
+        if self.on_update_sound_position:
+            self.on_update_sound_position(sound_id, direction, distance)
+        else:
+            logger.info(f"[Lua Update Position] {sound_id} dir={direction} dist={distance}")
+
+    def _callback_stop_sound(self, sound_id: str):
+        """Handle vipzhyla.stop_sound() from Lua."""
+        if self.on_stop_sound:
+            self.on_stop_sound(sound_id)
+        else:
+            logger.info(f"[Lua Stop Sound] {sound_id}")
 
     # ===== Python -> Lua Event Dispatching =====
 

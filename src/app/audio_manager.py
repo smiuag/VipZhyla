@@ -267,6 +267,60 @@ class AudioManager:
             except Exception:
                 pass
 
+    # ===== Audio Panning Integration (Phase 6E) =====
+
+    def play_directional_sound(
+        self, sound_path: str, direction: str = "center", distance: float = 0.5, loop_count: int = 1
+    ):
+        """
+        Play a sound with 3D spatial panning.
+
+        Args:
+            sound_path: Path to sound file
+            direction: Direction name (front, left, right, back, above, below, etc.)
+            distance: Distance factor 0.0 (close) to 1.0 (far), affects volume
+            loop_count: Number of times to loop the sound
+
+        Returns:
+            bool: True if sound started playing, False if failed
+        """
+        from .audio_panning import get_panner
+
+        panner = get_panner()
+        left_pan, right_pan, distance_factor = panner.get_panning_values(direction, distance)
+
+        # For now, use center panning (pygame doesn't natively support stereo panning)
+        # Full implementation would use separate left/right channels or spatial audio library
+        pan = 0.5 if direction == "center" else (right_pan / (left_pan + right_pan + 0.001))
+
+        # Apply distance factor to volume
+        adjusted_volume = min(1.0, distance_factor * 1.2)
+
+        return self.play_sound(sound_path, pan=pan, volume=adjusted_volume)
+
+    def get_panning_info(self, direction: str) -> dict:
+        """
+        Get panning information for a direction.
+
+        Args:
+            direction: Direction name
+
+        Returns:
+            Dict with panning values and description
+        """
+        from .audio_panning import get_panner
+
+        panner = get_panner()
+        left_pan, right_pan, distance_factor = panner.get_panning_values(direction)
+
+        return {
+            "direction": direction,
+            "left_pan": left_pan,
+            "right_pan": right_pan,
+            "distance_factor": distance_factor,
+            "description": panner.get_panning_string(direction),
+        }
+
     def shutdown(self):
         """Shutdown audio manager and clean up resources."""
         if self.engine:

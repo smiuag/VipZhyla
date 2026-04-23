@@ -37,6 +37,7 @@ local FEATURES = {
     ability_detection = true,   -- Phase 6E: 50+ ability patterns
     professions = true,         -- Phase 6E: 5 profession systems (Minero, Herrero, Marinero, Jornalero, Crear)
     class_abilities = true,     -- Phase 6E: All 24 character classes implemented
+    audio_panning = true,       -- Phase 6E: 3D spatial audio with panning and distance simulation
     interactive_prompts = false, -- Phase 6E: Not yet (needs UI)
 }
 
@@ -136,6 +137,7 @@ function game.init()
     game.init_module("navigation")      -- Navigation/paths (Phase 6E)
     game.init_module("paths")           -- Path recording (Phase 6E)
     game.init_module("ambientacion")    -- Ambient sounds (Phase 6E)
+    game.init_module("audio")           -- Audio panning (Phase 6E)
     game.init_module("oficios")         -- Profession system (Phase 6E)
 
     -- Mark as initialized
@@ -148,6 +150,7 @@ function game.init()
     vipzhyla.say("  Ability Detection: " .. (FEATURES.ability_detection and "✓" or "✗"))
     vipzhyla.say("  Professions: " .. (FEATURES.professions and "✓" or "✗"))
     vipzhyla.say("  Character Classes: " .. (FEATURES.class_abilities and "✓" or "✗"))
+    vipzhyla.say("  Audio Panning: " .. (FEATURES.audio_panning and "✓" or "✗"))
 
     vipzhyla.announce("Scripts initialized successfully")
     helpers.log("All modules loaded and ready")
