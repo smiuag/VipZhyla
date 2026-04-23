@@ -2,153 +2,292 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+---
+
 ## Project Overview
 
-VipZhyla is a collection of scripts and configurations for the **Reinos de Leyenda** MUD (Multi-User Dungeon), designed for the VipMud client (v2.0+). The scripts were originally written by Rhomdur and are optimized for accessibility, particularly for visually impaired players using screen readers.
+**VipZhyla** is a desktop MUD client application being developed for **blind and visually impaired users**. It's designed to be similar to Mudlet or VipMud but with accessibility as the **primary goal**.
 
-The repository provides:
-- Sound triggers and audio feedback for gameplay events
-- Macros and keybindings for combat and movement
-- Character class-specific configurations
-- Pre-defined navigation paths (Paths) between game locations
-- Accessibility features for blind/visually impaired players
+### Key Principles
 
-### **Important: Read [accesibilidad.md](accesibilidad.md) First!**
+- **Accessibility First:** Screen reader support, keyboard-only navigation, audio feedback
+- **Visual Secondary:** GUI is provided for development and sighted users, but not required for functionality
+- **Target Users:** Blind/visually impaired MUD players who need an accessible client
+- **Inspiration:** VipMud (VipZhyla scripts), Mudlet, ChannelHistory accessibility patterns
 
-If you're developing a desktop application for blind/visually impaired users, read **[accesibilidad.md](accesibilidad.md)** for comprehensive accessibility guidelines integrating WCAG 2.2 principles and proven patterns from ChannelHistory. This is foundational knowledge for the entire project.
+---
 
-## Repository Structure
+## Core Development Files
+
+### Accessibility & Design
+
+- **[accesibilidad.md](accesibilidad.md)** — Complete accessibility guidelines (WCAG 2.2 + ChannelHistory patterns)
+  - Read this FIRST before implementing any UI
+  - Keyboard navigation standards
+  - Screen reader integration
+  - Audio feedback patterns
+  
+- **[scripts.md](scripts.md)** — Reference for VipZhyla MUD scripts (Reinos de Leyenda)
+  - Use when adding MUD-specific features
+  - Game mechanics, classes, keybindings
+  - Structure of existing MUD scripts
+
+### Scripts Folder
+
+- **[Scripts/](Scripts/)** — Complete VipZhyla MUD scripts
+  - 1700+ files for the Reinos de Leyenda MUD
+  - Use `scripts.md` as index (don't browse manually)
+  - Reference for MUD client features to implement
+
+---
+
+## Architecture
+
+### Technology Stack (To Be Decided)
+
+**Options to consider:**
+- **Python** (PyQt5/PySide2) — Fast development, good accessibility APIs
+- **Electron** (JS/React) — Cross-platform, but web-based (accessibility testing needed)
+- **C# WPF** (Windows) — Native accessibility APIs (Windows only)
+- **Qt** (C++/PyQt) — Strong accessibility, cross-platform
+
+**Decision factors:**
+- Screen reader support maturity
+- Keyboard-first input handling
+- Cross-platform requirements
+- Development speed
+
+### Application Structure (Proposed)
 
 ```
 VipZhyla/
-├── Scripts/                    # ⭐ All game scripts and configurations
-│   ├── Reinos de leyenda/      # Main game folder
-│   │   ├── ScripsRL/           # Script library
-│   │   │   ├── Clases/         # Character class scripts
-│   │   │   ├── Paths/          # Navigation routes
-│   │   │   ├── Ambientacion/   # Regional scripts
-│   │   │   ├── Oficios/        # Trade/profession scripts
-│   │   │   ├── Doc/            # Original documentation (Spanish)
-│   │   │   └── [core scripts]  # Alias, Combat, Movimiento, etc.
-│   │   └── Reinos de leyenda.set # Main game loader
-│   ├── sounds/                 # Sound effects (.wav files)
-│   ├── VipMud.set              # Client configuration
-│   ├── start.set               # Startup script
-│   └── speech.ini              # Screen reader config
-├── scripts.md                  # ⭐ Quick reference for Scripts folder
-├── accesibilidad.md            # Accessibility guidelines (WCAG 2.2 + ChannelHistory)
-├── CLAUDE.md                   # This file
-├── docs/WCAG2.2/               # WCAG 2.2 specification
-└── [other documentation]
+├── src/
+│   ├── app/
+│   │   ├── main.py                  # App entry point
+│   │   ├── accessibility_core.py    # Screen reader API wrapper
+│   │   ├── keyboard_handler.py      # Keyboard navigation engine
+│   │   └── audio_manager.py         # Sound & TTS management
+│   │
+│   ├── ui/
+│   │   ├── main_window.py           # Main GUI (secondary)
+│   │   ├── output_display.py        # Text output (visual + accessible)
+│   │   ├── input_field.py           # Command input
+│   │   └── status_bar.py            # Status display
+│   │
+│   ├── client/
+│   │   ├── connection.py            # MUD server connection
+│   │   ├── telnet_protocol.py       # Telnet implementation
+│   │   ├── mud_parser.py            # Parse MUD output
+│   │   └── message_buffer.py        # Message history
+│   │
+│   └── models/
+│       ├── character.py             # Player character data
+│       ├── channel.py               # Message channels (Bando, Telepátia, etc.)
+│       └── triggers.py              # Trigger/alias system
+│
+├── tests/
+│   ├── test_accessibility.py        # Screen reader compatibility
+│   ├── test_keyboard_nav.py         # Keyboard navigation
+│   └── test_mud_parsing.py          # MUD output parsing
+│
+├── docs/
+│   ├── ACCESSIBILITY.md             # [symlink to accesibilidad.md]
+│   ├── SCRIPTS_REFERENCE.md         # [symlink to scripts.md]
+│   └── ARCHITECTURE.md              # Design decisions
+│
+├── CLAUDE.md                        # This file
+└── README.md                        # User guide (to write)
 ```
 
-### **Quick Reference: See [scripts.md](scripts.md)**
+---
 
-The `Scripts/` folder contains 1700+ files. Don't browse it manually—use **[scripts.md](scripts.md)** as your index:
-- Structure overview
-- File purposes (when to edit, when to consult)
-- Keyboard shortcuts summary
-- Troubleshooting quick-fix table
-- Examples of common tasks
+## Development Phases
 
-## Where to Find Things
+### Phase 1: Core Infrastructure (NOW)
+- [ ] Choose technology stack
+- [ ] Implement accessibility core (screen reader API wrapper)
+- [ ] Implement keyboard navigation engine
+- [ ] Basic TTS/audio system
+- [ ] Test with NVDA/JAWS
 
-**⚠️ Don't browse Scripts/ manually—use [scripts.md](scripts.md) as your guide.**
+### Phase 2: Basic MUD Connection
+- [ ] Telnet protocol implementation
+- [ ] Server connection/disconnection
+- [ ] Basic text reception and display
+- [ ] Character management (login, character select)
 
-| Need | Location | Reference |
-|------|----------|-----------|
-| New character class | `Scripts/Reinos de leyenda/ScripsRL/Clases/` | [scripts.md § Carpeta Clases/](scripts.md#carpeta-clases) |
-| Navigation route | `Scripts/Reinos de leyenda/ScripsRL/Paths/` | [scripts.md § Carpeta Paths/](scripts.md#carpeta-paths) |
-| Regional content | `Scripts/Reinos de leyenda/ScripsRL/Ambientacion/` | [scripts.md § Carpeta Ambientacion/](scripts.md#carpeta-ambientacion) |
-| Trade/profession | `Scripts/Reinos de leyenda/ScripsRL/Oficios/` | [scripts.md § Carpeta Oficios/](scripts.md#carpeta-oficios) |
-| Sound file | `Scripts/sounds/RL/[Category]/` | [scripts.md § Carpeta sounds/RL/](scripts.md#carpeta-soundsrl) |
-| Global aliases | `Scripts/Reinos de leyenda/ScripsRL/Alias_Macros.set` | [scripts.md § Core Scripts](scripts.md#core-scripts-sistema-principal) |
-| Combat system | `Scripts/Reinos de leyenda/ScripsRL/Combate.set` | [scripts.md § Core Scripts](scripts.md#core-scripts-sistema-principal) |
-| Original docs | `Scripts/Reinos de leyenda/ScripsRL/Doc/` | [scripts.md § Referencias Documentación](scripts.md#referencias-documentación-original) |
+### Phase 3: Message Handling
+- [ ] Channel system (Bando, Telepátia, Sala, etc.)
+- [ ] Message history and navigation
+- [ ] Filtering and categorization
+- [ ] Audio triggers for events
 
-## Working with Script Files
+### Phase 4: Advanced Features
+- [ ] Trigger/alias system
+- [ ] Macro management
+- [ ] Combat assistance (health tracking, etc.)
+- [ ] Map/navigation support
 
-Scripts use `.set` file format (plain text containing VipMud scripting syntax: triggers, aliases, keybindings, etc.).
+### Phase 5: Polish & Testing
+- [ ] Screen reader testing (NVDA, JAWS, Narrator)
+- [ ] Keyboard-only workflow validation
+- [ ] Performance optimization
+- [ ] Documentation
 
-**Important:**
-- Always edit `.set` files with Notepad only. Other editors may add unwanted line breaks that corrupt the files.
-- Use `#Load` directives to include/inherit configuration from other files (e.g., `#Load ScripsRL\Clases\Soldados.set`).
-- Reload scripts after editing by pressing `Ctrl+Shift+R` in VipMud to activate changes.
-- Do not modify original files directly. Instead, create new `.set` files or extend existing ones to preserve compatibility with updates.
+---
 
-## Common Tasks
+## Accessibility Standards (Must Follow)
 
-### Adding a New Character Class Script
-1. Create a new file: `Reinos de leyenda/ScripsRL/Clases/YourClassName.set`
-2. Define keybindings, combat macros, and sound triggers for the class
-3. In the character's personal `.set` file, add: `#Load ScripsRL\Clases\YourClassName.set`
-4. Reload scripts with `Ctrl+Shift+R`
+### From WCAG 2.2 + ChannelHistory:
 
-### Adding Navigation Paths
-1. Create a new file in `Reinos de leyenda/ScripsRL/Paths/` with directions linking two game locations
-2. Update the path loader configuration to include the new route
-3. Players will hear "Path disponible.wav" and see the route with `Ctrl+Shift+M`
+**Keyboard Navigation:**
+```
+Alt + [Letter]             → Main functions
+Alt + Shift + [Letter]     → Extended functions
+Ctrl + [Letter]            → Global commands
+Alt + [Arrow keys]         → Navigation (up/down, left/right)
+Alt + Home/End             → Jump to start/end
+```
 
-### Adding Sound Triggers
-1. Add `.wav` files to `sounds/RL/` in the appropriate category folder
-2. Configure triggers in the appropriate `.set` file to play sounds on game events
+**Screen Reader Integration:**
+- Use native Windows Accessibility API (UI Automation) on Windows
+- Test with NVDA, JAWS, and Narrator
+- Announce all state changes
+- Clear, descriptive labels for all controls
 
-## Installation & Setup
+**Audio Feedback:**
+- No GUI-only feedback (colors, visual indicators)
+- All important events have audio/text equivalent
+- Configurable verbosity (verbose/expert modes)
 
-Full installation instructions are in **Reinos de leyenda/ScripsRL/Doc/Instrucciones instalación.txt** (Spanish).
+**No Mouse Required:**
+- Every feature must work with keyboard only
+- No mouse gestures or hover-only buttons
+- Tab navigation works predictably
 
-Brief overview:
-1. Download/install VipMud client (2.0+)
-2. Create a character in VipMud pointing to rlmud.org:5001
-3. Copy this repository to VipMud's user data folder
-4. Run `configurarficha` command in-game to apply config
-5. Run `configurarprompt[variant]` to set up the combat prompt for your character type
+See **[accesibilidad.md](accesibilidad.md)** for complete guidelines.
 
-## Game Modes (Togglable)
+---
 
-- **Original** (F11) — Standard MUD text, no filtering
-- **Combat** (F11) — Optimized for PvP/NPC combat, reduced spam
-- **XP** (F11) — Minimal feedback for experience grinding
-- **Idle** (F11) — Silenced for AFK gameplay
-- **Expert** (F10) — Toggle; abbreviates common text for experienced players
-- **Auto-center** (F7) — For classes with "centrar" ability; auto-cast before each attack
+## MUD Integration (Reference)
 
-## Keybinding Conventions
+The existing **Scripts/** folder contains:
+- Game mechanics, classes, abilities
+- Keybinding patterns (Alt+X for combat, etc.)
+- Channel structure (Bando, Telepátia, Sala, Gremio, etc.)
+- Message formatting
 
-- **Alt + letter** — Combat macros and movement (qwerty-based)
-- **Ctrl + key** — General game commands (crouch, stand, bury, etc.)
-- **Shift + Alt + key** — Extended combat/utility options
-- **F1–F6** — Chat/communication history and info queries
-- **Ctrl+Shift+M** — Display available navigation paths
-- **Ctrl+Shift+R** — Reload all scripts
+See **[scripts.md](scripts.md)** for quick reference.
 
-See **Reinos de leyenda/ScripsRL/Doc/Instrucciones manejo.txt** for complete keybinding reference (Spanish).
+**When implementing:**
+1. Mirror existing VipMud keybindings where possible
+2. Study Alias_Macros.set for standard patterns
+3. Implement channel system (Clases/Paths/Ambientacion as reference)
+4. Follow combat mode paradigm (Original/Combat/XP/Idle)
 
-## Accessibility Features
+---
 
-This project prioritizes screen reader support and audio feedback for blind/visually impaired players. Key features include:
-- Extensive sound triggers for combat, movement, and item events
-- Screen-reader-friendly prompt design
-- Chat history lists for reviewing communications
-- Audio-based combat awareness (enemy entry/exit, skill confirmations)
-- Configurable accessibility modes
+## Testing Requirements
 
-**For development guidelines and best practices:** See **[accesibilidad.md](accesibilidad.md)**
-- WCAG 2.2 principles adapted for desktop apps
-- ChannelHistory accessibility patterns
-- Keyboard navigation standards
-- Screen reader integration examples
-- Practical implementation checklist
+### Accessibility Testing
 
-## Contribution Notes
+- [ ] Test with NVDA (free screen reader)
+  ```bash
+  https://www.nvaccess.org/download/
+  ```
+- [ ] Test with Windows Narrator
+  ```bash
+  Win + Ctrl + Enter
+  ```
+- [ ] Test with JAWS (if available)
+- [ ] Keyboard-only: Disable mouse/touchpad, complete workflows
 
-- The project is written in Spanish and maintains Spanish names for game elements
-- Scripts are in active development; suggestions and improvements are welcomed
-- If a character class is not yet supported, use generic templates: `Combate_fisico.set` or `Centrar.set`
-- Test changes in VipMud before committing (reload with Ctrl+Shift+R)
+### Functional Testing
 
-## Documentation
+- [ ] Connect to MUD server
+- [ ] Receive and display text
+- [ ] Send commands
+- [ ] Navigate message history
+- [ ] Filter channels
+- [ ] Trigger/alias system
 
-- **Installation**: Reinos de leyenda/ScripsRL/Doc/Instrucciones instalación.txt
-- **Usage Guide**: Reinos de leyenda/ScripsRL/Doc/Instrucciones manejo.txt
-- **Change Log**: Reinos de leyenda/ScripsRL/Doc/Historial de cambios.txt
+### Code Quality
+
+- [ ] Unit tests for core modules
+- [ ] Integration tests for MUD communication
+- [ ] Accessibility assertions in tests
+- [ ] No console errors when screen reader attached
+
+---
+
+## Development Workflow
+
+### When Starting New Feature
+
+1. **Read accesibilidad.md** for accessibility requirements
+2. **Implement keyboard handler first** (before GUI)
+3. **Add screen reader announcements** alongside visual updates
+4. **Test with NVDA before** visual styling
+5. **Document keybindings** in code and CLAUDE.md
+
+### Before Committing
+
+- [ ] Screen reader still works (Narrator test)
+- [ ] All controls keyboard-accessible
+- [ ] No visual-only feedback
+- [ ] Code documented
+- [ ] Tests pass
+
+### Code Style
+
+- Use clear, descriptive variable names
+- Comment non-obvious accessibility code
+- Centralize keybinding definitions
+- Keep UI code separate from accessibility code
+
+---
+
+## Tools & References
+
+### Screen Readers
+- **NVDA** (Windows, free): https://www.nvaccess.org/
+- **Narrator** (Windows built-in): Win + Ctrl + Enter
+- **JAWS** (Windows, commercial): https://www.freedomscientific.com/
+
+### Accessibility APIs
+- **Windows UI Automation**: Microsoft.UIAutomation
+- **AT-SPI2** (Linux): Assistive Technology Service Provider Interface
+- **NSAccessibility** (macOS): Apple Accessibility API
+
+### Python Libraries (If using Python)
+- `pyautogui` — Keyboard input handling
+- `pyttsx3` — Text-to-speech
+- `pyperclip` — Clipboard access
+- `accessible-output2` — Screen reader integration (legacy, check alternatives)
+- `comtypes` — Windows API access
+
+### Documentation
+- [accesibilidad.md](accesibilidad.md) — Complete accessibility guidelines
+- [scripts.md](scripts.md) — VipZhyla MUD reference
+- [WCAG 2.2](docs/WCAG2.2/wcag22-full.html) — Web accessibility (principles apply)
+- [ChannelHistory](https://github.com/ironcross32/ChannelHistory) — Production accessibility example
+
+---
+
+## Next Steps
+
+1. **Decide technology stack** (Python/Qt/Electron/C#)
+2. **Set up project structure** (src/, tests/, docs/)
+3. **Implement accessibility core** (keyboard + TTS wrapper)
+4. **Test with NVDA** (before building UI)
+5. **Iteratively add features** (connection → text display → channels → triggers)
+
+---
+
+## Questions to Answer Before Development
+
+- What's the primary target OS? (Windows / Linux / macOS / Cross-platform?)
+- Python or compiled language?
+- How closely should we mirror VipMud keybindings?
+- Should we support Reinos de Leyenda MUD initially, or generic MUD clients?
+- Single-window or multi-window design?
