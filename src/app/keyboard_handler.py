@@ -45,6 +45,10 @@ class KeyAction(Enum):
     CANCEL = "cancel"                  # Escape
     COPY_TO_CLIPBOARD = "copy_clipboard"  # Ctrl+C
 
+    # Connection
+    CONNECT = "connect"              # Ctrl+K
+    DISCONNECT = "disconnect"        # Ctrl+D
+
     # UI toggles
     TOGGLE_VERBOSE = "toggle_verbose"  # Ctrl+Shift+V
 
@@ -97,6 +101,8 @@ class KeyboardHandler:
         key_map[(wx.WXK_RETURN, 0)] = KeyAction.SEND_COMMAND
         key_map[(wx.WXK_ESCAPE, 0)] = KeyAction.CANCEL
         key_map[(ord('C'), wx.MOD_CONTROL)] = KeyAction.COPY_TO_CLIPBOARD
+        key_map[(ord('K'), wx.MOD_CONTROL)] = KeyAction.CONNECT
+        key_map[(ord('D'), wx.MOD_CONTROL)] = KeyAction.DISCONNECT
         key_map[(ord('V'), wx.MOD_CONTROL | wx.MOD_SHIFT)] = KeyAction.TOGGLE_VERBOSE
 
         return key_map
@@ -163,6 +169,8 @@ class KeyboardHandler:
             KeyAction.SEND_COMMAND: "Enter - Send Command",
             KeyAction.CANCEL: "Escape - Cancel",
             KeyAction.COPY_TO_CLIPBOARD: "Ctrl+C - Copy to Clipboard",
+            KeyAction.CONNECT: "Ctrl+K - Connect to Server",
+            KeyAction.DISCONNECT: "Ctrl+D - Disconnect from Server",
             KeyAction.TOGGLE_VERBOSE: "Ctrl+Shift+V - Toggle Verbose Mode",
         }
         return descriptions.get(action, "Unknown action")
