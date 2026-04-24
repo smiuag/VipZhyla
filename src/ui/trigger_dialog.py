@@ -563,6 +563,7 @@ class TriggerEditDialog(wx.Dialog):
                 self.storage_op.Show()
             else:
                 self.storage_op.Hide()
+                self.storage_op.Enable(False)
             self.Layout()
 
     def on_add_action(self, event):
@@ -858,7 +859,7 @@ class TimerEditDialog(wx.Dialog):
         add_sizer = wx.BoxSizer(wx.HORIZONTAL)
         add_sizer.Add(wx.StaticText(self, label="Tipo:"), 0, wx.RIGHT | wx.ALIGN_CENTER_VERTICAL, 5)
 
-        self.action_type = wx.Choice(self, choices=["TTS", "GAG", "STORAGE", "EXECUTE_TRIGGER"])
+        self.action_type = wx.Choice(self, choices=["TTS", "GAG", "EXECUTE_TRIGGER"])
         self.action_type.SetSelection(0)
         self.action_type.SetName("Tipo de acción")
         self.action_type.Bind(wx.EVT_CHOICE, self.on_action_type_changed)
@@ -907,19 +908,10 @@ class TimerEditDialog(wx.Dialog):
         """Enable/disable action_value based on type."""
         action_type = self.action_type.GetStringSelection()
         is_gag = action_type == "GAG"
-        is_storage = action_type == "STORAGE"
         is_execute = action_type == "EXECUTE_TRIGGER"
 
-        # Show action_value for TTS, SOUND, EXECUTE_TRIGGER
-        self.action_value.Enable(not is_gag and not is_storage)
-
-        # Show storage_op only for STORAGE
-        if hasattr(self, 'storage_op'):
-            if is_storage:
-                self.storage_op.Show()
-            else:
-                self.storage_op.Hide()
-            self.Layout()
+        # Show action_value for TTS, EXECUTE_TRIGGER
+        self.action_value.Enable(not is_gag)
 
     def on_add_action(self, event):
         """Add action to list."""
@@ -929,7 +921,6 @@ class TimerEditDialog(wx.Dialog):
         action_type_map = {
             "TTS": ActionType.TTS,
             "GAG": ActionType.GAG,
-            "STORAGE": ActionType.STORAGE,
             "EXECUTE_TRIGGER": ActionType.EXECUTE_TRIGGER
         }
         action_type = action_type_map.get(action_type_str, ActionType.TTS)
