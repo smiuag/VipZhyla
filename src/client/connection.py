@@ -71,18 +71,22 @@ class MUDConnection:
             return False
 
         try:
+            print(f"[CONNECTION] Connecting to {host}:{port}...")
             self._set_state(ConnectionState.CONNECTING, f"Conectando a {host}:{port}...")
 
             # Create socket
             self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.socket.settimeout(30)  # 30s connect timeout
+            print(f"[CONNECTION] Socket created, attempting connect...")
 
             # Connect
             self.socket.connect((host, port))
+            print(f"[CONNECTION] Connected successfully!")
 
             # Send GMCP negotiation
             iac_do_gmcp = bytes([255, 253, 201])  # IAC DO GMCP
             self.socket.sendall(iac_do_gmcp)
+            print(f"[CONNECTION] GMCP negotiation sent")
 
             # Start receive thread
             self.running = True
@@ -91,11 +95,15 @@ class MUDConnection:
                 daemon=True
             )
             self.receive_thread.start()
+            print(f"[CONNECTION] Receive thread started")
 
             self._set_state(ConnectionState.CONNECTED, f"Conectado a {host}:{port}")
             return True
 
         except Exception as e:
+            print(f"[CONNECTION ERROR] {str(e)}")
+            import traceback
+            traceback.print_exc()
             self.socket = None
             self._set_state(ConnectionState.ERROR, f"Error de conexión: {str(e)}")
             return False
@@ -202,42 +210,59 @@ class MUDConnection:
         Continuously reads from socket, processes via TelnetProcessor,
         invokes callbacks for text and GMCP data.
         """
+        print(f"[RECEIVE] Loop started")
         try:
             while self.running and self.socket:
                 try:
                     # Receive data
+                    print(f"[RECEIVE] Waiting for data...")
                     raw_bytes = self.socket.recv(4096)
+                    print(f"[RECEIVE] Got {len(raw_bytes)} bytes: {repr(raw_bytes[:100])}")
 
                     if not raw_bytes:
                         # Connection closed by server
+                        print(f"[RECEIVE] Server closed connection")
                         break
 
                     # Process via Telnet protocol
                     text, gmcp_list = self.telnet.process(raw_bytes)
+                    print(f"[RECEIVE] Processed: text={repr(text[:80] if text else '')}, gmcp={len(gmcp_list)} msgs")
 
                     # Decode text
                     if text:
                         # text is already a str from telnet_protocol
                         # Invoke callback
                         if self.on_data:
+                            print(f"[RECEIVE] Calling on_data callback")
                             self.on_data(text)
+                        else:
+                            print(f"[RECEIVE] WARNING: on_data callback not set!")
 
                     # Process GMCP data
                     for module, data in gmcp_list:
                         if self.on_gmcp:
+                            print(f"[RECEIVE] GMCP: {module}")
                             self.on_gmcp(module, data)
 
                 except socket.timeout:
                     # Timeout, continue
+                    print(f"[RECEIVE] Timeout, waiting...")
                     continue
                 except Exception as e:
                     # Error in receive, disconnect
+                    print(f"[RECEIVE] Error: {str(e)}")
+                    import traceback
+                    traceback.print_exc()
                     self._set_state(ConnectionState.ERROR, f"Error recibiendo: {str(e)}")
                     break
 
         except Exception as e:
+            print(f"[RECEIVE] Loop error: {str(e)}")
+            import traceback
+            traceback.print_exc()
             self._set_state(ConnectionState.ERROR, f"Error en receive loop: {str(e)}")
         finally:
+            print(f"[RECEIVE] Loop ended")
             self.running = False
             if self.socket:
                 try:

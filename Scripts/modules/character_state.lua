@@ -1,16 +1,23 @@
 --[[
-Estado Module - Character and game state tracking
+Character State Module - Character, room, and combat state tracking
+
+This module tracks the *core character + world state* (vitals, location,
+combat participation). It is distinct from `estados.lua`, which tracks
+status effects / buffs / debuffs.
 
 Manages:
-- Character state (name, level, class, race, HP, MP)
+- Character state (name, level, class, race, HP, MP, energy)
 - Room state (name, exits, description)
 - Combat state (in_combat, current_enemy, enemies list)
-- General game flags and conditions
+- General game flags and conditions (connected, logged_in, health alerts)
 
 Data flow:
 - GMCP is primary source (Char.Status, Char.Vitals, Room.Info)
 - Text patterns are fallback for non-GMCP servers
 - Events are emitted on state changes (health alerts, etc.)
+
+File renamed from estado.lua → character_state.lua (Phase 7C audit)
+to disambiguate from estados.lua (status effects).
 
 Ported from: Funciones.set + Combate.set state tracking
 --]]
@@ -58,7 +65,7 @@ local FLAGS = {
 
 -- Initialize module
 function M.init(game)
-    vipzhyla.say("[ESTADO] Initializing state tracking system")
+    vipzhyla.say("[CHARACTER_STATE] Initializing character/room/combat state tracking")
 end
 
 -- ===== Character State Updates =====

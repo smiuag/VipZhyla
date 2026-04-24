@@ -214,11 +214,13 @@ function M.f() return M.move("fuera") end
 
 -- Debug/info
 function M.log_status()
+    local speed_names = {"normal", "turbo", "ultra"}
+    local speed_label = speed_names[STATE.movement_speed + 1] or "desconocida"
     vipzhyla.say("[MOVIMIENTO STATUS]")
     vipzhyla.say("  Sala actual: " .. STATE.last_room)
     vipzhyla.say("  Última dirección: " .. STATE.last_direction)
     vipzhyla.say("  En movimiento: " .. (STATE.is_moving and "sí" or "no"))
-    vipzhyla.say("  Velocidad: " .. ({"normal", "turbo", "ultra"}[STATE.movement_speed + 1]))
+    vipzhyla.say("  Velocidad: " .. speed_label)
 end
 
 return M

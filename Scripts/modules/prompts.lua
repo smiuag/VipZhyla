@@ -1,9 +1,14 @@
---[[
+--[==[
 Interactive prompts module for character setup and game configuration.
 Provides dialogs for class selection, game mode configuration, and preferences.
 
 Phase 6E: Interactive UI for initial character setup and settings management.
-]]
+
+NOTE (Phase 7C audit): This file previously used bare [[ ... ]] blocks as
+function-body docstrings, which Lua parses as (prev_expr)[<long_string>] —
+a syntax/runtime error. All such blocks have been converted to proper
+--[[ ... ]] comments.
+]==]
 
 local M = {}
 
@@ -22,7 +27,7 @@ end
 --[[ ===== Class Selection Dialog ===== ]]
 
 function M.prompt_class_selection()
-    [[
+    --[[
     Show dialog to select character class.
     Returns: class name (string) or nil if cancelled
     ]]
@@ -32,7 +37,7 @@ function M.prompt_class_selection()
         "Asesino", "Ranger", "Monje", "Nigromante", "Templario",
         "Hechicero", "Brujo", "Alquimista", "Cazador de Dragones",
         "Ermitaño", "Trovador", "Corsario", "Espadachín", "Caballero Oscuro",
-        "Paladín", "Khazad"
+        "Paladín", "Khazad", "Chamán"
     }
 
     return M._show_list_dialog("Selecciona tu Clase", "Clases Disponibles:", classes, "Aceptar", "Cancelar")
@@ -41,7 +46,7 @@ end
 --[[ ===== Game Mode Configuration ===== ]]
 
 function M.prompt_combat_mode()
-    [[
+    --[[
     Show dialog to select combat mode.
     Returns: mode number (1=Combat, 2=XP, 3=Idle) or nil if cancelled
     ]]
@@ -60,7 +65,7 @@ function M.prompt_combat_mode()
 end
 
 function M.prompt_travel_speed()
-    [[
+    --[[
     Show dialog to select travel speed mode.
     Returns: mode number (0=Normal, 1=Turbo, 2=Ultra) or nil if cancelled
     ]]
@@ -79,7 +84,7 @@ function M.prompt_travel_speed()
 end
 
 function M.prompt_expert_mode()
-    [[
+    --[[
     Show yes/no dialog for expert mode.
     Returns: 1 (expert) or 0 (normal) or nil if cancelled
     ]]
@@ -88,7 +93,7 @@ function M.prompt_expert_mode()
 end
 
 function M.prompt_silent_mode()
-    [[
+    --[[
     Show yes/no dialog for silent mode.
     Returns: 1 (silent) or 0 (normal) or nil if cancelled
     ]]
@@ -99,7 +104,7 @@ end
 --[[ ===== Audio Configuration ===== ]]
 
 function M.prompt_audio_options()
-    [[
+    --[[
     Show dialog for audio configuration options.
     Returns: table with selected options or nil if cancelled
     ]]
@@ -114,7 +119,7 @@ function M.prompt_audio_options()
 end
 
 function M.prompt_verbosity_level()
-    [[
+    --[[
     Show dialog to select TTS verbosity level.
     Returns: level name (string) or nil if cancelled
     ]]
@@ -133,7 +138,7 @@ end
 --[[ ===== Preferences Dialog ===== ]]
 
 function M.prompt_preferences()
-    [[
+    --[[
     Show comprehensive preferences dialog.
     Returns: table with preference settings or nil if cancelled
     ]]
@@ -155,7 +160,7 @@ end
 --[[ ===== Internal Helpers ===== ]]
 
 function M._show_list_dialog(title, message, items, ok_label, cancel_label)
-    [[
+    --[[
     Show a list selection dialog.
 
     Args:
@@ -177,7 +182,7 @@ function M._show_list_dialog(title, message, items, ok_label, cancel_label)
 end
 
 function M._show_yes_no_dialog(title, message)
-    [[
+    --[[
     Show a yes/no confirmation dialog.
 
     Args:
@@ -196,7 +201,7 @@ function M._show_yes_no_dialog(title, message)
 end
 
 function M._show_text_dialog(title, message, default_value)
-    [[
+    --[[
     Show a text input dialog.
 
     Args:
@@ -216,7 +221,7 @@ function M._show_text_dialog(title, message, default_value)
 end
 
 function M._show_multi_select_dialog(title, message, items, ok_label, cancel_label)
-    [[
+    --[[
     Show a multi-selection dialog (checkboxes).
 
     Args:
@@ -240,7 +245,7 @@ end
 --[[ ===== Startup Wizard ===== ]]
 
 function M.run_startup_wizard()
-    [[
+    --[[
     Run the complete startup wizard for new characters.
     Prompts for class, game modes, audio options, and preferences.
 
@@ -275,7 +280,7 @@ function M.run_startup_wizard()
     -- Step 4: Expert Mode
     vipzhyla.announce("Paso 4: Modo experto")
     config.expert_mode = M.prompt_expert_mode()
-    if not config.expert_mode then
+    if config.expert_mode == nil then
         return nil
     end
 
@@ -292,7 +297,7 @@ function M.run_startup_wizard()
 end
 
 function M.save_character_config(class_name, config)
-    [[
+    --[[
     Save character configuration for loading on restart.
 
     Args:
@@ -307,7 +312,7 @@ function M.save_character_config(class_name, config)
 end
 
 function M.load_character_config(class_name)
-    [[
+    --[[
     Load saved character configuration.
 
     Args:

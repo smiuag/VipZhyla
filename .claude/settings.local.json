@@ -26,7 +26,20 @@
       "Bash(cd C:\\\\\\\\proyectos\\\\\\\\Claude\\\\\\\\VipZhyla)",
       "Bash(pkill -f \"python src/main.py\")",
       "Bash(xargs wc *)",
-      "Bash(python3 *)"
+      "Bash(python3 *)",
+      "Bash(cat)",
+      "Read(//tmp/**)",
+      "Bash(grep -E \"modules/[a-z_]+\\\\.lua$\")",
+      "Bash(grep -E \"\\\\.lua$\")",
+      "Bash(command -v lua)",
+      "Bash(lua -v)",
+      "Bash(command -v luac)",
+      "Bash(command -v luac5.1)",
+      "Bash(command -v luajit)",
+      "Bash(./venv/Scripts/python.exe test_startup.py)",
+      "Bash(./venv/Scripts/pip.exe list *)",
+      "Bash(./venv/Scripts/pip.exe install *)",
+      "Bash(/c/proyectos/Claude/VipZhyla/venv/Scripts/python *)"
     ]
   }
 }

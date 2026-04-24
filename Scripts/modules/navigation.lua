@@ -49,11 +49,16 @@ end
 -- Register a route
 function M.register_route(route_name, room_sequence)
     if type(room_sequence) == "string" then
-        -- Split by pipes if provided as string
-        room_sequence = {}
-        for room in room_sequence:gmatch("[^|]+") do
-            table.insert(room_sequence, room)
+        -- Split by pipes if provided as string.
+        -- Bugfix (Phase 7C audit): the old code reassigned
+        -- room_sequence = {} BEFORE iterating it, which produced an empty
+        -- route. Use a separate source string and a fresh result table.
+        local source_str = room_sequence
+        local parsed = {}
+        for room in source_str:gmatch("[^|]+") do
+            table.insert(parsed, room)
         end
+        room_sequence = parsed
     end
 
     ROUTES[route_name] = room_sequence

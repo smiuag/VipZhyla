@@ -89,6 +89,10 @@ class AudioManager:
             if self.engine:
                 self.engine.say(message)
                 self.engine.runAndWait()
+        except RuntimeError as e:
+            # Ignore pyttsx3 "run loop already started" on Windows (benign quirk)
+            if "run loop already started" not in str(e):
+                print(f"Error speaking message: {e}")
         except Exception as e:
             print(f"Error speaking message: {e}")
 

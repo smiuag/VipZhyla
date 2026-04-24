@@ -1,11 +1,5 @@
 {
-  "blocked_players": [
-    "goblin"
-  ],
-  "blocked_keywords": [
-    "hola"
-  ],
-  "blocked_channels": [
-    "general"
-  ]
+  "blocked_players": [],
+  "blocked_keywords": [],
+  "blocked_channels": []
 }

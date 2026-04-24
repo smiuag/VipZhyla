@@ -119,23 +119,26 @@ function M.on_gmcp(module_name, data)
     M.on_message(channel_key, formatted)
 end
 
--- Map GMCP channel names to internal keys
+-- Map GMCP channel names to internal keys.
+-- Bugfix (Phase 7C audit): non-ASCII identifiers ("telepátia", "ciudadanía")
+-- are NOT valid Lua identifiers in Lua 5.4+ — they must be expressed as
+-- bracketed string keys.
 function M.map_gmcp_channel(gmcp_name)
     local map = {
-        bando = "bando",
-        telepátia = "telepathy",
-        telepathy = "telepathy",
-        sala = "sala",
-        gremio = "gremio",
-        familia = "familia",
-        rol = "rol",
-        ciudad = "ciudadania",
-        ciudadanía = "ciudadania",
-        chat = "chat",
-        eventos = "eventos",
-        sistema = "sistema",
-        especial = "especial",
-        general = "sala",
+        bando        = "bando",
+        ["telepátia"] = "telepathy",
+        telepathy    = "telepathy",
+        sala         = "sala",
+        gremio       = "gremio",
+        familia      = "familia",
+        rol          = "rol",
+        ciudad       = "ciudadania",
+        ["ciudadanía"] = "ciudadania",
+        chat         = "chat",
+        eventos      = "eventos",
+        sistema      = "sistema",
+        especial     = "especial",
+        general      = "sala",
     }
     return map[gmcp_name] or "sala"
 end

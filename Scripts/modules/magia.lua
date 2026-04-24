@@ -8,16 +8,20 @@ Phase 7A: Complete game state management
 
 local M = {}
 
--- Magic schools (for Reinos de Leyenda)
+-- Magic schools (for Reinos de Leyenda).
+-- Phase 7C audit: 9 canonical schools — every school below has at least
+-- one castable spell defined in SPELLS so that get_spells_by_school()
+-- never returns an empty list for a valid school.
 local MAGIC_SCHOOLS = {
-    arcana = "Arcana",
-    fuego = "Fuego",
-    hielo = "Hielo",
+    arcana       = "Arcana",
+    fuego        = "Fuego",
+    hielo        = "Hielo",
     electricidad = "Electricidad",
-    naturaleza = "Naturaleza",
-    sanacion = "Sanacion",
-    oscuridad = "Oscuridad",
-    luz = "Luz",
+    naturaleza   = "Naturaleza",
+    sanacion     = "Sanacion",
+    oscuridad    = "Oscuridad",
+    luz          = "Luz",
+    elemental    = "Elemental",  -- catch-all elemental school
 }
 
 -- Spell database
@@ -109,6 +113,88 @@ local SPELLS = {
         description = "Revive fallen ally",
         castable = true,
     },
+
+    -- Electricity School
+    rayo_electrico = {
+        name = "Rayo Eléctrico",
+        school = "electricidad",
+        cost = 16,
+        cooldown = 6,
+        description = "Lightning bolt",
+        castable = true,
+    },
+    cadena_relampago = {
+        name = "Cadena de Relámpagos",
+        school = "electricidad",
+        cost = 35,
+        cooldown = 25,
+        description = "Chain lightning to multiple targets",
+        castable = true,
+    },
+
+    -- Nature School
+    enredadera = {
+        name = "Enredadera",
+        school = "naturaleza",
+        cost = 12,
+        cooldown = 15,
+        description = "Roots target in place",
+        castable = true,
+    },
+    espinas = {
+        name = "Espinas",
+        school = "naturaleza",
+        cost = 22,
+        cooldown = 12,
+        description = "Thorn projectiles",
+        castable = true,
+    },
+
+    -- Darkness School
+    rayo_oscuro = {
+        name = "Rayo Oscuro",
+        school = "oscuridad",
+        cost = 18,
+        cooldown = 8,
+        description = "Shadow bolt",
+        castable = true,
+    },
+    maldicion = {
+        name = "Maldición",
+        school = "oscuridad",
+        cost = 25,
+        cooldown = 30,
+        description = "Curse target",
+        castable = true,
+    },
+
+    -- Light School
+    luz_sagrada = {
+        name = "Luz Sagrada",
+        school = "luz",
+        cost = 20,
+        cooldown = 10,
+        description = "Holy light damage",
+        castable = true,
+    },
+    bendicion = {
+        name = "Bendición",
+        school = "luz",
+        cost = 18,
+        cooldown = 60,
+        description = "Bless an ally",
+        castable = true,
+    },
+
+    -- Generic Elemental
+    explosion_elemental = {
+        name = "Explosión Elemental",
+        school = "elemental",
+        cost = 30,
+        cooldown = 18,
+        description = "Random elemental burst",
+        castable = true,
+    },
 }
 
 -- Spell casting patterns
@@ -179,7 +265,10 @@ function M.get_max_mana()
 end
 
 function M.get_mana_percent()
-    --[[Get mana as percentage of max.]]
+    --[[Get mana as percentage of max. Safe vs. zero-max.]]
+    if magic_state.max_mana <= 0 then
+        return 0
+    end
     return (magic_state.mana / magic_state.max_mana) * 100
 end
 
@@ -324,9 +413,22 @@ function M.learn_spell(spell_name)
 end
 
 function M.forget_spell(spell_name)
-    --[[Forget a learned spell.]]
+    --[[
+    Forget a learned spell.
+    Bugfix (Phase 7C audit): the original implementation crashed when
+    `spell_name` was not a known spell, because it indexed
+    `SPELLS[spell_name].name` unconditionally.
+    ]]
+    if not known_spells[spell_name] then
+        return false
+    end
     known_spells[spell_name] = nil
-    vipzhyla.announce("Olvidaste: " .. SPELLS[spell_name].name)
+    local spell = SPELLS[spell_name]
+    if spell then
+        vipzhyla.announce("Olvidaste: " .. spell.name)
+    else
+        vipzhyla.announce("Olvidaste: " .. spell_name)
+    end
     return true
 end
 
@@ -429,11 +531,17 @@ end
 --[[ ===== Status Display ===== ]]
 
 function M.format_magic_status()
-    --[[Return formatted magic status string.]]
+    --[[Return formatted magic status string. Safe vs. zero-max.]]
     local lines = {}
     table.insert(lines, "=== MAGIA ===")
 
-    local mana_bar = math.floor(magic_state.mana / magic_state.max_mana * 20)
+    local ratio = 0
+    if magic_state.max_mana > 0 then
+        ratio = magic_state.mana / magic_state.max_mana
+    end
+    local mana_bar = math.floor(ratio * 20)
+    if mana_bar < 0 then mana_bar = 0 end
+    if mana_bar > 20 then mana_bar = 20 end
     local mana_str = string.rep("=", mana_bar) .. string.rep("-", 20 - mana_bar)
 
     table.insert(lines, string.format(

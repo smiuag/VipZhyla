@@ -1,9 +1,14 @@
---[[
+--[==[
 Audio panning and spatial sound effects module.
 Provides directional audio, distance simulation, and HRTF filtering.
 
 Phase 6E: Immersive 3D audio for ambient sounds and environmental effects.
-]]
+
+NOTE (Phase 7C audit): This file previously used bare [[ ... ]] blocks as
+function-body docstrings. In Lua that is parsed as (prev_expr)[<long_string>]
+and would crash at call time. All such blocks have been converted to proper
+--[[ ... ]] comments.
+]==]
 
 local M = {}
 
@@ -51,9 +56,9 @@ local active_sounds = {}
 -- Global panning settings
 local config = {
     panning_enabled = true,
-    hrtf_enabled = true,      -- HRTF filtering for elevation
+    hrtf_enabled = true,        -- HRTF filtering for elevation
     distance_simulation = true, -- Volume scaling for distance
-    max_sounds = 8,            -- Maximum simultaneous panned sounds
+    max_sounds = 8,             -- Maximum simultaneous panned sounds
 }
 
 function M.init(game)
@@ -64,7 +69,7 @@ function M.init(game)
 end
 
 function M.play_directional(sound_file, direction, distance, loop_count)
-    [[
+    --[[
     Play a sound with 3D panning.
 
     Args:
@@ -117,7 +122,7 @@ function M.play_directional(sound_file, direction, distance, loop_count)
 end
 
 function M.update_position(sound_id, direction, distance)
-    [[
+    --[[
     Update the position of an active sound.
 
     Args:
@@ -147,7 +152,7 @@ function M.update_position(sound_id, direction, distance)
 end
 
 function M.stop_sound(sound_id)
-    [[Stop a directional sound.]]
+    --[[Stop a directional sound.]]
 
     if active_sounds[sound_id] then
         active_sounds[sound_id] = nil
@@ -160,15 +165,20 @@ function M.stop_sound(sound_id)
 end
 
 function M.stop_all()
-    [[Stop all active directional sounds.]]
+    --[[Stop all active directional sounds.]]
 
+    -- Snapshot keys first to avoid mutating the table while iterating
+    local ids = {}
     for sound_id, _ in pairs(active_sounds) do
+        table.insert(ids, sound_id)
+    end
+    for _, sound_id in ipairs(ids) do
         M.stop_sound(sound_id)
     end
 end
 
 function M.get_direction_description(direction)
-    [[
+    --[[
     Get a human-readable description of direction.
     E.g., "left" -> "to your left"
     ]]
@@ -187,12 +197,12 @@ function M.get_direction_description(direction)
         center = "all around",
     }
 
-    direction = DIRECTIONS[direction:lower()] or "center"
+    direction = DIRECTIONS[(direction or "center"):lower()] or "center"
     return descriptions[direction] or "around you"
 end
 
 function M.announce_sound(message, direction, distance)
-    [[
+    --[[
     Announce a sound with TTS location description.
 
     E.g., announce_sound("footsteps", "left")
@@ -225,12 +235,12 @@ function M.set_distance_simulation_enabled(enabled)
 end
 
 function M.get_active_sounds()
-    [[Return table of all active directional sounds.]]
+    --[[Return table of all active directional sounds.]]
     return active_sounds
 end
 
 function M.get_config()
-    [[Return current audio panning configuration.]]
+    --[[Return current audio panning configuration.]]
     return config
 end
 

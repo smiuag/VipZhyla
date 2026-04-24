@@ -123,8 +123,9 @@ class MainWindow(wx.Frame):
         self.gmcp.set_room_movimiento_callback(self._on_room_movimiento)
 
         # Initialize Lua script system (Phase 7D)
+        # NOTE: Actual initialization happens AFTER panel/output_text creation
+        # because _init_script_loader() calls self.append_output()
         self.script_loader = None
-        self._init_script_loader()
 
         # Create main panel
         self.main_panel = AccessiblePanel(
@@ -193,6 +194,10 @@ class MainWindow(wx.Frame):
         sizer.Add(self.input_field, 0, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 10)
 
         self.main_panel.SetSizer(sizer)
+
+        # Initialize Lua script system NOW that output_text exists
+        # (BUG #1 fix: _init_script_loader() calls self.append_output())
+        self._init_script_loader()
 
         # Status bar (HP/MP and connection status)
         self.status_bar = self.CreateStatusBar(2)
@@ -386,12 +391,16 @@ class MainWindow(wx.Frame):
         # Check blocklist first (filters display + TTS)
         channel_str = channel.value if channel else ""
         if self.blocklist.should_filter(text, channel_str):
+            print(f"[BLOCKLIST] Filtered: {repr(text[:60])}")
             return  # Don't display or announce blocked messages
 
+        # ALWAYS display in output_text (this is the main view)
+        print(f"[OUTPUT] Appending: {repr(text[:60])}")
         wx.CallAfter(self.output_text.AppendText, text)
+
         # Announce MUD output to screen reader users (text-to-speech)
-        # Only announce if connected (avoid spamming initial welcome message)
-        if self.connection.state == ConnectionState.CONNECTED:
+        # Announce if actively connected OR connecting (so welcome messages are heard)
+        if self.connection.state in (ConnectionState.CONNECTED, ConnectionState.CONNECTING):
             # Check if channel is muted
             if channel and self.channel_config.is_muted(channel):
                 return  # Don't announce muted channels
@@ -605,6 +614,10 @@ class MainWindow(wx.Frame):
 
     def _on_mud_data(self, text: str):
         """Callback for text data from MUD."""
+        # DEBUG: Log all raw data received
+        if text.strip():
+            print(f"[MUD] Raw data: {repr(text[:100])}")
+
         # Parse each line
         for line in text.split('\n'):
             if line.strip():
@@ -620,10 +633,13 @@ class MainWindow(wx.Frame):
                         self.audio.announce("No localizado. Sala ambigua o no encontrada.", AudioLevel.MINIMAL)
 
                 parsed = self.parser.parse_line(line)
+                print(f"[PARSED] {parsed.channel.value}: {repr(parsed.text[:80])}")
                 gagged = self.trigger_manager.evaluate(parsed)
                 self.buffer.add(parsed)
                 if not gagged:
                     self.append_output(f"{parsed.text}\n", parsed.channel)
+                else:
+                    print(f"[GAG] Message gagged by trigger")
 
     def _on_gmcp(self, module: str, data: dict):
         """Callback for GMCP data from MUD."""
@@ -854,23 +870,29 @@ class MainWindow(wx.Frame):
         self.script_loader.on_load_character_config = self._load_lua_config
 
     def _get_character_state(self) -> dict:
-        """Return current character state to Lua."""
+        """Return current character state to Lua.
+
+        Uses getattr with defaults to stay safe if attributes are missing
+        (Lua is the source of truth — Python state may be stale or empty).
+        """
+        cs = self.character_state
         return {
-            "name": self.character_state.name,
-            "level": self.character_state.level,
-            "class": self.character_state.character_class,
-            "hp": self.character_state.hp,
-            "maxhp": self.character_state.max_hp,
-            "mp": self.character_state.mp,
-            "maxmp": self.character_state.max_mp,
+            "name": getattr(cs, "name", "Unknown"),
+            "level": getattr(cs, "level", 0),
+            "class": getattr(cs, "character_class", "") or getattr(cs, "clase", ""),
+            "hp": getattr(cs, "hp", 0),
+            "maxhp": getattr(cs, "max_hp", 0) or getattr(cs, "maxhp", 0),
+            "mp": getattr(cs, "mp", 0),
+            "maxmp": getattr(cs, "max_mp", 0) or getattr(cs, "maxmp", 0),
         }
 
     def _get_room_state(self) -> dict:
         """Return current room state to Lua."""
+        cs = self.character_state
         return {
-            "name": self.character_state.room_name,
-            "exits": self.character_state.room_exits,
-            "description": getattr(self.character_state, "room_description", ""),
+            "name": getattr(cs, "room_name", ""),
+            "exits": getattr(cs, "room_exits", []),
+            "description": getattr(cs, "room_description", ""),
         }
 
     def _show_list_dialog_from_lua(self, title: str, message: str, items: list, ok_label: str, cancel_label: str):

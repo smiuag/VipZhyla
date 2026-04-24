@@ -332,16 +332,42 @@ end
 
 function M.detect_item_gain(text)
     --[[
-    Detect item gain from MUD message.
+    Detect item gain from MUD message and try to extract the item name.
+
+    Phase 7C audit: previously this returned the literal string
+    "unknown_item" for every match, hiding *what* was gained. Now we try
+    a small set of capture patterns ("Obtienes <item>", "Recibes <item>",
+    etc.) before falling back to a generic match.
 
     Returns:
-        Item name if detected, nil otherwise
+        Item name (string) if detected, nil otherwise.
     ]]
 
+    if not text or text == "" then return nil end
+
+    local lower = text:lower()
+
+    -- Try the most informative capture patterns first.
+    local capture_patterns = {
+        "obtienes%s+(.+)",
+        "recibes%s+(.+)",
+        "ganaste%s+(.+)",
+        "obtienen%s+(.+)",
+        "recebes%s+(.+)",
+    }
+    for _, pat in ipairs(capture_patterns) do
+        local item = lower:match(pat)
+        if item then
+            -- Strip trailing punctuation/whitespace.
+            item = item:gsub("[%.%!%?%s]+$", "")
+            if item ~= "" then return item end
+        end
+    end
+
+    -- Fall back: detected an item gain pattern, but couldn't isolate the
+    -- name. Tell the caller something was picked up so it can announce.
     for _, pattern in ipairs(ITEM_GAIN_PATTERNS) do
-        if string.find(text:lower(), pattern:lower(), 1, true) then
-            -- Try to extract item name
-            -- This is simplified - real parsing would extract the item name
+        if string.find(lower, pattern:lower(), 1, true) then
             return "unknown_item"
         end
     end

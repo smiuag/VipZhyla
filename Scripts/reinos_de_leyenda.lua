@@ -128,7 +128,7 @@ function game.init()
     vipzhyla.announce("Initializing " .. GAME_NAME .. " scripts version " .. GAME_SCRIPT_VERSION)
 
     -- Load modules in dependency order
-    game.init_module("estado")          -- Base state tracking
+    game.init_module("character_state") -- Base char/room/combat state (was: estado.lua)
     game.init_module("configuracion")   -- Configuration
     game.init_module("comunicaciones")  -- Channel system
     game.init_module("movimiento")      -- Movement system
@@ -139,7 +139,7 @@ function game.init()
     game.init_module("ambientacion")    -- Ambient sounds (Phase 6E)
     game.init_module("audio")           -- Audio panning (Phase 6E)
     game.init_module("prompts")         -- Interactive prompts (Phase 6E)
-    game.init_module("oficios")         -- Profession system (Phase 6E)
+    game.init_module("oficios")         -- Profession system (Phase 6E, integrates submodules)
     game.init_module("estados")         -- Status effects/buffs (Phase 7A)
     game.init_module("inventario")      -- Inventory/items system (Phase 7A)
     game.init_module("magia")           -- Magic/spell system (Phase 7A)
@@ -175,10 +175,14 @@ function game.on_mud_message(channel, text)
         pcall(game.modules.estados.process_message, text)
     end
 
-    -- Auto-detect item gains/losses from messages (Phase 7A)
+    -- Auto-detect item gains/losses from messages (Phase 7A).
+    -- Bugfix (Phase 7C audit): the previous code captured the boolean
+    -- success flag of pcall, NOT the actual detection result, so the
+    -- "detect_item_loss" branch effectively never ran. Use the second
+    -- pcall return value (the detector's return) to decide what happened.
     if game.modules.inventario then
-        local gain = pcall(game.modules.inventario.detect_item_gain, text)
-        if not gain then
+        local ok, gained = pcall(game.modules.inventario.detect_item_gain, text)
+        if not ok or gained == nil then
             pcall(game.modules.inventario.detect_item_loss, text)
         end
     end
@@ -191,6 +195,12 @@ function game.on_mud_message(channel, text)
     -- Auto-detect events from messages (Phase 7A)
     if game.modules.eventos then
         pcall(game.modules.eventos.process_message, text)
+    end
+
+    -- Auto-detect profession events while a profession is active
+    -- (Phase 7C audit: oficios wasn't being routed any text before).
+    if game.modules.oficios then
+        pcall(game.modules.oficios.process_message, text)
     end
 
     -- Detect NPCs in messages (Phase 7A)
@@ -222,9 +232,13 @@ function game.on_gmcp_data(module_name, data)
         game.character.mp = data.mp or 0
         game.character.maxmp = data.maxmp or 0
     elseif module_name == "Room.Info" then
-        game.room.name = data.name or "Unknown"
-        game.room.exits = data.exits or {}
-        game.room.description = data.desc or ""
+        -- Use bracket access + pcall guards: lupa raises KeyError on missing
+        -- attribute access against Python dicts, so dot access on data.desc
+        -- crashes when GMCP omits the field. Bracket access returns nil safely.
+        game.room.name = (data and data['name']) or "Unknown"
+        game.room.exits = (data and data['exits']) or {}
+        local ok, desc = pcall(function() return data and data['desc'] end)
+        game.room.description = (ok and desc) or ""
     end
 
     -- Dispatch to modules

@@ -57,6 +57,13 @@ class KeyAction(Enum):
     SHOW_HELP = "show_help"            # F1
     STOP_SPEECH = "stop_speech"        # Ctrl+S
 
+    # Macros
+    EXECUTE_MACRO_F12 = "execute_macro_f12"  # F12
+    EXECUTE_MACRO_F13 = "execute_macro_f13"  # F13
+    EXECUTE_MACRO_F14 = "execute_macro_f14"  # F14
+    EXECUTE_MACRO_F15 = "execute_macro_f15"  # F15
+    SHOW_MACROS = "show_macros"              # Ctrl+M
+
 
 class KeyboardHandler:
     """Handle keyboard input and route to appropriate handlers."""
@@ -103,6 +110,12 @@ class KeyboardHandler:
         key_map[(wx.WXK_F3, wx.MOD_SHIFT)] = KeyAction.SHOW_TELEPATHY_HISTORY
         key_map[(wx.WXK_F4, wx.MOD_SHIFT)] = KeyAction.SHOW_EVENT_LIST
 
+        # Macro keys (F12-F15)
+        key_map[(wx.WXK_F12, 0)] = KeyAction.EXECUTE_MACRO_F12
+        key_map[(wx.WXK_F13, 0)] = KeyAction.EXECUTE_MACRO_F13
+        key_map[(wx.WXK_F14, 0)] = KeyAction.EXECUTE_MACRO_F14
+        key_map[(wx.WXK_F15, 0)] = KeyAction.EXECUTE_MACRO_F15
+
         # Global commands
         key_map[(wx.WXK_RETURN, 0)] = KeyAction.SEND_COMMAND
         key_map[(wx.WXK_ESCAPE, 0)] = KeyAction.CANCEL
@@ -110,6 +123,7 @@ class KeyboardHandler:
         key_map[(ord('C'), wx.MOD_CONTROL)] = KeyAction.COPY_TO_CLIPBOARD
         key_map[(ord('K'), wx.MOD_CONTROL)] = KeyAction.CONNECT
         key_map[(ord('D'), wx.MOD_CONTROL)] = KeyAction.DISCONNECT
+        key_map[(ord('M'), wx.MOD_CONTROL)] = KeyAction.SHOW_MACROS
         key_map[(ord('P'), wx.MOD_CONTROL)] = KeyAction.SHOW_PREFERENCES
         key_map[(ord('S'), wx.MOD_CONTROL)] = KeyAction.STOP_SPEECH
         key_map[(ord('T'), wx.MOD_CONTROL)] = KeyAction.SHOW_TRIGGERS
@@ -186,5 +200,10 @@ class KeyboardHandler:
             KeyAction.STOP_SPEECH: "Ctrl+S - Stop Speech",
             KeyAction.SHOW_TRIGGERS: "Ctrl+T - Manage Triggers/Aliases/Timers",
             KeyAction.TOGGLE_VERBOSE: "Ctrl+Shift+V - Toggle Verbose Mode",
+            KeyAction.EXECUTE_MACRO_F12: "F12 - Execute Macro F12",
+            KeyAction.EXECUTE_MACRO_F13: "F13 - Execute Macro F13",
+            KeyAction.EXECUTE_MACRO_F14: "F14 - Execute Macro F14",
+            KeyAction.EXECUTE_MACRO_F15: "F15 - Execute Macro F15",
+            KeyAction.SHOW_MACROS: "Ctrl+M - Manage Macros",
         }
         return descriptions.get(action, "Unknown action")

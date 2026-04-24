@@ -398,6 +398,11 @@ class TriggerManager:
                     visited_triggers = set()
                 self._execute_trigger(action.value, visited_triggers, depth)
 
+        elif action.action_type == ActionType.SEND:
+            # Send command to MUD
+            if self.send_fn and action.value:
+                self.send_fn(action.value)
+
         elif action.action_type == ActionType.GAG:
             # Gag is handled by evaluate() return value
             pass
@@ -497,18 +502,21 @@ class TriggerManager:
         if not self.character_state or '{' not in text:
             return text
 
+        cs = self.character_state
         result = text
+        # Use getattr with defaults so missing attributes don't crash interpolation.
+        # (BUG #2 fix — Lua is source of truth; these are best-effort mirrors.)
         variables = {
-            'hp': str(self.character_state.hp),
-            'maxhp': str(self.character_state.maxhp),
-            'hp_pct': str(self.character_state.hp_pct),
-            'mp': str(self.character_state.mp),
-            'maxmp': str(self.character_state.maxmp),
-            'mp_pct': str(self.character_state.mp_pct),
-            'clase': self.character_state.clase,
-            'raza': self.character_state.raza,
-            'name': self.character_state.name,
-            'level': str(self.character_state.level),
+            'hp': str(getattr(cs, 'hp', 0)),
+            'maxhp': str(getattr(cs, 'maxhp', 0) or getattr(cs, 'max_hp', 0)),
+            'hp_pct': str(getattr(cs, 'hp_pct', 0)),
+            'mp': str(getattr(cs, 'mp', 0)),
+            'maxmp': str(getattr(cs, 'maxmp', 0) or getattr(cs, 'max_mp', 0)),
+            'mp_pct': str(getattr(cs, 'mp_pct', 0)),
+            'clase': getattr(cs, 'clase', '') or getattr(cs, 'character_class', ''),
+            'raza': getattr(cs, 'raza', ''),
+            'name': getattr(cs, 'name', ''),
+            'level': str(getattr(cs, 'level', 0)),
         }
 
         for var_name, var_value in variables.items():
