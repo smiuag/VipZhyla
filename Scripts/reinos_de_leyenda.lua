@@ -144,6 +144,7 @@ function game.init()
     game.init_module("inventario")      -- Inventory/items system (Phase 7A)
     game.init_module("magia")           -- Magic/spell system (Phase 7A)
     game.init_module("eventos")         -- Server events system (Phase 7A)
+    game.init_module("npcs")            -- NPCs system (Phase 7A)
 
     -- Mark as initialized
     game.initialized = true
@@ -188,6 +189,14 @@ function game.on_mud_message(channel, text)
     -- Auto-detect events from messages (Phase 7A)
     if game.modules.eventos then
         pcall(game.modules.eventos.process_message, text)
+    end
+
+    -- Detect NPCs in messages (Phase 7A)
+    if game.modules.npcs then
+        if game.modules.npcs.detect_npc_in_text(text) then
+            -- NPC mention detected, but don't auto-create without more context
+            -- This just marks that an NPC presence was mentioned
+        end
     end
 
     -- Dispatch to modules
