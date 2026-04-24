@@ -57,7 +57,7 @@ class LuaRuntime:
 
         # Create safe os module with only time function
         safe_os = {
-            'time': lambda: int(python_time.time()),
+            'time': lambda *args: int(python_time.time()),
         }
 
         # Clear unsafe functions and replace with safe versions
