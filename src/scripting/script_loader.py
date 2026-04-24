@@ -10,7 +10,6 @@ from typing import Optional, Dict, Any, Callable, List
 from pathlib import Path
 
 from .lua_runtime import LuaRuntime
-from .event_system import EventSystem, EventType
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +26,6 @@ class ScriptLoader:
         """
         self.script_dir = Path(script_dir or "scripts")
         self.lua_runtime = LuaRuntime(str(self.script_dir))
-        self.event_system = EventSystem()
         self.game_script = None
         self.enabled = True
 
@@ -235,11 +233,8 @@ class ScriptLoader:
             return
 
         try:
-            # Call Lua handler
+            # Dispatch to Lua handler (single source of truth)
             self.lua_runtime.call_function("game.on_mud_message", channel, text)
-
-            # Also dispatch through event system
-            self.event_system.on_mud_message(channel, text)
 
         except Exception as e:
             logger.error(f"Error processing MUD message in Lua: {e}", exc_info=True)
@@ -250,44 +245,11 @@ class ScriptLoader:
             return
 
         try:
-            # Call Lua handler
+            # Dispatch to Lua handler (single source of truth)
             self.lua_runtime.call_function("game.on_gmcp_data", module, data)
-
-            # Also dispatch through event system
-            self.event_system.on_gmcp_module(module, data)
 
         except Exception as e:
             logger.error(f"Error processing GMCP data in Lua: {e}", exc_info=True)
-
-    def on_vitals_changed(self, hp: int, maxhp: int, mp: int, maxmp: int):
-        """Dispatch vitals change event."""
-        if not self.enabled:
-            return
-
-        try:
-            self.event_system.on_vitals_changed(hp, maxhp, mp, maxmp)
-        except Exception as e:
-            logger.error(f"Error in vitals event: {e}", exc_info=True)
-
-    def on_room_entered(self, room_name: str, exits: list):
-        """Dispatch room entered event."""
-        if not self.enabled:
-            return
-
-        try:
-            self.event_system.on_room_entered(room_name, exits)
-        except Exception as e:
-            logger.error(f"Error in room event: {e}", exc_info=True)
-
-    def on_movement(self, direction: str):
-        """Dispatch movement event."""
-        if not self.enabled:
-            return
-
-        try:
-            self.event_system.on_movement(direction)
-        except Exception as e:
-            logger.error(f"Error in movement event: {e}", exc_info=True)
 
     # ===== Script Control =====
 
@@ -306,7 +268,6 @@ class ScriptLoader:
         return {
             'loaded': self.game_script is not None,
             'enabled': self.enabled,
-            'events': self.event_system.get_statistics(),
         }
 
     def call_game_function(self, func_name: str, *args) -> Any:
