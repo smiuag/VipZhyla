@@ -140,6 +140,7 @@ function game.init()
     game.init_module("audio")           -- Audio panning (Phase 6E)
     game.init_module("prompts")         -- Interactive prompts (Phase 6E)
     game.init_module("oficios")         -- Profession system (Phase 6E)
+    game.init_module("estados")         -- Status effects/buffs (Phase 7A)
 
     -- Mark as initialized
     game.initialized = true
@@ -162,6 +163,12 @@ end
 
 function game.on_mud_message(channel, text)
     if not game.initialized then return end
+
+    -- Auto-detect status effects from messages (Phase 7A)
+    if game.modules.estados then
+        pcall(game.modules.estados.process_message, text)
+    end
+
     -- Dispatch to modules
     for _, module in pairs(game.modules) do
         if module.on_message then
