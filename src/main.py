@@ -595,6 +595,14 @@ class MainWindow(wx.Frame):
         self.buffer.add(msg)
         self.append_output(f"[{msg.channel.value}] {msg.text}\n", msg.channel)
 
+        # Dispatch to Lua scripts for trigger matching (Phase 7D)
+        if self.script_loader and self.script_loader.enabled:
+            try:
+                self.script_loader.on_mud_message(msg.channel.value, msg.text)
+            except Exception as e:
+                import logging
+                logging.error(f"Error dispatching message to Lua: {e}")
+
     def _on_vitals(self, hp: int, maxhp: int, mp: int, maxmp: int):
         """Callback for character vitals from GMCP."""
         # Update character state
@@ -604,15 +612,44 @@ class MainWindow(wx.Frame):
         vitals_str = f"HP: {hp}/{maxhp} ({hp_pct}%) | MP: {mp}/{maxmp} ({mp_pct}%)"
         self.status_bar.SetStatusText(vitals_str, 0)
 
+        # Dispatch to Lua scripts (Phase 7D)
+        if self.script_loader and self.script_loader.enabled:
+            try:
+                self.script_loader.on_gmcp_data("Char.Vitals", {
+                    "hp": hp,
+                    "maxhp": maxhp,
+                    "mp": mp,
+                    "maxmp": maxmp,
+                })
+            except Exception as e:
+                import logging
+                logging.debug(f"Error dispatching Char.Vitals to Lua: {e}")
+
     def _on_status_changed(self, data: dict):
         """Callback for character status from GMCP Char.Status."""
         # Update character state with class, race, level, name
         CharacterParser.parse_gmcp_status(self.character_state, data)
 
+        # Dispatch to Lua scripts (Phase 7D)
+        if self.script_loader and self.script_loader.enabled:
+            try:
+                self.script_loader.on_gmcp_data("Char.Status", data)
+            except Exception as e:
+                import logging
+                logging.debug(f"Error dispatching Char.Status to Lua: {e}")
+
     def _on_room_info(self, room_name: str, exits: list):
         """Callback for room info from GMCP."""
-        # Could update a room display, for now just announce
-        pass
+        # Dispatch to Lua scripts (Phase 7D)
+        if self.script_loader and self.script_loader.enabled:
+            try:
+                self.script_loader.on_gmcp_data("Room.Info", {
+                    "name": room_name,
+                    "exits": exits,
+                })
+            except Exception as e:
+                import logging
+                logging.debug(f"Error dispatching Room.Info to Lua: {e}")
 
     def _on_room_actual(self, name_line: str):
         """Callback for Room.Actual GMCP (room name with exits)."""
@@ -622,12 +659,28 @@ class MainWindow(wx.Frame):
             if room:
                 self.map_service.set_current_room(room.id)
 
+        # Dispatch to Lua scripts (Phase 7D)
+        if self.script_loader and self.script_loader.enabled:
+            try:
+                self.script_loader.on_gmcp_data("Room.Actual", {"name": name_line})
+            except Exception as e:
+                import logging
+                logging.debug(f"Error dispatching Room.Actual to Lua: {e}")
+
     def _on_room_movimiento(self, direction: str):
         """Callback for Room.Movimiento GMCP (direction taken)."""
         room = self.map_service.move_by_direction(direction)
         if room:
             exits = ", ".join(room.e.keys())
             self.audio.announce(f"{room.n}. Salidas: {exits}", AudioLevel.MINIMAL)
+
+        # Dispatch to Lua scripts (Phase 7D)
+        if self.script_loader and self.script_loader.enabled:
+            try:
+                self.script_loader.on_gmcp_data("Room.Movimiento", {"direction": direction})
+            except Exception as e:
+                import logging
+                logging.debug(f"Error dispatching Room.Movimiento to Lua: {e}")
 
     def _handle_irsala(self, query: str):
         """Handle irsala (navigate to room) command."""
