@@ -17,12 +17,14 @@ from client.gmcp_handler import GmcpHandler
 from ui.list_dialogs import (show_channel_history, show_room_history,
                              show_telepathy_history, show_event_list)
 from ui.trigger_dialog import show_trigger_manager
+from ui.blocklist_dialog import show_blocklist_dialog
 from ui.help_dialog import show_help
 from ui.preferences_dialog import PreferencesDialog
 from models.triggers import TriggerManager
 from models.map_service import MapService
 from models.character_state import CharacterState
 from models.channel_config import ChannelConfig
+from models.blocklist import BlockList
 from client.character_parser import CharacterParser
 from scripting.script_loader import ScriptLoader
 
@@ -88,6 +90,8 @@ class MainWindow(wx.Frame):
         self.gmcp = GmcpHandler(self.audio)
         self.character_state = CharacterState()  # UI display state only (Lua is source of truth)
         self.channel_config = ChannelConfig()  # Channel muting configuration
+        self.blocklist = BlockList()  # Blocked players, keywords, channels
+        self.blocklist.load()
         self.trigger_manager = TriggerManager(self.audio)
         self.trigger_manager.send_fn = self.send_command
         # NOTE: Triggers read game state from Lua, not Python character_state
@@ -244,6 +248,7 @@ class MainWindow(wx.Frame):
         self.keyboard.register_handler(KeyAction.SHOW_HELP, self.on_show_help)
         self.keyboard.register_handler(KeyAction.SHOW_PREFERENCES, self.on_show_preferences)
         self.keyboard.register_handler(KeyAction.SHOW_TRIGGERS, self.on_show_triggers)
+        self.keyboard.register_handler(KeyAction.SHOW_BLOCKLIST, self.on_show_blocklist)
         self.keyboard.register_handler(KeyAction.TOGGLE_VERBOSE, self.on_toggle_verbose)
         self.keyboard.register_handler(KeyAction.STOP_SPEECH, lambda e: self.audio.stop())
 
@@ -280,11 +285,13 @@ class MainWindow(wx.Frame):
         # === Herramientas (Tools) Menu ===
         tools_menu = wx.Menu()
         triggers_item = tools_menu.Append(wx.ID_ANY, "Triggers/Alias/Timers\tCtrl+T", "Gestionar triggers, aliases y timers")
+        blocklist_item = tools_menu.Append(wx.ID_ANY, "Blocklist\tCtrl+B", "Bloquear jugadores, palabras clave o canales")
         prefs_item = tools_menu.Append(wx.ID_ANY, "Preferencias\tCtrl+P", "Configurar preferencias (encoding, filtrado)")
         tools_menu.AppendSeparator()
         stop_speech_item = tools_menu.Append(wx.ID_ANY, "Detener Discurso\tCtrl+S", "Detener el anuncio de TTS en progreso")
 
         self.Bind(wx.EVT_MENU, self.on_show_triggers, triggers_item)
+        self.Bind(wx.EVT_MENU, self.on_show_blocklist, blocklist_item)
         self.Bind(wx.EVT_MENU, self.on_show_preferences, prefs_item)
         self.Bind(wx.EVT_MENU, lambda e: self.audio.stop(), stop_speech_item)
 
@@ -363,6 +370,11 @@ class MainWindow(wx.Frame):
             text (str): Text to append
             channel (ChannelType, optional): Channel the message came from (for muting)
         """
+        # Check blocklist first (filters display + TTS)
+        channel_str = channel.value if channel else ""
+        if self.blocklist.should_filter(text, channel_str):
+            return  # Don't display or announce blocked messages
+
         wx.CallAfter(self.output_text.AppendText, text)
         # Announce MUD output to screen reader users (text-to-speech)
         # Only announce if connected (avoid spamming initial welcome message)
@@ -555,6 +567,10 @@ class MainWindow(wx.Frame):
     def on_show_triggers(self, event):
         """Show trigger/alias/timer manager dialog (Ctrl+T)."""
         show_trigger_manager(self, self.trigger_manager)
+
+    def on_show_blocklist(self, event):
+        """Show blocklist dialog (Ctrl+B)."""
+        show_blocklist_dialog(self, self.blocklist)
 
     # MUD connection callbacks
 

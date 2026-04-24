@@ -52,6 +52,7 @@ class KeyAction(Enum):
     # UI toggles
     TOGGLE_VERBOSE = "toggle_verbose"  # Ctrl+Shift+V
     SHOW_TRIGGERS = "show_triggers"    # Ctrl+T
+    SHOW_BLOCKLIST = "show_blocklist"  # Ctrl+B
     SHOW_PREFERENCES = "show_preferences"  # Ctrl+P
     SHOW_HELP = "show_help"            # F1
     STOP_SPEECH = "stop_speech"        # Ctrl+S
@@ -105,6 +106,7 @@ class KeyboardHandler:
         # Global commands
         key_map[(wx.WXK_RETURN, 0)] = KeyAction.SEND_COMMAND
         key_map[(wx.WXK_ESCAPE, 0)] = KeyAction.CANCEL
+        key_map[(ord('B'), wx.MOD_CONTROL)] = KeyAction.SHOW_BLOCKLIST
         key_map[(ord('C'), wx.MOD_CONTROL)] = KeyAction.COPY_TO_CLIPBOARD
         key_map[(ord('K'), wx.MOD_CONTROL)] = KeyAction.CONNECT
         key_map[(ord('D'), wx.MOD_CONTROL)] = KeyAction.DISCONNECT
