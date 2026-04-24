@@ -142,6 +142,7 @@ function game.init()
     game.init_module("oficios")         -- Profession system (Phase 6E)
     game.init_module("estados")         -- Status effects/buffs (Phase 7A)
     game.init_module("inventario")      -- Inventory/items system (Phase 7A)
+    game.init_module("magia")           -- Magic/spell system (Phase 7A)
 
     -- Mark as initialized
     game.initialized = true
@@ -176,6 +177,11 @@ function game.on_mud_message(channel, text)
         if not gain then
             pcall(game.modules.inventario.detect_item_loss, text)
         end
+    end
+
+    -- Auto-detect spell casts from messages (Phase 7A)
+    if game.modules.magia then
+        pcall(game.modules.magia.process_message, text)
     end
 
     -- Dispatch to modules

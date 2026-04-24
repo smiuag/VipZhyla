@@ -40,6 +40,8 @@ class LuaRuntime:
 
     def _setup_sandbox(self):
         """Configure Lua sandbox for security (limited standard library)."""
+        import time as python_time
+
         # Allow only safe standard library functions
         safe_libs = {
             'string': self.lua.globals()['string'],
@@ -53,14 +55,22 @@ class LuaRuntime:
             'tostring': self.lua.globals()['tostring'],
         }
 
-        # Clear unsafe functions
-        for key in ['os', 'io', 'debug', 'load', 'loadstring', 'dofile']:
+        # Create safe os module with only time function
+        safe_os = {
+            'time': lambda: int(python_time.time()),
+        }
+
+        # Clear unsafe functions and replace with safe versions
+        for key in ['io', 'debug', 'load', 'loadstring', 'dofile']:
             if key in self.lua.globals():
                 self.lua.globals()[key] = None
 
         # Set allowed globals
         for key, val in safe_libs.items():
             self.lua.globals()[key] = val
+
+        # Add safe os module
+        self.lua.globals()['os'] = safe_os
 
         logger.debug("Lua sandbox configured")
 
