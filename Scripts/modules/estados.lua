@@ -186,7 +186,7 @@ end
 --[[ ===== Core Status Management ===== ]]
 
 function M.add_effect(effect_name, duration)
-    [[
+    --[[
     Add a status effect with optional duration override.
 
     Args:
@@ -253,7 +253,7 @@ function M.add_effect(effect_name, duration)
 end
 
 function M.remove_effect(effect_name)
-    [[Remove a status effect.]]
+    --[[Remove a status effect.]]
 
     if active_effects[effect_name] then
         local effect = active_effects[effect_name]
@@ -265,19 +265,19 @@ function M.remove_effect(effect_name)
 end
 
 function M.has_effect(effect_name)
-    [[Check if effect is currently active.]]
+    --[[Check if effect is currently active.]]
     return active_effects[effect_name] ~= nil
 end
 
 function M.get_effect(effect_name)
-    [[Get effect details if active.]]
+    --[[Get effect details if active.]]
     return active_effects[effect_name]
 end
 
 --[[ ===== Effect Status Queries ===== ]]
 
 function M.get_active_buffs()
-    [[Return table of all active buffs.]]
+    --[[Return table of all active buffs.]]
     local buffs = {}
     for name, effect in pairs(active_effects) do
         if effect.type == "buff" then
@@ -288,7 +288,7 @@ function M.get_active_buffs()
 end
 
 function M.get_active_debuffs()
-    [[Return table of all active debuffs.]]
+    --[[Return table of all active debuffs.]]
     local debuffs = {}
     for name, effect in pairs(active_effects) do
         if effect.type == "debuff" then
@@ -299,24 +299,24 @@ function M.get_active_debuffs()
 end
 
 function M.count_buffs()
-    [[Count total active buffs.]]
+    --[[Count total active buffs.]]
     return #M.get_active_buffs()
 end
 
 function M.count_debuffs()
-    [[Count total active debuffs.]]
+    --[[Count total active debuffs.]]
     return #M.get_active_debuffs()
 end
 
 function M.is_under_effect(effect_name)
-    [[Check if player is under specific effect.]]
+    --[[Check if player is under specific effect.]]
     return M.has_effect(effect_name)
 end
 
 --[[ ===== Duration Management ===== ]]
 
 function M.update_durations()
-    [[
+    --[[
     Update effect durations (call periodically from main loop).
     Remove expired effects.
     ]]
@@ -338,7 +338,7 @@ function M.update_durations()
 end
 
 function M.get_remaining_duration(effect_name)
-    [[Get seconds remaining on effect.]]
+    --[[Get seconds remaining on effect.]]
 
     local effect = active_effects[effect_name]
     if not effect then
@@ -351,7 +351,7 @@ function M.get_remaining_duration(effect_name)
 end
 
 function M.extend_effect(effect_name, extra_seconds)
-    [[Extend duration of active effect.]]
+    --[[Extend duration of active effect.]]
 
     if not active_effects[effect_name] then
         return false
@@ -365,7 +365,7 @@ end
 --[[ ===== Pattern Detection ===== ]]
 
 function M.detect_buff(text)
-    [[
+    --[[
     Detect buff effect from MUD message.
 
     Args:
@@ -386,7 +386,7 @@ function M.detect_buff(text)
 end
 
 function M.detect_debuff(text)
-    [[
+    --[[
     Detect debuff effect from MUD message.
 
     Args:
@@ -407,7 +407,7 @@ function M.detect_debuff(text)
 end
 
 function M.process_message(text)
-    [[
+    --[[
     Auto-detect buffs/debuffs from MUD message.
     Called by trigger system automatically.
     ]]
@@ -430,7 +430,7 @@ end
 --[[ ===== Expiration Patterns ===== ]]
 
 function M.detect_effect_expiration(text)
-    [[
+    --[[
     Detect when an effect expires from MUD message.
 
     Returns:
@@ -458,7 +458,7 @@ end
 --[[ ===== Combat Integration ===== ]]
 
 function M.get_combat_modifiers()
-    [[
+    --[[
     Get total combat modifiers from active effects.
 
     Returns:
@@ -496,13 +496,13 @@ end
 --[[ ===== Clear All (for testing/reset) ===== ]]
 
 function M.clear_all_effects()
-    [[Clear all active effects (usually for testing).]]
+    --[[Clear all active effects (usually for testing).]]
     active_effects = {}
     vipzhyla.announce("All effects cleared")
 end
 
 function M.get_all_effects()
-    [[Return table of all active effects for UI display.]]
+    --[[Return table of all active effects for UI display.]]
     return active_effects
 end
 

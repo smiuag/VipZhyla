@@ -141,6 +141,7 @@ function game.init()
     game.init_module("prompts")         -- Interactive prompts (Phase 6E)
     game.init_module("oficios")         -- Profession system (Phase 6E)
     game.init_module("estados")         -- Status effects/buffs (Phase 7A)
+    game.init_module("inventario")      -- Inventory/items system (Phase 7A)
 
     -- Mark as initialized
     game.initialized = true
@@ -167,6 +168,14 @@ function game.on_mud_message(channel, text)
     -- Auto-detect status effects from messages (Phase 7A)
     if game.modules.estados then
         pcall(game.modules.estados.process_message, text)
+    end
+
+    -- Auto-detect item gains/losses from messages (Phase 7A)
+    if game.modules.inventario then
+        local gain = pcall(game.modules.inventario.detect_item_gain, text)
+        if not gain then
+            pcall(game.modules.inventario.detect_item_loss, text)
+        end
     end
 
     -- Dispatch to modules
