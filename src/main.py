@@ -86,11 +86,11 @@ class MainWindow(wx.Frame):
         self.buffer = MessageBuffer()
         self.parser = MUDParser()
         self.gmcp = GmcpHandler(self.audio)
-        self.character_state = CharacterState()  # Character state tracking
+        self.character_state = CharacterState()  # UI display state only (Lua is source of truth)
         self.channel_config = ChannelConfig()  # Channel muting configuration
         self.trigger_manager = TriggerManager(self.audio)
         self.trigger_manager.send_fn = self.send_command
-        self.trigger_manager.character_state = self.character_state  # Pass state to triggers
+        # NOTE: Triggers read game state from Lua, not Python character_state
 
         # Output filtering preferences
         self.filter_long_descriptions = True
@@ -604,15 +604,21 @@ class MainWindow(wx.Frame):
                 logging.error(f"Error dispatching message to Lua: {e}")
 
     def _on_vitals(self, hp: int, maxhp: int, mp: int, maxmp: int):
-        """Callback for character vitals from GMCP."""
-        # Update character state
-        self.character_state.update_vitals(hp, maxhp, mp, maxmp)
-        hp_pct = int((hp / maxhp * 100)) if maxhp > 0 else 0
-        mp_pct = int((mp / maxmp * 100)) if maxmp > 0 else 0
+        """Callback for character vitals from GMCP.
+
+        NOTE: Lua is the single source of truth for character state.
+        This method just updates UI and dispatches to Lua.
+        """
+        # Update UI display (read-only view of Lua state)
+        self.character_state.hp_pct = int((hp / maxhp * 100)) if maxhp > 0 else 0
+        self.character_state.mp_pct = int((mp / maxmp * 100)) if maxmp > 0 else 0
+
+        hp_pct = self.character_state.hp_pct
+        mp_pct = self.character_state.mp_pct
         vitals_str = f"HP: {hp}/{maxhp} ({hp_pct}%) | MP: {mp}/{maxmp} ({mp_pct}%)"
         self.status_bar.SetStatusText(vitals_str, 0)
 
-        # Dispatch to Lua scripts (Phase 7D)
+        # Dispatch to Lua scripts (Lua is now the single source of truth)
         if self.script_loader and self.script_loader.enabled:
             try:
                 self.script_loader.on_gmcp_data("Char.Vitals", {
@@ -626,11 +632,12 @@ class MainWindow(wx.Frame):
                 logging.debug(f"Error dispatching Char.Vitals to Lua: {e}")
 
     def _on_status_changed(self, data: dict):
-        """Callback for character status from GMCP Char.Status."""
-        # Update character state with class, race, level, name
-        CharacterParser.parse_gmcp_status(self.character_state, data)
+        """Callback for character status from GMCP Char.Status.
 
-        # Dispatch to Lua scripts (Phase 7D)
+        NOTE: Lua is the single source of truth for character state.
+        This method only dispatches to Lua (no Python-side parsing).
+        """
+        # Dispatch to Lua scripts (Lua is now the single source of truth)
         if self.script_loader and self.script_loader.enabled:
             try:
                 self.script_loader.on_gmcp_data("Char.Status", data)
