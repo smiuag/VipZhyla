@@ -23,6 +23,7 @@ from app.audio_manager import AudioManager, AudioLevel
 
 if TYPE_CHECKING:
     from models.character_state import CharacterState
+    from scripting.script_loader import ScriptLoader
 
 
 class ActionType(Enum):
@@ -105,7 +106,8 @@ class TriggerManager:
         self.timers: List[Timer] = []
         self.audio = audio
         self.send_fn: Optional[Callable[[str], None]] = None
-        self.character_state: Optional['CharacterState'] = None  # Will be set by main.py
+        self.character_state: Optional['CharacterState'] = None  # UI display state only
+        self.script_loader: Optional['ScriptLoader'] = None  # For reading game state from Lua
         self._timer_threads: List[threading.Timer] = []
         self._running = False
         self.SAVE_PATH = self._find_save_path()
@@ -179,6 +181,9 @@ class TriggerManager:
     def _evaluate_single_condition(self, condition: dict) -> bool:
         """Evaluate a single atomic condition.
 
+        Gets state from Lua (single source of truth) when available,
+        falls back to character_state for UI-only fields (hp_pct, mp_pct).
+
         Args:
             condition: Condition dict with field/operator/value
 
@@ -192,11 +197,11 @@ class TriggerManager:
         if not field or not operator:
             return True  # Malformed condition passes
 
-        # Get field value from character state
-        if not hasattr(self.character_state, field):
-            return False
+        # Try to get field value from Lua first (single source of truth)
+        state_value = self._get_condition_value(field)
 
-        state_value = getattr(self.character_state, field)
+        if state_value is None:
+            return False  # Field not found in Lua or Python
 
         # Evaluate condition based on operator
         if operator == '==':
@@ -218,6 +223,59 @@ class TriggerManager:
             return True
         else:
             return True
+
+    def _get_condition_value(self, field: str) -> Optional[object]:
+        """Get condition field value from Lua (source of truth).
+
+        Falls back to character_state for UI-only fields.
+        Maps field names to Lua locations:
+        - hp_pct, mp_pct → character_state (UI display)
+        - hp, maxhp, mp, maxmp, level, class, race, name → Lua game.character
+        - buffs, debuffs, in_combat → Lua game.estados
+        - equipment → Lua game.inventario
+        - mana, known_spells → Lua game.magia
+        - etc.
+
+        Args:
+            field: Field name to retrieve
+
+        Returns:
+            Field value, or None if not found
+        """
+        # Try Python character_state first (UI display fields)
+        if self.character_state and hasattr(self.character_state, field):
+            return getattr(self.character_state, field)
+
+        # Try Lua if available
+        if not self.script_loader:
+            return None
+
+        try:
+            game = self.script_loader.lua_runtime.lua.globals().get('game')
+            if not game:
+                return None
+
+            # Map common fields to Lua modules
+            if field in ['hp', 'maxhp', 'mp', 'maxmp', 'level', 'class', 'race', 'name']:
+                return game.character.get(field)
+            elif field in ['in_combat', 'buffs', 'debuffs']:
+                # For complex fields, return the whole module for now
+                if field == 'in_combat':
+                    return getattr(game.combat, 'in_combat', False) if hasattr(game, 'combat') else False
+                elif field == 'buffs':
+                    if hasattr(game, 'estados') and hasattr(game.estados, 'state'):
+                        return list(game.estados.state.keys()) if isinstance(game.estados.state, dict) else []
+                return None
+            elif field in ['mana', 'max_mana']:
+                if hasattr(game, 'magia') and hasattr(game.magia, 'state'):
+                    return game.magia.state.get(field)
+                return None
+
+            # Unknown field
+            return None
+
+        except Exception:
+            return None
 
     def evaluate(self, parsed: ParsedMessage) -> bool:
         """Evaluate triggers for a parsed message line.

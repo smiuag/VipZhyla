@@ -757,6 +757,9 @@ class MainWindow(wx.Frame):
                 logging.error("ScriptLoader initialization failed")
                 return
 
+            # Phase 7B-3: Enable trigger conditions to read game state from Lua
+            self.trigger_manager.script_loader = self.script_loader
+
             self._setup_lua_callbacks()
             self.audio.announce("Scripts Lua cargados", AudioLevel.MINIMAL)
             self.append_output("[OK] Lua scripts loaded successfully\n")
