@@ -871,6 +871,7 @@ class TimerEditDialog(wx.Dialog):
         add_sizer.Add(self.action_value, 1, wx.EXPAND | wx.RIGHT, 5)
 
         self.add_action_btn = wx.Button(self, label="&Añadir")
+        self.add_action_btn.SetName("Add Action to Timer")
         self.add_action_btn.Bind(wx.EVT_BUTTON, self.on_add_action)
         add_sizer.Add(self.add_action_btn, 0)
 

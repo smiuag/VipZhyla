@@ -51,6 +51,7 @@ class BlocklistDialog(wx.Dialog):
         # Buttons
         btn_sizer = wx.BoxSizer(wx.HORIZONTAL)
         clear_btn = wx.Button(self, label="Limpiar todo")
+        clear_btn.SetName("Clear All Blocks")
         clear_btn.Bind(wx.EVT_BUTTON, self._on_clear_all)
         close_btn = wx.Button(self, wx.ID_CLOSE, "&Cerrar")
         close_btn.Bind(wx.EVT_BUTTON, self._on_close)
@@ -77,6 +78,7 @@ class BlocklistDialog(wx.Dialog):
         self.player_input = wx.TextCtrl(panel, size=(300, -1))
         self.player_input.SetName("Nombre de jugador")
         add_btn = wx.Button(panel, label="&Añadir")
+        add_btn.SetName("Add Player to Blocklist")
         add_btn.Bind(wx.EVT_BUTTON, self._on_add_player)
         input_sizer.Add(self.player_input, 1, wx.RIGHT, 5)
         input_sizer.Add(add_btn, 0)
@@ -89,6 +91,7 @@ class BlocklistDialog(wx.Dialog):
 
         # Remove button
         remove_btn = wx.Button(panel, label="&Quitar seleccionado")
+        remove_btn.SetName("Remove Player from Blocklist")
         remove_btn.Bind(wx.EVT_BUTTON, self._on_remove_player)
         sizer.Add(remove_btn, 0, wx.LEFT | wx.RIGHT | wx.BOTTOM, 10)
 
@@ -107,6 +110,7 @@ class BlocklistDialog(wx.Dialog):
         self.keyword_input = wx.TextCtrl(panel, size=(300, -1))
         self.keyword_input.SetName("Palabra clave")
         add_btn = wx.Button(panel, label="&Añadir")
+        add_btn.SetName("Add Keyword to Blocklist")
         add_btn.Bind(wx.EVT_BUTTON, self._on_add_keyword)
         input_sizer.Add(self.keyword_input, 1, wx.RIGHT, 5)
         input_sizer.Add(add_btn, 0)
@@ -117,6 +121,7 @@ class BlocklistDialog(wx.Dialog):
         sizer.Add(self.keyword_list, 1, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.TOP, 10)
 
         remove_btn = wx.Button(panel, label="&Quitar seleccionado")
+        remove_btn.SetName("Remove Keyword from Blocklist")
         remove_btn.Bind(wx.EVT_BUTTON, self._on_remove_keyword)
         sizer.Add(remove_btn, 0, wx.LEFT | wx.RIGHT | wx.BOTTOM, 10)
 
@@ -135,6 +140,7 @@ class BlocklistDialog(wx.Dialog):
         self.channel_input = wx.TextCtrl(panel, size=(300, -1))
         self.channel_input.SetName("Canal")
         add_btn = wx.Button(panel, label="&Añadir")
+        add_btn.SetName("Add Channel to Blocklist")
         add_btn.Bind(wx.EVT_BUTTON, self._on_add_channel)
         input_sizer.Add(self.channel_input, 1, wx.RIGHT, 5)
         input_sizer.Add(add_btn, 0)
@@ -145,6 +151,7 @@ class BlocklistDialog(wx.Dialog):
         sizer.Add(self.channel_list, 1, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.TOP, 10)
 
         remove_btn = wx.Button(panel, label="&Quitar seleccionado")
+        remove_btn.SetName("Remove Channel from Blocklist")
         remove_btn.Bind(wx.EVT_BUTTON, self._on_remove_channel)
         sizer.Add(remove_btn, 0, wx.LEFT | wx.RIGHT | wx.BOTTOM, 10)
 
