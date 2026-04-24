@@ -509,6 +509,7 @@ class TriggerEditDialog(wx.Dialog):
         self.storage_op.SetSelection(0)
         self.storage_op.SetName("Operación de storage")
         self.storage_op.Hide()
+        self.storage_op.Enable(False)
         add_sizer.Add(self.storage_op, 0, wx.RIGHT, 5)
 
         self.add_action_btn = wx.Button(self, label="&Añadir")
