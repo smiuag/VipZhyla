@@ -18,8 +18,8 @@ Equivalent to: VipMud's Reinos de leyenda.set + all dependency scripts
 local GAME_SCRIPT_VERSION = "1.0.0"
 local GAME_NAME = "Reinos de Leyenda"
 
--- Global game object
-local game = {
+-- Global game object (MUST be global for Python to access via lua.globals()['game'])
+game = {
     version = GAME_SCRIPT_VERSION,
     name = GAME_NAME,
     initialized = false,

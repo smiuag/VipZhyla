@@ -24,6 +24,7 @@ from models.map_service import MapService
 from models.character_state import CharacterState
 from models.channel_config import ChannelConfig
 from client.character_parser import CharacterParser
+from scripting.script_loader import ScriptLoader
 
 
 class VipZhylaApp(wx.App):
@@ -113,6 +114,10 @@ class MainWindow(wx.Frame):
         self.gmcp.set_room_callback(self._on_room_info)
         self.gmcp.set_room_actual_callback(self._on_room_actual)
         self.gmcp.set_room_movimiento_callback(self._on_room_movimiento)
+
+        # Initialize Lua script system (Phase 7D)
+        self.script_loader = None
+        self._init_script_loader()
 
         # Create main panel
         self.main_panel = AccessiblePanel(
@@ -676,6 +681,137 @@ class MainWindow(wx.Frame):
         self._walk_steps = []
         self._walk_index = 0
         self.audio.announce("Viaje detenido.", AudioLevel.MINIMAL)
+
+    # ===== Lua Script Integration (Phase 7D) =====
+
+    def _init_script_loader(self):
+        """Initialize Lua script system."""
+        try:
+            self.script_loader = ScriptLoader(script_dir="scripts/")
+            success = self.script_loader.load_scripts()
+
+            if not success:
+                self.audio.announce_error("No se pudieron cargar los scripts Lua")
+                self.append_output("[ERROR] ScriptLoader initialization failed\n")
+                import logging
+                logging.error("ScriptLoader initialization failed")
+                return
+
+            self._setup_lua_callbacks()
+            self.audio.announce("Scripts Lua cargados", AudioLevel.MINIMAL)
+            self.append_output("[OK] Lua scripts loaded successfully\n")
+
+        except ImportError as e:
+            if "lupa" in str(e):
+                self.audio.announce_error("lupa no instalado. Instala con: pip install lupa")
+                self.append_output("[ERROR] lupa library not installed. Install with: pip install lupa\n")
+            else:
+                self.audio.announce_error(f"Error cargando scripts: {e}")
+                self.append_output(f"[ERROR] Script loading failed: {e}\n")
+            import logging
+            logging.error(f"ScriptLoader initialization error: {e}", exc_info=True)
+
+        except Exception as e:
+            self.audio.announce_error(f"Error inesperado: {e}")
+            self.append_output(f"[ERROR] Unexpected error: {e}\n")
+            import logging
+            logging.error(f"ScriptLoader initialization error: {e}", exc_info=True)
+
+    def _setup_lua_callbacks(self):
+        """Connect Lua callbacks to VipZhyla systems."""
+        if not self.script_loader:
+            return
+
+        # Audio/TTS
+        self.script_loader.on_announce = self.audio.announce
+        self.script_loader.on_play_sound = self.audio.play_sound
+        self.script_loader.on_play_directional_sound = self.audio.play_directional_sound
+        self.script_loader.on_stop_sound = lambda sound_id: None  # TODO: implement
+
+        # Game state (read-only for Lua)
+        self.script_loader.on_get_character = self._get_character_state
+        self.script_loader.on_get_room_data = self._get_room_state
+
+        # Commands (Lua → MUD)
+        self.script_loader.on_send_command = self.send_command
+
+        # UI Dialogs (from prompts.lua)
+        self.script_loader.on_show_list_dialog = self._show_list_dialog_from_lua
+        self.script_loader.on_show_yes_no_dialog = self._show_yes_no_dialog_from_lua
+        self.script_loader.on_show_text_dialog = self._show_text_dialog_from_lua
+        self.script_loader.on_show_multi_select_dialog = self._show_multi_select_dialog_from_lua
+
+        # Config persistence
+        self.script_loader.on_save_character_config = self._save_lua_config
+        self.script_loader.on_load_character_config = self._load_lua_config
+
+    def _get_character_state(self) -> dict:
+        """Return current character state to Lua."""
+        return {
+            "name": self.character_state.name,
+            "level": self.character_state.level,
+            "class": self.character_state.character_class,
+            "hp": self.character_state.hp,
+            "maxhp": self.character_state.max_hp,
+            "mp": self.character_state.mp,
+            "maxmp": self.character_state.max_mp,
+        }
+
+    def _get_room_state(self) -> dict:
+        """Return current room state to Lua."""
+        return {
+            "name": self.character_state.room_name,
+            "exits": self.character_state.room_exits,
+            "description": getattr(self.character_state, "room_description", ""),
+        }
+
+    def _show_list_dialog_from_lua(self, title: str, message: str, items: list, ok_label: str, cancel_label: str):
+        """Show list selection dialog from Lua (prompts.lua)."""
+        from ui.prompt_dialogs import PromptDialogManager
+        return PromptDialogManager.show_list(
+            parent=self,
+            title=title,
+            message=message,
+            items=items,
+            ok_label=ok_label,
+            cancel_label=cancel_label
+        )
+
+    def _show_yes_no_dialog_from_lua(self, title: str, message: str):
+        """Show yes/no dialog from Lua (prompts.lua)."""
+        from ui.prompt_dialogs import PromptDialogManager
+        result = PromptDialogManager.show_yes_no(parent=self, title=title, message=message)
+        return result  # 1=yes, 0=no, None=cancel
+
+    def _show_text_dialog_from_lua(self, title: str, message: str, default_value: str):
+        """Show text input dialog from Lua (prompts.lua)."""
+        # TODO: Implement text dialog
+        return default_value
+
+    def _show_multi_select_dialog_from_lua(self, title: str, message: str, items: list, ok_label: str, cancel_label: str):
+        """Show multi-select dialog from Lua (prompts.lua)."""
+        # TODO: Implement multi-select dialog
+        return list(range(len(items)))
+
+    def _save_lua_config(self, class_name: str, config: dict):
+        """Save character configuration from Lua (prompts.lua)."""
+        import json
+        from pathlib import Path
+        config_file = Path("user_configs") / f"{class_name}.json"
+        config_file.parent.mkdir(exist_ok=True)
+        with open(config_file, "w") as f:
+            json.dump(config, f, indent=2)
+        self.audio.announce(f"Configuración guardada para {class_name}")
+
+    def _load_lua_config(self, class_name: str) -> dict:
+        """Load character configuration from Lua (prompts.lua)."""
+        import json
+        from pathlib import Path
+        config_file = Path("user_configs") / f"{class_name}.json"
+        if config_file.exists():
+            with open(config_file, "r") as f:
+                return json.load(f)
+        return None
 
 
 def main():

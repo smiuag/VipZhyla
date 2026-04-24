@@ -66,19 +66,41 @@ class LuaRuntime:
 
     def _expose_apis(self):
         """Expose VipZhyla Python APIs to Lua."""
-        # Placeholder for APIs - will be populated by ScriptLoader
+        # Placeholder for APIs - will be populated by ScriptLoader via set_callback()
         self.lua.globals()['vipzhyla'] = {
+            # Core APIs
             'say': lambda text: self._say(text),
             'send_command': lambda cmd: self._send_command(cmd),
+            'announce': lambda text: self._announce(text),
+
+            # Audio APIs
             'play_sound': lambda path: self._play_sound(path),
             'play_pan': lambda path, pan: self._play_pan(path, pan),
-            'announce': lambda text: self._announce(text),
-            'set_var': lambda name, val: self._set_var(name, val),
-            'get_var': lambda name: self._get_var(name),
-            'register_trigger': lambda pattern, handler: self._register_trigger(pattern, handler),
-            'register_alias': lambda abbr, handler: self._register_alias(abbr, handler),
+            'play_directional_sound': lambda path, dir, dist, loop, id: self._placeholder("play_directional_sound"),
+            'update_sound_position': lambda id, dir, dist: self._placeholder("update_sound_position"),
+            'stop_sound': lambda id: self._placeholder("stop_sound"),
+
+            # Game State APIs
             'get_room_data': lambda: self._get_room_data(),
             'get_character': lambda: self._get_character(),
+
+            # Dialog APIs (Phase 6E prompts)
+            'show_list_dialog': lambda title, msg, items, ok, cancel: self._placeholder("show_list_dialog"),
+            'show_yes_no_dialog': lambda title, msg: self._placeholder("show_yes_no_dialog"),
+            'show_text_dialog': lambda title, msg, default: self._placeholder("show_text_dialog"),
+            'show_multi_select_dialog': lambda title, msg, items, ok, cancel: self._placeholder("show_multi_select_dialog"),
+
+            # Config APIs
+            'save_character_config': lambda class_name, config: self._placeholder("save_character_config"),
+            'load_character_config': lambda class_name: self._placeholder("load_character_config"),
+
+            # Variable storage
+            'set_var': lambda name, val: self._set_var(name, val),
+            'get_var': lambda name: self._get_var(name),
+
+            # Event registration
+            'register_trigger': lambda pattern, handler: self._register_trigger(pattern, handler),
+            'register_alias': lambda abbr, handler: self._register_alias(abbr, handler),
         }
 
         logger.debug("VipZhyla APIs exposed to Lua")
@@ -155,6 +177,11 @@ class LuaRuntime:
 
     # ===== Internal API implementations (placeholders for now) =====
 
+    def _placeholder(self, api_name: str):
+        """Placeholder for callbacks not yet connected."""
+        logger.debug(f"[Placeholder] {api_name} called but not connected to Python callback")
+        return None
+
     def _say(self, text: str):
         """Output text to game (will be connected to UI)."""
         logger.info(f"[Lua Output] {text}")
@@ -207,11 +234,17 @@ class LuaRuntime:
         Args:
             api_name: API function name (e.g., "say", "send_command")
             callback: Python function to call
+
+        Supports all Phase 6E-7D APIs:
+        - Basic: say, send_command, announce
+        - Audio: play_sound, play_pan, play_directional_sound, stop_sound, update_sound_position
+        - Game State: get_room_data, get_character
+        - Dialogs: show_list_dialog, show_yes_no_dialog, show_text_dialog, show_multi_select_dialog
+        - Config: save_character_config, load_character_config
         """
-        if api_name in ('say', 'send_command', 'play_sound', 'play_pan',
-                        'announce', 'get_room_data', 'get_character'):
-            # Set the callback in vipzhyla table
+        # Allow any API (dynamic registration)
+        if callback is not None:
             self.lua.globals()['vipzhyla'][api_name] = callback
             logger.debug(f"Set callback for vipzhyla.{api_name}")
         else:
-            raise ValueError(f"Unknown API: {api_name}")
+            logger.warning(f"Attempted to set None callback for vipzhyla.{api_name}")
