@@ -143,6 +143,7 @@ function game.init()
     game.init_module("estados")         -- Status effects/buffs (Phase 7A)
     game.init_module("inventario")      -- Inventory/items system (Phase 7A)
     game.init_module("magia")           -- Magic/spell system (Phase 7A)
+    game.init_module("eventos")         -- Server events system (Phase 7A)
 
     -- Mark as initialized
     game.initialized = true
@@ -182,6 +183,11 @@ function game.on_mud_message(channel, text)
     -- Auto-detect spell casts from messages (Phase 7A)
     if game.modules.magia then
         pcall(game.modules.magia.process_message, text)
+    end
+
+    -- Auto-detect events from messages (Phase 7A)
+    if game.modules.eventos then
+        pcall(game.modules.eventos.process_message, text)
     end
 
     -- Dispatch to modules
