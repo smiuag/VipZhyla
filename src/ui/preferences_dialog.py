@@ -82,7 +82,7 @@ class PreferencesDialog(wx.Dialog):
                 "ASCII"
             ]
         )
-        self.encoding_choice.SetName("Codificación de caracteres")
+        self.encoding_choice.SetName("Character Encoding Selection")
         self.encoding_choice.SetSelection(0)
         sizer.Add(self.encoding_choice, 0, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.TOP, 15)
 

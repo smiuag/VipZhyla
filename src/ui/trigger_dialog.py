@@ -73,8 +73,11 @@ class TriggerManagerDialog(wx.Dialog):
         # Action buttons at bottom
         button_sizer = wx.BoxSizer(wx.HORIZONTAL)
         self.new_btn = wx.Button(self, label="&Nuevo")
+        self.new_btn.SetName("Create New Trigger")
         self.edit_btn = wx.Button(self, label="&Editar")
+        self.edit_btn.SetName("Edit Selected Trigger")
         self.delete_btn = wx.Button(self, label="&Borrar")
+        self.delete_btn.SetName("Delete Selected Trigger")
         close_btn = wx.Button(self, wx.ID_CLOSE, "&Cerrar")
 
         # Set button sizes
@@ -458,10 +461,12 @@ class TriggerEditDialog(wx.Dialog):
         add_cond_sizer.Add(self.cond_negate, 0, wx.RIGHT, 3)
 
         self.add_cond_btn = wx.Button(self, label="&Añadir")
+        self.add_cond_btn.SetName("Add Condition to Trigger")
         self.add_cond_btn.Bind(wx.EVT_BUTTON, self.on_add_condition)
         add_cond_sizer.Add(self.add_cond_btn, 0, wx.RIGHT, 3)
 
         self.add_or_group_btn = wx.Button(self, label="Añadir &OR")
+        self.add_or_group_btn.SetName("Add OR Logic Group to Trigger")
         self.add_or_group_btn.Bind(wx.EVT_BUTTON, self.on_add_or_group)
         add_cond_sizer.Add(self.add_or_group_btn, 0)
 
@@ -473,6 +478,7 @@ class TriggerEditDialog(wx.Dialog):
         cond_sizer.Add(self.cond_list, 1, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 5)
 
         self.remove_cond_btn = wx.Button(self, label="&Quitar condición")
+        self.remove_cond_btn.SetName("Remove Condition from Trigger")
         self.remove_cond_btn.Bind(wx.EVT_BUTTON, self.on_remove_condition)
         cond_sizer.Add(self.remove_cond_btn, 0, wx.LEFT | wx.RIGHT | wx.BOTTOM, 5)
 
@@ -506,6 +512,7 @@ class TriggerEditDialog(wx.Dialog):
         add_sizer.Add(self.storage_op, 0, wx.RIGHT, 5)
 
         self.add_action_btn = wx.Button(self, label="&Añadir")
+        self.add_action_btn.SetName("Add Action to Trigger")
         self.add_action_btn.Bind(wx.EVT_BUTTON, self.on_add_action)
         add_sizer.Add(self.add_action_btn, 0)
 
@@ -517,6 +524,7 @@ class TriggerEditDialog(wx.Dialog):
         action_sizer.Add(self.action_list, 1, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 5)
 
         self.remove_action_btn = wx.Button(self, label="&Quitar acción")
+        self.remove_action_btn.SetName("Remove Action from Trigger")
         self.remove_action_btn.Bind(wx.EVT_BUTTON, self.on_remove_action)
         action_sizer.Add(self.remove_action_btn, 0, wx.LEFT | wx.RIGHT | wx.BOTTOM, 5)
 
@@ -872,6 +880,7 @@ class TimerEditDialog(wx.Dialog):
         action_sizer.Add(self.action_list, 1, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 5)
 
         self.remove_action_btn = wx.Button(self, label="&Quitar acción")
+        self.remove_action_btn.SetName("Remove Action from Trigger")
         self.remove_action_btn.Bind(wx.EVT_BUTTON, self.on_remove_action)
         action_sizer.Add(self.remove_action_btn, 0, wx.LEFT | wx.RIGHT | wx.BOTTOM, 5)
 
@@ -1022,6 +1031,7 @@ class ORGroupDialog(wx.Dialog):
         add_cond_sizer.Add(self.cond_value, 0, wx.RIGHT, 3)
 
         self.add_cond_btn = wx.Button(self, label="&Añadir")
+        self.add_cond_btn.SetName("Add Condition to Timer")
         self.add_cond_btn.Bind(wx.EVT_BUTTON, self.on_add_condition)
         add_cond_sizer.Add(self.add_cond_btn, 0)
 
@@ -1034,6 +1044,7 @@ class ORGroupDialog(wx.Dialog):
 
         # Remove button
         self.remove_cond_btn = wx.Button(self, label="&Quitar condición")
+        self.remove_cond_btn.SetName("Remove Condition from Timer")
         self.remove_cond_btn.Bind(wx.EVT_BUTTON, self.on_remove_condition)
         sizer.Add(self.remove_cond_btn, 0, wx.LEFT | wx.RIGHT | wx.BOTTOM, 5)
 

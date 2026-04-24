@@ -18,9 +18,11 @@ from ui.list_dialogs import (show_channel_history, show_room_history,
                              show_telepathy_history, show_event_list)
 from ui.trigger_dialog import show_trigger_manager
 from ui.blocklist_dialog import show_blocklist_dialog
+from ui.macro_dialog import show_macro_manager
 from ui.help_dialog import show_help
 from ui.preferences_dialog import PreferencesDialog
 from models.triggers import TriggerManager
+from models.macro_executor import MacroManager
 from models.map_service import MapService
 from models.character_state import CharacterState
 from models.channel_config import ChannelConfig
@@ -92,6 +94,7 @@ class MainWindow(wx.Frame):
         self.channel_config = ChannelConfig()  # Channel muting configuration
         self.blocklist = BlockList()  # Blocked players, keywords, channels
         self.blocklist.load()
+        self.macro_manager = MacroManager(self.audio, self.send_command)
         self.trigger_manager = TriggerManager(self.audio)
         self.trigger_manager.send_fn = self.send_command
         # NOTE: Triggers read game state from Lua, not Python character_state
@@ -166,6 +169,7 @@ class MainWindow(wx.Frame):
         self.output_text.SetFont(output_font)
         self.output_text.SetBackgroundColour(wx.Colour(255, 255, 255))
         self.output_text.SetForegroundColour(wx.Colour(20, 20, 60))
+        self.output_text.SetName("Output Display - Server Messages")
         sizer.Add(self.output_text, 1, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.TOP, 10)
 
         # Input label
@@ -184,11 +188,11 @@ class MainWindow(wx.Frame):
         self.input_field.SetBackgroundColour(wx.Colour(255, 255, 255))
         self.input_field.SetForegroundColour(wx.Colour(0, 0, 0))
         self.input_field.SetMinSize((-1, 32))
+        self.input_field.SetName("Input Field - Type MUD Commands")
         self.input_field.Bind(wx.EVT_TEXT_ENTER, self.on_command_enter)
         sizer.Add(self.input_field, 0, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 10)
 
         self.main_panel.SetSizer(sizer)
-        self.output_text.SetName("Output Display")
 
         # Status bar (HP/MP and connection status)
         self.status_bar = self.CreateStatusBar(2)
@@ -233,6 +237,13 @@ class MainWindow(wx.Frame):
         # Connection
         self.keyboard.register_handler(KeyAction.CONNECT, self.on_connect)
         self.keyboard.register_handler(KeyAction.DISCONNECT, self.on_disconnect)
+
+        # Macros (F12-F15 + Ctrl+M)
+        self.keyboard.register_handler(KeyAction.EXECUTE_MACRO_F12, lambda e: self._execute_macro("F12"))
+        self.keyboard.register_handler(KeyAction.EXECUTE_MACRO_F13, lambda e: self._execute_macro("F13"))
+        self.keyboard.register_handler(KeyAction.EXECUTE_MACRO_F14, lambda e: self._execute_macro("F14"))
+        self.keyboard.register_handler(KeyAction.EXECUTE_MACRO_F15, lambda e: self._execute_macro("F15"))
+        self.keyboard.register_handler(KeyAction.SHOW_MACROS, self.on_show_macros)
 
         # History dialogs (Shift+F1-F4)
         self.keyboard.register_handler(KeyAction.SHOW_CHANNEL_HISTORY, self.on_show_channel_history)
@@ -285,12 +296,14 @@ class MainWindow(wx.Frame):
         # === Herramientas (Tools) Menu ===
         tools_menu = wx.Menu()
         triggers_item = tools_menu.Append(wx.ID_ANY, "Triggers/Alias/Timers\tCtrl+T", "Gestionar triggers, aliases y timers")
+        macros_item = tools_menu.Append(wx.ID_ANY, "Macros\tCtrl+M", "Gestionar macros")
         blocklist_item = tools_menu.Append(wx.ID_ANY, "Blocklist\tCtrl+B", "Bloquear jugadores, palabras clave o canales")
         prefs_item = tools_menu.Append(wx.ID_ANY, "Preferencias\tCtrl+P", "Configurar preferencias (encoding, filtrado)")
         tools_menu.AppendSeparator()
         stop_speech_item = tools_menu.Append(wx.ID_ANY, "Detener Discurso\tCtrl+S", "Detener el anuncio de TTS en progreso")
 
         self.Bind(wx.EVT_MENU, self.on_show_triggers, triggers_item)
+        self.Bind(wx.EVT_MENU, self.on_show_macros, macros_item)
         self.Bind(wx.EVT_MENU, self.on_show_blocklist, blocklist_item)
         self.Bind(wx.EVT_MENU, self.on_show_preferences, prefs_item)
         self.Bind(wx.EVT_MENU, lambda e: self.audio.stop(), stop_speech_item)
@@ -571,6 +584,22 @@ class MainWindow(wx.Frame):
     def on_show_blocklist(self, event):
         """Show blocklist dialog (Ctrl+B)."""
         show_blocklist_dialog(self, self.blocklist)
+
+    def on_show_macros(self, event):
+        """Show macro manager dialog (Ctrl+M)."""
+        show_macro_manager(self, self.macro_manager)
+
+    def _execute_macro(self, hotkey: str):
+        """Execute macro bound to a hotkey (F12-F15).
+
+        Args:
+            hotkey (str): The hotkey identifier ("F12", "F13", "F14", "F15")
+        """
+        macro = self.macro_manager.get_by_hotkey(hotkey)
+        if macro:
+            self.macro_manager.execute(macro)
+        else:
+            self.audio.announce(f"No hay macro en {hotkey}.", AudioLevel.MINIMAL)
 
     # MUD connection callbacks
 

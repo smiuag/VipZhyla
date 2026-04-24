@@ -101,6 +101,7 @@ class GameModeDialog(wx.Dialog):
             ]
         )
         self.mode_choice.SetSelection(0)
+        self.mode_choice.SetName("Connection Mode Selection")
         sizer.Add(self.mode_choice, 0, wx.ALL | wx.EXPAND, 10)
 
         # Description
@@ -166,6 +167,7 @@ class TravelSpeedDialog(wx.Dialog):
             ]
         )
         self.speed_choice.SetSelection(0)
+        self.speed_choice.SetName("Connection Speed Selection")
         sizer.Add(self.speed_choice, 0, wx.ALL | wx.EXPAND, 10)
 
         # Buttons
