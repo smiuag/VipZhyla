@@ -482,7 +482,7 @@ class MainWindow(wx.Frame):
 
     def on_show_preferences(self, event):
         """Show preferences dialog."""
-        dlg = PreferencesDialog(self, self.connection.encoding)
+        dlg = PreferencesDialog(self, self.connection.encoding, self.channel_config)
         if dlg.ShowModal() == wx.ID_OK:
             # Update encoding
             new_encoding = dlg.get_selected_encoding()
