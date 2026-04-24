@@ -146,6 +146,7 @@ function game.init()
     game.init_module("eventos")         -- Server events system (Phase 7A)
     game.init_module("npcs")            -- NPCs system (Phase 7A)
     game.init_module("estadisticas")    -- Statistics system (Phase 7A)
+    game.init_module("grupos")          -- Groups/Party system (Phase 7A)
 
     -- Mark as initialized
     game.initialized = true
