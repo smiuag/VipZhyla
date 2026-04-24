@@ -323,13 +323,18 @@ class TriggerManager:
     def expand_alias(self, command: str) -> str:
         """Expand command alias if applicable.
 
+        Supports parameter substitution:
+        - {0}, {1}, {2}, etc. → individual arguments
+        - {*} → all remaining arguments
+        - If expansion has no placeholders, remaining args are appended
+
         Args:
             command: User-entered command
 
         Returns:
             Expanded command, or original if no alias matches
         """
-        words = command.split(None, 1)  # Split on first whitespace
+        words = command.split()  # Split into all tokens
         if not words:
             return command
 
@@ -340,9 +345,22 @@ class TriggerManager:
                 continue
 
             if alias.abbreviation.lower() == first_word.lower():
-                # Replace abbreviated word with expansion
-                rest = words[1] if len(words) > 1 else ""
-                return (alias.expansion + (" " + rest if rest else "")).rstrip()
+                # Get remaining arguments
+                args = words[1:]
+                expansion = alias.expansion
+
+                # Replace numbered placeholders {0}, {1}, etc.
+                for i, arg in enumerate(args):
+                    expansion = expansion.replace(f"{{{i}}}", arg)
+
+                # Replace {*} with all remaining args
+                expansion = expansion.replace("{*}", " ".join(args))
+
+                # If no placeholders in original expansion, append remaining args
+                if "{" not in alias.expansion and args:
+                    expansion = expansion + " " + " ".join(args)
+
+                return expansion.strip()
 
         return command
 
